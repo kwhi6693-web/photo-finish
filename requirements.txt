@@ -1,2 +1,3 @@
 # Core workflow, color inspection and optional grid tools.
-Pillow>=10.4,<13
+# pip uses Requires-Python to select 12.x on Python 3.10 and 13.x on 3.11+.
+Pillow>=12.3,<14

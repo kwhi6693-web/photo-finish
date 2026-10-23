@@ -80,6 +80,8 @@ Read the [runtime guide](docs/runtime.md) for executable examples, [the complete
 | Saving | Host-specific; presentation, scoped quality acceptance and confirmed durable saving are different facts |
 | Optional tools | Lightroom, RAW decoding, numerical analysis, grids and captions only when applicable and available |
 
+Pillow is bounded to `>=12.3,<14`. pip selects a compatible 12.x release on Python 3.10 and permits 13.x on Python 3.11+. NumPy and SciPy remain optional; their version ranges already permit newer compatible releases.
+
 The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW, print and identity-sensitive portrait results need task-specific verification.
 
 <a id="privacy"></a>

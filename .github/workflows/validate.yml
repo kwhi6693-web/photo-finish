@@ -6,6 +6,7 @@ permissions:
   contents: read
 jobs:
   validate:
+    name: validate (${{ matrix.os }}, ${{ matrix.python }}, ${{ matrix.profile }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     strategy:
@@ -14,12 +15,28 @@ jobs:
         include:
           - os: ubuntu-latest
             python: '3.10'
+            profile: core
+            requirements: requirements.txt
           - os: ubuntu-latest
             python: '3.12'
+            profile: core
+            requirements: requirements.txt
           - os: windows-latest
             python: '3.12'
+            profile: core
+            requirements: requirements.txt
           - os: macos-latest
             python: '3.12'
+            profile: core
+            requirements: requirements.txt
+          - os: ubuntu-latest
+            python: '3.10'
+            profile: analysis
+            requirements: requirements-analysis.txt
+          - os: ubuntu-latest
+            python: '3.12'
+            profile: analysis
+            requirements: requirements-analysis.txt
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       PYTHONUTF8: '1'
@@ -31,7 +48,28 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python }}
-      - run: python -m pip install -r requirements.txt
+      - run: python -m pip install -r ${{ matrix.requirements }}
+      - run: python -m pip check
+      - name: Exercise optional numerical analysis
+        if: matrix.profile == 'analysis'
+        shell: python
+        run: |
+          import importlib.metadata, math, sys
+          sys.path.insert(0, 'runtime/10_SYSTEM_CONFIG/scripts')
+          from PIL import Image
+          from color_metrics import measure, phash
+          colors = [(210, 80, 40), (40, 160, 80), (40, 90, 210),
+                    (220, 190, 80), (120, 60, 160), (30, 40, 50)]
+          image = Image.new('RGB', (72, 72))
+          image.putdata([colors[(x // 12 + y // 12) % 6]
+                         for y in range(72) for x in range(72)])
+          result = measure(image)
+          assert result['pixels'] == 5184
+          assert len(result['palette_lab_kmeans6']) == 6
+          assert math.isclose(sum(p['sample_fraction'] for p in result['palette_lab_kmeans6']), 1)
+          fingerprint = phash(image)
+          assert len(fingerprint) == 63 and set(fingerprint) <= {'0', '1'}
+          print({name: importlib.metadata.version(name) for name in ('Pillow', 'numpy', 'scipy')})
       - run: python tools/doctor.py
       - run: python tools/check_publication.py --history
       - run: python tools/run_tests.py

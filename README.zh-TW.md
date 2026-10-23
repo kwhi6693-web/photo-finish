@@ -49,6 +49,8 @@ python tools/doctor.py
 
 `prepare → submit → returned → review` 合併日常記錄。控制器不提供影像渲染，也不自動完成審美驗收。請參閱[執行指南](docs/runtime.md)、[完整規則](runtime/我的照片美化偏好与修图标准.md)與[介面欄位](references/delivery-adapter.md)。核心要求為 Python 3.10+、Pillow 與宿主影像工具。
 
+Pillow 範圍為 `>=12.3,<14`，pip 會為 Python 3.10 選擇相容的 12.x，並允許 Python 3.11+ 使用 13.x。NumPy、SciPy 保持可選，現有版本範圍已允許相容的新版。
+
 生成重繪不保證逐像素保真。嚴格文字、身分、列印、RAW 與色準任務依實際能力驗證。附帶預設與 XMP 僅為可選設計起點，未宣稱完成 Adobe 匯入、全場景實修或膚色校準。展示、品質接受與持久儲存分別記錄。
 
 ## 🔒 隱私與驗證

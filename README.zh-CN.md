@@ -51,6 +51,8 @@ python tools/doctor.py
 
 详见[运行指南](docs/runtime.md)、[完整规则](runtime/我的照片美化偏好与修图标准.md)、[接口字段](references/delivery-adapter.md)。核心要求为 Python 3.10+、Pillow 与宿主图像工具；本地验证与各平台 CI 分开记录。
 
+Pillow 范围为 `>=12.3,<14`，pip 会为 Python 3.10 选择兼容的 12.x，并允许 Python 3.11+ 使用 13.x。NumPy、SciPy 保持可选，现有版本范围已允许兼容的新版。
+
 生成重绘不保证逐像素保真。严格文字、身份、打印、RAW、色准任务按实际能力选择路线并验证。附带预设与 XMP 仅为可选设计起点，未声称完成 Adobe 导入、全场景实修或肤色标定验证。展示、质量接受和持久保存分别记录，无真实回执不宣称保存完成。
 
 ## 🔒 隐私与发布
