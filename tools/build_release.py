@@ -14,7 +14,7 @@ def build(destination,root=ROOT):
     result=scan(root)
     if result['status']!='passed':raise ValueError('Publication scan failed; run check_publication.py for locations')
     files=[]
-    for p in sorted(root.rglob('*')):
+    for p in sorted(root.rglob('*'), key=lambda value:value.relative_to(root).as_posix()):
         rel=p.relative_to(root)
         if '__pycache__' in rel.parts or p.suffix in {'.pyc','.pyo'}:continue
         if p.is_file() and (rel.as_posix() in TOP|TOOLS or rel.parts[0] in DIRS):
