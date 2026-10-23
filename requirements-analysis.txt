@@ -1,4 +1,4 @@
 # Optional numerical analysis / report modules; not needed for ordinary edits.
 -r requirements.txt
-numpy>=1.24,<3
+numpy>=2.5.4,<3
 scipy>=1.10,<2
