@@ -27,7 +27,7 @@ class ContractTests(LeanEditTests):
         self.returned(self.submit(issues=[{'issue_id':'i','targets':['depth'],'observation':'Synthetic depth'}]));events=self.events()+[{'action':'mask','arguments':{'issue_id':'i','target':'depth','input_sha256':w._file(self.source)['sha256'],'actual_scope':['description, not target'],'verified':True,'reason':'Synthetic fixture'}}]
         with self.assertRaisesRegex(c.InputError,'exact target ID'):e.review(self.job,events,self.output)
     def test_nonobject_event_returns_structured_cli_error(self):
-        self.returned(self.submit());events=self.events()+['bad'];process=subprocess.run([sys.executable,str(ROOT/'10_SYSTEM_CONFIG/scripts/photo_edit.py'),'review'],input=json.dumps({'path':str(self.job),'events':events,'output_path':str(self.output)}),text=True,capture_output=True)
+        self.returned(self.submit());events=self.events()+['bad'];process=subprocess.run([sys.executable,str(ROOT/'10_SYSTEM_CONFIG/scripts/photo_edit.py'),'review'],input=json.dumps({'path':str(self.job),'events':events,'output_path':str(self.output)}),text=True,capture_output=True, encoding='utf-8')
         self.assertEqual(process.returncode,1);error=json.loads(process.stderr);self.assertEqual(error['field'],'events[1]');self.assertEqual(error['code'],'INVALID_REVIEW_INPUT')
     def test_returned_supplies_structural_requirements_without_approval(self):
         result=self.returned(self.protected_submit());req=result['review_requirements'];self.assertEqual(req['protection_comparison_scopes'],{'text':['glyph region']});self.assertNotIn('visual_passed',req)
@@ -92,4 +92,9 @@ def load_tests(loader,tests,pattern):
         for name in cls.__dict__:
             if name.startswith('test_'):suite.addTest(cls(name))
     return suite
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

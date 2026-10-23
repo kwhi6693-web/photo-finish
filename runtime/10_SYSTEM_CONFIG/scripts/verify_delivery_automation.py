@@ -67,4 +67,9 @@ class AutomationTests(unittest.TestCase):
  def test_context_loading_is_timed_inside_intake_without_an_extra_read(self):
   t=w.timing_summary(self.j);self.assertGreater(t['stages']['context_read']['seconds_sum'] or 0,0)
 
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

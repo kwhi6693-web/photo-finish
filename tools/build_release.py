@@ -36,6 +36,12 @@ def build(destination,root=ROOT):
     checksum=hashlib.sha256(destination.read_bytes()).hexdigest()
     destination.with_suffix(destination.suffix+'.sha256').write_text(checksum+'  '+destination.name+'\n', encoding='utf-8', newline='\n')
     return {'status':'passed','archive':destination.name,'files':len(files),'sha256':checksum,'bytes':destination.stat().st_size}
-if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,default=ROOT/'dist/photo-finish.zip');a=p.parse_args()
-    print(json.dumps(build(a.output),indent=2))
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--output', type=Path, default=ROOT / 'dist/photo-finish.zip')
+    a = p.parse_args()
+    print(json.dumps(build(a.output), indent=2))

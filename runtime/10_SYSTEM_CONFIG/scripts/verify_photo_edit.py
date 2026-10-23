@@ -80,4 +80,9 @@ class LeanEditTests(unittest.TestCase):
         with patch.object(Path,'read_bytes',read):w.bootstrap(self.root)
         for rel in SOURCES:self.assertEqual(counts.get(str((self.root/rel).resolve())),1,rel)
 
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

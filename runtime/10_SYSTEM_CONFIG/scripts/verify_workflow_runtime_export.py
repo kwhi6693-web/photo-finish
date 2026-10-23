@@ -17,19 +17,19 @@ class WorkflowRuntimeExportTests(unittest.TestCase):
    self.assertTrue((root/'10_SYSTEM_CONFIG/QUICK_START.md').is_file())
    integrity=subprocess.run([sys.executable,'-c',
        'import sys;sys.path.insert(0,sys.argv[1]);from workflow_integrity import validate;print(validate(sys.argv[2]))',
-       str(root/'10_SYSTEM_CONFIG/scripts'),str(root)],capture_output=True,text=True,check=True)
+       str(root/'10_SYSTEM_CONFIG/scripts'),str(root)],capture_output=True,text=True,check=True, encoding='utf-8')
    self.assertIn('passed',integrity.stdout)
    source=t/'source.png';Image.new('RGB',(12,16),(80,90,100)).save(source)
    job=t/'job.json'
    command=[sys.executable,str(root/'10_SYSTEM_CONFIG/scripts/photo_workflow.py')]
-   created=subprocess.run(command+['prepare'],input=json.dumps({'project_root':str(root),'source_path':str(source),'path':str(job)}),capture_output=True,text=True,check=True)
+   created=subprocess.run(command+['prepare'],input=json.dumps({'project_root':str(root),'source_path':str(source),'path':str(job)}),capture_output=True,text=True,check=True, encoding='utf-8')
    self.assertEqual(json.loads(created.stdout)['source']['dimensions'],[12,16])
-   checked=subprocess.run(command+['check'],input=json.dumps({'path':str(job),'output_path':str(source)}),capture_output=True,text=True,check=True)
+   checked=subprocess.run(command+['check'],input=json.dumps({'path':str(job),'output_path':str(source)}),capture_output=True,text=True,check=True, encoding='utf-8')
    self.assertFalse(json.loads(checked.stdout)['accepted'])
    daily=subprocess.run([sys.executable,str(root/'10_SYSTEM_CONFIG/scripts/photo_edit.py'),'prepare'],
        input=json.dumps({'project_root':str(root),'source_path':str(source),'path':str(t/'daily.json'),'tags':[],
          'direction':{'intent':'Synthetic restore fixture','hierarchy':'flat field','light_material':'synthetic RGB',
-           'output_use':'screen','route':'creative','qa_focus':['fixture']}}),capture_output=True,text=True,check=True)
+           'output_use':'screen','route':'creative','qa_focus':['fixture']}}),capture_output=True,text=True,check=True, encoding='utf-8')
    self.assertEqual(json.loads(daily.stdout)['workflow_revision'],bootstrap(ROOT)['workflow_revision'])
    self.assertIn('master_sha256',json.loads(daily.stdout))
    with (root/'10_SYSTEM_CONFIG/runtime_policy.json').open('a', encoding='utf-8', newline='\n') as f:f.write(' ')

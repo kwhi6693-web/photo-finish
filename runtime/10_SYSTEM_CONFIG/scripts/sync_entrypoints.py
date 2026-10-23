@@ -36,7 +36,11 @@ def synchronize(root,skill=None):
     build(root,cfg/'SESSION_BRIEF.json')
     return {'revision':revision,'generated_entrypoints':2,'skill_guides':len(GUIDES) if skill else 0}
 
-if __name__=='__main__':
+if __name__ == '__main__':
     import sys
-    payload=json.load(sys.stdin)
-    print(json.dumps(synchronize(payload['project_root'],payload.get('skill_root')),ensure_ascii=False))
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    import sys
+    payload = json.load(sys.stdin)
+    print(json.dumps(synchronize(payload['project_root'], payload.get('skill_root')), ensure_ascii=False))

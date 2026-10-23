@@ -197,4 +197,9 @@ def main():
     try:print(json.dumps(routes[args.action](**json.load(sys.stdin)),ensure_ascii=False,allow_nan=False));return 0
     except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__}),file=sys.stderr);return 1
 
-if __name__=='__main__':sys.exit(main())
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    sys.exit(main())

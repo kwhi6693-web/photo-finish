@@ -142,4 +142,9 @@ class SemanticTests(unittest.TestCase):
         with self.assertRaises(ValueError):normalize_intent({'subject':['invented']})
         with self.assertRaises(ValueError):normalize_intent({'unknown':[]})
 
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

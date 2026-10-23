@@ -346,12 +346,12 @@ class WorkflowTests(unittest.TestCase):
     def test_cli_uses_json_structured_arguments(self):
         result = subprocess.run([sys.executable, str(SCRIPT), 'timing'],
                                 input=json.dumps({'path': str(self.job)}),
-                                capture_output=True, text=True, check=True)
+                                capture_output=True, text=True, check=True, encoding='utf-8')
         self.assertIsNone(json.loads(result.stdout)['elapsed_seconds']['save_completed'])
         invalid = subprocess.run([sys.executable, str(SCRIPT), 'resolve'],
                                  input=json.dumps({'path': str(self.job), 'issue_id': 'absent',
                                                    'target': 'clock', 'status': 'blocked', 'reason': 'Cannot inspect.'}),
-                                 capture_output=True, text=True)
+                                 capture_output=True, text=True, encoding='utf-8')
         self.assertNotEqual(invalid.returncode, 0)
         self.assertIn('error', json.loads(invalid.stderr))
 
@@ -410,4 +410,8 @@ class DownloadTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
     unittest.main(verbosity=2)

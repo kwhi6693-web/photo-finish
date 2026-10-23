@@ -22,7 +22,16 @@ def check(root=ROOT):
             links+=1
     for preset in (runtime/'06_SCENE_PRESETS/xmp').glob('*.xmp'):ET.parse(preset)
     return {'status':'passed','python':sys.version.split()[0],'integrity':validate(runtime,root),'public_reference_count':len(index),'documentation_links':links,'host_image_editor':'must be supplied by the agent; not tested by this command'}
-if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--root',type=Path,default=ROOT);args=parser.parse_args()
-    try:print(json.dumps(check(args.root),ensure_ascii=False,indent=2))
-    except Exception as error:print(json.dumps({'status':'failed','error':str(error)},ensure_ascii=False));sys.exit(1)
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', type=Path, default=ROOT)
+    args = parser.parse_args()
+    try:
+        print(json.dumps(check(args.root), ensure_ascii=False, indent=2))
+    except Exception as error:
+        print(json.dumps({'status': 'failed', 'error': str(error)}, ensure_ascii=False))
+        sys.exit(1)

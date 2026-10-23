@@ -50,4 +50,9 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(scan(root)['status'],'passed')
         self.assertEqual(check(root)['public_reference_count'],0)
 
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()
