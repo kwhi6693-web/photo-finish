@@ -1,0 +1,176 @@
+{
+  "Exposure2012": 0,
+  "Contrast2012": 6,
+  "Highlights2012": -25,
+  "Shadows2012": 8,
+  "Whites2012": -8,
+  "Blacks2012": -8,
+  "Temperature": null,
+  "Tint": null,
+  "IncrementalTemperature": 0,
+  "IncrementalTint": 0,
+  "Vibrance": -8,
+  "Saturation": -4,
+  "ToneCurvePV2012": [
+    [
+      0,
+      0
+    ],
+    [
+      32,
+      25
+    ],
+    [
+      64,
+      55
+    ],
+    [
+      128,
+      123
+    ],
+    [
+      192,
+      193
+    ],
+    [
+      224,
+      226
+    ],
+    [
+      255,
+      250
+    ]
+  ],
+  "ToneCurvePV2012Red": [
+    [
+      0,
+      0
+    ],
+    [
+      64,
+      64
+    ],
+    [
+      128,
+      128
+    ],
+    [
+      192,
+      192
+    ],
+    [
+      255,
+      255
+    ]
+  ],
+  "ToneCurvePV2012Green": [
+    [
+      0,
+      0
+    ],
+    [
+      64,
+      64
+    ],
+    [
+      128,
+      128
+    ],
+    [
+      192,
+      192
+    ],
+    [
+      255,
+      255
+    ]
+  ],
+  "ToneCurvePV2012Blue": [
+    [
+      0,
+      0
+    ],
+    [
+      64,
+      64
+    ],
+    [
+      128,
+      128
+    ],
+    [
+      192,
+      192
+    ],
+    [
+      255,
+      255
+    ]
+  ],
+  "SplitToningShadowHue": 220,
+  "SplitToningShadowSaturation": 2,
+  "ColorGradeMidtoneHue": 35,
+  "ColorGradeMidtoneSat": 2,
+  "ColorGradeMidtoneLum": 0,
+  "SplitToningHighlightHue": 43,
+  "SplitToningHighlightSaturation": 4,
+  "ColorGradeShadowLum": 0,
+  "ColorGradeHighlightLum": 0,
+  "ColorGradeBlending": 50,
+  "SplitToningBalance": 0,
+  "ShadowTint": 0,
+  "RedHue": 0,
+  "RedSaturation": 0,
+  "GreenHue": 0,
+  "GreenSaturation": 0,
+  "BlueHue": 0,
+  "BlueSaturation": 0,
+  "Texture": 5,
+  "Clarity2012": 3,
+  "Dehaze": 2,
+  "GrainAmount": 0,
+  "GrainSize": 25,
+  "GrainFrequency": 50,
+  "PostCropVignetteAmount": 0,
+  "PostCropVignetteMidpoint": 50,
+  "PostCropVignetteRoundness": 0,
+  "PostCropVignetteFeather": 70,
+  "PostCropVignetteHighlightContrast": 0,
+  "PostCropVignetteStyle": 1,
+  "Sharpness": 25,
+  "SharpenRadius": 0.8,
+  "SharpenDetail": 15,
+  "SharpenEdgeMasking": 70,
+  "LuminanceSmoothing": 0,
+  "LuminanceNoiseReductionDetail": 50,
+  "LuminanceNoiseReductionContrast": 0,
+  "ColorNoiseReduction": 25,
+  "ColorNoiseReductionDetail": 50,
+  "ColorNoiseReductionSmoothness": 50,
+  "AutoLateralCA": 1,
+  "LensProfileEnable": 0,
+  "HueAdjustmentRed": 0,
+  "SaturationAdjustmentRed": -5,
+  "LuminanceAdjustmentRed": 0,
+  "HueAdjustmentOrange": -2,
+  "SaturationAdjustmentOrange": -5,
+  "LuminanceAdjustmentOrange": 3,
+  "HueAdjustmentYellow": -8,
+  "SaturationAdjustmentYellow": -15,
+  "LuminanceAdjustmentYellow": -3,
+  "HueAdjustmentGreen": -8,
+  "SaturationAdjustmentGreen": -22,
+  "LuminanceAdjustmentGreen": -5,
+  "HueAdjustmentAqua": -3,
+  "SaturationAdjustmentAqua": -12,
+  "LuminanceAdjustmentAqua": -3,
+  "HueAdjustmentBlue": -4,
+  "SaturationAdjustmentBlue": -12,
+  "LuminanceAdjustmentBlue": -6,
+  "HueAdjustmentPurple": 0,
+  "SaturationAdjustmentPurple": -15,
+  "LuminanceAdjustmentPurple": 0,
+  "HueAdjustmentMagenta": 0,
+  "SaturationAdjustmentMagenta": -15,
+  "LuminanceAdjustmentMagenta": 0
+}

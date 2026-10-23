@@ -1,0 +1,2 @@
+# Core workflow, color inspection and optional grid tools.
+Pillow>=10.4,<13

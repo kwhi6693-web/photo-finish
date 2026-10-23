@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<x:xmpmeta xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:x="adobe:ns:meta/">
+  <rdf:RDF>
+    <rdf:Description rdf:about="" crs:PresetType="Normal" crs:Cluster="" crs:UUID="46EE6430970153E5BF4625D3CD0434FF" crs:SupportsAmount="False" crs:SupportsColor="True" crs:SupportsMonochrome="False" crs:SupportsHighDynamicRange="False" crs:SupportsNormalDynamicRange="True" crs:SupportsSceneReferred="True" crs:SupportsOutputReferred="True" crs:HasSettings="True" crs:ProcessVersion="11.0" crs:ToneCurveName2012="Custom" crs:Contrast2012="6" crs:Highlights2012="-40" crs:Shadows2012="15" crs:Whites2012="-12" crs:Blacks2012="-3" crs:Vibrance="-8" crs:Saturation="-4" crs:SplitToningShadowHue="220" crs:SplitToningShadowSaturation="2" crs:ColorGradeMidtoneHue="35" crs:ColorGradeMidtoneSat="2" crs:ColorGradeMidtoneLum="0" crs:SplitToningHighlightHue="43" crs:SplitToningHighlightSaturation="4" crs:ColorGradeShadowLum="0" crs:ColorGradeHighlightLum="0" crs:ColorGradeBlending="50" crs:SplitToningBalance="0" crs:ShadowTint="0" crs:RedHue="0" crs:RedSaturation="0" crs:GreenHue="0" crs:GreenSaturation="0" crs:BlueHue="0" crs:BlueSaturation="0" crs:Texture="5" crs:Clarity2012="0" crs:Dehaze="0" crs:GrainAmount="0" crs:GrainSize="25" crs:GrainFrequency="50" crs:PostCropVignetteAmount="0" crs:PostCropVignetteMidpoint="50" crs:PostCropVignetteRoundness="0" crs:PostCropVignetteFeather="70" crs:PostCropVignetteHighlightContrast="0" crs:PostCropVignetteStyle="1" crs:HueAdjustmentRed="0" crs:SaturationAdjustmentRed="-5" crs:LuminanceAdjustmentRed="0" crs:HueAdjustmentOrange="-2" crs:SaturationAdjustmentOrange="-5" crs:LuminanceAdjustmentOrange="3" crs:HueAdjustmentYellow="-8" crs:SaturationAdjustmentYellow="-15" crs:LuminanceAdjustmentYellow="-3" crs:HueAdjustmentGreen="-8" crs:SaturationAdjustmentGreen="-22" crs:LuminanceAdjustmentGreen="-5" crs:HueAdjustmentAqua="-3" crs:SaturationAdjustmentAqua="-12" crs:LuminanceAdjustmentAqua="-3" crs:HueAdjustmentBlue="0" crs:SaturationAdjustmentBlue="-12" crs:LuminanceAdjustmentBlue="-3" crs:HueAdjustmentPurple="0" crs:SaturationAdjustmentPurple="-15" crs:LuminanceAdjustmentPurple="0" crs:HueAdjustmentMagenta="0" crs:SaturationAdjustmentMagenta="-15" crs:LuminanceAdjustmentMagenta="0">
+      <crs:Name>
+        <rdf:Alt>
+          <rdf:li xml:lang="x-default">PCS_F_v1_1</rdf:li>
+        </rdf:Alt>
+      </crs:Name>
+      <crs:Group>
+        <rdf:Alt>
+          <rdf:li xml:lang="x-default">PCS v1.1.0 - Designed</rdf:li>
+        </rdf:Alt>
+      </crs:Group>
+      <crs:Description>
+        <rdf:Alt>
+          <rdf:li xml:lang="x-default">Designed starting look. No WB, exposure, camera profile, detail, lens, crop or masks. Import and rendering not tested in Adobe.</rdf:li>
+        </rdf:Alt>
+      </crs:Description>
+      <crs:ToneCurvePV2012>
+        <rdf:Seq>
+          <rdf:li>0, 0</rdf:li>
+          <rdf:li>32, 25</rdf:li>
+          <rdf:li>64, 55</rdf:li>
+          <rdf:li>128, 123</rdf:li>
+          <rdf:li>192, 193</rdf:li>
+          <rdf:li>224, 226</rdf:li>
+          <rdf:li>255, 250</rdf:li>
+        </rdf:Seq>
+      </crs:ToneCurvePV2012>
+      <crs:ToneCurvePV2012Red>
+        <rdf:Seq>
+          <rdf:li>0, 0</rdf:li>
+          <rdf:li>64, 64</rdf:li>
+          <rdf:li>128, 128</rdf:li>
+          <rdf:li>192, 192</rdf:li>
+          <rdf:li>255, 255</rdf:li>
+        </rdf:Seq>
+      </crs:ToneCurvePV2012Red>
+      <crs:ToneCurvePV2012Green>
+        <rdf:Seq>
+          <rdf:li>0, 0</rdf:li>
+          <rdf:li>64, 64</rdf:li>
+          <rdf:li>128, 128</rdf:li>
+          <rdf:li>192, 192</rdf:li>
+          <rdf:li>255, 255</rdf:li>
+        </rdf:Seq>
+      </crs:ToneCurvePV2012Green>
+      <crs:ToneCurvePV2012Blue>
+        <rdf:Seq>
+          <rdf:li>0, 0</rdf:li>
+          <rdf:li>64, 64</rdf:li>
+          <rdf:li>128, 128</rdf:li>
+          <rdf:li>192, 192</rdf:li>
+          <rdf:li>255, 255</rdf:li>
+        </rdf:Seq>
+      </crs:ToneCurvePV2012Blue>
+    </rdf:Description>
+  </rdf:RDF>
+</x:xmpmeta>

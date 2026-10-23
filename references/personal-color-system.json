@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "role": "optional_advisory_baseline",
+  "runtime_root": "../runtime",
+  "config": "../runtime/10_SYSTEM_CONFIG/style_config.json",
+  "reference_index": "../runtime/10_SYSTEM_CONFIG/reference_index.json",
+  "reference_assets_included": false,
+  "precedence": "Current photographic direction and policy override legacy numerical presets."
+}

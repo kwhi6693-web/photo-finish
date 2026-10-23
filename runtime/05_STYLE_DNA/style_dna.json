@@ -1,0 +1,236 @@
+{
+  "spec_version": "4.0",
+  "dna_version": "1.3.1",
+  "name": "静城：琥珀灯光与深色中间调",
+  "status": "reference_extended_candidate; Adobe and independent original-target validation pending",
+  "main_style": "克制的低明度都市观察；用可信光源、材质与构图分配注意力",
+  "core_rules": [
+    {
+      "id": "CORE-01",
+      "text": "保留深黑作为空间边界，同时让主体所在的中间调可读；黑框面积不作为统一曝光目标",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "CORE-02",
+      "text": "大面积背景色克制，重要物体或光源可以有选择地高饱和；不全局洗灰",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "CORE-03",
+      "text": "保留真实光线方向、光源发光感和石材、纸张、树皮等材质差异",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "CORE-04",
+      "text": "使用局部明暗与前中后景关系引导视线；允许场景具有不同亮度和色温",
+      "refs": [],
+      "evidence": "INFERRED"
+    }
+  ],
+  "conditional_rules": [
+    {
+      "id": "COND-01",
+      "text": "已有人工暖光时形成琥珀亮区；环境冷色来自天空与现有光，不能全图橙青化",
+      "refs": []
+    },
+    {
+      "id": "COND-02",
+      "text": "日间石材偏暖灰、树木深橄榄、蓝青天空保留层次；不是把日间统一降成夜景",
+      "refs": []
+    },
+    {
+      "id": "COND-03",
+      "text": "雨滴与反射是局部层次，不是提升全局清晰度或加雾的理由",
+      "refs": []
+    },
+    {
+      "id": "COND-04",
+      "text": "书架、纸张、肤色需要更高可读性；肤色无直接样本，使用保护性暂定规则",
+      "refs": []
+    },
+    {
+      "id": "COND-05",
+      "text": "自然曙暮光保留粉橙至灰蓝渐变和较亮天空，亭阁及人物可保留剪影；精确日落或日出时刻未知",
+      "refs": [],
+      "evidence": "INFERRED; sky-gradient examples plus warm-water detail, mostly one context group; exact capture time unknown"
+    },
+    {
+      "id": "COND-06",
+      "text": "林水景观保留受光叶片与阴影层次、水面冷色和局部受光主体；不能把受光树冠统一压成暗橄榄色",
+      "refs": [],
+      "evidence": "INFERRED; expanded woodland/water context plus sunlit pagoda; no paired-original verification"
+    },
+    {
+      "id": "COND-07",
+      "text": "自然水洼用灰棕材质和涟漪细线建立层次；无人工光源时不添加琥珀灯色",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "COND-08",
+      "text": "较亮的阴天石材和室外黄墙保留材质色；白天空不强制变蓝，黄墙不自动解释为暖光照明",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "COND-09",
+      "text": "自然受光叶片的金绿与蓝色反射水面分别保留；水面是反射区域，不因呈蓝色就使用天空蒙版",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "COND-10",
+      "text": "环境人物背影与剪影可作为空间和亮度关系参考；不强行提亮面部，也不据此标定肤色",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "COND-11",
+      "text": "鱼、近景玻璃与远景塔楼叠层的成像方式未确认；只参考可见层次和框景，不把其青绿偏色推广为全库核心",
+      "refs": [],
+      "evidence": "INFERRED; optical/reflection/composite origin unknown"
+    },
+    {
+      "id": "COND-12",
+      "text": "船篷、纸页和衣物的暖白或冷白受照明与材质共同影响；未经验证不能当作灰卡，先保留光影并检查局部可读性",
+      "refs": [],
+      "evidence": "INFERRED"
+    },
+    {
+      "id": "COND-13",
+      "text": "植物调整须限定为实际树叶区域，减去绿色车辆、衣物与路牌；林荫道路保留局部日光与深色路面关系，不能由暗度判为夜景",
+      "refs": [],
+      "evidence": "INFERRED"
+    }
+  ],
+  "substyles": [
+    {
+      "name": "车窗框景",
+      "refs": []
+    },
+    {
+      "name": "琥珀灯墙与暖窗",
+      "refs": []
+    },
+    {
+      "name": "石材与纸张中间调",
+      "refs": []
+    },
+    {
+      "name": "墨蓝夜城",
+      "refs": []
+    },
+    {
+      "name": "自然曙暮光与湖面剪影",
+      "refs": [],
+      "category": "CONDITIONAL"
+    },
+    {
+      "name": "林水与受光主体",
+      "refs": [],
+      "category": "CONDITIONAL"
+    },
+    {
+      "name": "特殊玻璃叠层与远景",
+      "refs": [],
+      "category": "INDIVIDUAL; CONDITIONAL framing only"
+    },
+    {
+      "name": "林荫道路与局部受光",
+      "refs": [],
+      "category": "CONDITIONAL; one direct reference"
+    }
+  ],
+  "allowed_variation": [
+    "日间和室内可以更亮",
+    "天空可蓝青或靛蓝，按真实条件",
+    "已有深黑框景可以接近纯黑",
+    "光源小面积接近白色",
+    "人物优先于风格强度"
+  ],
+  "forbidden": [
+    "固定负曝光套所有图",
+    "虚构EXIF、原作者参数或色彩配置",
+    "将画中画当皮肤训练样本",
+    "把晴天改成深夜",
+    "改变建筑、文字或物体内容",
+    "将待修照片自动加入参考库"
+  ],
+  "palette_policy": "逐图实测Lab聚类色板见per_image JSON；全局色板仅作设计摘要，不代表固定面积比例",
+  "designed_palette": [
+    "#090A0D",
+    "#302A20",
+    "#8E8170",
+    "#374032",
+    "#88B6C6",
+    "#111729",
+    "#D48A2B"
+  ],
+  "update_policy": "新增STYLE_REFERENCE必须明确授权；新增输出不进入核心；显著风格变化提出proposal并等待用户确认",
+  "core_definition_version": "1.0.0",
+  "update_kind": "explicitly authorized composition workflow patch; color core/presets/reference analyses unchanged",
+  "reference_count": 0,
+  "updated_date": "2026-10-16",
+  "composition_policy": {
+    "policy_version": "1.0.0",
+    "rule_id": "COMPOSITION-01",
+    "authority": "explicit_user_instruction",
+    "user_instruction": "当构图合适的时候保留，没达到效果时允许优化重构构图",
+    "principle": "先评估表达效果：有效构图保留；未达到目标表达时允许优化或重构取景与画面组织",
+    "default_assessment": "REVIEW_REQUIRED",
+    "visual_review_required": true,
+    "decisions": {
+      "PRESERVE": {
+        "condition": "主体、环境、视觉重心与空间层次有效；调整不能带来明确收益",
+        "action": "保留当前取景和画幅，可用光影与色彩强化表达"
+      },
+      "OPTIMIZE": {
+        "condition": "主体与叙事成立，但边缘干扰、歪斜、冗余留白或轻微比例问题削弱画面",
+        "action": "按实际问题适量裁切、旋转、几何校正或改变画幅"
+      },
+      "REFRAME": {
+        "condition": "现有主体位置、尺度、留白或空间分配未达到目标效果，需要明显改变取景组织",
+        "action": "允许重新选择画面范围、比例与视觉重心，比较原构图与重构方案后采用表达更清楚者"
+      }
+    },
+    "criteria": [
+      "主体与环境关系",
+      "主体位置和尺度",
+      "前中后景与遮挡",
+      "留白与视觉重心",
+      "引导线、水平与透视",
+      "边缘干扰和关键内容完整性"
+    ],
+    "allowed_geometric_operations": [
+      "crop",
+      "aspect_ratio_change",
+      "rotate_or_straighten",
+      "perspective_geometry_correction",
+      "reframe_using_existing_image_content"
+    ],
+    "local_emphasis": "允许局部光影与色彩调整配合构图；先决定取景，再完成依赖画面范围的测量和蒙版",
+    "quality_rules": [
+      "不因套三分法、统一比例或刻意黑框而机械改图",
+      "保留主体身份、真实空间与关键叙事内容；裁去内容时解释取舍",
+      "记录裁切范围、旋转/透视处理及实际输出像素；检查过度裁切、拉伸、边界和材质损失",
+      "保留原文件，在可回退副本上执行；普通裁切与几何优化可按本指令自主推进",
+      "生成式扩图、移动/增删场景元素不是普通几何重构，不因本条构图授权而自动执行"
+    ],
+    "required_per_image_output": [
+      "decision",
+      "observed_composition_problem_or_preserve_reason",
+      "proposed_operations",
+      "framing_geometry_if_applicable",
+      "content_and_resolution_tradeoff",
+      "effect_comparison_if_actually_rendered",
+      "render_status"
+    ],
+    "measurement_order": "构图建议未应用时，现有统计仍属于原图/指定ROI；实际重构后对选定有效画面复核测量、参考匹配与蒙版，不能冒称已经重测",
+    "analysis_boundary": "数值引擎不自动判断构图优劣，REVIEW_REQUIRED由看图的GPT或用户完成；无几何参数时不得假装已裁切",
+    "color_core_and_scene_presets": "unchanged",
+    "reference_images": "read-only; this policy affects EDIT_TARGET workflow only"
+  }
+}

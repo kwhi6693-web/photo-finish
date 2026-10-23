@@ -1,0 +1,88 @@
+{
+  "policy_version": "2.0.0",
+  "revision": "2026-10-21.4",
+  "rule_id": "COMPOSITION-01",
+  "authority": "explicit_user_instruction",
+  "user_instruction": "重构此条构图规则，解放构图边界",
+  "principle": "以最终视觉表达为目标，主动选择最有力量的构图；可自由保留、优化或重构原片，不以原取景、原主体位置、完整性、画幅或改动幅度作为默认边界。",
+  "default_assessment": "REVIEW_REQUIRED",
+  "visual_review_required": true,
+  "choice_rules": {
+    "original_framing_preferred": false,
+    "must_prove_original_defective_before_reframe": false,
+    "preserve_original_subject_completeness": false,
+    "fixed_crop_limit": null,
+    "fixed_aspect_ratio": null,
+    "fixed_minimum_retained_pixel_ratio": null,
+    "mandatory_candidate_count": null,
+    "choose_one_recommended_result": true
+  },
+  "decisions": {
+    "PRESERVE": {
+      "condition": "实际比较后原取景最符合本片表达；保留是一种主动选择",
+      "action": "采用原构图或不改变几何，以光影色彩完成表达"
+    },
+    "OPTIMIZE": {
+      "condition": "调整主体、留白、边缘、方向或几何可强化表达",
+      "action": "自主决定裁切、比例、旋转及几何调整幅度，按最终表现选择"
+    },
+    "REFRAME": {
+      "condition": "重新组织取景与注意力能得到更有力量的画面，即使原构图已经合格也可采用",
+      "action": "允许大幅裁切、横竖转换、重新定位视觉主体和重心、局部抽象取景，以及按用途必要的创意补景与干扰整理"
+    }
+  },
+  "criteria": [
+    "表达与情绪",
+    "视觉主体和注意力分配",
+    "主体尺度、局部细节与画面节奏",
+    "留白、遮挡、前后层次与环境取舍",
+    "光影、色块、引导线和透视关系",
+    "实际观看尺寸与输出可用性"
+  ],
+  "allowed_geometric_operations": [
+    "crop",
+    "aspect_ratio_change",
+    "orientation_change",
+    "rotate_or_straighten",
+    "perspective_geometry_correction",
+    "reframe_using_existing_image_content",
+    "subject_detail_or_abstract_framing"
+  ],
+  "creative_composition": {
+    "standing_authorization": true,
+    "operations": [
+      "canvas_expansion",
+      "remove_nonessential_distractions",
+      "reorganize_nonessential_scene_elements"
+    ],
+    "when": "为画面表达提供明确收益时，可自主使用；保真几何路线已能满足目标时直接完成，不为炫技强加生成操作。",
+    "protected_information": "保留可识别主体身份、作品题字与印章、产品关键信息及事件事实；改变这些信息须有当次明确创作意图。纪实、证据、档案用途优先服从其真实性要求。",
+    "execution": "内容生成或清理必须使用实际支持的工具并检查实际输出，必要时加载imagegen；记录生成/移除/重排区域，不把补出的内容称为现场事实。",
+    "no_extra_approval_for_in_scope_edits": true
+  },
+  "tradeoffs": "允许舍弃非关键环境、原主体的部分外轮廓或大面积原片像素；依据表达与真实输出质量取舍，不以固定完整性或比例自动否决。",
+  "local_emphasis": "构图与光影色彩协同决定；选定实际取景后完成依赖区域的测量和蒙版。",
+  "quality_rules": [
+    "不预设保留原图或轻裁优先，也不要求每张强行变化；选择表达更有效者",
+    "保留原文件，在可回退副本上执行；按实际用途检查人物、材质、文字、几何及内容改动",
+    "按真实保留像素、放大质量与观看用途判断输出可用性，不虚构分辨率或已执行效果",
+    "生成内容和原始内容分开记录，检查接缝、重复物体、光影透视与保护信息",
+    "默认逐张只输出最终成片；原片、对比、调整说明及其他资料仅按当次明确要求提供，内部对照与质量检查保留。"
+  ],
+  "required_per_image_output": [
+    "decision",
+    "expression_goal_and_choice_reason",
+    "proposed_operations",
+    "framing_geometry_if_applicable",
+    "content_and_resolution_tradeoff",
+    "generated_or_removed_regions_if_any",
+    "effect_comparison_if_actually_rendered",
+    "render_status"
+  ],
+  "measurement_order": "几何或内容改动后重新核对有效画面、参考适配与蒙版；建议未应用时统计仍属于原图，不冒称已重测。",
+  "analysis_boundary": "看图的助手完成审美判断；数值引擎只携带现行规则，不伪装自动视觉评分或已应用构图。",
+  "color_core_and_scene_presets": "unchanged",
+  "reference_images": "read-only; policy applies to EDIT_TARGET, not analysis evidence or authorized source references",
+  "canonical_source": "10_SYSTEM_CONFIG/composition_policy.json",
+  "legacy_override": "style_config.json内的旧composition_policy仅为冻结数值配置的兼容快照；加载时必须采用本独立现行规则。"
+}

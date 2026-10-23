@@ -1,0 +1,17 @@
+# 原生保真调色与实际保存
+
+本页为按需接口，审美、构图与去AI味沿总规范执行，不预设微调上限。日常submit逐保护目标记录fidelity策略：实际非生成原区域保留用native_preserved，真实局部编辑避开保护区域用local_excluded；均需实际能力依据、修正路线和最终比较，不以工具名称自动通过。普通生成后可见内容比对用generative_compare；exact_content不得选择此路线。
+
+1. 实际看原片、完成源绑定参考选择与保护契约后，选择真实可用的非生成光色调整。Adobe原片用asset_openai_file_upload，使用实际返回的源URL；每次image_apply_adjustments之前须asset_inline_preview并看图，不能仅凭文件名设值。若后续要做文件验收和保存，使用返回实际结果的服务端路线；遵守当次工具的单图/交互与显式自动处理授权规则。
+2. 按本片判断合并曝光、影调与色彩参数为一次image_apply_adjustments，PNG输出。该工具的固定顺序是曝光→高光→亮部→暗部/阴影→亮度/对比→色温→HSL→自然饱和/饱和度→分通道饱和度，不把不同引擎参数当相同滑块。需要改变非交换顺序才分步。未使用的参数不补造。
+3. working只续接真实taskId并记录实际调用起止，不重复提交。按当前工具要求显示实际结果，保存返回的requestId、配方与输出来源。非生成光色工具不等于自动通过保真或色彩验收。
+4. 下载正式输出字节，用现有download入口完整解码后发布，保留源。核验实际尺寸、ICC/PNG声明；全幅与原生细节对照文字、画作、材质、光影与去AI味，完成问题和保护凭据。普通书画只要求与原图可见内容一致，不要求逐笔认证。PNG返回URL、JPEG预览或同尺寸预览都不是已取得的原始无损输出；不把预览缺ICC升级为原始文件偏色的结论。不能取得正式文件时记录具体阻塞，不能降低当前验收条件。工具失败不改用代码模拟调色。
+5. 文件与视觉通过后，transact/accept绑定正式输出哈希与新save_result_path；实际保存成片，确认每项成功和本地身份应用，再用saved记录成片回执、身份与终点，record生成并保存精简内部记录。保存失败不写save_completed；结果未知先核实，不重复保存。工具暂存、URL预览和本地文件都不替代此回执。
+6. prepare/candidates/check/review凭据/accept/transact自动记录对应本地工作。外部工具与实际看图在调用前后采集时间，再stage写真实边界；render是整个API调用时间，不拆猜后端计算。不能完成时finish(status=failed/cancelled,reason,unix_ns)保留实际终点；已结束任务只读，后续新建任务。缺测保持null，绝不以流程文字补齐旧时间。
+
+当前维护测试的能力结论记录在维护报告中；以后每次真实执行按当次可用性判断，不把一次工具可见或预览成功当成全环境稳定能力。
+
+方法依据（检索于2026-10-22）：
+- [Adobe官方编辑操作与批量合并](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/v2-api-catalog)
+- [OpenTelemetry span与持续时间语义](https://opentelemetry.io/docs/specs/otel/trace/api/)
+- [OpenCLIP原始仓库](https://github.com/mlfoundations/open_clip)：考察过图像语义向量路线；现行实现未安装或运行OpenCLIP，不声称已实现嵌入检索。

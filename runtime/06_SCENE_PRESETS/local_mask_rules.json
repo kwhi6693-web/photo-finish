@@ -1,0 +1,367 @@
+{
+  "A": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 3,
+      "type": "Sky subtract foreground",
+      "region": "实际天空，减去树枝与建筑边缘",
+      "values": {
+        "Exposure": -0.1,
+        "Highlights": -15,
+        "Saturation": -5,
+        "Dehaze": 0
+      },
+      "range": "Exposure -0.25 to +0.15; Saturation -10 to +3",
+      "condition": "确认天空存在且需要分离时；本例只是操作方案",
+      "risk": "过度去朦胧和降曝光导致断层，树缘可能出光晕"
+    }
+  ],
+  "B": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    }
+  ],
+  "C": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 2,
+      "type": "Luminance Range intersect Brush/Object",
+      "region": "灯芯周围的亮部与暖窗；不覆盖整面暖墙",
+      "values": {
+        "Highlights": -25,
+        "Whites": -10,
+        "Saturation": -5
+      },
+      "range": "Highlights -10 to -40; Whites 0 to -20",
+      "condition": "仅有亮光源时",
+      "risk": "压低过多会把发光体变灰；已剪切JPEG不能恢复真实细节"
+    },
+    {
+      "order": 4,
+      "type": "Brush or Linear Gradient intersect Luminance Range",
+      "region": "湿路反射，沿真实反射方向",
+      "values": {
+        "Exposure": 0.1,
+        "Highlights": -10,
+        "Clarity": 3
+      },
+      "range": "Exposure 0 to +0.20; Clarity 0 to +5",
+      "condition": "反射确实存在，且不应强于光源",
+      "risk": "提亮路面会增噪；不能凭空制造反射"
+    }
+  ],
+  "D": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 3,
+      "type": "Sky subtract foreground",
+      "region": "实际天空，减去树枝与建筑边缘",
+      "values": {
+        "Exposure": 0,
+        "Highlights": -10,
+        "Saturation": -3,
+        "Dehaze": 0
+      },
+      "range": "Exposure -0.25 to +0.15; Saturation -10 to +3",
+      "condition": "自然曙暮光渐变确需修正时；允许天空较亮，不机械降低曝光",
+      "risk": "过度去朦胧和降曝光导致断层，树缘可能出光晕"
+    }
+  ],
+  "E": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 2,
+      "type": "Luminance Range intersect Brush/Object",
+      "region": "灯芯周围的亮部与暖窗；不覆盖整面暖墙",
+      "values": {
+        "Highlights": -25,
+        "Whites": -10,
+        "Saturation": -5
+      },
+      "range": "Highlights -10 to -40; Whites 0 to -20",
+      "condition": "仅有亮光源时",
+      "risk": "压低过多会把发光体变灰；已剪切JPEG不能恢复真实细节"
+    },
+    {
+      "order": 3,
+      "type": "Sky subtract foreground",
+      "region": "实际天空，减去树枝与建筑边缘",
+      "values": {
+        "Exposure": -0.1,
+        "Highlights": -15,
+        "Saturation": -5,
+        "Dehaze": 0
+      },
+      "range": "Exposure -0.25 to +0.15; Saturation -10 to +3",
+      "condition": "确认天空存在且需要分离时；本例只是操作方案",
+      "risk": "过度去朦胧和降曝光导致断层，树缘可能出光晕"
+    }
+  ],
+  "F": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 2,
+      "type": "Luminance Range intersect Brush/Object",
+      "region": "灯芯周围的亮部与暖窗；不覆盖整面暖墙",
+      "values": {
+        "Highlights": -25,
+        "Whites": -10,
+        "Saturation": -5
+      },
+      "range": "Highlights -10 to -40; Whites 0 to -20",
+      "condition": "仅有亮光源时",
+      "risk": "压低过多会把发光体变灰；已剪切JPEG不能恢复真实细节"
+    },
+    {
+      "order": 3,
+      "type": "Sky subtract foreground",
+      "region": "实际天空，减去树枝与建筑边缘",
+      "values": {
+        "Exposure": -0.1,
+        "Highlights": -15,
+        "Saturation": -5,
+        "Dehaze": 0
+      },
+      "range": "Exposure -0.25 to +0.15; Saturation -10 to +3",
+      "condition": "确认天空存在且需要分离时；本例只是操作方案",
+      "risk": "过度去朦胧和降曝光导致断层，树缘可能出光晕"
+    }
+  ],
+  "G": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 2,
+      "type": "Luminance Range intersect Brush/Object",
+      "region": "灯芯周围的亮部与暖窗；不覆盖整面暖墙",
+      "values": {
+        "Highlights": -25,
+        "Whites": -10,
+        "Saturation": -5
+      },
+      "range": "Highlights -10 to -40; Whites 0 to -20",
+      "condition": "仅有亮光源时",
+      "risk": "压低过多会把发光体变灰；已剪切JPEG不能恢复真实细节"
+    },
+    {
+      "order": 3,
+      "type": "Object / Brush",
+      "region": "纸张、书脊与木纹",
+      "values": {
+        "Exposure": 0.15,
+        "Saturation": -5,
+        "Texture": 5
+      },
+      "range": "Exposure 0 to +0.3; Saturation -10 to 0",
+      "condition": "文字与纸张可读性不足",
+      "risk": "纸张不必校成纯白；不要把木材的暖色去掉"
+    }
+  ],
+  "H": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 2,
+      "type": "Luminance Range intersect Brush/Object",
+      "region": "灯芯周围的亮部与暖窗；不覆盖整面暖墙",
+      "values": {
+        "Highlights": -25,
+        "Whites": -10,
+        "Saturation": -5
+      },
+      "range": "Highlights -10 to -40; Whites 0 to -20",
+      "condition": "仅有亮光源时",
+      "risk": "压低过多会把发光体变灰；已剪切JPEG不能恢复真实细节"
+    }
+  ],
+  "I": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 5,
+      "type": "Color Range intersect Brush/Object",
+      "region": "实际叶片与树冠；减去车辆、衣物、路牌、天空与灯光",
+      "values": {
+        "Saturation": -8,
+        "Shadows": 8,
+        "Texture": 5
+      },
+      "range": "Saturation -15 to 0; Shadows 0 to +15",
+      "condition": "实际植被过鲜或失层次，先确认材质而非只按绿色选区",
+      "risk": "过度降饱和会变灰，负色温会导致蓝叶；选区遗漏会改变绿色主体"
+    }
+  ],
+  "J": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    },
+    {
+      "order": 2,
+      "type": "Person skin subtract eyes/lips/hair",
+      "region": "真实皮肤，需检测并人工检查蒙版",
+      "values": {
+        "Exposure": 0.2,
+        "Texture": -3,
+        "Clarity": -2,
+        "Saturation": 0
+      },
+      "range": "Exposure 0 to +0.35; Texture -5 to 0",
+      "condition": "脸部是主体；无面部参考，禁止强行染肤色",
+      "risk": "肤色尚未验证，勿塑料磨皮或改变人物身份"
+    }
+  ],
+  "K": [
+    {
+      "order": 0,
+      "type": "Brush / Object selection",
+      "region": "窗口外有效画面；减去车内、后视镜与伞沿",
+      "values": {
+        "Exposure": 0
+      },
+      "range": "0 to +0.4 only if subject unreadable",
+      "condition": "先定义此区域，再判断全局曝光",
+      "risk": "矩形ROI只是统计区域，不等于可直接使用的精确蒙版"
+    },
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    }
+  ],
+  "L": [
+    {
+      "order": 1,
+      "type": "Subject or Object / Brush",
+      "region": "重要主体，避开灯芯和刻意近黑框景",
+      "values": {
+        "Exposure": 0.2,
+        "Shadows": 12,
+        "Texture": 3
+      },
+      "range": "Exposure 0 to +0.45EV; Shadows 0 to +20",
+      "condition": "仅主体辨识不足且并非有意剪影时启用；日落亭阁/人物剪影不强行提亮",
+      "risk": "过亮会失去空间关系；先看100%细节与边界"
+    }
+  ]
+}

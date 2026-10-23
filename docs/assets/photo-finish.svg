@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+<title id="title">Photo Finish</title><desc id="desc">Editorial project banner. Direction, craft and review. A typographic illustration, not a sample photograph.</desc>
+<rect width="1280" height="420" fill="#eee8dc"/>
+<rect x="20" y="20" width="1240" height="380" rx="6" fill="#1e2724"/>
+<path d="M70 72h55M70 72v55M1210 72h-55M1210 72v55M70 348h55M70 348v-55M1210 348h-55M1210 348v-55" stroke="#b3bb9d" stroke-width="2" fill="none"/>
+<text x="105" y="120" fill="#b3bb9d" font-family="Arial,sans-serif" font-size="17" letter-spacing="5">AN AGENT SKILL FOR PHOTOGRAPHIC FINISHING</text>
+<text x="100" y="225" fill="#f7f2e8" font-family="Georgia,serif" font-size="88">Photo Finish<tspan fill="#c89b68">.</tspan></text>
+<text x="105" y="282" fill="#d6d7c9" font-family="Arial,sans-serif" font-size="24">Clear direction. Expressive craft. Actual review.</text>
+<line x1="105" y1="315" x2="1175" y2="315" stroke="#55635a"/>
+<text x="105" y="349" fill="#b3bb9d" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">COMPOSITION / LIGHT / COLOR / MATERIAL</text>
+<text x="1175" y="349" text-anchor="end" fill="#c89b68" font-family="Arial,sans-serif" font-size="14">FINAL PHOTO, ONE AT A TIME</text>
+<circle cx="1060" cy="184" r="68" fill="none" stroke="#65725f" stroke-width="1"/>
+<circle cx="1060" cy="184" r="48" fill="none" stroke="#b3bb9d" stroke-width="1"/>
+<circle cx="1060" cy="184" r="19" fill="#c89b68"/>
+</svg>

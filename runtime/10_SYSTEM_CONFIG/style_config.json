@@ -1,0 +1,4536 @@
+{
+  "spec_version": "4.0",
+  "dna_version": "1.3.1",
+  "base": {
+    "Exposure2012": 0,
+    "Contrast2012": 6,
+    "Highlights2012": -25,
+    "Shadows2012": 8,
+    "Whites2012": -8,
+    "Blacks2012": -8,
+    "Temperature": null,
+    "Tint": null,
+    "IncrementalTemperature": 0,
+    "IncrementalTint": 0,
+    "Vibrance": -8,
+    "Saturation": -4,
+    "ToneCurvePV2012": [
+      [
+        0,
+        0
+      ],
+      [
+        32,
+        25
+      ],
+      [
+        64,
+        55
+      ],
+      [
+        128,
+        123
+      ],
+      [
+        192,
+        193
+      ],
+      [
+        224,
+        226
+      ],
+      [
+        255,
+        250
+      ]
+    ],
+    "ToneCurvePV2012Red": [
+      [
+        0,
+        0
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        192,
+        192
+      ],
+      [
+        255,
+        255
+      ]
+    ],
+    "ToneCurvePV2012Green": [
+      [
+        0,
+        0
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        192,
+        192
+      ],
+      [
+        255,
+        255
+      ]
+    ],
+    "ToneCurvePV2012Blue": [
+      [
+        0,
+        0
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        192,
+        192
+      ],
+      [
+        255,
+        255
+      ]
+    ],
+    "SplitToningShadowHue": 220,
+    "SplitToningShadowSaturation": 2,
+    "ColorGradeMidtoneHue": 35,
+    "ColorGradeMidtoneSat": 2,
+    "ColorGradeMidtoneLum": 0,
+    "SplitToningHighlightHue": 43,
+    "SplitToningHighlightSaturation": 4,
+    "ColorGradeShadowLum": 0,
+    "ColorGradeHighlightLum": 0,
+    "ColorGradeBlending": 50,
+    "SplitToningBalance": 0,
+    "ShadowTint": 0,
+    "RedHue": 0,
+    "RedSaturation": 0,
+    "GreenHue": 0,
+    "GreenSaturation": 0,
+    "BlueHue": 0,
+    "BlueSaturation": 0,
+    "Texture": 5,
+    "Clarity2012": 3,
+    "Dehaze": 2,
+    "GrainAmount": 0,
+    "GrainSize": 25,
+    "GrainFrequency": 50,
+    "PostCropVignetteAmount": 0,
+    "PostCropVignetteMidpoint": 50,
+    "PostCropVignetteRoundness": 0,
+    "PostCropVignetteFeather": 70,
+    "PostCropVignetteHighlightContrast": 0,
+    "PostCropVignetteStyle": 1,
+    "Sharpness": 25,
+    "SharpenRadius": 0.8,
+    "SharpenDetail": 15,
+    "SharpenEdgeMasking": 70,
+    "LuminanceSmoothing": 0,
+    "LuminanceNoiseReductionDetail": 50,
+    "LuminanceNoiseReductionContrast": 0,
+    "ColorNoiseReduction": 25,
+    "ColorNoiseReductionDetail": 50,
+    "ColorNoiseReductionSmoothness": 50,
+    "AutoLateralCA": 1,
+    "LensProfileEnable": 0,
+    "HueAdjustmentRed": 0,
+    "SaturationAdjustmentRed": -5,
+    "LuminanceAdjustmentRed": 0,
+    "HueAdjustmentOrange": -2,
+    "SaturationAdjustmentOrange": -5,
+    "LuminanceAdjustmentOrange": 3,
+    "HueAdjustmentYellow": -8,
+    "SaturationAdjustmentYellow": -15,
+    "LuminanceAdjustmentYellow": -3,
+    "HueAdjustmentGreen": -8,
+    "SaturationAdjustmentGreen": -22,
+    "LuminanceAdjustmentGreen": -5,
+    "HueAdjustmentAqua": -3,
+    "SaturationAdjustmentAqua": -12,
+    "LuminanceAdjustmentAqua": -3,
+    "HueAdjustmentBlue": -4,
+    "SaturationAdjustmentBlue": -12,
+    "LuminanceAdjustmentBlue": -6,
+    "HueAdjustmentPurple": 0,
+    "SaturationAdjustmentPurple": -15,
+    "LuminanceAdjustmentPurple": 0,
+    "HueAdjustmentMagenta": 0,
+    "SaturationAdjustmentMagenta": -15,
+    "LuminanceAdjustmentMagenta": 0
+  },
+  "parameter_metadata": {
+    "Exposure2012": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "起点0EV；初调通常-1到+1EV，按主体和高光决定，不写入风格XMP",
+      "legal_bounds": [
+        -5,
+        5
+      ],
+      "unit": "EV",
+      "recommended_trial_bounds": [
+        -0.2,
+        0.2
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Contrast2012": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": 6,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -4,
+        16
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Highlights2012": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": -25,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -35,
+        -15
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Shadows2012": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": 8,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -2,
+        18
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Whites2012": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": -8,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -18,
+        2
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Blacks2012": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": -8,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -18,
+        2
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Temperature": {
+      "category": "WB",
+      "evidence": "DESIGNED",
+      "recommended": null,
+      "range_guidance": "不锁定；RAW Temperature 2000-50000K、Tint -150到150；随实际中性色调整",
+      "legal_bounds": [
+        2000,
+        50000
+      ],
+      "unit": "Kelvin (RAW only)",
+      "recommended_trial_bounds": null,
+      "condition": "RAW使用As Shot后按中性物校正；JPEG数值是滑块单位",
+      "reason": "先建立可信中性色，保留光源间差异",
+      "visual_effect": "先建立可信中性色，保留光源间差异",
+      "side_effect": "全局校白会抹去暖灯或导致阴影偏蓝",
+      "priority": 1
+    },
+    "Tint": {
+      "category": "WB",
+      "evidence": "DESIGNED",
+      "recommended": null,
+      "range_guidance": "不锁定；RAW Temperature 2000-50000K、Tint -150到150；随实际中性色调整",
+      "legal_bounds": [
+        -150,
+        150
+      ],
+      "unit": "RAW tint slider",
+      "recommended_trial_bounds": null,
+      "condition": "RAW使用As Shot后按中性物校正；JPEG数值是滑块单位",
+      "reason": "先建立可信中性色，保留光源间差异",
+      "visual_effect": "先建立可信中性色，保留光源间差异",
+      "side_effect": "全局校白会抹去暖灯或导致阴影偏蓝",
+      "priority": 1
+    },
+    "IncrementalTemperature": {
+      "category": "WB",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "JPEG基准+0；建议附近±5，极端混合光改用局部校色；不写入风格XMP",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "RAW使用As Shot后按中性物校正；JPEG数值是滑块单位",
+      "reason": "先建立可信中性色，保留光源间差异",
+      "visual_effect": "先建立可信中性色，保留光源间差异",
+      "side_effect": "全局校白会抹去暖灯或导致阴影偏蓝",
+      "priority": 1
+    },
+    "IncrementalTint": {
+      "category": "WB",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "JPEG基准+0；建议附近±5，极端混合光改用局部校色；不写入风格XMP",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "RAW使用As Shot后按中性物校正；JPEG数值是滑块单位",
+      "reason": "先建立可信中性色，保留光源间差异",
+      "visual_effect": "先建立可信中性色，保留光源间差异",
+      "side_effect": "全局校白会抹去暖灯或导致阴影偏蓝",
+      "priority": 1
+    },
+    "Vibrance": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": -8,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -18,
+        2
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "Saturation": {
+      "category": "BASIC_COLOR",
+      "evidence": "DESIGNED",
+      "recommended": -4,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -14,
+        6
+      ],
+      "condition": "先纠正原片曝光；基准用于未明显调色原片",
+      "reason": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "visual_effect": "保留中间调可读性、压住宽泛高光并控制整体色彩",
+      "side_effect": "过度会死黑、失去发光感或灰暗",
+      "priority": 2
+    },
+    "ToneCurvePV2012": {
+      "category": "CURVE",
+      "evidence": "DESIGNED",
+      "recommended": [
+        [
+          0,
+          0
+        ],
+        [
+          32,
+          25
+        ],
+        [
+          64,
+          55
+        ],
+        [
+          128,
+          123
+        ],
+        [
+          192,
+          193
+        ],
+        [
+          224,
+          226
+        ],
+        [
+          255,
+          250
+        ]
+      ],
+      "range_guidance": "输入与输出0-255，x严格递增；输出单调；不要直接对控制点做相加",
+      "legal_bounds": [
+        0,
+        255
+      ],
+      "unit": "8-bit input/output control points",
+      "recommended_trial_bounds": null,
+      "condition": "输入输出为0-255控制点；非作者真实曲线",
+      "reason": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "visual_effect": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "side_effect": "曲线叠加会损失暗部或造成颜色偏移",
+      "priority": 3
+    },
+    "ToneCurvePV2012Red": {
+      "category": "CURVE",
+      "evidence": "DESIGNED",
+      "recommended": [
+        [
+          0,
+          0
+        ],
+        [
+          64,
+          64
+        ],
+        [
+          128,
+          128
+        ],
+        [
+          192,
+          192
+        ],
+        [
+          255,
+          255
+        ]
+      ],
+      "range_guidance": "输入与输出0-255，x严格递增；输出单调；不要直接对控制点做相加",
+      "legal_bounds": [
+        0,
+        255
+      ],
+      "unit": "8-bit input/output control points",
+      "recommended_trial_bounds": null,
+      "condition": "输入输出为0-255控制点；非作者真实曲线",
+      "reason": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "visual_effect": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "side_effect": "曲线叠加会损失暗部或造成颜色偏移",
+      "priority": 3
+    },
+    "ToneCurvePV2012Green": {
+      "category": "CURVE",
+      "evidence": "DESIGNED",
+      "recommended": [
+        [
+          0,
+          0
+        ],
+        [
+          64,
+          64
+        ],
+        [
+          128,
+          128
+        ],
+        [
+          192,
+          192
+        ],
+        [
+          255,
+          255
+        ]
+      ],
+      "range_guidance": "输入与输出0-255，x严格递增；输出单调；不要直接对控制点做相加",
+      "legal_bounds": [
+        0,
+        255
+      ],
+      "unit": "8-bit input/output control points",
+      "recommended_trial_bounds": null,
+      "condition": "输入输出为0-255控制点；非作者真实曲线",
+      "reason": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "visual_effect": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "side_effect": "曲线叠加会损失暗部或造成颜色偏移",
+      "priority": 3
+    },
+    "ToneCurvePV2012Blue": {
+      "category": "CURVE",
+      "evidence": "DESIGNED",
+      "recommended": [
+        [
+          0,
+          0
+        ],
+        [
+          64,
+          64
+        ],
+        [
+          128,
+          128
+        ],
+        [
+          192,
+          192
+        ],
+        [
+          255,
+          255
+        ]
+      ],
+      "range_guidance": "输入与输出0-255，x严格递增；输出单调；不要直接对控制点做相加",
+      "legal_bounds": [
+        0,
+        255
+      ],
+      "unit": "8-bit input/output control points",
+      "recommended_trial_bounds": null,
+      "condition": "输入输出为0-255控制点；非作者真实曲线",
+      "reason": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "visual_effect": "轻压低中间调、保护亮部肩部；RGB单通道保持中性",
+      "side_effect": "曲线叠加会损失暗部或造成颜色偏移",
+      "priority": 3
+    },
+    "SplitToningShadowHue": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 220,
+      "range_guidance": "0-360度；围绕目标色相±15度，饱和度0时色相无视觉影响",
+      "legal_bounds": [
+        0,
+        360
+      ],
+      "unit": "degrees",
+      "recommended_trial_bounds": [
+        210,
+        230
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "SplitToningShadowSaturation": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 2,
+      "range_guidance": "0-8；人像0-3",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        12
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ColorGradeMidtoneHue": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 35,
+      "range_guidance": "0-360度；围绕目标色相±15度，饱和度0时色相无视觉影响",
+      "legal_bounds": [
+        0,
+        360
+      ],
+      "unit": "degrees",
+      "recommended_trial_bounds": [
+        25,
+        45
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ColorGradeMidtoneSat": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 2,
+      "range_guidance": "0-8；人像0-3",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        12
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ColorGradeMidtoneLum": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "SplitToningHighlightHue": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 43,
+      "range_guidance": "0-360度；围绕目标色相±15度，饱和度0时色相无视觉影响",
+      "legal_bounds": [
+        0,
+        360
+      ],
+      "unit": "degrees",
+      "recommended_trial_bounds": [
+        33,
+        53
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "SplitToningHighlightSaturation": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 4,
+      "range_guidance": "0-8；人像0-3",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        14
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ColorGradeShadowLum": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ColorGradeHighlightLum": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ColorGradeBlending": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 50,
+      "range_guidance": "35-65",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        40,
+        60
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "SplitToningBalance": {
+      "category": "GRADING",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "-15到15",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "有相应冷暖光区才增强；肤色场景降低强度",
+      "reason": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "visual_effect": "低强度冷暗暖亮关系；以画面原有光色为主",
+      "side_effect": "易出现橙青染色、肤色失真",
+      "priority": 4
+    },
+    "ShadowTint": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "RedHue": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "RedSaturation": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "GreenHue": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "GreenSaturation": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "BlueHue": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "BlueSaturation": {
+      "category": "CALIBRATION",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前固定0；如需非零需相机与配置文件实测后另建版本",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "当前全部为0；换相机或配置文件需重新验证",
+      "reason": "保持零值以避免缺乏相机原片时过拟合",
+      "visual_effect": "保持零值以避免缺乏相机原片时过拟合",
+      "side_effect": "校准受配置文件影响，易联动所有颜色",
+      "priority": 5
+    },
+    "Texture": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 5,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -5,
+        15
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "Clarity2012": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 3,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -7,
+        13
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "Dehaze": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 2,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -8,
+        12
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "GrainAmount": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "当前颗粒Amount=0；Size=25、Frequency=50为不生效的记录值",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "GrainSize": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 25,
+      "range_guidance": "当前颗粒Amount=0；Size=25、Frequency=50为不生效的记录值",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        25,
+        25
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "GrainFrequency": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 50,
+      "range_guidance": "当前颗粒Amount=0；Size=25、Frequency=50为不生效的记录值",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        50,
+        50
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "PostCropVignetteAmount": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "0到-8；当前0，已有黑框时保持0",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "PostCropVignetteMidpoint": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 50,
+      "range_guidance": "在应用界面合法范围内；Amount=0时无视觉作用",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        50,
+        50
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "PostCropVignetteRoundness": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "在应用界面合法范围内；Amount=0时无视觉作用",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "PostCropVignetteFeather": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 70,
+      "range_guidance": "在应用界面合法范围内；Amount=0时无视觉作用",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        70,
+        70
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "PostCropVignetteHighlightContrast": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "在应用界面合法范围内；Amount=0时无视觉作用",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        0
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "PostCropVignetteStyle": {
+      "category": "EFFECTS",
+      "evidence": "DESIGNED",
+      "recommended": 1,
+      "range_guidance": "0/1（暗角风格可取0/1/2）；需人工选择",
+      "legal_bounds": [
+        0,
+        2
+      ],
+      "unit": "enum 0/1/2",
+      "recommended_trial_bounds": [
+        1,
+        1
+      ],
+      "condition": "100%检查材质；不以清晰度弥补对焦问题",
+      "reason": "保留材质，避免HDR轮廓与人为颗粒",
+      "visual_effect": "保留材质，避免HDR轮廓与人为颗粒",
+      "side_effect": "光晕、噪声、天空断层或过度暗角",
+      "priority": 5
+    },
+    "Sharpness": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 25,
+      "range_guidance": "JPEG 0-35；RAW 20-50；半径0.7-1.2；以100%检查为准",
+      "legal_bounds": [
+        0,
+        150
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        15,
+        35
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "SharpenRadius": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 0.8,
+      "range_guidance": "0.7-1.2",
+      "legal_bounds": [
+        0.5,
+        3
+      ],
+      "unit": "radius",
+      "recommended_trial_bounds": [
+        0.6000000000000001,
+        1.0
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "SharpenDetail": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 15,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        5,
+        25
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "SharpenEdgeMasking": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 70,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        60,
+        80
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "LuminanceSmoothing": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        10
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "LuminanceNoiseReductionDetail": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 50,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        40,
+        60
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "LuminanceNoiseReductionContrast": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        0,
+        10
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "ColorNoiseReduction": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 25,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        15,
+        35
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "ColorNoiseReductionDetail": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 50,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        40,
+        60
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "ColorNoiseReductionSmoothness": {
+      "category": "DETAIL",
+      "evidence": "DESIGNED",
+      "recommended": 50,
+      "range_guidance": "0-100内按基准附近±10试调；无噪声不增加降噪",
+      "legal_bounds": [
+        0,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        40,
+        60
+      ],
+      "condition": "所有值为起点；无ISO依据不做ISO自适应",
+      "reason": "温和锐化、按实际噪声决定降噪",
+      "visual_effect": "温和锐化、按实际噪声决定降噪",
+      "side_effect": "锐化产生光晕，降噪抹除文字和纹理",
+      "priority": 6
+    },
+    "AutoLateralCA": {
+      "category": "LENS",
+      "evidence": "DESIGNED",
+      "recommended": 1,
+      "range_guidance": "0/1（暗角风格可取0/1/2）；需人工选择",
+      "legal_bounds": [
+        0,
+        1
+      ],
+      "unit": "boolean 0/1",
+      "recommended_trial_bounds": [
+        0,
+        1
+      ],
+      "condition": "自动移除色差可选；镜头配置默认关闭，手动核对",
+      "reason": "按实际镜头与色差处理",
+      "visual_effect": "按实际镜头与色差处理",
+      "side_effect": "JPEG重复镜头修正或错误配置文件会改变画面",
+      "priority": 6
+    },
+    "LensProfileEnable": {
+      "category": "LENS",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "0/1（暗角风格可取0/1/2）；需人工选择",
+      "legal_bounds": [
+        0,
+        1
+      ],
+      "unit": "boolean 0/1",
+      "recommended_trial_bounds": [
+        0,
+        1
+      ],
+      "condition": "自动移除色差可选；镜头配置默认关闭，手动核对",
+      "reason": "按实际镜头与色差处理",
+      "visual_effect": "按实际镜头与色差处理",
+      "side_effect": "JPEG重复镜头修正或错误配置文件会改变画面",
+      "priority": 6
+    },
+    "HueAdjustmentRed": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentRed": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -5,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -15,
+        5
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentRed": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentOrange": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -2,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -12,
+        8
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentOrange": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -5,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -15,
+        5
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentOrange": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 3,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -7,
+        13
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentYellow": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -8,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -18,
+        2
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentYellow": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -15,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -25,
+        -5
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentYellow": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -3,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -13,
+        7
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentGreen": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -8,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -18,
+        2
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentGreen": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -22,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -32,
+        -12
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentGreen": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -5,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -15,
+        5
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentAqua": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -3,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -13,
+        7
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentAqua": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -12,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -22,
+        -2
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentAqua": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -3,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -13,
+        7
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentBlue": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -4,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -14,
+        6
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentBlue": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -12,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -22,
+        -2
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentBlue": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -6,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -16,
+        4
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentPurple": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentPurple": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -15,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -25,
+        -5
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentPurple": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "HueAdjustmentMagenta": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "SaturationAdjustmentMagenta": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": -15,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -25,
+        -5
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    },
+    "LuminanceAdjustmentMagenta": {
+      "category": "HSL",
+      "evidence": "DESIGNED",
+      "recommended": 0,
+      "range_guidance": "建议基准附近±10；原片严重偏差先修正，不机械追数值",
+      "legal_bounds": [
+        -100,
+        100
+      ],
+      "unit": "Lightroom slider",
+      "recommended_trial_bounds": [
+        -10,
+        10
+      ],
+      "condition": "只调整画面中实际存在的颜色，皮肤单独保护",
+      "reason": "分离招牌暖色、蓝青环境和低饱和植物",
+      "visual_effect": "分离招牌暖色、蓝青环境和低饱和植物",
+      "side_effect": "色相偏移或过度降饱和会破坏自然材质",
+      "priority": 3
+    }
+  },
+  "scenes": {
+    "A": {
+      "code": "A",
+      "name": "晴天城市与建筑",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Highlights2012": -35,
+        "Shadows2012": 15,
+        "Blacks2012": -5,
+        "IncrementalTemperature": 2
+      },
+      "delta_from_base": {
+        "Highlights2012": -10,
+        "Shadows2012": 7,
+        "Blacks2012": 3,
+        "IncrementalTemperature": 2
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 6,
+        "Highlights2012": -35,
+        "Shadows2012": 15,
+        "Whites2012": -8,
+        "Blacks2012": -5,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 2,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 4,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 3,
+        "Dehaze": 2,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "直射或方向明确的日光、天空与石材立面；先排除车内黑框。",
+      "rule": "天空保留蓝青层次，石材暖灰；不要把日光照片修成夜景。",
+      "raw_temperature_start_range_K": [
+        4800,
+        6200
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "B": {
+      "code": "B",
+      "name": "阴天与低对比街景",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Contrast2012": 10,
+        "Highlights2012": -20,
+        "Shadows2012": 12,
+        "Blacks2012": -6,
+        "Dehaze": 3,
+        "IncrementalTemperature": 3
+      },
+      "delta_from_base": {
+        "Contrast2012": 4,
+        "Highlights2012": 5,
+        "Shadows2012": 4,
+        "Blacks2012": 2,
+        "Dehaze": 1,
+        "IncrementalTemperature": 3
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 10,
+        "Highlights2012": -20,
+        "Shadows2012": 12,
+        "Whites2012": -8,
+        "Blacks2012": -6,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 3,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 4,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 3,
+        "Dehaze": 3,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "软阴影、石材中间调、低反差；晴阴不能仅从暗度判断。",
+      "rule": "用局部中间调对比建立立体感，避免全局加去朦胧造成脏灰。",
+      "raw_temperature_start_range_K": [
+        5000,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "C": {
+      "code": "C",
+      "name": "雨天与湿润反射",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Highlights2012": -35,
+        "Shadows2012": 12,
+        "Whites2012": -12,
+        "Clarity2012": 4,
+        "Dehaze": 1
+      },
+      "delta_from_base": {
+        "Highlights2012": -10,
+        "Shadows2012": 4,
+        "Whites2012": -4,
+        "Clarity2012": 1,
+        "Dehaze": -1
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 6,
+        "Highlights2012": -35,
+        "Shadows2012": 12,
+        "Whites2012": -12,
+        "Blacks2012": -8,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 4,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 4,
+        "Dehaze": 1,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "明确雨滴、伞面或路面反射；仅潮湿外观不能证明正在下雨。",
+      "rule": "湿路反射比邻近路面亮，但应弱于主光源；不全图强化水滴。",
+      "raw_temperature_start_range_K": [
+        3500,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "D": {
+      "code": "D",
+      "name": "日落与黄昏",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Highlights2012": -25,
+        "Whites2012": -5,
+        "Shadows2012": 10,
+        "SaturationAdjustmentOrange": -8,
+        "SaturationAdjustmentYellow": -12,
+        "SplitToningHighlightSaturation": 2,
+        "Contrast2012": 2,
+        "Blacks2012": -5,
+        "ColorGradeMidtoneSat": 1,
+        "Dehaze": 0,
+        "Clarity2012": 0
+      },
+      "delta_from_base": {
+        "Highlights2012": 0,
+        "Whites2012": 3,
+        "Shadows2012": 2,
+        "SaturationAdjustmentOrange": -3,
+        "SaturationAdjustmentYellow": 3,
+        "SplitToningHighlightSaturation": -2,
+        "Contrast2012": -4,
+        "Blacks2012": 3,
+        "ColorGradeMidtoneSat": -1,
+        "Dehaze": -2,
+        "Clarity2012": -3
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 2,
+        "Highlights2012": -25,
+        "Shadows2012": 10,
+        "Whites2012": -5,
+        "Blacks2012": -5,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 1,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 2,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -8,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -12,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "自然粉橙至灰蓝天空、远山与水面剪影；需区分自然天空和人工橙灯，精确时刻未知",
+      "rule": "允许天空与湖面较亮，保留柔和色彩渐变；亭阁和人物剪影不强行提亮；不添加人工琥珀灯色",
+      "raw_temperature_start_range_K": [
+        4500,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness",
+      "reference_evidence_roles": {
+        "REF-0019": "natural sky gradient, water and silhouette; exact capture time unknown",
+        "REF-0021": "natural sky gradient, water and silhouette; exact capture time unknown",
+        "REF-0027": "natural sky gradient, water and silhouette; exact capture time unknown",
+        "REF-0028": "warm reflection/texture only; not capture-time evidence",
+        "REF-0029": "natural sky gradient, water and silhouette; exact capture time unknown"
+      }
+    },
+    "E": {
+      "code": "E",
+      "name": "蓝调时刻",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Highlights2012": -35,
+        "Shadows2012": 12,
+        "Blacks2012": -5,
+        "HueAdjustmentBlue": 0,
+        "SaturationAdjustmentBlue": -8,
+        "LuminanceAdjustmentBlue": -2,
+        "SplitToningHighlightSaturation": 5
+      },
+      "delta_from_base": {
+        "Highlights2012": -10,
+        "Shadows2012": 4,
+        "Blacks2012": 3,
+        "HueAdjustmentBlue": 4,
+        "SaturationAdjustmentBlue": 4,
+        "LuminanceAdjustmentBlue": 4,
+        "SplitToningHighlightSaturation": 1
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 6,
+        "Highlights2012": -35,
+        "Shadows2012": 12,
+        "Whites2012": -8,
+        "Blacks2012": -5,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 5,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 3,
+        "Dehaze": 2,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": 0,
+        "SaturationAdjustmentBlue": -8,
+        "LuminanceAdjustmentBlue": -2,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "天空仍有色彩层次，人工暖光已明显；需要视觉或时间证据。",
+      "rule": "分别处理天空与暖窗，不用全局色温制造两种光。",
+      "raw_temperature_start_range_K": [
+        3600,
+        5000
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "F": {
+      "code": "F",
+      "name": "深夜城市与人工灯光",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Highlights2012": -40,
+        "Whites2012": -12,
+        "Shadows2012": 15,
+        "Blacks2012": -3,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "LuminanceSmoothing": 15,
+        "Sharpness": 20,
+        "HueAdjustmentBlue": 0,
+        "LuminanceAdjustmentBlue": -3
+      },
+      "delta_from_base": {
+        "Highlights2012": -15,
+        "Whites2012": -4,
+        "Shadows2012": 7,
+        "Blacks2012": 5,
+        "Clarity2012": -3,
+        "Dehaze": -2,
+        "LuminanceSmoothing": 15,
+        "Sharpness": -5,
+        "HueAdjustmentBlue": 4,
+        "LuminanceAdjustmentBlue": 3
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 6,
+        "Highlights2012": -40,
+        "Shadows2012": 15,
+        "Whites2012": -12,
+        "Blacks2012": -3,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 4,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 20,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 15,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": 0,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -3,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "人工光源主导、天空深蓝或暗背景；不能由低亮度单独触发。",
+      "rule": "灯芯可以接近白色，灯晕暖色；避免蓝色阴影吞没楼体。",
+      "raw_temperature_start_range_K": [
+        2800,
+        4800
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "G": {
+      "code": "G",
+      "name": "暖光室内、书店与咖啡馆",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Contrast2012": 2,
+        "Highlights2012": -20,
+        "Shadows2012": 18,
+        "Blacks2012": -3,
+        "Texture": 6,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "IncrementalTemperature": -3,
+        "SaturationAdjustmentOrange": -10,
+        "SplitToningHighlightSaturation": 2
+      },
+      "delta_from_base": {
+        "Contrast2012": -4,
+        "Highlights2012": 5,
+        "Shadows2012": 10,
+        "Blacks2012": 5,
+        "Texture": 1,
+        "Clarity2012": -3,
+        "Dehaze": -2,
+        "IncrementalTemperature": -3,
+        "SaturationAdjustmentOrange": -5,
+        "SplitToningHighlightSaturation": -2
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 2,
+        "Highlights2012": -20,
+        "Shadows2012": 18,
+        "Whites2012": -8,
+        "Blacks2012": -3,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": -3,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 2,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 6,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -10,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "书页、木材、人工暖光，中间调需可读。",
+      "rule": "纸张呈温暖的白色，木材有层次；不能把书脊文字压没。",
+      "raw_temperature_start_range_K": [
+        3000,
+        4500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "H": {
+      "code": "H",
+      "name": "高反差与混合光",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Highlights2012": -45,
+        "Whites2012": -15,
+        "Shadows2012": 20,
+        "Blacks2012": -2,
+        "Contrast2012": 2,
+        "Clarity2012": 0,
+        "Dehaze": 0
+      },
+      "delta_from_base": {
+        "Highlights2012": -20,
+        "Whites2012": -7,
+        "Shadows2012": 12,
+        "Blacks2012": 6,
+        "Contrast2012": -4,
+        "Clarity2012": -3,
+        "Dehaze": -2
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 2,
+        "Highlights2012": -45,
+        "Shadows2012": 20,
+        "Whites2012": -15,
+        "Blacks2012": -2,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 4,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "局部亮源与暗背景并存，或不同色温分区。",
+      "rule": "按光区分别校色，优先保护主体和光源层次。；自然树荫与受光树干分别判断，不能靠全局抬暗部抹平日光层次",
+      "raw_temperature_start_range_K": [
+        2800,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "I": {
+      "code": "I",
+      "name": "自然景观、树木与植物",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "SaturationAdjustmentGreen": -10,
+        "LuminanceAdjustmentGreen": 3,
+        "HueAdjustmentGreen": -3,
+        "Shadows2012": 15,
+        "Texture": 8,
+        "Clarity2012": 2,
+        "SplitToningHighlightSaturation": 2,
+        "Highlights2012": -25,
+        "Dehaze": 0,
+        "SaturationAdjustmentAqua": -8,
+        "SaturationAdjustmentBlue": -8
+      },
+      "delta_from_base": {
+        "SaturationAdjustmentGreen": 12,
+        "LuminanceAdjustmentGreen": 8,
+        "HueAdjustmentGreen": 5,
+        "Shadows2012": 7,
+        "Texture": 3,
+        "Clarity2012": -1,
+        "SplitToningHighlightSaturation": -2,
+        "Highlights2012": 0,
+        "Dehaze": -2,
+        "SaturationAdjustmentAqua": 4,
+        "SaturationAdjustmentBlue": 4
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 6,
+        "Highlights2012": -25,
+        "Shadows2012": 15,
+        "Whites2012": -8,
+        "Blacks2012": -8,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 2,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 8,
+        "Clarity2012": 2,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -3,
+        "SaturationAdjustmentGreen": -10,
+        "LuminanceAdjustmentGreen": 3,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -8,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -8,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "以植物为主体时使用；若只是背景树木，仅用植物局部规则。",
+      "rule": "保留受光叶片与阴影、真实水面和主体材质；植物蒙版减去车辆、衣物、天空与路牌。蓝色水面不用天空蒙版，不把整幅树冠压成暗橄榄色",
+      "raw_temperature_start_range_K": [
+        4500,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "J": {
+      "code": "J",
+      "name": "人像与环境人像",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Contrast2012": 0,
+        "Shadows2012": 20,
+        "Blacks2012": 0,
+        "Texture": 0,
+        "Clarity2012": -2,
+        "Dehaze": 0,
+        "SaturationAdjustmentOrange": 0,
+        "HueAdjustmentOrange": 0,
+        "LuminanceAdjustmentOrange": 5,
+        "SplitToningShadowSaturation": 0,
+        "ColorGradeMidtoneSat": 0,
+        "SplitToningHighlightSaturation": 1
+      },
+      "delta_from_base": {
+        "Contrast2012": -6,
+        "Shadows2012": 12,
+        "Blacks2012": 8,
+        "Texture": -5,
+        "Clarity2012": -5,
+        "Dehaze": -2,
+        "SaturationAdjustmentOrange": 5,
+        "HueAdjustmentOrange": 2,
+        "LuminanceAdjustmentOrange": 2,
+        "SplitToningShadowSaturation": -2,
+        "ColorGradeMidtoneSat": -2,
+        "SplitToningHighlightSaturation": -3
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 0,
+        "Highlights2012": -25,
+        "Shadows2012": 20,
+        "Whites2012": -8,
+        "Blacks2012": 0,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 0,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 0,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 1,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 0,
+        "Clarity2012": -2,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": 0,
+        "SaturationAdjustmentOrange": 0,
+        "LuminanceAdjustmentOrange": 5,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "清晰人物面部或皮肤为重要主体；屏幕里的照片不算肤色样本。",
+      "rule": "先保护肤色和面部亮度；不依据城市夜景参考强行染肤色。",
+      "raw_temperature_start_range_K": [
+        3000,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness",
+      "environment_composition_reference_ids": []
+    },
+    "K": {
+      "code": "K",
+      "name": "车窗、玻璃与遮挡",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Shadows2012": 10,
+        "Blacks2012": -3,
+        "Clarity2012": 0,
+        "Dehaze": 0
+      },
+      "delta_from_base": {
+        "Shadows2012": 2,
+        "Blacks2012": 5,
+        "Clarity2012": -3,
+        "Dehaze": -2
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 6,
+        "Highlights2012": -25,
+        "Shadows2012": 10,
+        "Whites2012": -8,
+        "Blacks2012": -3,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 2,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 2,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 4,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 0,
+        "Dehaze": 0,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "车内边框、后视镜、伞沿或玻璃遮挡；主体在窗口有效区域。",
+      "rule": "曝光判断以可见主体为准；近黑框架保留，不整体提亮车厢。",
+      "raw_temperature_start_range_K": [
+        3500,
+        6500
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness"
+    },
+    "L": {
+      "code": "L",
+      "name": "特殊或未知场景",
+      "base": "PCS_Base_v1",
+      "patch_absolute": {
+        "Contrast2012": 0,
+        "Blacks2012": -3,
+        "Highlights2012": -20,
+        "Shadows2012": 12,
+        "SplitToningShadowSaturation": 0,
+        "ColorGradeMidtoneSat": 0,
+        "SplitToningHighlightSaturation": 2
+      },
+      "delta_from_base": {
+        "Contrast2012": -6,
+        "Blacks2012": 5,
+        "Highlights2012": 5,
+        "Shadows2012": 4,
+        "SplitToningShadowSaturation": -2,
+        "ColorGradeMidtoneSat": -2,
+        "SplitToningHighlightSaturation": -2
+      },
+      "parameters": {
+        "Exposure2012": 0,
+        "Contrast2012": 0,
+        "Highlights2012": -20,
+        "Shadows2012": 12,
+        "Whites2012": -8,
+        "Blacks2012": -3,
+        "Temperature": null,
+        "Tint": null,
+        "IncrementalTemperature": 0,
+        "IncrementalTint": 0,
+        "Vibrance": -8,
+        "Saturation": -4,
+        "ToneCurvePV2012": [
+          [
+            0,
+            0
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            64,
+            55
+          ],
+          [
+            128,
+            123
+          ],
+          [
+            192,
+            193
+          ],
+          [
+            224,
+            226
+          ],
+          [
+            255,
+            250
+          ]
+        ],
+        "ToneCurvePV2012Red": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Green": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "ToneCurvePV2012Blue": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            64
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            192,
+            192
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "SplitToningShadowHue": 220,
+        "SplitToningShadowSaturation": 0,
+        "ColorGradeMidtoneHue": 35,
+        "ColorGradeMidtoneSat": 0,
+        "ColorGradeMidtoneLum": 0,
+        "SplitToningHighlightHue": 43,
+        "SplitToningHighlightSaturation": 2,
+        "ColorGradeShadowLum": 0,
+        "ColorGradeHighlightLum": 0,
+        "ColorGradeBlending": 50,
+        "SplitToningBalance": 0,
+        "ShadowTint": 0,
+        "RedHue": 0,
+        "RedSaturation": 0,
+        "GreenHue": 0,
+        "GreenSaturation": 0,
+        "BlueHue": 0,
+        "BlueSaturation": 0,
+        "Texture": 5,
+        "Clarity2012": 3,
+        "Dehaze": 2,
+        "GrainAmount": 0,
+        "GrainSize": 25,
+        "GrainFrequency": 50,
+        "PostCropVignetteAmount": 0,
+        "PostCropVignetteMidpoint": 50,
+        "PostCropVignetteRoundness": 0,
+        "PostCropVignetteFeather": 70,
+        "PostCropVignetteHighlightContrast": 0,
+        "PostCropVignetteStyle": 1,
+        "Sharpness": 25,
+        "SharpenRadius": 0.8,
+        "SharpenDetail": 15,
+        "SharpenEdgeMasking": 70,
+        "LuminanceSmoothing": 0,
+        "LuminanceNoiseReductionDetail": 50,
+        "LuminanceNoiseReductionContrast": 0,
+        "ColorNoiseReduction": 25,
+        "ColorNoiseReductionDetail": 50,
+        "ColorNoiseReductionSmoothness": 50,
+        "AutoLateralCA": 1,
+        "LensProfileEnable": 0,
+        "HueAdjustmentRed": 0,
+        "SaturationAdjustmentRed": -5,
+        "LuminanceAdjustmentRed": 0,
+        "HueAdjustmentOrange": -2,
+        "SaturationAdjustmentOrange": -5,
+        "LuminanceAdjustmentOrange": 3,
+        "HueAdjustmentYellow": -8,
+        "SaturationAdjustmentYellow": -15,
+        "LuminanceAdjustmentYellow": -3,
+        "HueAdjustmentGreen": -8,
+        "SaturationAdjustmentGreen": -22,
+        "LuminanceAdjustmentGreen": -5,
+        "HueAdjustmentAqua": -3,
+        "SaturationAdjustmentAqua": -12,
+        "LuminanceAdjustmentAqua": -3,
+        "HueAdjustmentBlue": -4,
+        "SaturationAdjustmentBlue": -12,
+        "LuminanceAdjustmentBlue": -6,
+        "HueAdjustmentPurple": 0,
+        "SaturationAdjustmentPurple": -15,
+        "LuminanceAdjustmentPurple": 0,
+        "HueAdjustmentMagenta": 0,
+        "SaturationAdjustmentMagenta": -15,
+        "LuminanceAdjustmentMagenta": 0
+      },
+      "reference_ids": [],
+      "parameter_validation": "DESIGNED; no paired-original or Lightroom render validation",
+      "identification": "无法可靠确认场景或样本分布之外；数值相似不等于语义相同。",
+      "rule": "采用弱风格基准，保留曝光和白平衡自由度。",
+      "raw_temperature_start_range_K": [
+        3000,
+        7000
+      ],
+      "raw_temperature_policy": "区间仅为人工校白起点；不从成片反推拍摄色温，不自动写入",
+      "visual_time_certainty": "inferred or unknown, never solely determined from brightness",
+      "texture_reference_ids": []
+    }
+  },
+  "defaults": {
+    "new_upload_role": "EDIT_TARGET",
+    "color_space_if_untagged": "ASSUME_sRGB_WITH_WARNING",
+    "raw_decoder": "not bundled; decode with Adobe or compatible RAW converter before numeric engine"
+  },
+  "composition": {
+    "primary_priority": [
+      "J",
+      "G",
+      "F",
+      "E",
+      "D",
+      "A",
+      "B",
+      "I",
+      "C",
+      "K",
+      "H",
+      "L"
+    ],
+    "modifiers": [
+      "C",
+      "H",
+      "K"
+    ],
+    "method": "one primary absolute snapshot, followed by bounded parameter safeguards; never sum full presets"
+  },
+  "xmp_policy": "Each scene XMP is a full static look snapshot including the base. Select ONE. Exposure, WB, detail, lens, profile, crop and masks omitted intentionally.",
+  "validation": {
+    "xml_structure": "passed local XML and curve tests",
+    "adobe_import": "not_tested",
+    "adobe_render": "not_tested",
+    "paired_reproduction": "not_tested",
+    "independent_test_set": "unavailable"
+  },
+  "source_index": "10_SYSTEM_CONFIG/reference_index.json",
+  "style_dna": "05_STYLE_DNA/style_dna.json",
+  "reference_count": 0,
+  "core_definition_version": "1.0.0",
+  "updated_date": "2026-10-16",
+  "preset_formula_version": "1.1.0",
+  "composition_policy": {
+    "policy_version": "1.0.0",
+    "rule_id": "COMPOSITION-01",
+    "authority": "explicit_user_instruction",
+    "user_instruction": "当构图合适的时候保留，没达到效果时允许优化重构构图",
+    "principle": "先评估表达效果：有效构图保留；未达到目标表达时允许优化或重构取景与画面组织",
+    "default_assessment": "REVIEW_REQUIRED",
+    "visual_review_required": true,
+    "decisions": {
+      "PRESERVE": {
+        "condition": "主体、环境、视觉重心与空间层次有效；调整不能带来明确收益",
+        "action": "保留当前取景和画幅，可用光影与色彩强化表达"
+      },
+      "OPTIMIZE": {
+        "condition": "主体与叙事成立，但边缘干扰、歪斜、冗余留白或轻微比例问题削弱画面",
+        "action": "按实际问题适量裁切、旋转、几何校正或改变画幅"
+      },
+      "REFRAME": {
+        "condition": "现有主体位置、尺度、留白或空间分配未达到目标效果，需要明显改变取景组织",
+        "action": "允许重新选择画面范围、比例与视觉重心，比较原构图与重构方案后采用表达更清楚者"
+      }
+    },
+    "criteria": [
+      "主体与环境关系",
+      "主体位置和尺度",
+      "前中后景与遮挡",
+      "留白与视觉重心",
+      "引导线、水平与透视",
+      "边缘干扰和关键内容完整性"
+    ],
+    "allowed_geometric_operations": [
+      "crop",
+      "aspect_ratio_change",
+      "rotate_or_straighten",
+      "perspective_geometry_correction",
+      "reframe_using_existing_image_content"
+    ],
+    "local_emphasis": "允许局部光影与色彩调整配合构图；先决定取景，再完成依赖画面范围的测量和蒙版",
+    "quality_rules": [
+      "不因套三分法、统一比例或刻意黑框而机械改图",
+      "保留主体身份、真实空间与关键叙事内容；裁去内容时解释取舍",
+      "记录裁切范围、旋转/透视处理及实际输出像素；检查过度裁切、拉伸、边界和材质损失",
+      "保留原文件，在可回退副本上执行；普通裁切与几何优化可按本指令自主推进",
+      "生成式扩图、移动/增删场景元素不是普通几何重构，不因本条构图授权而自动执行"
+    ],
+    "required_per_image_output": [
+      "decision",
+      "observed_composition_problem_or_preserve_reason",
+      "proposed_operations",
+      "framing_geometry_if_applicable",
+      "content_and_resolution_tradeoff",
+      "effect_comparison_if_actually_rendered",
+      "render_status"
+    ],
+    "measurement_order": "构图建议未应用时，现有统计仍属于原图/指定ROI；实际重构后对选定有效画面复核测量、参考匹配与蒙版，不能冒称已经重测",
+    "analysis_boundary": "数值引擎不自动判断构图优劣，REVIEW_REQUIRED由看图的GPT或用户完成；无几何参数时不得假装已裁切",
+    "color_core_and_scene_presets": "unchanged",
+    "reference_images": "read-only; this policy affects EDIT_TARGET workflow only"
+  },
+  "reference_analysis_version": "1.3.0"
+}
