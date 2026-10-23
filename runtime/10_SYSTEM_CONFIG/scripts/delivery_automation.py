@@ -123,7 +123,7 @@ def fetch(path,destination,timeout=30):
 
 
 def _receipt(result_path,local_path):
-    value=json.loads(Path(result_path).read_text())
+    value=json.loads(Path(result_path).read_text(encoding='utf-8'))
     entries=value.get('results',[]) if isinstance(value,dict) else []
     matches=[x for x in entries if isinstance(x,dict) and x.get('local_path') and Path(x['local_path']).resolve()==Path(local_path).resolve()]
     if len(matches)!=1 or matches[0].get('status')!='succeeded' or matches[0].get('local_metadata_applied') is not True:
@@ -194,7 +194,7 @@ def complete(path,result_path,record_destination,brief=None,recipe=None):
     state=w._load(path)
     target=Path(record_destination).resolve()
     if target.exists():
-        record=json.loads(target.read_text());ledger=record.get('ledger',{})
+        record=json.loads(target.read_text(encoding='utf-8'));ledger=record.get('ledger',{})
         if (record.get('record_status')!='final' or ledger.get('output')!=state['output'] or
             ledger.get('delivery_receipt')!=state['delivery_receipt'] or record.get('actual_recipe')!=(recipe or {})):
             raise ValueError('Existing record is not the matching final snapshot')
@@ -237,4 +237,9 @@ def main(argv=None):
         print(json.dumps({'error':str(error),'type':type(error).__name__}),file=sys.stderr);return 1
 
 
-if __name__=='__main__':sys.exit(main())
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    sys.exit(main())

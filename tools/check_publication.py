@@ -64,10 +64,10 @@ def scan(root=ROOT,history=False):
             for f in findings_for(name,data):found.append(dict(file=name,**f))
     blobs=0
     if history:
-        output=subprocess.run(['git','rev-list','--objects','--all'],cwd=root,check=True,capture_output=True,text=True).stdout
+        output=subprocess.run(['git','rev-list','--objects','--all'],cwd=root,check=True,capture_output=True,text=True, encoding='utf-8').stdout
         for line in output.splitlines():
             oid,_,name=line.partition(' ')
-            kind=subprocess.run(['git','cat-file','-t',oid],cwd=root,check=True,capture_output=True,text=True).stdout.strip()
+            kind=subprocess.run(['git','cat-file','-t',oid],cwd=root,check=True,capture_output=True,text=True, encoding='utf-8').stdout.strip()
             if kind!='blob':continue
             blobs+=1;data=subprocess.run(['git','cat-file','blob',oid],cwd=root,check=True,capture_output=True).stdout
             for f in (inspect_archive(data) if name.endswith('.zip') else findings_for(name,data)):
@@ -78,4 +78,9 @@ def scan(root=ROOT,history=False):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--root',type=Path,default=ROOT);parser.add_argument('--history',action='store_true');args=parser.parse_args()
     result=scan(args.root,args.history);print(json.dumps(result,ensure_ascii=False,indent=2));return 0 if result['status']=='passed' else 1
-if __name__=='__main__':sys.exit(main())
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    sys.exit(main())

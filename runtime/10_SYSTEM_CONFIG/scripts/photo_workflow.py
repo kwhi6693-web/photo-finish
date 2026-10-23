@@ -95,10 +95,10 @@ def candidates(path, project_root, tags, limit=3, intent=None):
         raise ValueError('Scene tags must be a list; limit must be 1 through 3')
     root = Path(project_root).resolve(strict=True)
     index_path = root/'10_SYSTEM_CONFIG/reference_index.json'
-    config = json.loads((root/'10_SYSTEM_CONFIG/style_config.json').read_text())
+    config = json.loads((root/'10_SYSTEM_CONFIG/style_config.json').read_text(encoding='utf-8'))
     if set(tags) - set(config['scenes']):
         raise ValueError('Unknown scene tags')
-    index = json.loads(index_path.read_text())
+    index = json.loads(index_path.read_text(encoding='utf-8'))
     identity = workflow._file(index_path)
     expected = state.get('context_source_hashes',{}).get('10_SYSTEM_CONFIG/reference_index.json')
     if expected is not None and expected != identity['sha256']:
@@ -236,4 +236,8 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
     sys.exit(main())

@@ -6,11 +6,11 @@ The release gates are a read-only doctor, publication scan, synthetic regression
 
 ## Local release checks — 2026-10-23
 
-Linux, Python 3.12.14 and Pillow 12.3.0: **137 synthetic protocol, security and package tests passed** on the final source revision. Read-only doctor and publication scan passed. Three additional synthetic optional numeric-planning requests (A/H/I, J and L) completed; these are planning checks, not photograph rendering.
+Linux, Python 3.12.14 and Pillow 12.3.0: **138 synthetic protocol, security and package tests passed** on the initial publication source revision. Read-only doctor and publication scan passed. Three additional synthetic optional numeric-planning requests (A/H/I, J and L) completed; these are planning checks, not photograph rendering.
 
-An independent fresh-environment check installed Pillow, verified the checkout, and extracted the exact final runtime ZIP into a different temporary directory. All 97 manifest hashes matched; relocated doctor and synthetic prepare passed with zero references and no Library dependency. The runtime archive contains 98 entries and is 401,313 bytes. Its checksum is published in `dist/photo-finish.zip.sha256`.
+An independent fresh-environment check installed Pillow, verified the checkout, and extracted the exact final runtime ZIP into a different temporary directory. All 97 manifest hashes matched; relocated doctor and synthetic prepare passed with zero references and no Library dependency. The initial v1.0.0 runtime archive contains 98 entries and is 403,223 bytes. The current main-branch checksum is published in `dist/photo-finish.zip.sha256`.
 
-GitHub Actions has not run before the first upload. Cross-OS results remain pending until actual workflow runs finish. The public history gate must also be run after creating the initial commit, so it covers committed blobs rather than an empty repository.
+The first GitHub Actions run passed Linux/Python 3.10 and 3.12, and identified a Windows default-text-encoding failure plus a macOS temporary-path-alias assertion. The public code now uses explicit UTF-8 file and subprocess text I/O, UTF-8 JSON CLI streams and LF writes; the read-count test compares resolved paths. A regression also starts the JSON CLI with an ASCII stdio default and verifies non-ASCII image/job paths. The corrected matrix results are recorded by the latest linked [Validate skill workflow](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml). Public-history scanning also passed after the initial commit (112 historical blobs); every subsequent CI run scans the actual current history again.
 
 ## Contract coverage
 
@@ -31,3 +31,11 @@ GitHub Actions has not run before the first upload. Cross-OS results remain pend
 Tests use locally generated geometric images and synthetic review statements to exercise controller contracts. They are not photographic portfolios and do not demonstrate real-world quality, actual cloud-tool execution, calibrated color, print readiness or full-scene success rates. This publication task does not regenerate or publish private user photographs. Earlier private real-image experiments are not included or claimed as reproducible public evidence.
 
 Quality on a new photograph depends on the host image tool and the agent's actual inspection. Unavailable capabilities stay unavailable; a field validator cannot certify an aesthetic result or recover detail lost in the source.
+
+## Dependency maintenance — 2026-10-23
+
+The main branch permits Pillow `>=12.3,<14`; pip respects package `Requires-Python` metadata instead of forcing Pillow 13 onto Python 3.10. Clean resolution selected Pillow 12.3.0 for Python 3.10 and 13.0.0 for Python 3.12. The existing 138-test suite also passed locally with Pillow 12.3.0 after the dependency change. A new isolated Python 3.12.14 environment installed Pillow 13.0.0, NumPy 2.5.4 and SciPy 1.18.1; `pip check`, doctor, all 138 tests and the numerical smoke check passed.
+
+CI retains the four core platform/interpreter jobs and adds optional-analysis jobs on Linux/Python 3.10 and 3.12. These install `requirements-analysis.txt`, run `pip check`, exercise the actual color measurement, palette and perceptual-hash functions on a synthetic fixture, and run the full suite and archive checks. The linked workflow records the actual outcomes; configuration is not a claim that a pending run has passed.
+
+NumPy and SciPy remain optional with broad compatible ranges. Dependabot uses `increase-if-necessary` to avoid raising a minimum solely because the current range already admits a newer release. Dependency PRs must include rebuilt archives and checksums when packaged inputs change. The tagged v1.0.0 release remains immutable; main-branch maintenance is separate from that published snapshot.

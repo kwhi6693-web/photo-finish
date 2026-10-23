@@ -22,7 +22,7 @@ class Trace:
         except BaseException as exc:status='error';error=type(exc).__name__;raise
         finally:self.record(stage,wall,time.time_ns(),status=status,error_type=error,elapsed_seconds=time.perf_counter()-monotonic)
     def summary(self):
-        events=[json.loads(p.read_text()) for p in sorted(self.directory.glob('*.json'))];stages={}
+        events=[json.loads(p.read_text(encoding='utf-8')) for p in sorted(self.directory.glob('*.json'))];stages={}
         for event in events:
             stage=stages.setdefault(event['stage'],{'seconds_sum':0,'count':0,'failures':0})
             stage['seconds_sum']+=event['seconds'];stage['count']+=1;stage['failures']+=event['status']!='ok'

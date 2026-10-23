@@ -27,7 +27,7 @@ class ContractTests(LeanEditTests):
         self.returned(self.submit(issues=[{'issue_id':'i','targets':['depth'],'observation':'Synthetic depth'}]));events=self.events()+[{'action':'mask','arguments':{'issue_id':'i','target':'depth','input_sha256':w._file(self.source)['sha256'],'actual_scope':['description, not target'],'verified':True,'reason':'Synthetic fixture'}}]
         with self.assertRaisesRegex(c.InputError,'exact target ID'):e.review(self.job,events,self.output)
     def test_nonobject_event_returns_structured_cli_error(self):
-        self.returned(self.submit());events=self.events()+['bad'];process=subprocess.run([sys.executable,str(ROOT/'10_SYSTEM_CONFIG/scripts/photo_edit.py'),'review'],input=json.dumps({'path':str(self.job),'events':events,'output_path':str(self.output)}),text=True,capture_output=True)
+        self.returned(self.submit());events=self.events()+['bad'];process=subprocess.run([sys.executable,str(ROOT/'10_SYSTEM_CONFIG/scripts/photo_edit.py'),'review'],input=json.dumps({'path':str(self.job),'events':events,'output_path':str(self.output)}),text=True,capture_output=True, encoding='utf-8')
         self.assertEqual(process.returncode,1);error=json.loads(process.stderr);self.assertEqual(error['field'],'events[1]');self.assertEqual(error['code'],'INVALID_REVIEW_INPUT')
     def test_returned_supplies_structural_requirements_without_approval(self):
         result=self.returned(self.protected_submit());req=result['review_requirements'];self.assertEqual(req['protection_comparison_scopes'],{'text':['glyph region']});self.assertNotIn('visual_passed',req)
@@ -84,7 +84,7 @@ class MetricsTests(LeanEditTests):
         state=self.accepted();state['render_history']=[copy.deepcopy(state['render_result'])];sample=m.observe(state);self.assertEqual(sample['image_revision_count'],1);self.assertFalse(sample['first_output_accepted'])
     def test_snapshot_contains_observation_in_existing_save(self):
         self.returned(self.submit());target=self.base/'pending.json';e.review(self.job,self.events(),self.output,target)
-        record=json.loads(target.read_text());self.assertIn('quality_observation',record);self.assertEqual(record['quality_observation']['kind'],'unclassified')
+        record=json.loads(target.read_text(encoding='utf-8'));self.assertIn('quality_observation',record);self.assertEqual(record['quality_observation']['kind'],'unclassified')
 
 def load_tests(loader,tests,pattern):
     suite=unittest.TestSuite()
@@ -92,4 +92,9 @@ def load_tests(loader,tests,pattern):
         for name in cls.__dict__:
             if name.startswith('test_'):suite.addTest(cls(name))
     return suite
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

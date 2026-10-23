@@ -18,7 +18,7 @@ class AutomationTests(unittest.TestCase):
  def api(self):
   self.assertIsNotNone(importlib.util.find_spec('delivery_automation'),'Missing automated delivery controller');import delivery_automation;return delivery_automation
  def accept(self):w.add_review(self.j,self.o,w._file(self.s)['sha256'],True,True,'Synthetic receipt for protocol tests only');w.accept_job(self.j,self.o)
- def save_fixture(self,path,local,identity):path.write_text(json.dumps({'results':[{'local_path':str(local),'status':'succeeded','local_metadata_applied':True,'library_file_id':identity}]}))
+ def save_fixture(self,path,local,identity):path.write_text(json.dumps({'results':[{'local_path':str(local),'status':'succeeded','local_metadata_applied':True,'library_file_id':identity}]}), encoding='utf-8', newline='\n')
  def test_old_provider_revision_routes_to_verified_current_context(self):
   a=self.api();v=a.entry(self.root,'2026-10-22.7');self.assertTrue(v['stale_observed_skill']);self.assertEqual(v['effective_revision'],w.bootstrap(self.root)['workflow_revision']);self.assertFalse(v['provider_cache_repaired'])
  def test_plan_is_read_only_and_does_not_repeat_render(self):
@@ -48,10 +48,10 @@ class AutomationTests(unittest.TestCase):
   self.assertEqual(before,target.read_bytes())
  def test_duplicate_completion_reuses_record_and_save_endpoint(self):
   a=self.api();self.accept();w.save_intent(self.j,self.receipt);self.save_fixture(self.receipt,self.o,'SYNTHETIC_PHOTO')
-  a.complete(self.j,self.receipt,self.rec,recipe={'test':True});old=self.rec.read_bytes();endpoint=json.loads(self.j.read_text())['milestones']['save_completed'];a.complete(self.j,self.receipt,self.rec,recipe={'test':True})
-  self.assertEqual(old,self.rec.read_bytes());self.assertEqual(endpoint,json.loads(self.j.read_text())['milestones']['save_completed'])
+  a.complete(self.j,self.receipt,self.rec,recipe={'test':True});old=self.rec.read_bytes();endpoint=json.loads(self.j.read_text(encoding='utf-8'))['milestones']['save_completed'];a.complete(self.j,self.receipt,self.rec,recipe={'test':True})
+  self.assertEqual(old,self.rec.read_bytes());self.assertEqual(endpoint,json.loads(self.j.read_text(encoding='utf-8'))['milestones']['save_completed'])
  def test_unknown_save_result_is_investigated_without_resave(self):
-  a=self.api();self.accept();w.save_intent(self.j,self.receipt);self.receipt.write_text('{incomplete');self.assertEqual(a.plan(self.j)['action'],'INVESTIGATE_PHOTO_SAVE')
+  a=self.api();self.accept();w.save_intent(self.j,self.receipt);self.receipt.write_text('{incomplete', encoding='utf-8', newline='\n');self.assertEqual(a.plan(self.j)['action'],'INVESTIGATE_PHOTO_SAVE')
  def test_record_save_is_required_before_deliver(self):
   a=self.api();self.accept();w.save_intent(self.j,self.receipt);self.save_fixture(self.receipt,self.o,'SYNTHETIC_PHOTO');a.complete(self.j,self.receipt,self.rec)
   self.assertEqual(a.plan(self.j)['action'],'PREPARE_RECORD_SAVE');res=self.d/'record_save.json';a.record_intent(self.j,self.rec,res);self.assertEqual(a.plan(self.j)['action'],'SAVE_RECORD')
@@ -61,10 +61,15 @@ class AutomationTests(unittest.TestCase):
   with self.assertRaises(ValueError):a.record_saved(self.j,res)
   self.assertNotEqual(a.plan(self.j)['action'],'DELIVER')
  def test_stale_context_blocks_automatic_continuation(self):
-  a=self.api();master=self.root/'我的照片美化偏好与修图标准.md';master.write_text(master.read_text()+'\nchanged\n');self.assertEqual(a.plan(self.j)['action'],'RESTART_CONTEXT')
+  a=self.api();master=self.root/'我的照片美化偏好与修图标准.md';master.write_text(master.read_text(encoding='utf-8')+'\nchanged\n', encoding='utf-8', newline='\n');self.assertEqual(a.plan(self.j)['action'],'RESTART_CONTEXT')
  def test_failed_task_requires_new_task_not_silent_reopen(self):
   a=self.api();w.finish_job(self.j,'failed','Fixture failure');before=self.j.read_bytes();self.assertEqual(a.plan(self.j)['action'],'STOP');self.assertEqual(before,self.j.read_bytes())
  def test_context_loading_is_timed_inside_intake_without_an_extra_read(self):
   t=w.timing_summary(self.j);self.assertGreater(t['stages']['context_read']['seconds_sum'] or 0,0)
 
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

@@ -41,7 +41,7 @@ class PublicationTests(unittest.TestCase):
             def git(*args):return subprocess.run(['git',*args],cwd=root,capture_output=True,check=True)
             git('init');git('config','user.name','Synthetic Fixture');git('config','user.email','fixture@example.com')
             secret='gh'+'p_'+'Y'*36
-            path=root/'fixture.txt';path.write_text(secret);git('add','fixture.txt');git('commit','-m','synthetic fixture')
+            path=root/'fixture.txt';path.write_text(secret, encoding='utf-8', newline='\n');git('add','fixture.txt');git('commit','-m','synthetic fixture')
             path.unlink();git('add','-u');git('commit','-m','remove fixture')
             result=scan(root,history=True)
             self.assertEqual(result['status'],'failed');self.assertNotIn(secret,json.dumps(result))
@@ -50,4 +50,9 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(scan(root)['status'],'passed')
         self.assertEqual(check(root)['public_reference_count'],0)
 
-if __name__=='__main__':unittest.main()
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    unittest.main()

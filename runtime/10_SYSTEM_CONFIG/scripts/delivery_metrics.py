@@ -40,7 +40,7 @@ def observe(state,sidecar=None):
       'note':'Caller-declared live/synthetic/replay scope; quality is recorded actual visual judgment, not an independent aesthetic score. Missing timing remains null.'}
 
 def sample(path):
-    value=json.loads(Path(path).read_text());state=value.get('ledger',value)
+    value=json.loads(Path(path).read_text(encoding='utf-8'));state=value.get('ledger',value)
     if 'ledger' in value:
         return value.get('quality_observation') or observe(state,{'events':(value.get('timing') or {}).get('stage_events',[])})
     return observe(state,w._stage_sidecar(path,state))
@@ -81,4 +81,9 @@ def main():
         value=json.load(sys.stdin);result=sample(value['path']) if args.action=='sample' else report(value['paths'])
         print(json.dumps(result,ensure_ascii=False,allow_nan=False));return 0
     except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__}),file=sys.stderr);return 1
-if __name__=='__main__':sys.exit(main())
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    sys.exit(main())

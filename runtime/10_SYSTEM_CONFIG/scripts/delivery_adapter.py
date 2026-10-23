@@ -113,7 +113,7 @@ def resolve_unknown(path,submission_id,evidence_path):
         raise ValueError('Different evidence cannot replace resolved submission')
     if state['status']!='in_progress' or render.get('status')!='unknown' or adapter.get('submission_id')!=submission_id:
         raise ValueError('Only the same unresolved invocation can be investigated')
-    evidence=json.loads(Path(evidence_path).read_text())
+    evidence=json.loads(Path(evidence_path).read_text(encoding='utf-8'))
     if (evidence.get('basis')!='observed_tool_result' or evidence.get('tool_name')!=render['tool_name'] or
             evidence.get('input_sha256')!=render['input_sha256'] or evidence.get('status') not in ('ready','working')):
         raise ValueError('Investigation requires a real source-bound result from the same tool')
@@ -154,7 +154,7 @@ def confirm_platform_save(path,evidence_path,observed_unix_ns=None):
     if state['status']!='accepted' or not platform:raise ValueError('Scoped quality acceptance and platform result required')
     output=state['output']
     if w._file(output['path'])!=output:raise ValueError('Accepted bytes changed')
-    evidence=json.loads(Path(evidence_path).read_text())
+    evidence=json.loads(Path(evidence_path).read_text(encoding='utf-8'))
     if (evidence.get('status')!='succeeded' or evidence.get('output_sha256')!=output['sha256'] or
             evidence.get('submission_id') not in (None,state['execution_adapter']['submission_id']) or
             evidence.get('source')!='platform_save_receipt'):
@@ -179,7 +179,7 @@ def snapshot(path,destination,brief=None):
     draft=state['status']!='accepted' or not state.get('delivery_receipt')
     w.build_record(path,target,brief=brief,recipe=(state.get('render_result') or {}).get('recipe'),draft=draft)
     if draft and state.get('platform_delivery'):
-        value=json.loads(target.read_text());value['record_status']='pending_platform_confirmation'
+        value=json.loads(target.read_text(encoding='utf-8'));value['record_status']='pending_platform_confirmation'
         value['execution_status']=status(path)
         # The source-bound query is kept once in the local ledger, not duplicated in the archive.
         selection=value['ledger'].get('reference_selection') or {};selection.pop('query',None)
@@ -197,4 +197,9 @@ def main():
     try:print(json.dumps(routes[args.action](**json.load(sys.stdin)),ensure_ascii=False,allow_nan=False));return 0
     except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__}),file=sys.stderr);return 1
 
-if __name__=='__main__':sys.exit(main())
+if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
+    sys.exit(main())

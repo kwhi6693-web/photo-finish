@@ -78,7 +78,7 @@ class ColorDeliveryTests(unittest.TestCase):
         self.assertFalse(result['source_encoding_verified'])
         self.assertTrue(result['inherited_manifest_removed'])
         self.assertEqual(result['delivery_scope'], 'web_srgb_assumed')
-        self.assertEqual(json.loads(self.receipt.read_text())['output_sha256'], hashlib.sha256(self.output.read_bytes()).hexdigest())
+        self.assertEqual(json.loads(self.receipt.read_text(encoding='utf-8'))['output_sha256'], hashlib.sha256(self.output.read_bytes()).hexdigest())
         info = photo.inspect_image(self.output)
         self.assertEqual(info['color']['encoding'], 'sRGB')
         self.assertEqual(info['color']['basis'], 'web_srgb_assumption')
@@ -124,4 +124,8 @@ class ColorDeliveryTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
     unittest.main()

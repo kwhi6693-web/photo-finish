@@ -8,7 +8,7 @@ def digest(value):
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True);name=None
     try:
-        with tempfile.NamedTemporaryFile('w',encoding='utf-8',dir=path.parent,delete=False) as f:
+        with tempfile.NamedTemporaryFile('w',encoding='utf-8',dir=path.parent,delete=False, newline='\n') as f:
             name=f.name;json.dump(value,f,ensure_ascii=False,allow_nan=False,separators=(',',':'))
         os.replace(name,path)
     finally:

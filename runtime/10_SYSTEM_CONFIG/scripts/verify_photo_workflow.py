@@ -44,7 +44,7 @@ class PhotoWorkflowTests(unittest.TestCase):
         return {'action': 'review', 'arguments': arguments}
 
     def test_prepare_records_native_baseline_without_changing_source(self):
-        state = json.loads(self.job.read_text())
+        state = json.loads(self.job.read_text(encoding='utf-8'))
         self.assertEqual(state['source_inspection']['dimensions'], [6, 8])
         self.assertEqual(state['source_inspection']['icc']['status'], 'parseable')
         self.assertEqual(state['source_inspection']['sha256'], self.digest(self.source))
@@ -108,7 +108,7 @@ class PhotoWorkflowTests(unittest.TestCase):
         result = workflow.transact(self.job, [self.review()], accept_output_path=self.output)
         self.assertEqual(result['status'], 'accepted')
         self.assertNotIn('reviews', result)
-        self.assertEqual(json.loads(self.job.read_text())['reviews'][0]['output']['sha256'], self.digest(self.output))
+        self.assertEqual(json.loads(self.job.read_text(encoding='utf-8'))['reviews'][0]['output']['sha256'], self.digest(self.output))
         with self.assertRaisesRegex(ValueError, 'immutable'):
             workflow.transact(self.job, [self.review()])
 
@@ -124,7 +124,7 @@ class PhotoWorkflowTests(unittest.TestCase):
         result = workflow.transact(self.job, [self.review(color_scope='web_srgb_assumed')],
                                    accept_output_path=self.output)
         self.assertEqual(result['status'], 'accepted')
-        self.assertEqual(json.loads(self.job.read_text()).get('acceptance_scope'), 'web_srgb_assumed')
+        self.assertEqual(json.loads(self.job.read_text(encoding='utf-8')).get('acceptance_scope'), 'web_srgb_assumed')
 
     def test_visual_only_cannot_claim_profile_pass(self):
         before = self.job.read_bytes()
@@ -166,4 +166,8 @@ class PhotoWorkflowTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
     unittest.main()

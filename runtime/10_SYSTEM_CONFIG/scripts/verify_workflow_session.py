@@ -58,12 +58,12 @@ class WorkflowTests(unittest.TestCase):
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / relative, destination)
         policy_path = root / '10_SYSTEM_CONFIG/runtime_policy.json'
-        policy = json.loads(policy_path.read_text())
+        policy = json.loads(policy_path.read_text(encoding='utf-8'))
         policy.pop('fast_edit_workflow', None)
         if fast_revision:
             policy['fast_edit_workflow'] = {'revision': fast_revision}
             policy['beautification_defaults']['fast_edit_workflow'] = policy['fast_edit_workflow']
-        policy_path.write_text(json.dumps(policy))
+        policy_path.write_text(json.dumps(policy), encoding='utf-8', newline='\n')
         brief = root / '10_SYSTEM_CONFIG/SESSION_BRIEF.json'
         session_brief.build(root, brief)
         return root, policy_path, brief, policy
@@ -107,7 +107,7 @@ class WorkflowTests(unittest.TestCase):
         root, policy_path, brief, policy = self.fixture()
         policy['fast_edit_workflow'] = {'note': 'No revision is defined here.'}
         policy['beautification_defaults']['fast_edit_workflow'] = policy['fast_edit_workflow']
-        policy_path.write_text(json.dumps(policy))
+        policy_path.write_text(json.dumps(policy), encoding='utf-8', newline='\n')
         session_brief.build(root, brief)
         try:
             actual = self.w.bootstrap(root)['workflow_revision']
@@ -118,16 +118,16 @@ class WorkflowTests(unittest.TestCase):
     def test_bootstrap_refuses_stale_source_hash_without_rebuilding(self):
         root, policy, brief, _ = self.fixture()
         before = brief.read_bytes()
-        policy.write_text(policy.read_text() + '\n')
+        policy.write_text(policy.read_text(encoding='utf-8') + '\n', encoding='utf-8', newline='\n')
         with self.assertRaisesRegex(ValueError, 'stale'):
             self.w.bootstrap(root, observed_skill_revision='old')
         self.assertEqual(brief.read_bytes(), before)
 
     def test_bootstrap_refuses_tampered_embedded_policy_even_with_valid_hashes(self):
         root, _, brief, _ = self.fixture()
-        data = json.loads(brief.read_text())
+        data = json.loads(brief.read_text(encoding='utf-8'))
         data['runtime_policy']['development_workflow']['revision'] = 'tampered'
-        brief.write_text(json.dumps(data))
+        brief.write_text(json.dumps(data), encoding='utf-8', newline='\n')
         with self.assertRaisesRegex(ValueError, 'inconsistent'):
             self.w.bootstrap(root)
 
@@ -148,7 +148,7 @@ class WorkflowTests(unittest.TestCase):
         self.review()
         with self.assertRaisesRegex(ValueError, 'blocked'):
             self.w.accept_job(self.job, self.output)
-        self.assertNotEqual(json.loads(self.job.read_text())['status'], 'accepted')
+        self.assertNotEqual(json.loads(self.job.read_text(encoding='utf-8'))['status'], 'accepted')
 
     def test_not_needed_target_needs_a_reason_but_no_mask(self):
         self.issue()
@@ -346,12 +346,12 @@ class WorkflowTests(unittest.TestCase):
     def test_cli_uses_json_structured_arguments(self):
         result = subprocess.run([sys.executable, str(SCRIPT), 'timing'],
                                 input=json.dumps({'path': str(self.job)}),
-                                capture_output=True, text=True, check=True)
+                                capture_output=True, text=True, check=True, encoding='utf-8')
         self.assertIsNone(json.loads(result.stdout)['elapsed_seconds']['save_completed'])
         invalid = subprocess.run([sys.executable, str(SCRIPT), 'resolve'],
                                  input=json.dumps({'path': str(self.job), 'issue_id': 'absent',
                                                    'target': 'clock', 'status': 'blocked', 'reason': 'Cannot inspect.'}),
-                                 capture_output=True, text=True)
+                                 capture_output=True, text=True, encoding='utf-8')
         self.assertNotEqual(invalid.returncode, 0)
         self.assertIn('error', json.loads(invalid.stderr))
 
@@ -410,4 +410,8 @@ class DownloadTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    import sys
+    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(_photo_finish_stream, 'reconfigure'):
+            _photo_finish_stream.reconfigure(encoding='utf-8')
     unittest.main(verbosity=2)
