@@ -13,7 +13,7 @@ def safe_path(root,relative):
     return path
 
 def apply(package_root,project_root):
-    package=Path(package_root);project=Path(project_root).resolve();manifest=json.loads((package/'PATCH_MANIFEST.json').read_text())
+    package=Path(package_root);project=Path(project_root).resolve();manifest=json.loads((package/'PATCH_MANIFEST.json').read_text(encoding='utf-8'))
     protected=manifest['protected_base_hashes']
     for rel,expected in protected.items():
         path=safe_path(project,rel)

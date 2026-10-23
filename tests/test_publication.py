@@ -41,7 +41,7 @@ class PublicationTests(unittest.TestCase):
             def git(*args):return subprocess.run(['git',*args],cwd=root,capture_output=True,check=True)
             git('init');git('config','user.name','Synthetic Fixture');git('config','user.email','fixture@example.com')
             secret='gh'+'p_'+'Y'*36
-            path=root/'fixture.txt';path.write_text(secret);git('add','fixture.txt');git('commit','-m','synthetic fixture')
+            path=root/'fixture.txt';path.write_text(secret, encoding='utf-8', newline='\n');git('add','fixture.txt');git('commit','-m','synthetic fixture')
             path.unlink();git('add','-u');git('commit','-m','remove fixture')
             result=scan(root,history=True)
             self.assertEqual(result['status'],'failed');self.assertNotIn(secret,json.dumps(result))

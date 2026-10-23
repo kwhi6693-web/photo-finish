@@ -18,7 +18,7 @@ def reserve(directory,source_sha256,recipe,backend='adobe_native',*,project_root
     state=dict(identity,job_key=key,status='submission_pending',task_id=None,output_path=None,output_sha256=None)
     temp=None;created=False
     try:
-        with tempfile.NamedTemporaryFile('w',dir=directory,encoding='utf-8',delete=False) as f:
+        with tempfile.NamedTemporaryFile('w',dir=directory,encoding='utf-8',delete=False, newline='\n') as f:
             temp=f.name;json.dump(state,f,ensure_ascii=False)
         try:os.link(temp,path);created=True
         except FileExistsError:pass

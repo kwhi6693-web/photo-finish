@@ -189,7 +189,7 @@ def main():
     elif args.command=='batch-plan':
         result=plan_batch(read_json(args.manifest),cache_dir=args.cache_dir,use_cache=not args.no_cache,workers=args.workers)
     else:result=propose(args.images,args.authorized)
-    dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+    dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8', newline='\n')
     print('Saved',dest)
 
 if __name__=='__main__':main()

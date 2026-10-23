@@ -13,6 +13,8 @@
 
 **Jump to:** [Quick Start](#quick-start) · [Capabilities](#capabilities) · [Compatibility](#compatibility) · [Privacy](#privacy) · [Validation](#validation)
 
+<a id="quick-start"></a>
+
 ## ⚡ Quick Start
 
 Install this repository as the `photo-finish` skill in your agent's skill directory. Keep `SKILL.md`, `references/`, `scripts/`, `agents/`, `assets/` and **`runtime/` together**; the runtime is included, so no private Library or recovery ZIP is required.
@@ -35,6 +37,8 @@ python tools/doctor.py
 ```
 
 Python dependencies do not provide an image generator. The host agent must supply visual understanding, an authorized image-editing tool, and file access. The skill does not collect API keys or silently install tools.
+
+<a id="capabilities"></a>
 
 ## ✨ Capabilities
 
@@ -62,6 +66,8 @@ The bundled controller groups routine work into four calls. It records the agent
 
 Read the [runtime guide](docs/runtime.md) for executable examples, [the complete policy](runtime/我的照片美化偏好与修图标准.md) for behavior, and [the adapter contract](references/delivery-adapter.md) only when its fields are needed.
 
+<a id="compatibility"></a>
+
 ## 🧩 Compatibility
 
 | Capability | Requirement / boundary |
@@ -76,6 +82,8 @@ Read the [runtime guide](docs/runtime.md) for executable examples, [the complete
 
 The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW, print and identity-sensitive portrait results need task-specific verification.
 
+<a id="privacy"></a>
+
 ## 🔒 Privacy
 
 The repository contains workflow code, policies, optional presets and synthetic tests. **No private reference photographs, user uploads, generated personal images, Library IDs, session records, credentials or machine-specific paths are distributed.**
@@ -83,6 +91,8 @@ The repository contains workflow code, policies, optional presets and synthetic 
 Keep images, ledgers, signed result URLs and save receipts outside the installation directory. Image providers receive photographs only through the host tools you authorize; the skill itself installs no daemon, telemetry or upload service. A fresh public Git history prevents accidental publication of the private workspace's earlier commits.
 
 See [SECURITY.md](SECURITY.md) for the disclosure route and [the publication audit](docs/security-audit.md) for check scope and limitations.
+
+<a id="validation"></a>
 
 ## ✅ Validation
 

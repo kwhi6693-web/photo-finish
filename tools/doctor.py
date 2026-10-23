@@ -9,13 +9,13 @@ def check(root=ROOT):
     if sys.version_info<(3,10):raise ValueError('Python 3.10+ required')
     data=io.BytesIO();Image.new('RGB',(8,6),(70,90,110)).save(data,format='PNG');data.seek(0)
     with Image.open(data) as image:image.load();assert image.size==(8,6)
-    assert (root/'LICENSE').read_text().startswith('MIT License')
-    assert re.search(r'^name: photo-finish$',(root/'SKILL.md').read_text(),re.M)
-    index=json.loads((runtime/'10_SYSTEM_CONFIG/reference_index.json').read_text())
+    assert (root/'LICENSE').read_text(encoding='utf-8').startswith('MIT License')
+    assert re.search(r'^name: photo-finish$',(root/'SKILL.md').read_text(encoding='utf-8'),re.M)
+    index=json.loads((runtime/'10_SYSTEM_CONFIG/reference_index.json').read_text(encoding='utf-8'))
     if index:raise ValueError('Public distribution must not ship private reference records')
     links=0
     for doc in list(root.glob('*.md'))+list((root/'docs').glob('*.md')):
-        for link in re.findall(r'\]\(([^)]+)\)',doc.read_text()):
+        for link in re.findall(r'\]\(([^)]+)\)',doc.read_text(encoding='utf-8')):
             if '://' in link or link.startswith(('#','mailto:')):continue
             target=doc.parent/link.split('#')[0]
             if not target.exists():raise ValueError('Missing local documentation link: '+doc.name)

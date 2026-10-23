@@ -38,7 +38,7 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(d.status(self.job)['persistence'],'pending_confirmation')
         self.assertEqual(a.plan(self.job)['action'],'AWAIT_PLATFORM_SAVE_CONFIRMATION')
         record=self.base/'record.json';d.snapshot(self.job,record)
-        self.assertEqual(json.loads(record.read_text())['record_status'],'pending_platform_confirmation')
+        self.assertEqual(json.loads(record.read_text(encoding='utf-8'))['record_status'],'pending_platform_confirmation')
     def test_automatic_display_is_not_visual_or_persistence_acceptance(self):
         self.finish(self.begin());value=d.status(self.job)
         self.assertEqual(value['display'],'observed');self.assertEqual(value['quality'],'review_required');self.assertFalse(value['profile_check_passed']);self.assertFalse(value['professional_color_calibrated'])
@@ -54,7 +54,7 @@ class AdapterTests(unittest.TestCase):
     def test_investigated_unknown_result_recovers_without_a_second_render(self):
         token=self.begin();now=time.time_ns();d.finish(self.job,token,'unknown',now,now+10)
         evidence=self.base/'investigation.json';evidence.write_text(json.dumps({'basis':'observed_tool_result','tool_name':'SYNTHETIC_IMAGE_TOOL',
-          'input_sha256':w._file(self.source)['sha256'],'status':'ready','output_path':str(self.output),'presented':True,'note':'Synthetic recovered response; no actual cloud observation'}))
+          'input_sha256':w._file(self.source)['sha256'],'status':'ready','output_path':str(self.output),'presented':True,'note':'Synthetic recovered response; no actual cloud observation'}), encoding='utf-8', newline='\n')
         d.resolve_unknown(self.job,token,evidence);self.assertEqual(a.plan(self.job)['action'],'REVIEW_OUTPUT')
         self.assertEqual(len(w._load(self.job)['tools']),1);self.assertTrue(d.resolve_unknown(self.job,token,evidence)['reused'])
         self.assertIsNone(w.timing_summary(self.job)['stages']['save']['seconds_sum'])
@@ -67,7 +67,7 @@ class AdapterTests(unittest.TestCase):
             now=time.time_ns();d.finish(self.job,token,'unknown',now,now+10)
         def evidence(name,input_path,output_path):
             path=self.base/name;path.write_text(json.dumps({'basis':'observed_tool_result','tool_name':'SYNTHETIC_IMAGE_TOOL','input_sha256':w._file(input_path)['sha256'],
-              'status':'ready','output_path':str(output_path),'presented':True,'note':'Synthetic separate-step reconciliation'}));return path
+              'status':'ready','output_path':str(output_path),'presented':True,'note':'Synthetic separate-step reconciliation'}), encoding='utf-8', newline='\n');return path
         first=self.begin();unknown(first);d.resolve_unknown(self.job,first,evidence('first.json',self.source,self.output));self.review()
         second_output=self.base/'second.png';Image.new('RGB',(30,40),(90,120,100)).save(second_output)
         second=d.next_step(self.job,'SYNTHETIC_IMAGE_TOOL',{'prompt':'Second synthetic step'})['submission_id'];unknown(second)
@@ -98,12 +98,12 @@ class AdapterTests(unittest.TestCase):
     def test_save_confirmation_requires_exact_invocation_and_hash(self):
         token=self.begin();self.finish(token);self.review();w.accept_job(self.job,self.output);receipt=self.base/'receipt.json'
         value={'status':'succeeded','source':'platform_save_receipt','library_file_id':'SYNTHETIC_SAVED_ID','output_sha256':w._file(self.output)['sha256'],'submission_id':'WRONG'}
-        receipt.write_text(json.dumps(value))
+        receipt.write_text(json.dumps(value), encoding='utf-8', newline='\n')
         with self.assertRaises(ValueError):d.confirm_platform_save(self.job,receipt)
-        value['submission_id']=token;receipt.write_text(json.dumps(value));d.confirm_platform_save(self.job,receipt)
+        value['submission_id']=token;receipt.write_text(json.dumps(value), encoding='utf-8', newline='\n');d.confirm_platform_save(self.job,receipt)
         self.assertEqual(d.status(self.job)['persistence'],'confirmed');self.assertEqual(a.plan(self.job)['action'],'BUILD_RECORD')
         rec=self.base/'final.json';a.complete(self.job,receipt,rec);save=self.base/'record-save.json';a.record_intent(self.job,rec,save)
-        save.write_text(json.dumps({'results':[{'local_path':str(rec),'status':'succeeded','local_metadata_applied':True,'library_file_id':'SYNTHETIC_RECORD'}]}))
+        save.write_text(json.dumps({'results':[{'local_path':str(rec),'status':'succeeded','local_metadata_applied':True,'library_file_id':'SYNTHETIC_RECORD'}]}), encoding='utf-8', newline='\n')
         a.record_saved(self.job,save);self.assertEqual(a.plan(self.job)['action'],'DELIVER');self.assertFalse(a.plan(self.job)['display_needed'])
     def test_deliberate_next_step_reuses_reviewed_lineage_and_keeps_prior_receipts(self):
         self.finish(self.begin());self.review();second=self.base/'second.png';Image.new('RGB',(30,40),(90,110,100)).save(second)
@@ -123,7 +123,7 @@ class AdapterTests(unittest.TestCase):
         index=[{'id':f'SYNTHETIC-{i}','original_filename':f'synthetic-{i}.png','style_weight':1,
                 'relative_path':f'private-local/synthetic-{i}.png'} for i in range(3)]
         for item in index:item.update(tags=['A'],include_in_dna=True,subject='道路车辆',individual_note='')
-        index[1]['subject']='园林日光灰瓦木窗';index_path.write_text(json.dumps(index));build(self.root,self.root/'10_SYSTEM_CONFIG/SESSION_BRIEF.json')
+        index[1]['subject']='园林日光灰瓦木窗';index_path.write_text(json.dumps(index), encoding='utf-8', newline='\n');build(self.root,self.root/'10_SYSTEM_CONFIG/SESSION_BRIEF.json')
         new=self.base/'semantic-job.json';p.prepare(self.root,self.source,new)
         result=p.candidates(new,self.root,['A'],intent={'subject':['garden','architecture'],'material':['tile','wood']})
         self.assertEqual(result['candidates'][0]['reference_id'],index[1]['id']);self.assertEqual(result['semantic_method'],'intent_metadata_v1');self.assertFalse(result['visual_suitability_established'])

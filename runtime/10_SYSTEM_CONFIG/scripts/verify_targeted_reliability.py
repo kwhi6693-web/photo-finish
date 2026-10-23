@@ -84,7 +84,7 @@ class MetricsTests(LeanEditTests):
         state=self.accepted();state['render_history']=[copy.deepcopy(state['render_result'])];sample=m.observe(state);self.assertEqual(sample['image_revision_count'],1);self.assertFalse(sample['first_output_accepted'])
     def test_snapshot_contains_observation_in_existing_save(self):
         self.returned(self.submit());target=self.base/'pending.json';e.review(self.job,self.events(),self.output,target)
-        record=json.loads(target.read_text());self.assertIn('quality_observation',record);self.assertEqual(record['quality_observation']['kind'],'unclassified')
+        record=json.loads(target.read_text(encoding='utf-8'));self.assertIn('quality_observation',record);self.assertEqual(record['quality_observation']['kind'],'unclassified')
 
 def load_tests(loader,tests,pattern):
     suite=unittest.TestSuite()

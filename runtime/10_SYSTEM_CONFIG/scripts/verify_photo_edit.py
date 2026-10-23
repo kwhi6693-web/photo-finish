@@ -76,8 +76,8 @@ class LeanEditTests(unittest.TestCase):
     def test_bootstrap_reads_each_canonical_source_once(self):
         counts={};original=Path.read_bytes
         def read(path):
-            counts[str(path)]=counts.get(str(path),0)+1;return original(path)
+            key=str(path.resolve());counts[key]=counts.get(key,0)+1;return original(path)
         with patch.object(Path,'read_bytes',read):w.bootstrap(self.root)
-        for rel in SOURCES:self.assertEqual(counts.get(str(self.root/rel)),1,rel)
+        for rel in SOURCES:self.assertEqual(counts.get(str((self.root/rel).resolve())),1,rel)
 
 if __name__=='__main__':unittest.main()

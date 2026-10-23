@@ -40,7 +40,7 @@ def observe(state,sidecar=None):
       'note':'Caller-declared live/synthetic/replay scope; quality is recorded actual visual judgment, not an independent aesthetic score. Missing timing remains null.'}
 
 def sample(path):
-    value=json.loads(Path(path).read_text());state=value.get('ledger',value)
+    value=json.loads(Path(path).read_text(encoding='utf-8'));state=value.get('ledger',value)
     if 'ledger' in value:
         return value.get('quality_observation') or observe(state,{'events':(value.get('timing') or {}).get('stage_events',[])})
     return observe(state,w._stage_sidecar(path,state))

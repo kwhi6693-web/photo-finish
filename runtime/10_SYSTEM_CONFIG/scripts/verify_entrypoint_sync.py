@@ -16,7 +16,7 @@ class EntrypointTests(unittest.TestCase):
             synchronize(root);tracked=[root/'10_SYSTEM_CONFIG'/name for name in ('runtime_policy.json','BEAUTIFICATION_POLICY.json','SESSION_BRIEF.json','QUICK_START.md','NEW_PHOTO_WORKFLOW.md')]
             before={str(p):p.read_bytes() for p in tracked};synchronize(root)
             self.assertEqual(before,{str(p):p.read_bytes() for p in tracked});self.assertEqual(validate(root)['status'],'passed')
-            policy=root/'10_SYSTEM_CONFIG/runtime_policy.json';data=json.loads(policy.read_text());data['beautification_defaults']['execution_adapter_policy']['revision']='drift';policy.write_text(json.dumps(data))
+            policy=root/'10_SYSTEM_CONFIG/runtime_policy.json';data=json.loads(policy.read_text(encoding='utf-8'));data['beautification_defaults']['execution_adapter_policy']['revision']='drift';policy.write_text(json.dumps(data), encoding='utf-8', newline='\n')
             with self.assertRaises(ValueError):validate(root)
     def test_runtime_bundle_contains_current_adapter_and_semantic_methods(self):
         for name in ('delivery_adapter.py','reference_semantics.py','sync_entrypoints.py'):

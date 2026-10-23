@@ -32,7 +32,7 @@ class WorkflowRuntimeExportTests(unittest.TestCase):
            'output_use':'screen','route':'creative','qa_focus':['fixture']}}),capture_output=True,text=True,check=True)
    self.assertEqual(json.loads(daily.stdout)['workflow_revision'],bootstrap(ROOT)['workflow_revision'])
    self.assertIn('master_sha256',json.loads(daily.stdout))
-   with (root/'10_SYSTEM_CONFIG/runtime_policy.json').open('a') as f:f.write(' ')
+   with (root/'10_SYSTEM_CONFIG/runtime_policy.json').open('a', encoding='utf-8', newline='\n') as f:f.write(' ')
    with self.assertRaises(ValueError):bootstrap(root)
  def test_export_cannot_write_inside_canonical_project(self):
   with self.assertRaises(ValueError):export(ROOT,ROOT/'bad-runtime.zip')

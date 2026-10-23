@@ -8,9 +8,9 @@ The release gates are a read-only doctor, publication scan, synthetic regression
 
 Linux, Python 3.12.14 and Pillow 12.3.0: **137 synthetic protocol, security and package tests passed** on the final source revision. Read-only doctor and publication scan passed. Three additional synthetic optional numeric-planning requests (A/H/I, J and L) completed; these are planning checks, not photograph rendering.
 
-An independent fresh-environment check installed Pillow, verified the checkout, and extracted the exact final runtime ZIP into a different temporary directory. All 97 manifest hashes matched; relocated doctor and synthetic prepare passed with zero references and no Library dependency. The runtime archive contains 98 entries and is 401,313 bytes. Its checksum is published in `dist/photo-finish.zip.sha256`.
+An independent fresh-environment check installed Pillow, verified the checkout, and extracted the exact final runtime ZIP into a different temporary directory. All 97 manifest hashes matched; relocated doctor and synthetic prepare passed with zero references and no Library dependency. The runtime archive contains 98 entries and is 401,682 bytes. Its checksum is published in `dist/photo-finish.zip.sha256`.
 
-GitHub Actions has not run before the first upload. Cross-OS results remain pending until actual workflow runs finish. The public history gate must also be run after creating the initial commit, so it covers committed blobs rather than an empty repository.
+The first GitHub Actions run passed Linux/Python 3.10 and 3.12, and identified a Windows default-text-encoding failure plus a macOS temporary-path-alias assertion. The public code now uses explicit UTF-8 text I/O and LF writes; the read-count test compares resolved paths. The corrected matrix results are recorded by the latest linked [Validate skill workflow](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml). Public-history scanning also passed after the initial commit (112 historical blobs); every subsequent CI run scans the actual current history again.
 
 ## Contract coverage
 

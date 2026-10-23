@@ -677,7 +677,7 @@ def _stage_sidecar(path,state):
     sidecar=Path(str(path)+'.timing.json')
     identity={'source_sha256':state['source']['sha256'],'job_started':state['milestones']['job_started']}
     if not sidecar.exists():return dict(identity,events=[])
-    value=json.loads(sidecar.read_text())
+    value=json.loads(sidecar.read_text(encoding='utf-8'))
     if any(value.get(k)!=v for k,v in identity.items()):raise ValueError('Timing sidecar belongs to another task')
     return value
 
