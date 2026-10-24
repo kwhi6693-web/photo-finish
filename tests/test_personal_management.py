@@ -114,7 +114,7 @@ class PersonalManagementTests(unittest.TestCase):
         before=job.read_bytes()
         decision=dict(reference_id=saved['reference_id'],decision='partial',viewed=True,scope='Synthetic light scope',reason='Synthetic observation',uses=['color'])
         def submit(): return e.submit(job,{'requirements':[],'reason':'Synthetic blank'},
-            {'branch':'PARTIAL','decisions':[decision],'reason':'Synthetic selection'},'SYNTHETIC_TOOL',{'prompt':'fixture'},{})
+            {'branch':'PARTIAL','decisions':[decision],'reason':'Synthetic selection'},'SYNTHETIC_TOOL',{'prompt':'fixture'},{},direction=direction)
         with self.assertRaises(ValueError):submit()
         self.assertEqual(job.read_bytes(),before)
         decision['uses']=['light'];self.assertTrue(submit()['call_actual_tool_once'])

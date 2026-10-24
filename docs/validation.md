@@ -1,10 +1,16 @@
 # Validation scope
 
-Feature package: **1.3.0**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
+Feature package: **1.4.0**, derived from workflow revision **2026-10-24.3** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 
 The 1.3.0 feature commit `3c4956ba640cf134b42c5ca88e3806a5bcf60207` passed all six [main-branch matrix jobs](https://github.com/kwhi6693-web/photo-finish/actions/runs/40074715368) on Linux/Python 3.10 and 3.12, Windows/Python 3.12 and macOS/Python 3.12, including both optional-analysis jobs. Formal release preparation adds download entrypoints and documentation without changing the packaged runtime. See the [changelog](../CHANGELOG.md) and [release procedure](releasing.md).
+
+## Reference-first direction and optional global guidance — 2026-10-24
+
+Version 1.4.0 moves final direction from preparation to submission after actual reference selection. Prepare can omit direction; legacy direction is a provisional draft. Adopted/partial references require an explicit final direction, and reference queries/selection cannot change after direction locks. Optional global guidance leaves unspecified photographic choices to professional judgment without changing saved settings. Explicit keyword/group misses or wholly unavailable requested styles report errors; automatic empty or unsuitable lookup retains professional fallback.
+
+Local Linux/Python 3.12: **209 synthetic tests passed**, including thirteen reference-first regressions. They exercise fresh-process no-direction preparation, viewed partial adoption and component limits, missing/invalid direction rollback and retry, legacy fallback draft compatibility, final-direction requirements for adopted references, low-level ordering/late-selection guards, missing/corrupt explicit selectors, cross-scene explicit group borrowing, and autonomous/guided context without unwanted persistence. Existing end-to-end reference review, protection and save-state tests remain. An independent review ran the then-current 208-test suite and additional malformed-direction CLI trials; its group-selection and guide-order findings were fixed with a failing-then-passing regression and synchronized canonical guides. The final current-head platform CI is checked separately before publication. No real image service or photographic aesthetic certification is claimed.
 
 ## Personal management and portability — 2026-10-24
 

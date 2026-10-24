@@ -1,7 +1,7 @@
 interface:
   display_name: 个人摄影美化与调色
-  short_description: 管理个人风格、场景规则与偏好，支持撤销和私有备份，保留摄影质感
-  default_prompt: 使用 $photo-finish 按当次要求、已保存的个人规则和审美偏好、个人风格库中的适用参考与照片用途选择构图、光影和色彩表达，逐张只输出最终成片，不附原片、对比或说明。
+  short_description: 先检索个人风格再专业修图，支持可选全局指令与自主美学判断
+  default_prompt: 使用 $photo-finish 先读取当次要求和已保存的全局指令，再检索并查看个人风格库中的适用参考；之后结合专业后期摄影美学确定构图、光影和色彩，未限定部分自主判断，逐张只输出最终成片，不附原片、对比或说明。
   icon_small: assets/icon.svg
   icon_large: assets/icon.svg
 policy:

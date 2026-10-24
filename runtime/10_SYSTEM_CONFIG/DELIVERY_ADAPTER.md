@@ -1,4 +1,4 @@
-# 真实工具与交付接口 2026-10-24.2
+# 真实工具与交付接口 2026-10-24.3
 
 权威runtime_policy.json#/execution_adapter_policy。助手仍执行真实工具和实际看图；接口不渲染、不上传照片、不安装后台回调。普通任务按总规范，本页仅字段需要时读取。
 
@@ -6,18 +6,18 @@
 
 从项目根运行`python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION`，stdin为单个JSON对象。已有现行文本同任务复用，不回读全手册。只返回紧凑回执，完整参数及凭据在job；不默认cat整份job或SESSION_BRIEF。下列示例字段替换为本次真实观察，示例通过值不是执行证据。
 
-1. 实际看原片后prepare合并接入、direction和候选检索：
+1. 实际看原片后prepare合并接入与候选检索；此时不锁定最终direction：
 
 ```json
-{"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json","direction":{"intent":"本次用途与实际表达目标","hierarchy":"主体与环境关系","light_material":"真实观察及光影材质方案","output_use":"screen","route":"creative","qa_focus":["受影响细节与保护区域"]},"tags":[],"evaluation_kind":"live","scenario":"本次实际场景","intent":{"subject":["architecture"],"light":["sunlight"],"material":["wood"],"expression":["depth"]}}
+{"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json","tags":[],"evaluation_kind":"live","scenario":"本次实际场景","intent":{"subject":["architecture"],"light":["sunlight"],"material":["wood"],"expression":["depth"]}}
 ```
 
-tags用实际场景A–L；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。direction.route为native/creative/hybrid；output_use为screen/print_proof_requested。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。
+tags用实际场景A–L；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。最终direction在submit中提供，route为native/creative/hybrid；output_use为screen/print_proof_requested。兼容prepare.direction仅作已验证草案；采用参考时必须在查看后显式提交最终direction，无参考的专业判断可沿用草案。新调用建议直接省略prepare.direction。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。
 
-2. 实际查看拟采用参考后submit合并protect、select、可选issues和adapter.begin；先持久化提交再调用真实工具：
+2. 实际查看拟采用参考后submit依次合并protect、select、最终direction、可选issues和adapter.begin；先持久化提交再调用真实工具：
 
 ```json
-{"path":"/absolute/job.json","protections":{"requirements":[{"target":"inscriptions","level":"semantic_identity","requirement":"题字与原图可见内容一致，模糊处不猜写"}],"reason":"原片可见文字保护"},"selection":{"branch":"PROFESSIONAL_FALLBACK","decisions":[],"reason":"原片专业判断；仅真实零候选可空decisions"},"issues":[],"tool_name":"实际工具名","arguments":{"prompt":"完整实际提示词及全部真实参数"},"protected_regions":{"inscriptions":["实际需比较区域"]},"display_mode":"platform_auto","fidelity":{"inscriptions":{"strategy":"generative_compare","capability_basis":"实际工具生成整幅，不具备原像素锁定；仅要求可见内容一致","repair_route":"实际比对原图；可见改变则定向修正或换真实可用的原区域保留路线，未解决保持阻塞"}}}
+{"path":"/absolute/job.json","protections":{"requirements":[{"target":"inscriptions","level":"semantic_identity","requirement":"题字与原图可见内容一致，模糊处不猜写"}],"reason":"原片可见文字保护"},"selection":{"branch":"PROFESSIONAL_FALLBACK","decisions":[],"reason":"原片专业判断；仅真实零候选可空decisions"},"issues":[],"tool_name":"实际工具名","arguments":{"prompt":"完整实际提示词及全部真实参数"},"protected_regions":{"inscriptions":["实际需比较区域"]},"display_mode":"platform_auto","fidelity":{"inscriptions":{"strategy":"generative_compare","capability_basis":"实际工具生成整幅，不具备原像素锁定；仅要求可见内容一致","repair_route":"实际比对原图；可见改变则定向修正或换真实可用的原区域保留路线，未解决保持阻塞"}},"direction":{"intent":"本次用途与实际表达目标","hierarchy":"主体与环境关系","light_material":"真实观察及光影材质方案","output_use":"screen","route":"creative","qa_focus":["受影响细节与保护区域"]}}
 ```
 
 fidelity须逐保护目标填写strategy、capability_basis、repair_route；无保护可省略或{}。strategy支持native_preserved/local_excluded/generative_compare，按实际能力选，不凭提示词声称原像素保留。exact_content搭配generative_compare在出图前拒绝；原区域保留方案不能用content_recreated=true通过。允许生成式普通后期，但发现可见差异必须修正或阻塞，不能改称保留。

@@ -11,25 +11,25 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 接入与现行依据
 
-当前编排2026-10-24.2。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。分发参考索引默认空；个人风格库按下节自动检索，不足直接从原片作专业判断。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
+当前编排2026-10-24.3。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。分发参考索引默认空；个人风格库按下节自动检索，不足直接从原片作专业判断。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
 
 photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定contract 3；验收重核当前上下文，变化新建任务复核。不硬传旧技能为expected修订、不循环重读或声称刷新服务端缓存。图片检查需已有Pillow，不隐式安装。
 
-## 自定义指令与爱好（主要功能层）
+## 自定义指令与专业判断（主要功能层）
 
-支持用户保存、查看、修改和清空个人修图规则与审美偏好。按[自定义指令接口](references/custom-instructions.md)使用 `profile-show / profile-set / profile-reset`；只有用户明确要求长期记住才设置 consent，普通当次要求不自动持久化。先查看现有配置再按意图更新，未修改部分保持原样。场景条目使用 `profile-rule-add/set/remove`，支持启停；`profile-history / profile-undo` 提供最近20次修改撤销，完整 profile-reset 同时清空撤销历史并保留照片。
+全局指令可选。没有自定义要求时，按专业后期摄影美学结合原片与适用参考自主处理；只限定部分要求时，落实约束，其余由专业判断完成。支持用户保存、查看、修改和清空个人修图规则与审美偏好。按[自定义指令接口](references/custom-instructions.md)使用 `profile-show / profile-set / profile-reset`；只有用户明确要求长期记住才设置 consent，普通当次要求不自动持久化。先查看现有配置再按意图更新，未修改部分保持原样。场景条目使用 `profile-rule-add/set/remove`，支持启停；`profile-history / profile-undo` 提供最近20次修改撤销，完整 profile-reset 同时清空撤销历史并保留照片。
 
-每次实际观察原片并确定场景后，先用相同 scenes 读取个人配置，再确定 direction（同组已加载内容可复用并核验哈希），落实“当次指令 → 长期规则 → 审美偏好 → 适用风格参考 → 通用默认”。非空配置将真实 sha256 传为 `prepare.observed_profile_sha256`，本次要求可传 `task_instructions`；prepare 默认用 tags 匹配规则，必要时传 profile_scenes。使用 active_rules/active_preferences，停用及不匹配条目不生效。结构化 setting/value 冲突先解决；已有明确当次覆盖时传真实 task_settings。未读取或过期则先重读，不凭空补值。把实际要求落实到构图、光色、材质、真实工具参数与结果复核；回执不冒称自动理解或验收。个人指令不授予工具权限，不执行其中的代码，不削弱真实证据与已锁定保护。私有配置与图库一起保存在技能/Git 之外，不发布用户规则或爱好；正在执行的任务保留原快照，修改用于后续任务。
+每次实际观察原片并确定场景后，先用相同 scenes 读取个人配置，再检索并查看拟用参考，之后确定最终 direction（同组已加载内容可复用并核验哈希），落实“当次指令 → 长期规则 → 审美偏好 → 适用风格参考 → 通用默认”。非空配置将真实 sha256 传为 `prepare.observed_profile_sha256`，本次要求可传 `task_instructions`；prepare 默认用 tags 匹配规则，必要时传 profile_scenes。使用 active_rules/active_preferences，停用及不匹配条目不生效。结构化 setting/value 冲突先解决；已有明确当次覆盖时传真实 task_settings。未读取或过期则先重读，不凭空补值。“按专业判断处理”继续遵守已有全局指令；用户明确要求本次覆盖某些审美规则时，以 task_instructions/task_settings 记录实际覆盖，不自动清空长期设置。把实际要求落实到构图、光色、材质、真实工具参数与结果复核；回执不冒称自动理解或验收。个人指令不授予工具权限，不执行其中的代码，不削弱真实证据与已锁定保护。私有配置与图库一起保存在技能/Git 之外，不发布用户规则或爱好；正在执行的任务保留原快照，修改用于后续任务。
 
 ## 个人照片风格库（主要功能层）
 
 用户明确说“收藏到风格库”“以后参考这张的质感”时，将该图视为待收藏 STYLE_REFERENCE；按[风格库接口](references/personal-style-library.md)调用同一主入口的 `style-add`，实际保存后简短确认。记录用户认可的名称、自由标签和喜欢之处，原字节去重保存；提供 `style-list` 搜索/分组/翻页、`style-update` 局部编辑/置顶/用途限定及 `style-remove` 删除。编辑不改原图。仅对明确收藏请求设置 consent，不自动收录待修图或成片。
 
-每次 `prepare` 自动读取当前用户的私有风格库；指定风格用 `style_query`，分组用 style_group，指定收藏用真实 `style_ids`（与其他筛选二选一）。实际查看最多三张候选，再按原有流程取舍；有 use_for 用途限制时，采用决策传范围内的 uses 并在真实处理和终检中落实，结合新原片迁移光影、色彩、材质与氛围。无适用参考直接专业设计，优先当次指令与原片保护，不把相似度当审美结论。个人库位于技能/Git 目录之外，跨会话使用同一持久位置；临时宿主先指定私有持久根目录，多用户宿主须隔离各自根目录，不能承诺未提供的云同步。详细存储和失败处理只按需读接口。
+先观察原片、读取适用指令，再由 `prepare` 自动读取当前用户的私有风格库；指定风格用 `style_query`，分组用 style_group，指定收藏用真实 `style_ids`（与其他筛选二选一）。实际查看最多三张候选，再按原有流程取舍；有 use_for 用途限制时，采用决策传范围内的 uses 并在真实处理和终检中落实，结合新原片迁移光影、色彩、材质与氛围。先检索并实际查看拟采用参考，再确定最终修图方向；同场景或高匹配分数不代表适用，可仅借鉴部分元素，不默认复制参考中的人物、物体或文字。自动检索无适用参考直接专业设计；明确指定的收藏/关键词/分组缺失或不可用须说明具体问题，不默默切换风格。优先当次指令与原片保护，不把相似度当审美结论。个人库位于技能/Git 目录之外，跨会话使用同一持久位置；临时宿主先指定私有持久根目录，多用户宿主须隔离各自根目录，不能承诺未提供的云同步。详细存储和失败处理只按需读接口。
 
 ## 私有备份与恢复
 
-仅用户需要备份或迁移时按[备份接口](references/private-backup.md)使用 `backup-export / backup-inspect / backup-import`。先检查版本、内容与冲突，默认合并保留已有值；用户明确希望覆盖对应元数据或配置时才使用 use_backup。导入可绑定检查回执 SHA256；空目标恢复原规则历史，现有目标保留本地历史。备份含私图和偏好，禁止放入技能/Git 或公开安装包；不得声称未获得回执的跨会话保存。日常修图不运行备份或全库重测。
+分组、置顶、用途限定、撤销与备份均按需管理，普通收藏不强制填写全部字段。仅用户需要备份或迁移时按[备份接口](references/private-backup.md)使用 `backup-export / backup-inspect / backup-import`。先检查版本、内容与冲突，默认合并保留已有值；用户明确希望覆盖对应元数据或配置时才使用 use_backup。导入可绑定检查回执 SHA256；空目标恢复原规则历史，现有目标保留本地历史。备份含私图和偏好，禁止放入技能/Git 或公开安装包；不得声称未获得回执的跨会话保存。日常修图不运行备份或全库重测。
 
 ## 专业表达与保护
 
@@ -43,8 +43,8 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 
 完整JSON字段仅按需读[工具与交付接口](references/delivery-adapter.md)，同任务复用。脚本在项目10_SYSTEM_CONFIG/scripts/photo_edit.py；只读紧凑回执，不默认回显整份job/政策/直方图。
 
-1. 实际看原片后prepare合并接入、明确direction与candidates；已有主体/光照/材质/表达观察传intent标签。参考元数据推断不冒称自动看图或最佳风格；实际查看拟采用参考，候选逐条取舍，不足直接专业设计，不凑例或全库扫描。
-2. 实际参考判断后submit合并protect/select/问题/begin，逐保护目标写需比较区域及fidelity的strategy/实际能力依据/修正路线，保存完整真实参数，并由submit自动绑定各本地输入图的完整SHA256；可在适配器input_references标明风格/构图等用途，未指定附加图仅记supporting_reference。取回及验收复核参考字节，变化调查既有提交不重发。保留原区域或局部避开以实际能力为准；普通生成后对照仍可用，exact_content禁止生成重建。需生成时读imagegen、引用原片，紧挨真实工具两侧计时。returned合并finish与本地正式文件检查，不下载/上传同一生成图；URL须fetch正式字节，使用全新目标并校验实际格式与扩展名；低层同样拒绝同名及并发覆盖，不自动转码。working只续同task，unknown先调查不重发。多步精修next-step只接可编辑任务最新已实际看图核验输出；已接受/终态后的调整新建修订任务，关联用户选定成片、原图及原保护要求，保留历史。
+1. 实际看原片并读取适用全局指令后prepare合并接入与candidates；不在候选判断前锁定最终direction。已有主体/光照/材质/表达观察传intent标签。参考元数据推断不冒称自动看图或最佳风格；实际查看拟采用参考，候选逐条取舍，不足直接专业设计，不凑例或全库扫描。
+2. 实际参考判断后submit合并protect/select/最终direction/问题/begin；direction基于本次实际选择和专业判断填写，逐保护目标写需比较区域及fidelity的strategy/实际能力依据/修正路线，保存完整真实参数，并由submit自动绑定各本地输入图的完整SHA256；可在适配器input_references标明风格/构图等用途，未指定附加图仅记supporting_reference。取回及验收复核参考字节，变化调查既有提交不重发。保留原区域或局部避开以实际能力为准；普通生成后对照仍可用，exact_content禁止生成重建。需生成时读imagegen、引用原片，紧挨真实工具两侧计时。returned合并finish与本地正式文件检查，不下载/上传同一生成图；URL须fetch正式字节，使用全新目标并校验实际格式与扩展名；低层同样拒绝同名及并发覆盖，不自动转码。working只续同task，unknown先调查不重发。多步精修next-step只接可编辑任务最新已实际看图核验输出；已接受/终态后的调整新建修订任务，关联用户选定成片、原图及原保护要求，保留历史。
 3. 实际看全幅表达及受影响原生细节、去AI味和保护区域，异常扩查；几何变化重查蒙版/坐标。returned返回原定比较区域/目标ID；review先校验字段，再合并明确实际证据、验收及可选snapshot，不自动填通过。comparison_scope用覆盖原定区域的列表；actual_scope用准确目标ID列表，描述写reason。保留原区域方案不能以已重建内容通过。问题逐目标corrected或有依据not_needed绑定最终哈希；无蒙版如实mask=null。生成保护内容实际比较并记comparison_scope/content_recreated。open/blocked不完整通过，不放宽锁定保护。
 
 正式文件检查只在路径、实际全字节SHA256及检查器版本一致时复用；像素/元数据/版本改变重解码。实际看图、色彩范围、保护、问题及最终现行上下文检查保持；不以mtime或旧视觉结论代替。

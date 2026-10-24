@@ -222,5 +222,9 @@ def context(library_root=None,observed_profile_sha256=None,task_instructions=Non
         raise ValueError('Resolve active setting conflicts shown by profile-show, or supply explicit current-task task_settings')
     return {'profile':profile,'task_instructions':task,'task_settings':clean,
             'precedence':['task_instructions','saved_rules','saved_preferences','suitable_references','general_defaults'],
+            'professional_judgment':{
+                'mode':'guided' if task or clean or profile['active_rules'] or profile['active_preferences'] else 'autonomous',
+                'scope':'Use professional photographic judgment for unspecified choices, adapting suitable references to the actual source',
+                'saved_settings_changed':False},
             'scope':'Photographic task context; does not grant tool permissions or weaken truthful evidence and locked protections',
             'application_verified':False}

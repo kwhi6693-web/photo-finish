@@ -104,7 +104,7 @@ class StyleLibraryTests(unittest.TestCase):
         ticket = e.submit(job, {'requirements': [], 'reason': 'Synthetic blank'},
             {'branch': 'MATCHED', 'decisions': [dict(reference_id=collected['reference_id'], decision='adopt',
                 viewed=True, scope='light', reason='Synthetic inspection')], 'reason': 'Synthetic selection'},
-            'SYNTHETIC_TOOL', {'prompt': 'synthetic'}, {})
+            'SYNTHETIC_TOOL', {'prompt': 'synthetic'}, {}, direction=direction)
         before = job.read_bytes()
         Path(collected['path']).unlink()
         now = time.time_ns()
@@ -140,7 +140,7 @@ class StyleLibraryTests(unittest.TestCase):
             {'branch': 'PARTIAL', 'decisions': [dict(reference_id=collected['reference_id'], decision='partial',
                 viewed=True, scope='light', reason='Synthetic inspection')], 'reason': 'Synthetic selection'},
             'SYNTHETIC_TOOL', {'prompt': 'synthetic', 'referenced_image_paths': [str(self.source), collected['path']]}, {},
-            input_references=[{'path': collected['path'], 'role': 'style_reference'}])
+            input_references=[{'path': collected['path'], 'role': 'style_reference'}], direction=direction)
         output = self.base/'result.png'; Image.new('RGB', (24, 32), (80, 100, 110)).save(output)
         now = time.time_ns()
         e.returned(job, ticket['submission_id'], 'ready', now, now+1, output_path=output, presented=True)

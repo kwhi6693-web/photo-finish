@@ -16,7 +16,7 @@ Install core dependencies explicitly in your own environment if missing. The ski
 
 ## Daily interface
 
-Observe the actual scene, then read `profile-show` with the same `scenes` before choosing photographic direction. Use active_rules/active_preferences. prepare defaults to tags as its profile scenes; profile_scenes can explicitly supply observed custom labels. A nonempty saved profile requires its actual `sha256` as `observed_profile_sha256` in prepare. Empty profiles preserve the existing interface.
+Observe the actual scene, then read `profile-show` with the same `scenes` before choosing final photographic direction. Global instructions are optional: unspecified choices use professional photographic judgment, with suitable references as adaptable evidence. Use active_rules/active_preferences. prepare defaults to tags as its profile scenes; profile_scenes can explicitly supply observed custom labels. A nonempty saved profile requires its actual `sha256` as `observed_profile_sha256` in prepare. Empty profiles preserve the existing interface.
 
 From `runtime/`, call `python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION` with one JSON object on stdin. For example, after actually viewing the source:
 
@@ -25,22 +25,14 @@ From `runtime/`, call `python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION` wit
   "project_root": ".",
   "source_path": "../../photo-work/source.jpeg",
   "path": "../../photo-work/job.json",
-  "direction": {
-    "intent": "Replace this with the actual photographic direction",
-    "hierarchy": "Describe the actual subject and supporting layers",
-    "light_material": "Describe the observed light/material and intended treatment",
-    "output_use": "screen",
-    "route": "creative",
-    "qa_focus": ["Specify the actual affected details"]
-  },
   "tags": [],
   "evaluation_kind": "live",
   "scenario": "actual-scene-description"
 }
 ```
 
-1. `prepare` binds current context, source identity, direction and candidate retrieval. The public index is empty; the current user’s optional private collection is queried automatically. Choose professional fallback when no applicable reference exists.
-2. `submit` locks explicit protections and fidelity strategy, reference decisions, observed issues and the complete actual image-tool arguments.
+1. `prepare` binds current context, source identity and candidate retrieval without locking final direction. The public index is empty; the current user’s optional private collection is queried automatically. Choose professional fallback when no applicable reference exists.
+2. After viewing suitable candidates, `submit` atomically records protection and reference decisions, then locks final `direction`, observed issues and complete actual image-tool arguments. Supply the direction object documented in the adapter guide at this step. Legacy `prepare.direction` is a provisional draft; it may be reused for professional fallback, while adopted/partial references require explicit final `submit.direction`. Invalid selection or direction leaves the job unchanged.
 3. Execute the real host image tool **once**, measuring the actual call boundaries. `returned` registers its real task/output and checks formal file bytes. Resume an existing in-progress task rather than submitting it again.
 4. Actually inspect the full result and affected native details. Supply truthful events to `review`; unresolved issues or unmet protection block acceptance. Save internal records only through the supported host route.
 
@@ -50,7 +42,7 @@ The full [adapter field guide](../references/delivery-adapter.md) contains `subm
 
 Use `photo_edit.py profile-show`, `profile-set`, and `profile-reset` with JSON stdin. The [custom-instructions guide](../references/custom-instructions.md) documents explicit save intent, partial section updates, individual-rule removal and clearing. Profiles share the private per-user SQLite catalog with photographs, without shipping any user data.
 
-Rules and aesthetic preferences are free-text lists. Read them before forming the actual `direction`, and bind the returned hash through `observed_profile_sha256`; stale/missing acknowledgment fails before publishing the job. Optional `task_instructions` belongs only to that job. Current-task instructions take priority over saved rules, preferences, suitable references and general defaults. The agent implements that priority in actual photographic decisions; the controller does not infer semantic compliance.
+Rules and aesthetic preferences are optional free-text lists. Without active guidance the receipt reports professional_judgment.mode=autonomous; with saved/current guidance it reports guided. Both use professional judgment for unspecified choices and neither modifies saved settings. These labels describe supplied context, not automatic interpretation or quality certification. Read them before forming the actual `direction`, and bind the returned hash through `observed_profile_sha256`; stale/missing acknowledgment fails before publishing the job. Optional `task_instructions` belongs only to that job. Current-task instructions take priority over saved rules, preferences, suitable references and general defaults. The agent implements that priority in actual photographic decisions; the controller does not infer semantic compliance.
 
 `prepare` records the observed profile snapshot under `customization` and `user_customization` in the ledger. Future profile changes do not invalidate in-flight jobs, alter their context or trigger repeated image calls. Existing review and locked protection gates remain. All new commands use existing Python/Pillow and standard-library SQLite only.
 
@@ -58,7 +50,7 @@ Rules and aesthetic preferences are free-text lists. Read them before forming th
 
 Use the same controller's `style-add`, `style-list`, and `style-remove` commands to maintain an opt-in private collection. See the [field guide](../references/personal-style-library.md) for JSON examples and storage behavior. An explicit collection request authorizes `consent: true`; a plain edit request does not. The host obtains a real local file before collection; there is no hosted upload endpoint.
 
-`prepare` automatically queries that user's collection. Optional `style_query` filters title/labels/note, `style_ids` selects up to three actual IDs (choose one selector, not both), and `style_library_root` overrides the environment/default location. The returned candidate `path` and `sha256` let the agent inspect the exact reference. Existing `selection` decisions still require actual viewing. Missing/changed candidates are reported; explicitly requested missing IDs fail. Adopted bytes are checked before submission and later acceptance. New unrelated entries do not invalidate existing jobs.
+`prepare` automatically queries that user's collection. Optional `style_query` filters title/labels/note, `style_ids` selects up to three actual IDs (choose one selector, not both), and `style_library_root` overrides the environment/default location. The returned candidate `path` and `sha256` let the agent inspect the exact reference. Existing `selection` decisions still require actual viewing. Missing/changed candidates are reported; explicitly requested missing IDs, unmatched keywords/groups or entirely unavailable explicit results fail rather than silently selecting another style. Adopted bytes are checked before submission and later acceptance. New unrelated entries do not invalidate existing jobs.
 
 Management commands accept `library_root`, or use PHOTO_FINISH_STYLE_LIBRARY, or default to the OS user's application data directory. Never store private data inside the skill or any Git checkout. Multi-user hosts must assign trusted separate roots; ephemeral hosts must supply persistent storage. This is a local collection, with no built-in account service or cross-device sync. Empty lookup does not write files, and a damaged catalog raises an error. The distributed `reference_index.json` stays empty; `doctor` continues to validate the public package.
 

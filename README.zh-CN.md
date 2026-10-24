@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -33,6 +33,8 @@ python tools/doctor.py
 ```
 
 宿主需要提供看图、真实图像编辑和文件访问能力。Python 依赖不包含图像生成服务；技能不收集 API Key，也不隐式安装外部工具。
+
+**先检索风格，再确定方向：**观察原片并读取可选全局指令，检索并查看个人风格参考，再结合专业后期摄影美学确定最终方向。无自定义指令时专业自主处理；仅限定部分要求时，其余自主判断。首版的创作自由、内容保护、实际复核和成片交付要求保留。
 
 ## ✨ 核心能力
 
