@@ -4,6 +4,8 @@ Feature package: **1.3.0**, derived from workflow revision **2026-10-24.2** with
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 
+The 1.3.0 feature commit `3c4956ba640cf134b42c5ca88e3806a5bcf60207` passed all six [main-branch matrix jobs](https://github.com/kwhi6693-web/photo-finish/actions/runs/40074715368) on Linux/Python 3.10 and 3.12, Windows/Python 3.12 and macOS/Python 3.12, including both optional-analysis jobs. Formal release preparation adds download entrypoints and documentation without changing the packaged runtime. See the [changelog](../CHANGELOG.md) and [release procedure](releasing.md).
+
 ## Personal management and portability — 2026-10-24
 
 Version 1.3.0 adds partial style metadata edits, groups, pins, component scopes and paginated retrieval; observed-scene rules, enabled states, explicit setting conflict checks and a twenty-change undo history; and private versioned export/inspect/import. Legacy catalogs remain readable. Private backups are separate from public installation archives, and default imports preserve existing values.

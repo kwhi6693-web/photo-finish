@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.3.0)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -16,6 +16,8 @@
 <a id="quick-start"></a>
 
 ## ⚡ Quick Start
+
+Download the [1.3.0 skill ZIP](https://github.com/kwhi6693-web/photo-finish/releases/download/v1.3.0/photo-finish.zip) and [SHA-256 checksum](https://github.com/kwhi6693-web/photo-finish/releases/download/v1.3.0/photo-finish.zip.sha256) from the [official release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.3.0). Verify the checksum, then install the extracted `photo-finish/` directory. GitHub's automatically generated source archives contain the whole repository; `photo-finish.zip` is the installable skill package. See the [changelog](CHANGELOG.md) for changes and upgrade notes.
 
 Install this repository as the `photo-finish` skill in your agent's skill directory. Keep `SKILL.md`, `references/`, `scripts/`, `agents/`, `assets/` and **`runtime/` together**; the runtime is included, so no private Library or recovery ZIP is required.
 
