@@ -526,6 +526,8 @@ def build_record(path, destination, brief=None, recipe=None, draft=False):
 def accept_job(path, output_path):
     """Accept only a fully resolved job with fresh source/output review receipts."""
     state = _load(path)
+    from input_references import verify as verify_inputs
+    verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),_file)
     if state['status'] in ('failed','cancelled'):
         raise ValueError('Terminal job cannot be accepted; prepare a new job')
     output = _file(output_path)
@@ -550,7 +552,15 @@ def accept_job(path, output_path):
         raise ValueError('Final review needs a hash-bound actual file inspection')
     _color_scope(inspection, review.get('color_scope'), review.get('profile_passed'),review.get('color_assumption_reason'))
     if state.get('execution_adapter'):
-        if not render or render.get('acquired') != output or not state.get('external_call_receipt'):
+        token=(render or {}).get('submission_id')
+        receipts=state.get('external_call_receipts') or [state.get('external_call_receipt') or {}]
+        receipt=next((x for x in reversed(receipts) if x.get('submission_id')==token and x.get('status')=='ready'),None)
+        reconciliations=state.get('reconciliation_receipts') or [state.get('reconciliation_receipt') or {}]
+        reconciled=next((x for x in reversed(reconciliations) if x.get('submission_id')==token),None)
+        if reconciled:
+            evidence=reconciled.get('evidence') or {}
+            if _file(evidence.get('path'))!=evidence:raise ValueError('Reconciled call evidence changed')
+        if not token or not render or render.get('acquired') != output or not (receipt or reconciled):
             raise ValueError('Adapted acceptance requires its actual registered tool result and call receipt')
     if state.get('validation_contract') != 3 or not state.get('context'):
         raise ValueError('Legacy job needs a new source-bound contract before new acceptance')
@@ -816,7 +826,7 @@ def timing_summary(path):
 
 
 def download_image(url, destination, expected_sha256=None, timeout=30):
-    """One urllib request; full decode/dimensions/color/hash validation before replacement."""
+    """Validate provider bytes and publish exclusively; never replace an existing target."""
     if urlparse(url).scheme not in ('http', 'https'):
         raise ValueError('Image URL must use HTTP or HTTPS')
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
@@ -824,6 +834,8 @@ def download_image(url, destination, expected_sha256=None, timeout=30):
     expected = _sha(expected_sha256, 'expected_sha256') if expected_sha256 is not None else None
     destination = Path(destination)
     destination.parent.mkdir(parents=True, exist_ok=True)
+    if os.path.lexists(destination):
+        raise FileExistsError('Download destination already exists; choose a new path')
     temporary = None
     try:
         with urlopen(Request(url, headers={'User-Agent': 'PCS-workflow-session/1'}), timeout=timeout) as response:
@@ -846,9 +858,12 @@ def download_image(url, destination, expected_sha256=None, timeout=30):
             raise ValueError('Downloaded image format or dimensions invalid')
         if inspection['color']['status'] in ('invalid','conflict'):
             raise ValueError('Downloaded image has invalid color declarations')
-        os.replace(temporary, destination)
-        temporary = None
-        return {'path': str(destination.resolve()), 'sha256': actual, 'bytes': size}
+        extensions={'PNG':{'.png'},'JPEG':{'.jpg','.jpeg','.jpe'}}
+        if destination.suffix and destination.suffix.lower() not in extensions[inspection['format']]:
+            raise ValueError('Downloaded '+inspection['format']+' does not match destination extension; choose the correct extension')
+        # Same-directory exclusive publication also rejects a target created mid-download.
+        os.link(temporary,destination)
+        return {'path': str(destination.resolve()), 'sha256': actual, 'bytes': size, 'format':inspection['format']}
     finally:
         if temporary is not None:
             Path(temporary).unlink(missing_ok=True)

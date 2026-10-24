@@ -48,7 +48,7 @@ def prepare(project_root,source_path,path,direction,tags,intent=None,started_uni
     return value
 
 
-def submit(path,protections,selection,tool_name,arguments,protected_regions,issues=None,display_mode='platform_auto',fidelity=None):
+def submit(path,protections,selection,tool_name,arguments,protected_regions,issues=None,display_mode='platform_auto',fidelity=None,input_references=None):
     """Atomic source-bound decision and submission reservation, before the actual tool call."""
     if not isinstance(protections,dict) or not isinstance(selection,dict):raise ValueError('Explicit protection and reference decisions required')
     plan=c.fidelity_plan(protections,protected_regions,fidelity)
@@ -57,7 +57,7 @@ def submit(path,protections,selection,tool_name,arguments,protected_regions,issu
     def apply(temporary):
         w.transact(temporary,events)
         state=w._load(temporary);state['fidelity_plan']=plan;state['fidelity_source_sha256']=state['source']['sha256'];w._save(temporary,state)
-        return d.begin(temporary,tool_name,arguments,display_mode,protected_regions)
+        return d.begin(temporary,tool_name,arguments,display_mode,protected_regions,input_references)
     ticket=d._transaction(path,apply)
     return dict(ticket,path=str(Path(path).resolve()),call_actual_tool_once=True)
 

@@ -1,11 +1,11 @@
 # 📷 Photo Finish
 
-> 從專業攝影與藝術指導出發，讓照片的構圖、光色與材質表達更充分，同時保留可信的攝影質感。
+> 以氛圍感為核心，從專業攝影與藝術指導出發，讓情緒、構圖、光色與材質表達更充分，同時保留可信的攝影質感。
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.0.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.0.1-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
