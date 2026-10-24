@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.2 — 2026-10-24
+
+- Add a practical theory reference for tonal organization, color restraint, local separation and visual hierarchy, with approximate tutorial timestamps, official Adobe mechanism references and clearly labeled application reasoning.
+- Connect that reference to the skill entrypoint, master standard and synchronized creative/development/professional guides. Decisions use existing direction, reference-scope and actual-review fields; the four daily calls and instruction priority remain.
+- Treat low saturation plus high contrast as an optional expression, not a universal preset. Preserve intentional fog, soft light, high/low key and vivid color; do not copy tutorial slider values or judge aesthetics by histogram width.
+- Refresh three-language navigation and the deterministic installation package. No new controller behavior, dependency, image service or private media is introduced. Synthetic tests do not certify photographic aesthetics.
+
 ## 1.4.1 — 2026-10-24
 
 - Refresh all repository materials: three-language navigation, feature/architecture/operation map, contributor guidance and current security/privacy scope, including the history scanner's file-blob boundary.
