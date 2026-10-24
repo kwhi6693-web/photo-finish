@@ -1,5 +1,6 @@
 """Private user customization and source-bound main-flow regressions."""
 from pathlib import Path
+from contextlib import closing
 import importlib, json, os, sqlite3, subprocess, sys, tempfile, time, unittest
 from unittest.mock import patch
 from PIL import Image
@@ -66,7 +67,7 @@ class UserPreferencesTests(unittest.TestCase):
     def test_corrupt_or_unsupported_profiles_are_not_overwritten_or_hidden(self):
         p = self.module(); p.save(rules=['Original rule'], consent=True)
         db = self.private/'catalog.sqlite3'
-        with sqlite3.connect(db) as connection:
+        with closing(sqlite3.connect(db)) as connection, connection:
             connection.execute("UPDATE user_preferences SET payload=? WHERE id=1", (json.dumps({'version': 99}),))
         with self.assertRaises(ValueError): p.show()
         before = db.read_bytes()
