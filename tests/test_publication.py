@@ -6,6 +6,18 @@ from doctor import check
 from build_release import build
 
 class PublicationTests(unittest.TestCase):
+    def test_nested_private_profile_cannot_enter_public_policy_or_archive(self):
+        value={'nested':{'distribution_scope':'private','fixture_preference':'synthetic'}}
+        body=json.dumps(value).encode()
+        self.assertTrue(any(f['rule']=='private-profile-policy' for f in findings_for('runtime_policy.json',body)))
+        data=io.BytesIO()
+        with zipfile.ZipFile(data,'w') as z:z.writestr('runtime/policy.json',body)
+        self.assertTrue(any(f['rule']=='private-profile-policy' for f in inspect_archive(data.getvalue())))
+    def test_public_policy_scope_is_explicit(self):
+        root=Path(__file__).resolve().parents[1]
+        policy=json.loads((root/'runtime/10_SYSTEM_CONFIG/runtime_policy.json').read_text(encoding='utf-8'))
+        self.assertEqual(policy['distribution_scope'],'public')
+        self.assertFalse(policy['personal_preferences_included'])
     def test_known_credentials_are_rejected_without_echoing_value(self):
         value='gh'+'p_'+'X'*36
         findings=findings_for('fixture.txt',value.encode())

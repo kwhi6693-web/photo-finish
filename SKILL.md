@@ -1,6 +1,6 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with atmosphere and emotional expression as the primary goal, independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
@@ -11,13 +11,11 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 接入与现行依据
 
-当前编排2026-10-24.1。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。参考索引默认空；不足直接从原片作专业判断，用户明确提供的参考仅用于本次授权范围。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
+当前编排2026-10-24.2。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。参考索引默认空；不足直接从原片作专业判断，用户明确提供的参考仅用于本次授权范围。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
 
 photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定contract 3；验收重核当前上下文，变化新建任务复核。不硬传旧技能为expected修订、不循环重读或声称刷新服务端缓存。图片检查需已有Pillow，不隐式安装。
 
 ## 专业表达与保护
-
-**以氛围感为主要美化核心。**先确定本片情绪，让构图、光影、色彩、空间和材质共同服务氛围；并入现有direction.intent与实际终检。低曝光是可选手法，按场景选择表达，不一律压暗、偏棕或套滤镜。充分表现力、创作自由与去AI味同时保留。
 
 每张主动完成构图、主次光影、色彩和材质，**表达明显更充分**。构图画幅、强弱色彩、黑白、颗粒、虚实、塑光、天气演绎及必要扩图清理自由，旧预设/Style DNA/本地参考仅为素材，不机械套暖金、高饱和或固定强度。
 

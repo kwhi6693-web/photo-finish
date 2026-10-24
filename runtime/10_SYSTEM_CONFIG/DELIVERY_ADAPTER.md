@@ -1,4 +1,4 @@
-# 真实工具与交付接口 2026-10-24.1
+# 真实工具与交付接口 2026-10-24.2
 
 权威runtime_policy.json#/execution_adapter_policy。助手仍执行真实工具和实际看图；接口不渲染、不上传照片、不安装后台回调。普通任务按总规范，本页仅字段需要时读取。
 
@@ -9,7 +9,7 @@
 1. 实际看原片后prepare合并接入、direction和候选检索：
 
 ```json
-{"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json","direction":{"intent":"本片氛围、情绪与实际表达目标","hierarchy":"主体与环境关系","light_material":"真实观察及光影材质方案","output_use":"screen","route":"creative","qa_focus":["受影响细节与保护区域"]},"tags":[],"evaluation_kind":"live","scenario":"本次实际场景","intent":{"subject":["architecture"],"light":["sunlight"],"material":["wood"],"expression":["depth"]}}
+{"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json","direction":{"intent":"本次用途与实际表达目标","hierarchy":"主体与环境关系","light_material":"真实观察及光影材质方案","output_use":"screen","route":"creative","qa_focus":["受影响细节与保护区域"]},"tags":[],"evaluation_kind":"live","scenario":"本次实际场景","intent":{"subject":["architecture"],"light":["sunlight"],"material":["wood"],"expression":["depth"]}}
 ```
 
 tags用实际场景A–L；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。direction.route为native/creative/hybrid；output_use为screen/print_proof_requested。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。

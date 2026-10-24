@@ -1,8 +1,8 @@
 # 专业摄影判断与多步精修
 
-现行2026-10-24.1。由执行助手独立做摄影判断，无新增用户确认。审美、构图、强度与手法不设统一上限；去AI味、真实内容和实际文件验收继续有效。
+现行2026-10-24.2。由执行助手独立做摄影判断，无新增用户确认。审美、构图、强度与手法不设统一上限；去AI味、真实内容和实际文件验收继续有效。
 
-1. 先看原片，以氛围感为主要美化核心，明确本片情绪、视觉意图、主体与次要层级、光线/材质、输出用途，再选手法。氛围可明亮或低调，不将压暗、偏棕或固定滤镜当作统一目标。用delivery_automation.py direction(path,intent,hierarchy,light_material,output_use,route,qa_focus)在首轮提交前保存精简决策；output_use为screen或print_proof_requested，route为native/creative/hybrid。该记录不是美学通过或打印认证，不要求固定调参表。默认常规屏幕成片，不因缺RAW或打印标定而阻断它。
+1. 先看原片，明确本次用途、视觉意图、主体与次要层级、光线/材质、输出用途，再选手法。氛围可明亮或低调，不将压暗、偏棕或固定滤镜当作统一目标。用delivery_automation.py direction(path,intent,hierarchy,light_material,output_use,route,qa_focus)在首轮提交前保存精简决策；output_use为screen或print_proof_requested，route为native/creative/hybrid。该记录不是美学通过或打印认证，不要求固定调参表。默认常规屏幕成片，不因缺RAW或打印标定而阻断它。
 2. 参考候选传入已有意图的intent，先以元数据subject/light/material/expression解释适配性，再辅助明暗色彩排序；并非自动视觉判断。实际外部调用统一经delivery_adapter。参考候选仅为检索入口：实际比较光线方向与软硬、材质、主体语义、空间层次、预期情绪，再决定adopt/partial/reject/unavailable。把可迁移维度写入scope；同色不同光不强套白平衡，同场景不同意图不强套影调。候选不足或均不合适，立即进入专业判断，不等待补库、不伪称风格匹配。原片足以支持时独立建立新风格。
 3. 能用光色、裁切、透视或局部明暗实现的目标，优先用实际可用的非生成工具保留摄影细节；需要扩展或重塑时可用creative/hybrid，不以“原生”限制创作。文字/画作保留原图可见内容：生成结果发生变化则回退或保留原区域，不补写猜测的字，不加逐笔认证。
 4. 合并可兼容的全局参数；只有构图、操作顺序或局部控制确有收益才分步。每步取得正式字节，实际看全幅、检查尺寸/色彩，必要细节通过后才做依赖该输出的下一步。可编辑任务用delivery_adapter.next-step(path,tool_name,arguments)从最新已核验输出生成新submission_id，保留历史与原片；实际结果回填相同令牌。working/unknown/未取回/未复核不能冒充下一步。已接受或终态任务不可修改：用户继续调整时新建修订任务，关联其选定成片、原图及原有保护要求，不绕过保护契约或改写历史。每步蒙版绑定当步实际输入，不能沿用变更几何前的旧蒙版。
