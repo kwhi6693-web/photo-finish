@@ -19,3 +19,5 @@ runtime/02_EDIT_TARGETS/
 runtime/07_ANALYSIS_REPORTS/
 runtime/08_EDIT_OUTPUTS/
 runtime/09_VERSION_HISTORY/
+style-library/
+catalog.sqlite3*

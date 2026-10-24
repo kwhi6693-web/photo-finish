@@ -13,6 +13,7 @@ import delivery_adapter as d
 import delivery_automation as a
 import review_contract as c
 import delivery_metrics as m
+import style_library as styles
 
 
 def _response(path):
@@ -24,7 +25,8 @@ def _response(path):
             'next':a.plan(path)}
 
 
-def prepare(project_root,source_path,path,direction,tags,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None):
+def prepare(project_root,source_path,path,direction,tags,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,
+            style_library_root=None,style_query=None,style_ids=None):
     """One local call; actual original-image observation must precede supplied direction."""
     if not isinstance(direction,dict) or 'path' in direction:raise ValueError('Explicit photographic direction object required')
     if evaluation_kind not in m.KINDS:raise ValueError('evaluation_kind must be live/replay/synthetic/unclassified')
@@ -36,14 +38,16 @@ def prepare(project_root,source_path,path,direction,tags,intent=None,started_uni
         temporary=Path(folder)/'job.json'
         p.prepare(project_root,source_path,temporary,started_unix_ns=started_unix_ns,observed_skill_revision=observed_skill_revision)
         a.direction(temporary,**direction)
-        candidates=p.candidates(temporary,project_root,tags,intent=intent)
+        candidates=p.candidates(temporary,project_root,tags,intent=intent,
+                                style_library_root=style_library_root,style_query=style_query,style_ids=style_ids)
         state=w._load(temporary);state['evaluation']={'kind':evaluation_kind,'scenario':scenario or ('/'.join(tags) if tags else 'unclassified')}
         w._save(temporary,state)
         # Atomic no-overwrite publication after every preparation step succeeds.
         os.link(temporary,target)
     value=_response(path)
     value['master_sha256']=w._load(path)['context']['document_hashes']['我的照片美化偏好与修图标准.md']
-    value['candidates']=[{key:item.get(key) for key in ('reference_id','relative_path','library_file_id','subject','note','semantic_evidence')} for item in candidates['candidates']]
+    value['candidates']=[{key:item.get(key) for key in ('reference_id','relative_path','library_file_id','path','sha256','origin','labels','subject','note','semantic_evidence')} for item in candidates['candidates']]
+    value['personal_library']=candidates['personal_library']
     value['reference_limits']=candidates['limitations']
     return value
 
@@ -86,7 +90,8 @@ def review(path,events,output_path,record_destination=None,brief=None):
 
 
 def main():
-    routes={'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response}
+    routes={'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
+            'style-add':styles.add,'style-list':styles.list_references,'style-remove':styles.remove}
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('action',choices=routes);args=parser.parse_args()
     try:print(json.dumps(routes[args.action](**json.load(sys.stdin)),ensure_ascii=False,allow_nan=False));return 0
     except c.InputError as error:print(json.dumps(error.payload(),ensure_ascii=False),file=sys.stderr);return 1

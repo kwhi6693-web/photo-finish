@@ -1,6 +1,6 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
@@ -11,9 +11,15 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 接入与现行依据
 
-当前编排2026-10-24.2。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。参考索引默认空；不足直接从原片作专业判断，用户明确提供的参考仅用于本次授权范围。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
+当前编排2026-10-24.2。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。分发参考索引默认空；个人风格库按下节自动检索，不足直接从原片作专业判断。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
 
 photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定contract 3；验收重核当前上下文，变化新建任务复核。不硬传旧技能为expected修订、不循环重读或声称刷新服务端缓存。图片检查需已有Pillow，不隐式安装。
+
+## 个人照片风格库（主要功能层）
+
+用户明确说“收藏到风格库”“以后参考这张的质感”时，将该图视为待收藏 STYLE_REFERENCE；按[风格库接口](references/personal-style-library.md)调用同一主入口的 `style-add`，实际保存后简短确认。记录用户认可的名称、自由标签和喜欢之处，原字节去重保存；提供 `style-list` 搜索与 `style-remove` 删除。仅对明确收藏请求设置 consent，不自动收录待修图或成片。
+
+每次 `prepare` 自动读取当前用户的私有风格库；指定风格用 `style_query`，指定收藏用真实 `style_ids`。实际查看最多三张候选，再按原有流程取舍，结合新原片迁移光影、色彩、材质与氛围。无适用参考直接专业设计，优先当次指令与原片保护，不把相似度当审美结论。个人库位于技能/Git 目录之外，跨会话使用同一持久位置；临时宿主先指定私有持久根目录，多用户宿主须隔离各自根目录，不能承诺未提供的云同步。详细存储和失败处理只按需读接口。
 
 ## 专业表达与保护
 

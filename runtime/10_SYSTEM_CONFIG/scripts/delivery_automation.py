@@ -26,6 +26,8 @@ def _fresh(path, editable=False):
     if any(ctx.get(k)!=current[k] for k in ('workflow_revision','source_hashes','document_hashes')):
         raise ValueError('Stale context requires a newly prepared task')
     verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),w._file)
+    from style_library import verify_selection
+    verify_selection(state)
     return state
 
 

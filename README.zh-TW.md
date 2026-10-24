@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.0.2-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.1.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -42,8 +42,19 @@ python tools/doctor.py
 - 保留、最佳化、重構構圖同等可選，不限制輕裁、固定畫幅或統一暖金色。
 - 保留去 AI 味，檢查空間、反射、透視、塑膠感、塗抹、假紋理與光暈。
 - 書畫題字依原圖可見內容保持，模糊處不猜寫；嚴格逐筆或像素保真僅在明確要求時使用。
-- 公開參考索引預設空，缺少適用案例時直接依原片作專業判斷。
+- **個人照片風格庫**：主動收藏喜歡的照片，記錄名稱、標籤與喜歡之處；每次修圖自動檢索最多三張適用參考，可用關鍵字或收藏 ID 指定，並支援查看、搜尋與刪除。
+- 公開參考索引預設空，個人庫沒有適用案例時直接依原片作專業判斷。
 - 綁定原片與成片雜湊、真實參數、保護方案、實際複核與計時。
+
+## 個人照片風格庫
+
+```text
+把這張收藏到我的風格庫，命名「柔光木質」，我喜歡它的光影與質感。
+使用 $photo-finish 美化這張新照片，參考我的風格庫。
+這張按風格庫裡的「柔光木質」處理。
+```
+
+收藏、查看與刪除使用主入口的 `style-add / style-list / style-remove`，修圖沿用原有四步流程。僅明確收藏才入庫。私人照片與偏好保存在技能/Git 目錄之外；跨裝置同步由宿主提供，暫時環境需指定持久位置。詳見[風格庫介面](references/personal-style-library.md)。
 
 ## 🧭 執行與能力邊界
 
