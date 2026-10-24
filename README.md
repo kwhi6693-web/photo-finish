@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.2-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -151,6 +151,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md). Keep the ordinary edit path light, pres
 | Need | Guide |
 |---|---|
 | Main features, architecture and all controller operations | [Architecture and document map](docs/architecture.md) |
+| Tone, color and visual hierarchy | [Practical photographic foundations](references/tone-color-foundations.md) |
 | Executable workflow and API fields | [Runtime guide](docs/runtime.md) · [Adapter contract](references/delivery-adapter.md) |
 | Personal references and optional global instructions | [Style library](references/personal-style-library.md) · [Custom instructions](references/custom-instructions.md) |
 | Private migration and recovery | [Backup guide](references/private-backup.md) |

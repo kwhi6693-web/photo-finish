@@ -9,7 +9,8 @@ MIRRORS=('fast_edit_workflow','development_workflow','style_matching_policy','cr
 GUIDES={'FAST_EDIT_WORKFLOW.md':'fast-edit-workflow.md','CREATIVE_DIRECTION_POLICY.md':'creative-direction.md',
         'DEVELOPMENT_WORKFLOW.md':'professional-development.md','AUTOMATIC_DELIVERY.md':'automatic-delivery.md',
         'PROFESSIONAL_WORKFLOW.md':'professional-workflow.md','DELIVERY_ADAPTER.md':'delivery-adapter.md',
-        'NATIVE_ADJUSTMENT_ROUTE.md':'native-adjustment-route.md'}
+        'NATIVE_ADJUSTMENT_ROUTE.md':'native-adjustment-route.md',
+        'TONE_COLOR_FOUNDATIONS.md':'tone-color-foundations.md'}
 
 def synchronize(root,skill=None):
     root=Path(root);cfg=root/'10_SYSTEM_CONFIG';policy=json.loads((cfg/'runtime_policy.json').read_text(encoding='utf-8'));revision=policy['fast_edit_workflow']['revision']

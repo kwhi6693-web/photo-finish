@@ -68,6 +68,7 @@ flowchart TB
 ## 当前资料与历史资料
 
 - 当前使用：技能入口、总规范、机器政策、接口指南和三语 README。
+- 摄影判断依据：[明暗、色彩与视觉层级](../references/tone-color-foundations.md)，包含教学视频观点、官方工具机制、应用推导和实际终检边界；服务既有方向制定，不构成新调用层。
 - 维护验证：[验证记录](validation.md)、[公开发布审计](security-audit.md)、[安全边界](../SECURITY.md)、[发布流程](releasing.md)、[贡献指南](../CONTRIBUTING.md)。
 - 历史设计：[图库](personal-style-library-plan.md)、[全局指令](custom-instructions-plan.md)、[管理与备份](personal-management-plan.md)、[参考前置](superpowers/plans/2026-10-24-reference-first-direction.md)。历史版本的数字和决策保留，当前接口以运行指南为准。
 - 可选参数：`runtime/06_SCENE_PRESETS/`、`style_config.json`、`style_dna.json` 和 `references/personal-color-system.json` 是各自版本的设计基准/兼容快照。它们的内部版本不等同于技能发行版本，不要求统一改号，也不代替个人参考或实际摄影判断。

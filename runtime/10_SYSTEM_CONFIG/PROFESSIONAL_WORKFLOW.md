@@ -15,4 +15,6 @@
 - [Adobe局部蒙版](https://helpx.adobe.com/lightroom-classic/desktop/process-and-develop-photos/masking.html)：局部光色控制与边缘复核；当前工具仅以实际返回的蒙版为准。
 - [Adobe色彩与软打样](https://helpx.adobe.com/lightroom-classic/desktop/technical-support/technical-issues/miscellaneous-issues/color-faq.html)：按屏幕/印刷用途与真实ICC区分交付能力。
 
+明暗与色彩补充（2026-10-24）：灰闷先辨明原因，再决定整体影调或局部分离；色彩克制与反差各按本片意图设计，低饱和＋高对比是可选组合，演示参数不通用。保留有意薄雾、柔和、高调、低调与鲜艳表达，检查实际高光、暗部、肤色和过渡，不以铺满直方图验收。按需读[理论与场景应用](TONE_COLOR_FOUNDATIONS.md)，取舍写入现有direction及终检，遵守参考use_for/uses，不增加日常调用。
+
 默认把画面表达做得明显更充分：主动完成构图、主次光影、色彩与材质；去AI味和题字一致不等于保守微调。终检须实际比较表达目标与结果，技术通过不能替代表达完成。未落实的表达关系继续针对性修正；不机械套暖金/高饱和，也不强制每片大改。局部反馈先明确目标和参照，保留已认可的整体表达，修后检查目标、边缘和全幅协调。柔和低曝光仅作适用场景的可选表达，不成为其他照片的统一基调。

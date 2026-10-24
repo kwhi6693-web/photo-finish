@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.2-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -118,6 +118,7 @@ python tools/build_release.py --output dist/photo-finish.zip
 | 需要了解 | 资料 |
 |---|---|
 | 主要功能、架构与全部管理入口 | [架构与资料地图](docs/architecture.md) |
+| 明暗、色彩、主次与视频理论转化 | [摄影美化判断依据](references/tone-color-foundations.md) |
 | 实际运行和接口字段 | [运行指南](docs/runtime.md) · [主接口](references/delivery-adapter.md) |
 | 个人风格与可选全局指令 | [风格库](references/personal-style-library.md) · [自定义指令](references/custom-instructions.md) |
 | 私人资料备份和迁移 | [备份恢复](references/private-backup.md) |

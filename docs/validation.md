@@ -1,10 +1,14 @@
 # Validation scope
 
-Feature package: **1.4.1**, derived from workflow revision **2026-10-24.3** with a self-contained runtime and no private reference corpus.
+Feature package: **1.4.2**, derived from workflow revision **2026-10-24.3** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 
 The 1.4.0 feature commit `9b0402b6951eaa2616cf2c140452fa6bae3de328` passed all twelve main/tag checks in the six-job matrix on Linux/Python 3.10 and 3.12, Windows/Python 3.12 and macOS/Python 3.12, including optional-analysis jobs. Exact run results are available in the [Validate skill workflow](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml). Version 1.4.1 updates documentation, explanatory policy metadata and packaged guides; its current-head checks are recorded separately in GitHub Actions. See the [architecture map](architecture.md), [changelog](../CHANGELOG.md) and [release procedure](releasing.md).
+
+## Tone/color foundations — 2026-10-24
+
+Version 1.4.2 adds a theory reference and connects it to existing direction and review. It separates visible tutorial captions/diagrams from official tool mechanisms and application reasoning, including counterexamples for fog, high/low key and vivid color. A baseline three-scenario planning trial already respected instruction priority, component scopes and parameter limits; this is an explanatory improvement, not a claim that the earlier skill failed those cases. A separate four-scenario planning pass checked high-key flowers, a vivid city silhouette, a color-only reference with clipped clothing, and mixed-light restaurant defects; its wording finding about when tonal separation is allowed was corrected. These are description-based planning checks, not visual evaluation. Local doctor, the 209 synthetic regressions and clean runtime restoration passed; adding the canonical guide initially exposed an omitted runtime-export allowlist entry, which was fixed and reverified. No real photo edit or aesthetic experiment is implied. The unchanged controller suite remains 209 synthetic regressions.
 
 ## Complete material refresh — 2026-10-24
 
