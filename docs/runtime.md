@@ -16,6 +16,8 @@ Install core dependencies explicitly in your own environment if missing. The ski
 
 ## Daily interface
 
+Read `profile-show` before choosing photographic direction. A nonempty saved profile requires its actual `sha256` as `observed_profile_sha256` in prepare. Empty profiles preserve the existing interface.
+
 From `runtime/`, call `python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION` with one JSON object on stdin. For example, after actually viewing the source:
 
 ```json
@@ -43,6 +45,14 @@ From `runtime/`, call `python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION` wit
 4. Actually inspect the full result and affected native details. Supply truthful events to `review`; unresolved issues or unmet protection block acceptance. Save internal records only through the supported host route.
 
 The full [adapter field guide](../references/delivery-adapter.md) contains `submit`, `returned`, `review`, correction and save examples. Generic descriptions in examples are not completed observations or permission to fill pass values automatically.
+
+## User rules and preferences
+
+Use `photo_edit.py profile-show`, `profile-set`, and `profile-reset` with JSON stdin. The [custom-instructions guide](../references/custom-instructions.md) documents explicit save intent, partial section updates, individual-rule removal and clearing. Profiles share the private per-user SQLite catalog with photographs, without shipping any user data.
+
+Rules and aesthetic preferences are free-text lists. Read them before forming the actual `direction`, and bind the returned hash through `observed_profile_sha256`; stale/missing acknowledgment fails before publishing the job. Optional `task_instructions` belongs only to that job. Current-task instructions take priority over saved rules, preferences, suitable references and general defaults. The agent implements that priority in actual photographic decisions; the controller does not infer semantic compliance.
+
+`prepare` records the observed profile snapshot under `customization` and `user_customization` in the ledger. Future profile changes do not invalidate in-flight jobs, alter their context or trigger repeated image calls. Existing review and locked protection gates remain. All new commands use existing Python/Pillow and standard-library SQLite only.
 
 ## Personal style library
 

@@ -11,6 +11,7 @@ FILES=(
  '10_SYSTEM_CONFIG/scripts/delivery_metrics.py',
  '10_SYSTEM_CONFIG/scripts/style_match.py',
  '10_SYSTEM_CONFIG/scripts/style_library.py',
+ '10_SYSTEM_CONFIG/scripts/user_preferences.py',
  '10_SYSTEM_CONFIG/scripts/reference_semantics.py',
  '10_SYSTEM_CONFIG/scripts/delivery_adapter.py',
  '10_SYSTEM_CONFIG/scripts/input_references.py',

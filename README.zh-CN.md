@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.1.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.2.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -45,6 +45,18 @@ python tools/doctor.py
 - **个人照片风格库**：主动收藏喜欢的照片，记录名称、标签与喜欢之处；每次修图自动检索最多三张适用参考，可按关键词或收藏 ID 指定，并支持查看、搜索与删除。
 - 分发参考索引默认空。个人库无适用实例时，直接依据本片作专业判断。
 - 绑定原片与成片哈希、完整真实参数、保护方案、实际复核和计时，不以方案或提示词代替执行。
+
+## 自定义指令与爱好
+
+用户可以保存自己的长期修图规则和审美偏好，并查看、修改、删除单条或清空。每次调用先读取个人配置，再结合原片建立处理方向；本次要求优先，临时尝试不会自动改写长期爱好。
+
+```text
+以后按这些规则修图，并记住我喜欢的光影和质感。
+查看我的修图规则和偏好。
+这次按另一种色彩处理，不改变我的长期偏好。
+```
+
+主入口新增 `profile-show / profile-set / profile-reset`，个人配置与图库一样独立私有保存，不进入公开仓库。详见[自定义指令接口](references/custom-instructions.md)。
 
 ## 个人照片风格库
 

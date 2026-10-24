@@ -75,6 +75,7 @@ def _catalog(root, write=False, rollback_assets=None):
             root.mkdir(parents=True, exist_ok=True, mode=0o700)
             connection = sqlite3.connect(db, timeout=10)
             db.chmod(0o600)
+            connection.execute('PRAGMA secure_delete=ON')
             connection.execute('BEGIN IMMEDIATE')
             connection.execute('CREATE TABLE IF NOT EXISTS styles (id TEXT PRIMARY KEY, entry TEXT NOT NULL)')
         else:

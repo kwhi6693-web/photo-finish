@@ -1,8 +1,14 @@
 # Validation scope
 
-Feature package: **1.1.0**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
+Feature package: **1.2.0**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
+
+## Custom instructions and preferences — 2026-10-24
+
+Users can explicitly save, inspect, partially replace and clear their own photographic rules/preferences through the main controller. The private profile shares the existing catalog/root; photographs are preserved when the profile is reset. No new dependency, service or user configuration enters the public package.
+
+Local Linux / Python 3.12.14 / Pillow 12.3.0: **179 synthetic tests passed**, including nine profile regressions. They cover fresh-process Unicode persistence, consent and input boundaries, independent roots, partial updates/clearing, photo preservation, unsupported profile rollback, missing/stale read acknowledgment, per-task instructions stable in-flight snapshots, and clearing old text from current SQLite pages. secure_delete does not certify physical erasure or remove separate job snapshots/backups. Current instructions have documented priority; the controller stores context and does not claim to semantically certify compliance with free-text preferences. An independent documented-CLI trial also verified cross-process save/read, a one-time monochrome direction over a saved color preference, missing/stale profile rejection, partial changes, single-rule removal and reset preserving the photo collection and existing job snapshot. No image service was called. Local and CI results remain separate evidence.
 
 ## Personal style library — 2026-10-24
 
