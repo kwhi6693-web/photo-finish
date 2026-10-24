@@ -16,8 +16,10 @@ import tempfile
 
 from PIL import Image
 from style_match import features
+from runtime_io import digest as metadata_digest
 
 FORMATS = {'JPEG': '.jpg', 'PNG': '.png', 'WEBP': '.webp', 'TIFF': '.tiff'}
+PURPOSES = {'light', 'color', 'material', 'composition', 'atmosphere'}
 
 
 def location(library_root=None):
@@ -110,7 +112,92 @@ def _catalog(root, write=False, rollback_assets=None):
 def _public(root, entry):
     return {'reference_id': entry['id'], 'title': entry['subject'], 'labels': entry['labels'],
             'tags': entry['tags'], 'note': entry['individual_note'], 'sha256': entry['sha256'],
-            'path': str(_asset(root, entry['private_relative_path']))}
+            'path': str(_asset(root, entry['private_relative_path'])),
+            'group': entry.get('group', ''), 'pinned': entry.get('pinned', False),
+            'use_for': entry.get('use_for', []), 'metadata_sha256': metadata_digest(_metadata(entry))}
+
+
+def _metadata(entry):
+    return {key:entry.get(key, default) for key,default in
+            [('subject',''),('labels',[]),('tags',[]),('individual_note',''),
+             ('group',''),('pinned',False),('use_for',[])]}
+
+
+def _changes(title=None, labels=None, tags=None, note=None, group=None, pinned=None, use_for=None):
+    clean = {}
+    if title is not None: clean['subject'] = _text(title, 'title', 200)
+    if labels is not None:
+        clean['labels'] = _labels(labels, 'labels'); clean['scene_description'] = ' '.join(clean['labels'])
+    if tags is not None:
+        clean['tags'] = _labels(tags, 'tags')
+        if set(clean['tags'])-set('ABCDEFGHIJKL'): raise ValueError('Scene tags must be A through L')
+    for name,value,maximum in [('individual_note',note,2000),('group',group,80)]:
+        if value is not None:
+            if not isinstance(value,str) or len(value)>maximum: raise ValueError('Invalid '+name)
+            clean[name] = value.strip()
+    if pinned is not None:
+        if type(pinned) is not bool: raise ValueError('pinned must be a boolean')
+        clean['pinned'] = pinned
+    if use_for is not None:
+        clean['use_for'] = _labels(use_for, 'use_for')
+        if set(clean['use_for'])-PURPOSES: raise ValueError('Unsupported reference purpose')
+    return clean
+
+
+def normalize_entry(entry):
+    """Validate portable metadata without trusting an archive's paths or features."""
+    allowed={'id','sha256','subject','labels','tags','individual_note','scene_description','original_filename',
+             'private_relative_path','include_in_dna','style_weight','measured_full','origin','group','pinned','use_for','path'}
+    if not isinstance(entry,dict) or set(entry)-allowed: raise ValueError('Invalid or unsupported private style record')
+    try:
+        if (not isinstance(entry['subject'],str) or not isinstance(entry['labels'],list) or
+                not isinstance(entry['tags'],list) or not isinstance(entry['individual_note'],str) or
+                not isinstance(entry.get('group',''),str) or type(entry.get('pinned',False)) is not bool or
+                not isinstance(entry.get('use_for',[]),list)):
+            raise ValueError('Invalid private style metadata types')
+        sha = entry['sha256']
+        if not isinstance(sha,str) or not re.fullmatch(r'[0-9a-f]{64}',sha) or entry['id']!='personal_'+sha:
+            raise ValueError('Invalid private style identity')
+        relative=entry['private_relative_path']
+        if not isinstance(relative,str) or not re.fullmatch(r'images/'+sha+r'\.(jpg|png|webp|tiff)',relative):
+            raise ValueError('Invalid private style image path')
+        clean=dict(entry);clean.pop('path',None)
+        clean.update(_changes(entry['subject'],entry['labels'],entry['tags'],entry['individual_note'],
+                              entry.get('group',''),entry.get('pinned',False),entry.get('use_for',[])))
+        clean.update(origin='personal',include_in_dna=True,style_weight=1,
+                     original_filename=Path(relative).name)
+        return clean
+    except (KeyError,TypeError) as error:
+        raise ValueError('Invalid private style record') from error
+
+
+def _entries(connection):
+    try:
+        tables={row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        if not tables: return []
+        if 'styles' not in tables: raise ValueError('Missing private style catalog schema')
+        return [normalize_entry(json.loads(row[0])) for row in
+                connection.execute('SELECT entry FROM styles ORDER BY id').fetchall()]
+    except (json.JSONDecodeError,TypeError) as error:
+        raise ValueError('Invalid private style catalog') from error
+
+
+def update(reference_id, title=None, labels=None, tags=None, note=None, group=None,
+           pinned=None, use_for=None, consent=False, library_root=None, expected_metadata_sha256=None):
+    if consent is not True: raise ValueError('Explicit intent to modify the saved style is required')
+    changes=_changes(title,labels,tags,note,group,pinned,use_for)
+    if not changes: raise ValueError('Provide at least one metadata field to update')
+    root=location(library_root)
+    if not (root/'catalog.sqlite3').exists(): raise ValueError('Unknown personal style reference ID')
+    with _catalog(root,write=True) as connection:
+        row=connection.execute('SELECT entry FROM styles WHERE id=?',(reference_id,)).fetchone()
+        if row is None: raise ValueError('Unknown personal style reference ID')
+        entry=normalize_entry(json.loads(row[0]));current=_public(root,entry)
+        if expected_metadata_sha256 is not None and expected_metadata_sha256!=current['metadata_sha256']:
+            raise ValueError('Style metadata changed; list the current record before updating')
+        verify(current);entry.update(changes)
+        connection.execute('UPDATE styles SET entry=? WHERE id=?',(json.dumps(entry,ensure_ascii=False),reference_id))
+    return _public(root,entry)
 
 
 def add(source_path, title, consent=False, labels=None, tags=None, note='', library_root=None):
@@ -168,11 +255,14 @@ def add(source_path, title, consent=False, labels=None, tags=None, note='', libr
     return dict(_public(root, entry), duplicate=False)
 
 
-def records(library_root=None, query=None, style_ids=None):
+def records(library_root=None, query=None, style_ids=None, group=None):
     """Read metadata only. Never decode or scan every photograph during an edit."""
     root = location(library_root)
-    if query is not None and style_ids is not None:
-        raise ValueError('Use either style_query or style_ids, not both')
+    if style_ids is not None and (query is not None or group is not None):
+        raise ValueError('Explicit style_ids cannot be combined with query/group filters')
+    if group is not None:
+        if not isinstance(group,str) or len(group)>80: raise ValueError('Invalid style group')
+        group=group.strip()
     if query is not None:
         query = _text(query, 'query', 200).casefold()
     if style_ids is not None and (not isinstance(style_ids, list) or not 1 <= len(style_ids) <= 3 or
@@ -185,9 +275,8 @@ def records(library_root=None, query=None, style_ids=None):
             raise ValueError('Unknown personal style reference ID')
         return []
     with _catalog(root) as catalog:
-        rows = catalog.execute('SELECT entry FROM styles ORDER BY id').fetchall()
+        entries = _entries(catalog)
     try:
-        entries = [json.loads(row[0]) for row in rows]
         for entry in entries:
             if (not re.fullmatch(r'[0-9a-f]{64}', entry['sha256']) or entry['id'] != 'personal_'+entry['sha256'] or
                     not isinstance(entry['tags'], list) or not isinstance(entry['labels'], list)):
@@ -198,18 +287,24 @@ def records(library_root=None, query=None, style_ids=None):
             raise ValueError('Unknown personal style reference ID')
         return [entry for entry in entries if
                 (style_ids is None or entry['id'] in style_ids) and
-                (query is None or all(word in ' '.join([entry['subject'], entry['individual_note'], *entry['labels']]).casefold()
+                (group is None or entry['group']==group) and
+                (query is None or all(word in ' '.join([entry['subject'], entry['individual_note'], entry['group'], *entry['labels']]).casefold()
                                       for word in query.split()))]
     except (KeyError, TypeError, json.JSONDecodeError) as error:
         raise ValueError('Invalid private style catalog; restore a valid backup') from error
 
 
-def list_references(library_root=None, query=None, limit=50):
+def list_references(library_root=None, query=None, limit=50, group=None, pinned_only=False, offset=0):
     if type(limit) is not int or not 1 <= limit <= 100:
         raise ValueError('limit must be 1 through 100')
-    root = location(library_root); entries = records(root, query)
+    if type(pinned_only) is not bool or type(offset) is not int or offset<0:
+        raise ValueError('Invalid pinned_only or offset')
+    root = location(library_root); entries = records(root, query, group=group)
+    entries=[r for r in entries if not pinned_only or r['pinned']]
+    entries.sort(key=lambda r:(not r['pinned'],r['subject'].casefold(),r['id']))
     return {'library_root': str(root), 'total': len(entries),
-            'references': [_public(root, entry) for entry in entries[:limit]]}
+            'offset':offset,'next_offset':offset+limit if offset+limit<len(entries) else None,
+            'references': [_public(root, entry) for entry in entries[offset:offset+limit]]}
 
 
 def remove(reference_id, library_root=None):

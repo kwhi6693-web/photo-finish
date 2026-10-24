@@ -16,7 +16,7 @@ Install core dependencies explicitly in your own environment if missing. The ski
 
 ## Daily interface
 
-Read `profile-show` before choosing photographic direction. A nonempty saved profile requires its actual `sha256` as `observed_profile_sha256` in prepare. Empty profiles preserve the existing interface.
+Observe the actual scene, then read `profile-show` with the same `scenes` before choosing photographic direction. Use active_rules/active_preferences. prepare defaults to tags as its profile scenes; profile_scenes can explicitly supply observed custom labels. A nonempty saved profile requires its actual `sha256` as `observed_profile_sha256` in prepare. Empty profiles preserve the existing interface.
 
 From `runtime/`, call `python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION` with one JSON object on stdin. For example, after actually viewing the source:
 
@@ -61,6 +61,14 @@ Use the same controller's `style-add`, `style-list`, and `style-remove` commands
 `prepare` automatically queries that user's collection. Optional `style_query` filters title/labels/note, `style_ids` selects up to three actual IDs (choose one selector, not both), and `style_library_root` overrides the environment/default location. The returned candidate `path` and `sha256` let the agent inspect the exact reference. Existing `selection` decisions still require actual viewing. Missing/changed candidates are reported; explicitly requested missing IDs fail. Adopted bytes are checked before submission and later acceptance. New unrelated entries do not invalidate existing jobs.
 
 Management commands accept `library_root`, or use PHOTO_FINISH_STYLE_LIBRARY, or default to the OS user's application data directory. Never store private data inside the skill or any Git checkout. Multi-user hosts must assign trusted separate roots; ephemeral hosts must supply persistent storage. This is a local collection, with no built-in account service or cross-device sync. Empty lookup does not write files, and a damaged catalog raises an error. The distributed `reference_index.json` stays empty; `doctor` continues to validate the public package.
+
+## Personal management and portable backups
+
+`style-update` partially edits metadata, groups, pins and saved component scopes; `style-list` supports group/pin filters and pagination. Image identity stays immutable. A selected scoped reference must explicitly name allowed `uses`. See the [style guide](../references/personal-style-library.md).
+
+`profile-rule-add/set/remove` manages scene labels and enabled rules. `profile-show` returns applicable active lists. Explicit setting/value conflicts at the same priority must be resolved or covered by a real current task_settings override before prepare. `profile-history/undo` retains up to twenty prior changes. Full profile-reset clears active and undo settings while preserving photographs. See the [rule guide](../references/custom-instructions.md).
+
+`backup-export/inspect/import` provides private, versioned migration outside the skill and Git checkout. Validate before writes; default merges preserve existing values and report conflicts. Restore into a new directory to recover a damaged store. The [backup guide](../references/private-backup.md) documents limits, integrity, merge policies and archive privacy. No new dependency/service is required.
 
 ## Recovery and saving
 

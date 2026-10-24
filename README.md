@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.2.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -65,6 +65,14 @@ For this photo only, use a different color direction.
 ```
 
 The agent reads the private profile before choosing direction; each job binds the actual profile hash and a stable snapshot. User data stays outside the skill/Git checkout. See the [custom-instructions guide](references/custom-instructions.md). These are photographic instructions, not executable scripts or automatic quality certification.
+
+## Manage and move your personal collection
+
+Edit saved names, labels and notes; organize groups, pin useful examples and specify which light/color/material/composition/atmosphere components may be borrowed. Filter and page through collections without changing image bytes.
+
+Add scene-specific rules/preferences, enable or disable them, and undo up to twenty changes. Actual scene labels determine applicable instructions. Structured setting conflicts are surfaced before preparation; free-text interpretation still belongs to the agent.
+
+Export, inspect and merge a private backup of photographs, metadata, settings and undo history. Existing values are preserved by default; empty-target recovery restores the original collection. Backups stay outside the public repository. See the [backup guide](references/private-backup.md).
 
 ## Personal style library
 

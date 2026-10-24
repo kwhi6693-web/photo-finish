@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.2.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -57,6 +57,20 @@ python tools/doctor.py
 ```
 
 主入口新增 `profile-show / profile-set / profile-reset`，个人配置与图库一样独立私有保存，不进入公开仓库。详见[自定义指令接口](references/custom-instructions.md)。
+
+## 管理、场景适配与备份
+
+- 风格照片支持修改名称/标签/备注、分组、置顶和指定借鉴范围，列表支持筛选及翻页，原始照片保持不变。
+- 规则可按场景生效，支持启停、结构化冲突提示及最近 20 次修改撤销；完整清空会清除撤销历史并保留图库。
+- 私有照片、元数据、个人规则和修改历史可导出、检查、导入。默认合并保留已有内容，空目录可完整恢复；备份不进入公开仓库。
+
+```text
+把这张参考分到“旅行”，只借鉴光影和材质。
+这条规则只用于夜景，先停用人像那条规则。
+撤销刚才的规则修改；检查备份后合并到我的个人图库。
+```
+
+详见[风格库接口](references/personal-style-library.md)、[场景规则](references/custom-instructions.md)、[备份恢复](references/private-backup.md)。这些管理操作按需执行，不增加日常全库处理。
 
 ## 个人照片风格库
 

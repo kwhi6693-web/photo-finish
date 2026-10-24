@@ -412,6 +412,7 @@ def select_references(path, branch, decisions, reason):
     if branch not in ('MATCHED','PARTIAL','PROFESSIONAL_FALLBACK') or not isinstance(decisions,list):
         raise ValueError('Invalid reference branch or decisions')
     candidates = {x['reference_id'] for x in query['candidates']}
+    candidate_details = {x['reference_id']:x for x in query['candidates']}
     seen, selected = set(), []
     clean = []
     for item in decisions:
@@ -426,8 +427,16 @@ def select_references(path, branch, decisions, reason):
             if not viewed:
                 raise ValueError('Adopted references require actual visual inspection')
             selected.append(decision)
+        uses=item.get('uses',[])
+        from style_library import PURPOSES
+        if not isinstance(uses,list) or any(not isinstance(x,str) or x not in PURPOSES for x in uses):
+            raise ValueError('Reference uses must name supported photographic components')
+        allowed=candidate_details[rid].get('use_for',[])
+        if decision in ('adopt','partial') and allowed and (not uses or set(uses)-set(allowed)):
+            raise ValueError('Selected reference components exceed its saved use_for scope')
         clean.append({'reference_id':rid,'decision':decision,'viewed':viewed,
                       'scope':_text(item.get('scope'),'scope'), 'reason':_text(item.get('reason'),'reason')})
+        if uses: clean[-1]['uses']=list(dict.fromkeys(uses))
     if seen != candidates:
         raise ValueError('Every returned candidate needs a decision; not loaded is not no candidate')
     if ((branch == 'PROFESSIONAL_FALLBACK' and selected) or
