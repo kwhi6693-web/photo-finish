@@ -1,6 +1,8 @@
 """Maintenance mirror generation and restored adapter availability."""
 from pathlib import Path
-import json,shutil,tempfile,unittest
+import json,re,shutil,tempfile,unittest
+from PIL import Image
+import photo_workflow
 from export_workflow_runtime import FILES
 from sync_entrypoints import synchronize
 from workflow_integrity import validate
@@ -8,6 +10,15 @@ from workflow_integrity import validate
 ROOT=Path(__file__).resolve().parents[2]
 
 class EntrypointTests(unittest.TestCase):
+    def test_documented_compatibility_prepare_binds_current_revision(self):
+        guide=(ROOT/'10_SYSTEM_CONFIG/FAST_EDIT_WORKFLOW.md').read_text(encoding='utf-8')
+        example=json.loads(re.search(r'```json\n([^`]+)```',guide).group(1))
+        with tempfile.TemporaryDirectory() as t:
+            source=Path(t)/'source.png';Image.new('RGB',(16,16),(128,128,128)).save(source)
+            example.update(project_root=str(ROOT),source_path=str(source),path=str(Path(t)/'job.json'))
+            result=photo_workflow.prepare(**example)
+            policy=json.loads((ROOT/'10_SYSTEM_CONFIG/runtime_policy.json').read_text(encoding='utf-8'))
+            self.assertEqual(result['context']['workflow_revision'],policy['fast_edit_workflow']['revision'])
     def test_generated_entrypoints_and_mirrors_are_idempotent_and_drift_checked(self):
         with tempfile.TemporaryDirectory() as t:
             root=Path(t)/'project'
@@ -23,9 +34,4 @@ class EntrypointTests(unittest.TestCase):
             self.assertIn('10_SYSTEM_CONFIG/scripts/'+name,FILES)
         self.assertIn('10_SYSTEM_CONFIG/DELIVERY_ADAPTER.md',FILES)
 
-if __name__ == '__main__':
-    import sys
-    for _photo_finish_stream in (sys.stdin, sys.stdout, sys.stderr):
-        if hasattr(_photo_finish_stream, 'reconfigure'):
-            _photo_finish_stream.reconfigure(encoding='utf-8')
-    unittest.main()
+if __name__=='__main__':unittest.main()

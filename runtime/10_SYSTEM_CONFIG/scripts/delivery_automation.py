@@ -7,7 +7,9 @@ step, retains render handles, avoids duplicate work and confirms both saves.
 from pathlib import Path
 import argparse,json,sys,uuid
 from urllib.parse import urlparse
+import os
 import workflow_session as w
+from input_references import verify as verify_inputs
 
 
 def entry(project_root, observed_skill_revision=None):
@@ -23,6 +25,7 @@ def _fresh(path, editable=False):
     ctx=state.get('context') or {};current=w.bootstrap(ctx['project_root'])
     if any(ctx.get(k)!=current[k] for k in ('workflow_revision','source_hashes','document_hashes')):
         raise ValueError('Stale context requires a newly prepared task')
+    verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),w._file)
     return state
 
 
@@ -90,6 +93,10 @@ def render_result(path,tool_name,input_sha256,status,output_url=None,task_id=Non
     if status=='working':w._text(task_id,'task_id')
     old=state.get('render_result')
     if old:
+        previous_recipe=old.get('recipe') or {}
+        if recipe is None:recipe=previous_recipe
+        elif 'actual_arguments' in previous_recipe and recipe!=previous_recipe:
+            raise ValueError('Bound submission arguments/references cannot be replaced during result registration')
         if old['tool_name']!=tool_name or old['input_sha256']!=input_sha:
             raise ValueError('Existing render must be resumed, never blindly resubmitted')
         if old.get('task_id') and task_id!=old['task_id']:raise ValueError('Resume the exact existing task ID')
@@ -109,12 +116,12 @@ def render_result(path,tool_name,input_sha256,status,output_url=None,task_id=Non
 def fetch(path,destination,timeout=30):
     state=_fresh(path,editable=True);render=state.get('render_result') or {}
     if render.get('status')!='ready':raise ValueError('No completed render to fetch; poll or investigate first')
-    target=Path(destination).resolve();acquired=render.get('acquired')
+    raw_target=Path(destination);target=raw_target.resolve();acquired=render.get('acquired')
     if acquired:
         if acquired['path']!=str(target) or w._file(target)!=acquired:
             raise ValueError('Recorded output changed or another destination was requested')
         return {'reused':True,'output':acquired}
-    if target.exists():raise ValueError('Untracked output destination exists; do not overwrite it')
+    if os.path.lexists(raw_target):raise ValueError('Untracked output destination exists; do not overwrite it')
     protected={Path(path).resolve(),Path(state['source']['path']).resolve()}
     if target in protected:raise ValueError('Output cannot overwrite source or ledger')
     w.download_image(render['output_url'],target,timeout=timeout)
