@@ -1,6 +1,6 @@
 """Private collection and main-flow behavior, using generated fixtures only."""
 from pathlib import Path
-import hashlib, importlib, json, os, subprocess, sys, tempfile, unittest
+import hashlib, importlib, json, os, sqlite3, subprocess, sys, tempfile, unittest
 from unittest.mock import patch
 from PIL import Image, ImageCms
 
@@ -170,5 +170,25 @@ class StyleLibraryTests(unittest.TestCase):
         s = self.module(); saved = self.collect()
         with self.assertRaises(ValueError):
             s.records(query='nonmatching keyword', style_ids=[saved['reference_id']])
+
+    def test_full_catalog_rolls_back_new_copy_but_preserves_preexisting_bytes(self):
+        s = self.module(); connect = sqlite3.connect
+        def limited(*args, **kwargs):
+            connection = connect(*args, **kwargs)
+            connection.execute('PRAGMA max_page_count=3')
+            return connection
+        # Three pages fit the schema but cannot fit this valid catalog entry.
+        for preexisting in (False, True):
+            root = self.base/('preexisting' if preexisting else 'new-copy')
+            digest = hashlib.sha256(self.source.read_bytes()).hexdigest()
+            target = root/'images'/(digest+'.png')
+            if preexisting:
+                target.parent.mkdir(parents=True); target.write_bytes(self.source.read_bytes())
+            with self.subTest(preexisting=preexisting), patch.object(s.sqlite3, 'connect', limited):
+                with self.assertRaisesRegex(ValueError, 'catalog'):
+                    s.add(self.source, 'Synthetic quota fixture', consent=True, library_root=root,
+                          labels=[str(i)+'x'*75 for i in range(32)], note='x'*2000)
+            self.assertEqual(target.exists(), preexisting)
+            if preexisting: self.assertEqual(target.read_bytes(), self.source.read_bytes())
 
 if __name__ == '__main__': unittest.main()

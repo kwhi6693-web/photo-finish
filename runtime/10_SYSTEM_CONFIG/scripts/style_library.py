@@ -65,7 +65,7 @@ def _asset(root, relative):
 
 
 @contextmanager
-def _catalog(root, write=False):
+def _catalog(root, write=False, rollback_assets=None):
     db = root/'catalog.sqlite3'
     if db.is_symlink():
         raise ValueError('Style catalog cannot be a symlink')
@@ -82,8 +82,25 @@ def _catalog(root, write=False):
         yield connection
         if write:
             connection.commit()
-    except sqlite3.Error as error:
-        raise ValueError('Private style catalog could not be read or written; check its path, permissions and backup') from error
+    except BaseException as error:
+        if connection is not None and rollback_assets:
+            # A failed statement can automatically release SQLite's transaction.
+            # Reacquire the writer lock, and preserve any copy another writer
+            # has since committed. Only our newly created copies are eligible.
+            try:
+                connection.rollback()
+                connection.execute('BEGIN IMMEDIATE')
+                exists = connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='styles'").fetchone()
+                for rid, path in rollback_assets:
+                    row = connection.execute('SELECT entry FROM styles WHERE id=?', (rid,)).fetchone() if exists else None
+                    if row is None or _asset(root, json.loads(row[0])['private_relative_path']) != path:
+                        path.unlink(missing_ok=True)
+                connection.rollback()
+            except (sqlite3.Error, OSError, ValueError, KeyError, TypeError) as cleanup_error:
+                raise ValueError('Style collection failed and cleanup could not be confirmed; inspect the private library') from cleanup_error
+        if isinstance(error, sqlite3.Error):
+            raise ValueError('Private style catalog could not be read or written; check its path, permissions and backup') from error
+        raise
     finally:
         if connection is not None:
             connection.close()
@@ -119,7 +136,8 @@ def add(source_path, title, consent=False, labels=None, tags=None, note='', libr
         raise ValueError('Style source changed during collection')
     relative = 'images/'+digest+extension
     destination = _asset(root, relative)
-    with _catalog(root, write=True) as catalog:
+    rollback_assets = []
+    with _catalog(root, write=True, rollback_assets=rollback_assets) as catalog:
         row = catalog.execute('SELECT entry FROM styles WHERE id=?', (rid,)).fetchone()
         if row:
             entry = json.loads(row[0])
@@ -134,6 +152,7 @@ def add(source_path, title, consent=False, labels=None, tags=None, note='', libr
                 temporary = Path(stream.name); stream.write(data)
             try:
                 os.link(temporary, destination)
+                rollback_assets.append((rid, destination))
             except FileExistsError:
                 if destination.is_symlink() or hashlib.sha256(destination.read_bytes()).hexdigest() != digest:
                     raise ValueError('Existing private style bytes changed')
