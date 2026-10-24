@@ -1,8 +1,16 @@
 # Validation scope
 
-Feature package: **1.2.0**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
+Feature package: **1.3.0**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
+
+## Personal management and portability — 2026-10-24
+
+Version 1.3.0 adds partial style metadata edits, groups, pins, component scopes and paginated retrieval; observed-scene rules, enabled states, explicit setting conflict checks and a twenty-change undo history; and private versioned export/inspect/import. Legacy catalogs remain readable. Private backups are separate from public installation archives, and default imports preserve existing values.
+
+Local Linux / Python 3.12.14 / Pillow 12.3.0: **195 synthetic tests passed**, including sixteen management/backup regressions. These exercise immutable photograph bytes, metadata stale-write rejection, group/purpose selection, scene acknowledgment, conflicts and current-task overrides, undo/reset, complete restoration and safe merge, archive checksum binding, malformed metadata, path traversal/symlinks/duplicates/future versions, export size boundaries and native SQLite failure rollback. The normal release gates also validate source-only packaging and clean extraction. These are protocol/security tests, not proof of photographic aesthetics.
+
+An independent actual-command trial exercised the documented grouping/rules/backup workflow using synthetic fixtures, including fresh-root restoration, conflict-preserving merge, cleared settings, hostile/corrupt archives and database-write rollback. Platform CI is tracked separately from local evidence.
 
 ## Custom instructions and preferences — 2026-10-24
 

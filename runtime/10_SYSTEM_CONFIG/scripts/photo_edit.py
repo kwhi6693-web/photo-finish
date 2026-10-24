@@ -15,6 +15,7 @@ import review_contract as c
 import delivery_metrics as m
 import style_library as styles
 import user_preferences as preferences
+import personal_backup as backup
 
 
 def _response(path):
@@ -27,13 +28,14 @@ def _response(path):
 
 
 def prepare(project_root,source_path,path,direction,tags,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,
-            style_library_root=None,style_query=None,style_ids=None,
-            observed_profile_sha256=None,task_instructions=None):
+            style_library_root=None,style_query=None,style_ids=None,style_group=None,
+            observed_profile_sha256=None,task_instructions=None,profile_scenes=None,task_settings=None):
     """One local call; actual original-image observation must precede supplied direction."""
     if not isinstance(direction,dict) or 'path' in direction:raise ValueError('Explicit photographic direction object required')
     if evaluation_kind not in m.KINDS:raise ValueError('evaluation_kind must be live/replay/synthetic/unclassified')
     if scenario is not None:w._text(scenario,'scenario')
-    customization=preferences.context(style_library_root,observed_profile_sha256,task_instructions)
+    customization=preferences.context(style_library_root,observed_profile_sha256,task_instructions,
+                                      scenes=tags if profile_scenes is None else profile_scenes,task_settings=task_settings)
     target=Path(path).resolve()
     if target.exists():raise FileExistsError('Job already exists')
     target.parent.mkdir(parents=True,exist_ok=True)
@@ -42,7 +44,7 @@ def prepare(project_root,source_path,path,direction,tags,intent=None,started_uni
         p.prepare(project_root,source_path,temporary,started_unix_ns=started_unix_ns,observed_skill_revision=observed_skill_revision)
         a.direction(temporary,**direction)
         candidates=p.candidates(temporary,project_root,tags,intent=intent,
-                                style_library_root=style_library_root,style_query=style_query,style_ids=style_ids)
+                                style_library_root=style_library_root,style_query=style_query,style_ids=style_ids,style_group=style_group)
         state=w._load(temporary);state['evaluation']={'kind':evaluation_kind,'scenario':scenario or ('/'.join(tags) if tags else 'unclassified')}
         state['user_customization']=customization
         w._save(temporary,state)
@@ -50,7 +52,7 @@ def prepare(project_root,source_path,path,direction,tags,intent=None,started_uni
         os.link(temporary,target)
     value=_response(path)
     value['master_sha256']=w._load(path)['context']['document_hashes']['我的照片美化偏好与修图标准.md']
-    value['candidates']=[{key:item.get(key) for key in ('reference_id','relative_path','library_file_id','path','sha256','origin','labels','subject','note','semantic_evidence')} for item in candidates['candidates']]
+    value['candidates']=[{key:item.get(key) for key in ('reference_id','relative_path','library_file_id','path','sha256','origin','labels','group','pinned','use_for','subject','note','semantic_evidence')} for item in candidates['candidates']]
     value['personal_library']=candidates['personal_library']
     value['reference_limits']=candidates['limitations']
     value['customization']=customization
@@ -96,8 +98,11 @@ def review(path,events,output_path,record_destination=None,brief=None):
 
 def main():
     routes={'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
-            'style-add':styles.add,'style-list':styles.list_references,'style-remove':styles.remove,
-            'profile-show':preferences.show,'profile-set':preferences.save,'profile-reset':preferences.reset}
+            'style-add':styles.add,'style-list':styles.list_references,'style-update':styles.update,'style-remove':styles.remove,
+            'profile-show':preferences.show,'profile-set':preferences.save,'profile-reset':preferences.reset,
+            'profile-rule-add':preferences.add_rule,'profile-rule-set':preferences.update_rule,
+            'profile-rule-remove':preferences.remove_rule,'profile-history':preferences.history,'profile-undo':preferences.undo,
+            'backup-export':backup.export_backup,'backup-inspect':backup.inspect_backup,'backup-import':backup.import_backup}
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('action',choices=routes);args=parser.parse_args()
     try:print(json.dumps(routes[args.action](**json.load(sys.stdin)),ensure_ascii=False,allow_nan=False));return 0
     except c.InputError as error:print(json.dumps(error.payload(),ensure_ascii=False),file=sys.stderr);return 1

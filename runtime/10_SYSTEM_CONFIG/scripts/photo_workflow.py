@@ -88,7 +88,7 @@ def prepare(project_root, source_path, path, started_unix_ns=None,
 
 @workflow.measured('reference_matching')
 def candidates(path, project_root, tags, limit=3, intent=None,
-               style_library_root=None, style_query=None, style_ids=None):
+               style_library_root=None, style_query=None, style_ids=None, style_group=None):
     """Scene-filtered pixel-feature rerank; actual visual selection remains required."""
     state = workflow._load(path, editable=True)
     if state['reviews'] or 'first_render' in state['milestones']:
@@ -109,11 +109,11 @@ def candidates(path, project_root, tags, limit=3, intent=None,
         raise ValueError('Source changed since intake')
     effective = set(tags) - {'L'}
     ranked = [r for r in index if r['include_in_dna'] and effective.intersection(r['tags'])]
-    personal = style_library.records(style_library_root, style_query, style_ids)
+    personal = style_library.records(style_library_root, style_query, style_ids, group=style_group)
     # Untagged collections remain usable; explicit user requests override scene hints.
     personal = [r for r in personal if style_ids or style_query or not effective or
                 not set(r['tags'])-{'L'} or effective.intersection(r['tags'])]
-    if style_ids is not None or style_query is not None:
+    if style_ids is not None or style_query is not None or style_group is not None:
         ranked = []
     ranked += personal
     prior=state.get('reference_query') or {}
@@ -124,7 +124,7 @@ def candidates(path, project_root, tags, limit=3, intent=None,
     from reference_semantics import assess, normalize_intent, VERSION as SEMANTIC_VERSION
     intent=normalize_intent(intent)
     semantic={r['id']:assess(intent,r) for r in ranked}
-    ranked.sort(key=lambda r:(r.get('origin') != 'personal', -semantic[r['id']]['retrieval_score'], -len(effective.intersection(r['tags'])),
+    ranked.sort(key=lambda r:(r.get('origin') != 'personal', -semantic[r['id']]['retrieval_score'], not r.get('pinned',False), -len(effective.intersection(r['tags'])),
                  scores[r['id']]['visual_distance'] is None,
                  scores[r['id']]['visual_distance'] if scores[r['id']]['visual_distance'] is not None else 1,
                  -r['style_weight'],r['id']))
@@ -150,7 +150,7 @@ def candidates(path, project_root, tags, limit=3, intent=None,
              'intent':intent,'visual_suitability_established':False,
              'match_probability':None,'limitations':'Relative tone/color distance is not style quality or semantic compatibility. Sparse/no suitable references use professional judgment; no forced transfer.',
              'eligible_count':len(ranked), 'limit':limit,
-             'personal_library':{'query':style_query,'requested_ids':style_ids,
+             'personal_library':{'query':style_query,'requested_ids':style_ids,'group':style_group,
                                  'unavailable_ids':unavailable},
              'candidates':[{'reference_id':r['id'],'filename':r['original_filename'],
                             'overlap':sorted(effective.intersection(r['tags'])),
@@ -158,6 +158,7 @@ def candidates(path, project_root, tags, limit=3, intent=None,
                             'library_file_id':r.get('library_file_id'), 'relative_path':r.get('relative_path'),
                             'path':r.get('path'), 'sha256':r.get('sha256'),
                             'origin':r.get('origin','project'), 'labels':r.get('labels',[]),
+                            'group':r.get('group',''),'pinned':r.get('pinned',False),'use_for':r.get('use_for',[]),
                             'semantic_evidence':semantic[r['id']], **scores[r['id']]} for r in shortlisted]}
     state['reference_query'] = query
     state['reference_selection'] = None

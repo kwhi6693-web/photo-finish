@@ -43,3 +43,32 @@
 规则和爱好保存在与个人图库相同的私有根目录下的 SQLite 配置表，使用相同 `library_root` / `style_library_root` / `PHOTO_FINISH_STYLE_LIBRARY` 与系统用户默认位置。不能放进技能或 Git checkout，不写入公开 runtime_policy、总规范、README 或安装包。多人宿主必须为各个用户分配独立可信根目录；临时环境需要私有持久位置，跨设备同步由宿主提供。
 
 每个任务保留准备时的快照。修改个人偏好只影响后续任务，正在执行的任务继续使用原快照，不触发重复图像调用。如用户明确要求已开始的任务改变方向，沿用现有修订任务规则处理。损坏或不支持的配置明确报错，不静默忽略，也不自动覆盖。写入时启用 SQLite secure_delete，减少替换或清空后旧文本在当前数据库页中的残留；不承诺磁盘安全擦除，也不删除既有任务快照或外部备份。
+
+## 场景规则、启停与冲突
+
+`profile-rule-add` 保存一条有独立 ID 的规则或爱好：
+
+```json
+{
+  "text": "夜景保留灯光层次，避免大面积过曝",
+  "kind": "rule",
+  "scenes": ["F"],
+  "enabled": true,
+  "consent": true
+}
+```
+
+`kind` 为 `rule` 或 `preference`，最多 60 条。`scenes:[]` 表示全局；场景可用现有 A–L 代码，也可用用户明确指定或实际观察所得的自定义标签。匹配采用去首尾空格、不区分大小写的精确标签，不声称自动理解场景。先实际观察原片，再用相同场景执行 `profile-show {"scenes":["F"]}` 与 prepare；prepare 默认以 `tags` 作为配置场景，必要时显式传 `profile_scenes`。原始全局列表继续通过 profile-set 管理。
+
+`profile-show` 返回 `active_rules / active_preferences`、场景匹配的 scoped_rules 和 sha256；不传 scenes 时列出全部规则供管理，当前生效部分只包括全局规则。形成 direction 时使用当前生效内容。非空场景规则会把场景一起绑定到哈希，不能拿其他场景的旧回执启动任务。
+
+- `profile-rule-set`：真实 `rule_id`、要改的 `text / kind / scenes / enabled` 和 `consent:true`；未传部分不变，enabled 可独立启停；setting/value 也可修改，两者同时设为空字符串可取消结构化设置。
+- `profile-rule-remove`：真实 `rule_id` 与 `consent:true`，移除一条场景规则。
+- 对能明确结构化的互斥要求，可附同一 `setting`（小写键，例如 palette）与 `value`（例如 warm 或 cool）。仅当同一场景、同一优先级下同一个键出现不同值，返回 conflicts；规则优先于审美偏好。普通自然语言冲突继续由助手判断，不声称全面语义检测。
+- 未解决的结构化冲突会阻止 prepare 发布任务。先修改/停用冲突条目；当次用户已经明确覆盖时，可传真实 `task_settings`（例如 `{"palette":"cool"}`）与 task_instructions，按当次要求建立 direction。不得凭空补值绕过冲突。
+
+## 修改历史与撤销
+
+`profile-history {}` 列出最多 20 次个人配置修改前的快照摘要；`profile-undo {"consent":true}` 撤回最近一次修改，可连续撤销。仅实际发生的修改进入历史，不反复记录相同设置。历史属于私人配置，不发布到 Git。
+
+**profile-reset 会清空全局规则、场景规则及撤销历史，因此完整清空不可撤销。**只想临时停用时使用 enabled:false；仅删除一条时用 rule-remove。完整清空继续保留风格照片和已存在的任务快照。移除/替换的历史数据库页启用 secure_delete，不承诺物理安全擦除或删除外部备份。

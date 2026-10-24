@@ -41,3 +41,22 @@
 每个系统用户默认独立；多人宿主必须由宿主为已认证用户指定可信独立根目录，不能把目录名当成身份认证。跨设备需要宿主提供相同的私有持久位置或自行备份恢复整个库；技能不提供云端账号、网页图库或自动同步。临时执行环境应显式指定持久目录，不能承诺临时磁盘跨会话保留。
 
 照片、SQLite 索引与偏好均放在技能目录及 Git checkout 之外，禁止写入公开仓库。不替换分发包的空 `reference_index.json`，不修改个人总规范或自动提炼固定审美优先级。库内原图含原有 EXIF，删除仅移除库内副本，非安全擦除或上传原文件删除。
+
+## 编辑、分组和借鉴范围
+
+使用 `style-update`，必须传真实 `reference_id`、`consent:true`，其余只传要修改的字段：`title`、`labels`、`tags`、`note`、`group`、`pinned`、`use_for`。未传字段保持原样；`group:""` 清空分组，`pinned:false` 取消置顶，列表传 `[]` 清空。修改只涉及元数据，不改原始照片或 ID。先读取当前条目；可传其 `metadata_sha256` 为 `expected_metadata_sha256`，防止旧信息覆盖后续修改。
+
+```json
+{
+  "reference_id": "从当前列表取得的真实ID",
+  "title": "旅行空间参考",
+  "group": "旅行",
+  "pinned": true,
+  "use_for": ["light", "material"],
+  "consent": true
+}
+```
+
+`use_for` 支持 `light / color / material / composition / atmosphere`，空列表表示未额外限定，仍由当次实际看图判断。采用或部分采用已限定用途的候选时，selection 的相应 decision 必须传 `uses`，且不得超出保存范围。scope/reason 仍写实际区域与取舍依据；记录范围不代替实际图像检查。不要借“只参考光影”的图片照搬色彩或构图。
+
+`style-list` 增加 `group`、`pinned_only`、`offset`；回执 `total / next_offset` 支持翻页。关键词同时搜索分组。`prepare.style_group` 按指定分组取候选；置顶在语义适配排序中优先展示，不自动证明适合本片。显式 `style_ids` 与关键词/分组过滤二选一，避免指定收藏被静默排除。已有无分组条目兼容读取。修改只作用于以后查询，现有任务保留当时的参考元数据。

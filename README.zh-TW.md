@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.2.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -57,6 +57,14 @@ python tools/doctor.py
 ```
 
 主入口新增 `profile-show / profile-set / profile-reset`，個人設定與圖庫一樣獨立私有保存，不進入公開倉庫。詳見[自訂指令介面](references/custom-instructions.md)。
+
+## 管理、場景適配與備份
+
+- 參考照片支援修改名稱/標籤/備註、分組、置頂與指定借鑑範圍，列表支援篩選及翻頁，原始照片保持不變。
+- 規則可依場景生效，支援啟停、結構化衝突提示與最近 20 次修改撤銷；完整清空會刪除撤銷歷史並保留圖庫。
+- 私人照片、資料、規則與修改歷史可匯出、檢查與匯入。預設合併保留既有內容，空目錄可完整恢復；備份不進入公開倉庫。
+
+詳見[風格庫介面](references/personal-style-library.md)、[場景規則](references/custom-instructions.md)、[備份恢復](references/private-backup.md)。管理操作按需執行，不增加日常全庫處理。
 
 ## 個人照片風格庫
 
