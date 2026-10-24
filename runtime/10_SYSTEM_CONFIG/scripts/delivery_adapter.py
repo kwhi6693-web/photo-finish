@@ -8,6 +8,7 @@ from pathlib import Path
 import argparse, hashlib, json, os, sys, tempfile, time
 import delivery_automation as a
 import workflow_session as w
+from input_references import capture as capture_inputs
 
 
 def _transaction(path, mutate):
@@ -23,7 +24,7 @@ def _transaction(path, mutate):
         if temporary is not None:temporary.unlink(missing_ok=True)
 
 
-def begin(path,tool_name,arguments,display_mode='manual',protected_regions=None):
+def begin(path,tool_name,arguments,display_mode='manual',protected_regions=None,input_references=None):
     """Persist exact source-bound arguments; never calls or retries an external service."""
     if not isinstance(arguments,dict):raise ValueError('Actual tool arguments must be an object')
     if display_mode not in ('manual','platform_auto'):raise ValueError('Unknown display mode')
@@ -37,8 +38,9 @@ def begin(path,tool_name,arguments,display_mode='manual',protected_regions=None)
         if not isinstance(regions,list) or not regions or any(not isinstance(x,str) or not x.strip() for x in regions):
             raise ValueError('Describe visible regions; no automatic per-stroke certification')
     encoded=json.dumps(arguments,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()
+    inputs=capture_inputs(arguments,w._file,state['source']['path'],roles=input_references)
     def apply(p):
-        token=a.begin_render(p,tool_name,state['source']['sha256'],recipe={'actual_arguments':arguments,'arguments_sha256':hashlib.sha256(encoded).hexdigest()})
+        token=a.begin_render(p,tool_name,state['source']['sha256'],recipe={'actual_arguments':arguments,'arguments_sha256':hashlib.sha256(encoded).hexdigest(),'input_references':inputs})
         value=w._load(p);value['execution_adapter']={'version':1,'display_mode':display_mode,
             'protected_regions':protected_regions,'submission_id':token['submission_id']}
         w._save(p,value);return token
@@ -84,14 +86,18 @@ def finish(path,submission_id,status,start_unix_ns,end_unix_ns,output_path=None,
     return {'reused':False,'next':a.plan(path)}
 
 
-def next_step(path,tool_name,arguments):
+def next_step(path,tool_name,arguments,input_references=None):
     """Deliberate refinement of the reviewed latest bytes; never a retry of unknown work."""
     if not isinstance(arguments,dict):raise ValueError('Actual next-step arguments must be an object')
     state=a._fresh(path,editable=True)
     if not state.get('execution_adapter'):raise ValueError('Use begin for the first actual invocation')
     encoded=json.dumps(arguments,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()
+    prior=(state.get('render_result') or {}).get('acquired') or {}
+    inputs=capture_inputs(arguments,w._file,state['source']['path'],prior.get('path'),input_references)
+    if inputs['files'] and not any(x['path']==prior.get('path') and x['sha256']==prior.get('sha256') and x['role']=='edit_target' for x in inputs['files']):
+        raise ValueError('Next-step local references must include the latest reviewed output as edit_target')
     def apply(p):
-        token=a.next_render(p,tool_name,{'actual_arguments':arguments,'arguments_sha256':hashlib.sha256(encoded).hexdigest()})
+        token=a.next_render(p,tool_name,{'actual_arguments':arguments,'arguments_sha256':hashlib.sha256(encoded).hexdigest(),'input_references':inputs})
         value=w._load(p);value['execution_adapter']['submission_id']=token['submission_id'];w._save(p,value)
         return token
     return _transaction(path,apply)

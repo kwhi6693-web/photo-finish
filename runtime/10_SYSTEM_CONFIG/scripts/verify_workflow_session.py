@@ -396,17 +396,19 @@ class DownloadTests(unittest.TestCase):
     def test_download_accepts_png_and_jpeg_with_expected_integrity(self):
         for endpoint, body in (('/png', PNG), ('/jpeg', JPEG)):
             with self.subTest(endpoint=endpoint):
+                destination=self.dir/('fresh.png' if endpoint=='/png' else 'fresh.jpg')
                 expected = hashlib.sha256(body).hexdigest()
-                result = self.w.download_image(self.url + endpoint, self.destination, expected_sha256=expected)
-                self.assertEqual(self.destination.read_bytes(), body)
+                result = self.w.download_image(self.url + endpoint, destination, expected_sha256=expected)
+                self.assertEqual(destination.read_bytes(), body)
                 self.assertEqual(result['sha256'], expected)
 
-    def test_http_invalid_body_and_hash_errors_preserve_existing_destination(self):
+    def test_http_invalid_body_and_hash_errors_leave_no_destination(self):
+        self.destination.unlink()
         for endpoint, expected in (('/missing', None), ('/html', None), ('/png', '0' * 64)):
             with self.subTest(endpoint=endpoint), self.assertRaises(Exception):
                 self.w.download_image(self.url + endpoint, self.destination, expected_sha256=expected)
-            self.assertEqual(self.destination.read_bytes(), b'previous destination')
-            self.assertEqual(list(self.dir.iterdir()), [self.destination])
+            self.assertFalse(self.destination.exists())
+            self.assertEqual(list(self.dir.iterdir()), [])
 
 
 if __name__ == '__main__':

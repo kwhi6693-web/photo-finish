@@ -1,13 +1,13 @@
-# 默认照片编辑接口 2026-10-23.4
+# 默认照片编辑接口 2026-10-24.2
 
-日常决策读总规范一次。日常优先photo_edit.py的prepare/submit/returned/review合并入口，完整字段按DELIVERY_ADAPTER.md；本页低层接口仅兼容/诊断按需读取。平台本地正式文件和自动展示/延后保存不走本页manual上传分支。本页仅接口/恢复按需读取；机器契约为runtime_policy.json#/fast_edit_workflow及protection_policy、color_delivery_policy。专业摄影判断覆盖所有分支，构图、光色与强度保持开放。以下检查保护信息与真实执行，不限制审美。
+日常决策读总规范一次。日常优先photo_edit.py的prepare/submit/returned/review合并入口，完整字段按DELIVERY_ADAPTER.md；本页低层接口仅兼容/诊断按需读取。平台本地正式文件和自动展示/延后保存不走本页manual上传分支。本页仅接口/恢复按需读取；机器契约为runtime_policy.json#/fast_edit_workflow及protection_policy、color_delivery_policy。专业摄影判断覆盖所有分支，依据当次目的统筹构图与光色，强度保持开放。以下检查保护信息与真实执行，不限制审美。
 
 ## 接入与候选
 
 从项目根以JSON stdin运行 `python 10_SYSTEM_CONFIG/scripts/photo_workflow.py prepare`：
 
 ```json
-{"project_root":".","source_path":"../work/source.jpeg","path":"../work/job.json","expected_workflow_revision":"2026-10-23.4"}
+{"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json"}
 ```
 
 prepare合并策略/五源摘要及总规范哈希、原图哈希/全尺寸/ICC基线及任务。首工具实际起点可传started_unix_ns；不补估计。需现有Pillow，无依赖不安装，bootstrap/timing/读账本可用标准库，涉及图片核验与验收不能绕过。来源明确时规则读取、接入与上传可独立并行。
@@ -21,7 +21,7 @@ prepare合并策略/五源摘要及总规范哈希、原图哈希/全尺寸/ICC�
 用workflow_session.py transact一次提交真实已完成的protect/select：
 
 ```json
-{"path":"../work/job.json","events":[{"action":"protect","arguments":{"requirements":[{"target":"inscriptions","level":"semantic_identity","requirement":"题字、印章与画作可见内容及布局与原图一致；原本模糊处保持，不猜写补清"}],"reason":"本片普通摄影后期的原图可见内容保护"}},{"action":"select","arguments":{"branch":"PROFESSIONAL_FALLBACK","decisions":[{"reference_id":"实际候选ID","decision":"reject","viewed":false,"scope":"索引说明","reason":"具体材质或光照不适配；未声称看过原图"}],"reason":"基于本片独立设计"}}]}
+{"path":"/absolute/job.json","events":[{"action":"protect","arguments":{"requirements":[{"target":"inscriptions","level":"semantic_identity","requirement":"题字、印章与画作可见内容及布局与原图一致；原本模糊处保持，不猜写补清"}],"reason":"本片普通摄影后期的原图可见内容保护"}},{"action":"select","arguments":{"branch":"PROFESSIONAL_FALLBACK","decisions":[{"reference_id":"实际候选ID","decision":"reject","viewed":false,"scope":"索引说明","reason":"具体材质或光照不适配；未声称看过原图"}],"reason":"基于本片独立设计"}}]}
 ```
 
 示例需替换为真实候选；返回空列表才可decisions=[]。decision支持adopt/partial/reject/unavailable；adopt/partial必须viewed=true并实际查看。不得以未读参考推断库中无实例。protect只设置一次，在first_render或任何review之前锁定；可为空但须说明理由。semantic_identity保护指定关键语义/身份；exact_content保护逐笔内容等严格要求。提示词新增严格条件必须写入契约；路线能力不足不能在验收时放宽。新验收不得沿用缺少此契约的旧任务，旧账本仅保留历史。
@@ -55,7 +55,7 @@ PNG有效优先级cICP > iCCP > sRGB > cHRM/gAMA，低优先级回退不同不�
 普通分享未标记8位RGB/RGBA静态PNG确有需要时用photo_workflow.py export-web：
 
 ```json
-{"input_path":"../work/generated.png","output_path":"../work/web.png","assume_untagged_srgb":true,"assumption_reason":"普通分享按未标记RGB的sRGB解释，源编码未确认","source_kind":"generated","receipt_path":"../work/color.json"}
+{"input_path":"/absolute/generated.png","output_path":"/absolute/web.png","assume_untagged_srgb":true,"assumption_reason":"普通分享按未标记RGB的sRGB解释，源编码未确认","source_kind":"generated","receipt_path":"/absolute/color.json"}
 ```
 
 只补元数据，逐像素、尺寸及IDAT不变；保留原生成文件，不复制相机P3到生成像素。非sRGB须真实转换，严格色准未确认继续标记。图片和记录先预检/暂存，发布失败仅回滚本次新建文件。中断后显式resume_existing=true只允许核验与确定性输出字节完全一致的图片，再补缺失记录；绝不盲目覆盖。

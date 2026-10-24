@@ -1,6 +1,6 @@
 # 原生保真调色与实际保存
 
-本页为按需接口，审美、构图与去AI味沿总规范执行，不预设微调上限。日常submit逐保护目标记录fidelity策略：实际非生成原区域保留用native_preserved，真实局部编辑避开保护区域用local_excluded；均需实际能力依据、修正路线和最终比较，不以工具名称自动通过。普通生成后可见内容比对用generative_compare；exact_content不得选择此路线。
+本页为按需接口，氛围、审美、构图与去AI味沿总规范执行，不预设微调上限。日常submit逐保护目标记录fidelity策略：实际非生成原区域保留用native_preserved，真实局部编辑避开保护区域用local_excluded；均需实际能力依据、修正路线和最终比较，不以工具名称自动通过。普通生成后可见内容比对用generative_compare；exact_content不得选择此路线。
 
 1. 实际看原片、完成源绑定参考选择与保护契约后，选择真实可用的非生成光色调整。Adobe原片用asset_openai_file_upload，使用实际返回的源URL；每次image_apply_adjustments之前须asset_inline_preview并看图，不能仅凭文件名设值。若后续要做文件验收和保存，使用返回实际结果的服务端路线；遵守当次工具的单图/交互与显式自动处理授权规则。
 2. 按本片判断合并曝光、影调与色彩参数为一次image_apply_adjustments，PNG输出。该工具的固定顺序是曝光→高光→亮部→暗部/阴影→亮度/对比→色温→HSL→自然饱和/饱和度→分通道饱和度，不把不同引擎参数当相同滑块。需要改变非交换顺序才分步。未使用的参数不补造。

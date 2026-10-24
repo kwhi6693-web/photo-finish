@@ -24,6 +24,14 @@ def findings_for(name,data):
     for rule,regex in RULES.items():
         for match in regex.finditer(text):found.append({'rule':rule,'line':text.count('\n',0,match.start())+1})
     suffix=PurePosixPath(name).suffix.lower()
+    if suffix=='.json':
+        try:value=json.loads(text)
+        except (ValueError,TypeError):value=None
+        def private_scope(item):
+            if isinstance(item,dict):
+                return item.get('distribution_scope')=='private' or any(private_scope(v) for v in item.values())
+            return isinstance(item,list) and any(private_scope(v) for v in item)
+        if private_scope(value):found.append({'rule':'private-profile-policy','line':None})
     parts=PurePosixPath(name).parts
     if suffix in MEDIA or any(p in FORBIDDEN_PARTS for p in parts):found.append({'rule':'private-media-or-work-record','line':None})
     if any(p=='.env' or p.startswith('.env.') for p in parts) or suffix in {'.pem','.key','.p12','.pfx'}:

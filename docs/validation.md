@@ -1,10 +1,18 @@
 # Validation scope
 
-Public release: **1.0.0**, derived from workflow revision **2026-10-23.4** with a self-contained runtime and no private reference corpus.
+Main-branch package: **1.0.2**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 
-## Local release checks — 2026-10-23
+## Public profile scope — 2026-10-24
+
+This public package uses general-purpose photographic direction. Personal aesthetic priorities belong to a private profile and are excluded from the public policy, entrypoints and installation archive. The delivery-safety fixes are retained.
+
+## Targeted fixes — 2026-10-24
+
+Non-overwriting URL acquisition (including races and symlinks), decoded-format/suffix validation, and per-local-reference SHA256/role binding are covered by offline regressions. Reference changes are checked at result handling and final acceptance. Source-material fidelity and localized feedback methods are integrated. No new cloud render, approval, dependency or daily stage is introduced. Local Linux/Python 3.12 verification: 156 public synthetic tests passed. Fifteen targeted safety tests include destination races, mismatched suffixes, symlink retargeting, immutable submission recipes, current-step receipts and local refinement lineage. A deterministic clean extraction is exercised by the package tests. Windows/macOS results are recorded by the new PR CI, not inferred from this local run. The v1.0.0 tag remains historical.
+
+## Historical local release checks — 2026-10-23
 
 Linux, Python 3.12.14 and Pillow 12.3.0: **138 synthetic protocol, security and package tests passed** on the initial publication source revision. Read-only doctor and publication scan passed. Three additional synthetic optional numeric-planning requests (A/H/I, J and L) completed; these are planning checks, not photograph rendering.
 

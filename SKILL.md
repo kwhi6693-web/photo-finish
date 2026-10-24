@@ -1,6 +1,6 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition photographs with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
@@ -11,7 +11,7 @@ description: Beautify, retouch, color-grade, and improve composition photographs
 
 ## 接入与现行依据
 
-当前编排2026-10-23.4。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。参考索引默认空；不足直接从原片作专业判断，用户明确提供的参考仅用于本次授权范围。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
+当前编排2026-10-24.2。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。参考索引默认空；不足直接从原片作专业判断，用户明确提供的参考仅用于本次授权范围。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
 
 photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定contract 3；验收重核当前上下文，变化新建任务复核。不硬传旧技能为expected修订、不循环重读或声称刷新服务端缓存。图片检查需已有Pillow，不隐式安装。
 
@@ -19,14 +19,16 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 
 每张主动完成构图、主次光影、色彩和材质，**表达明显更充分**。构图画幅、强弱色彩、黑白、颗粒、虚实、塑光、天气演绎及必要扩图清理自由，旧预设/Style DNA/本地参考仅为素材，不机械套暖金、高饱和或固定强度。
 
-长期保留去AI味：实际看光影空间、材质、原生细节与边缘，修正假纹理、涂抹、HDR光晕和结构变形；不凭提示词或分数通过。身份与关键事实继续保护。题字印章与原图可见内容一致，模糊处不猜写；普通后期semantic_identity，不自行升级逐笔/像素认证。已知重绘不能满足exact_content。保留真实生成来源。
+长期保留去AI味：实际看光影空间、材质、原生细节与边缘，修正假纹理、涂抹、HDR光晕和结构变形；不凭提示词或分数通过。身份与关键事实继续保护。题字印章与原图可见内容一致，模糊处不猜写；普通后期semantic_identity，不自行升级逐笔/像素认证。已知重绘不能满足exact_content。保留真实生成来源。自然度是选定表达内的摄影可信度检查，不预设构图、调色与塑光的保守强度上限。质感先用光影、明暗分离和反射落实；普通摄影以原片材质、表面粗细及字纹深浅为依据，避免无意新增斑点、锈纹、纤维或刻痕。明确选定的材质转译按创作自由执行并记录。
+
+局部反馈修正指定目标，保留已认可的整体表达，复核目标、边缘及全幅协调。柔和低曝光仅作适用场景的可选表达，其他照片独立判断。
 
 ## 日常固定入口
 
 完整JSON字段仅按需读[工具与交付接口](references/delivery-adapter.md)，同任务复用。脚本在项目10_SYSTEM_CONFIG/scripts/photo_edit.py；只读紧凑回执，不默认回显整份job/政策/直方图。
 
 1. 实际看原片后prepare合并接入、明确direction与candidates；已有主体/光照/材质/表达观察传intent标签。参考元数据推断不冒称自动看图或最佳风格；实际查看拟采用参考，候选逐条取舍，不足直接专业设计，不凑例或全库扫描。
-2. 实际参考判断后submit合并protect/select/问题/begin，逐保护目标写需比较区域及fidelity的strategy/实际能力依据/修正路线，保存完整真实参数。保留原区域或局部避开以实际能力为准；普通生成后对照仍可用，exact_content禁止生成重建。需生成时读imagegen、引用原片，紧挨真实工具两侧计时。returned合并finish与本地正式文件检查，不下载/上传同一生成图；URL须fetch正式字节。working只续同task，unknown先调查不重发。多步精修next-step只接最新已实际看图核验输出。
+2. 实际参考判断后submit合并protect/select/问题/begin，逐保护目标写需比较区域及fidelity的strategy/实际能力依据/修正路线，保存完整真实参数，并由submit自动绑定各本地输入图的完整SHA256；可在适配器input_references标明风格/构图等用途，未指定附加图仅记supporting_reference。取回及验收复核参考字节，变化调查既有提交不重发。保留原区域或局部避开以实际能力为准；普通生成后对照仍可用，exact_content禁止生成重建。需生成时读imagegen、引用原片，紧挨真实工具两侧计时。returned合并finish与本地正式文件检查，不下载/上传同一生成图；URL须fetch正式字节，使用全新目标并校验实际格式与扩展名；低层同样拒绝同名及并发覆盖，不自动转码。working只续同task，unknown先调查不重发。多步精修next-step只接可编辑任务最新已实际看图核验输出；已接受/终态后的调整新建修订任务，关联用户选定成片、原图及原保护要求，保留历史。
 3. 实际看全幅表达及受影响原生细节、去AI味和保护区域，异常扩查；几何变化重查蒙版/坐标。returned返回原定比较区域/目标ID；review先校验字段，再合并明确实际证据、验收及可选snapshot，不自动填通过。comparison_scope用覆盖原定区域的列表；actual_scope用准确目标ID列表，描述写reason。保留原区域方案不能以已重建内容通过。问题逐目标corrected或有依据not_needed绑定最终哈希；无蒙版如实mask=null。生成保护内容实际比较并记comparison_scope/content_recreated。open/blocked不完整通过，不放宽锁定保护。
 
 正式文件检查只在路径、实际全字节SHA256及检查器版本一致时复用；像素/元数据/版本改变重解码。实际看图、色彩范围、保护、问题及最终现行上下文检查保持；不以mtime或旧视觉结论代替。

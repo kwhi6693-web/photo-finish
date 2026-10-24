@@ -1,7 +1,7 @@
 interface:
   display_name: 个人摄影美化与调色
-  short_description: 收到照片直接专业美化，表达充分且保留摄影质感，逐张只输出最终成片
-  default_prompt: 使用 $photo-finish 按最新个人摄影规则处理照片，逐张只输出最终成片，不附原片、对比或说明。
+  short_description: 专业美化照片，按当次意图选择表达，保留摄影质感，逐张只输出最终成片
+  default_prompt: 使用 $photo-finish 按当次要求与照片用途选择构图、光影和色彩表达，逐张只输出最终成片，不附原片、对比或说明。
   icon_small: assets/icon.svg
   icon_large: assets/icon.svg
 policy:
