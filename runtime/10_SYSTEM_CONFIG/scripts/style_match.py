@@ -8,19 +8,27 @@ from io import BytesIO
 import math
 from PIL import Image, ImageCms, ImageOps
 
-VERSION='source_pixel_features_v1'
+VERSION='source_pixel_features_v2'
 
 def features(path, source_sha256):
     with Image.open(path) as original:
         original.load()
-        image=ImageOps.exif_transpose(original).convert('RGB')
+        image=ImageOps.exif_transpose(original)
         image.thumbnail((256,256),Image.Resampling.LANCZOS)
         profile=original.info.get('icc_profile')
         if profile:
-            image=ImageCms.profileToProfile(image,ImageCms.ImageCmsProfile(BytesIO(profile)),
-                ImageCms.createProfile('sRGB'),outputMode='RGB',renderingIntent=1)
+            # Apply the source ICC to its own color channels (e.g. L/CMYK/LAB),
+            # not to pixels that have already been converted into RGB.
+            if image.mode not in ('RGB','RGBA','L','CMYK','LAB'):
+                image=image.convert('RGB')
+            try:
+                image=ImageCms.profileToProfile(image,ImageCms.ImageCmsProfile(BytesIO(profile)),
+                    ImageCms.createProfile('sRGB'),outputMode='RGB',renderingIntent=1)
+            except (ImageCms.PyCMSError,OSError,ValueError) as error:
+                raise ValueError('Cannot measure style with this ICC profile; provide a supported color-managed copy') from error
             basis='embedded_ICC_to_sRGB_for_analysis_only'
         else:
+            image=image.convert('RGB')
             basis='untagged_RGB_assumed_sRGB_for_matching_only; not delivery color evidence'
         hsv_image=image.convert('HSV')
         pixels=list(getattr(image,'get_flattened_data',image.getdata)())

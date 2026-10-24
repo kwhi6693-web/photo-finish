@@ -33,7 +33,7 @@ def findings_for(name,data):
             return isinstance(item,list) and any(private_scope(v) for v in item)
         if private_scope(value):found.append({'rule':'private-profile-policy','line':None})
     parts=PurePosixPath(name).parts
-    if suffix in MEDIA or any(p in FORBIDDEN_PARTS for p in parts):found.append({'rule':'private-media-or-work-record','line':None})
+    if suffix in MEDIA|{'.sqlite', '.sqlite3', '.db'} or any(p in FORBIDDEN_PARTS|{'style-library'} for p in parts):found.append({'rule':'private-media-or-work-record','line':None})
     if any(p=='.env' or p.startswith('.env.') for p in parts) or suffix in {'.pem','.key','.p12','.pfx'}:
         found.append({'rule':'credential-file','line':None})
     return found

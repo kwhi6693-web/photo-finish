@@ -436,6 +436,8 @@ def select_references(path, branch, decisions, reason):
         raise ValueError('Reference branch contradicts candidate decisions')
     state['reference_selection'] = {'branch':branch,'decisions':clean,'reason':_text(reason,'reason'),
                                      'query':query}
+    from style_library import verify_selection
+    verify_selection(state)
     return _save(path,state)
 
 
@@ -528,6 +530,8 @@ def accept_job(path, output_path):
     state = _load(path)
     from input_references import verify as verify_inputs
     verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),_file)
+    from style_library import verify_selection
+    verify_selection(state)
     if state['status'] in ('failed','cancelled'):
         raise ValueError('Terminal job cannot be accepted; prepare a new job')
     output = _file(output_path)

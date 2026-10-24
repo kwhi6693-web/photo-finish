@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.0.2-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.1.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -50,8 +50,19 @@ Python dependencies do not provide an image generator. The host agent must suppl
 - **Composition freedom.** Preserve, optimize or reframe; crop, aspect ratio and visual center follow the photograph rather than a fixed preset.
 - **Believable photography.** Check spatial logic, reflections, perspective, material detail, halos, smearing and repeated synthetic texture. This does not require low contrast or muted color.
 - **Protect meaningful content.** Preserve recognizable identity, artwork, inscriptions, stamps and key facts according to the locked task requirements. Ordinary lettering follows the visible source; ambiguous strokes are not invented.
+- **Your personal style library.** Explicitly collect favorite photographs with names, labels and notes. Future edits automatically retrieve up to three relevant references; search by keyword or choose saved IDs. Private files live outside the installation and Git checkout.
 - **References when useful.** Use authorized references as evidence, not an aesthetic ceiling. An empty or unsuitable reference library goes directly to professional source-based judgment.
 - **Real execution records.** Bind source/output hashes, actual tool arguments, protection strategy, observed review, corrections and timing. Do not call a plan a photograph.
+
+## Personal style library
+
+```text
+Save this photograph to my style library as “Soft wood interiors”; I like its light and texture.
+Use $photo-finish to edit this new photo using suitable references from my style library.
+Use the “Soft wood interiors” style from my collection for this photograph.
+```
+
+The agent uses `photo_edit.py style-add`, `style-list`, and `style-remove`. Collection requires explicit user intent; edit targets and final images are never collected automatically. The same `prepare` call retrieves the current user's collection before the existing visual selection step. The [field guide](references/personal-style-library.md) documents JSON commands, keyword/ID selection and private storage. The collection is local and persistent when the host provides a persistent location; it has no built-in cloud sync or hosted account service.
 
 ## 🧭 How It Works
 

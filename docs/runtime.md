@@ -37,16 +37,20 @@ From `runtime/`, call `python 10_SYSTEM_CONFIG/scripts/photo_edit.py ACTION` wit
 }
 ```
 
-1. `prepare` binds current context, source identity, direction and candidate retrieval. The public index is empty; choose professional fallback instead of fabricating a match.
+1. `prepare` binds current context, source identity, direction and candidate retrieval. The public index is empty; the current user’s optional private collection is queried automatically. Choose professional fallback when no applicable reference exists.
 2. `submit` locks explicit protections and fidelity strategy, reference decisions, observed issues and the complete actual image-tool arguments.
 3. Execute the real host image tool **once**, measuring the actual call boundaries. `returned` registers its real task/output and checks formal file bytes. Resume an existing in-progress task rather than submitting it again.
 4. Actually inspect the full result and affected native details. Supply truthful events to `review`; unresolved issues or unmet protection block acceptance. Save internal records only through the supported host route.
 
 The full [adapter field guide](../references/delivery-adapter.md) contains `submit`, `returned`, `review`, correction and save examples. Generic descriptions in examples are not completed observations or permission to fill pass values automatically.
 
-## Reference extension
+## Personal style library
 
-The shipped `reference_index.json` is an empty list. If you maintain a private local reference set, use only authorized photographs, follow the index contract expected by `photo_workflow.candidates`, and keep the resulting index/photos out of Git. Rebuild the local session brief after intentional configuration changes. Do not promote edit targets or generated outputs into references automatically. The public `doctor` intentionally expects the distributed index to remain empty.
+Use the same controller's `style-add`, `style-list`, and `style-remove` commands to maintain an opt-in private collection. See the [field guide](../references/personal-style-library.md) for JSON examples and storage behavior. An explicit collection request authorizes `consent: true`; a plain edit request does not. The host obtains a real local file before collection; there is no hosted upload endpoint.
+
+`prepare` automatically queries that user's collection. Optional `style_query` filters title/labels/note, `style_ids` selects up to three actual IDs (choose one selector, not both), and `style_library_root` overrides the environment/default location. The returned candidate `path` and `sha256` let the agent inspect the exact reference. Existing `selection` decisions still require actual viewing. Missing/changed candidates are reported; explicitly requested missing IDs fail. Adopted bytes are checked before submission and later acceptance. New unrelated entries do not invalidate existing jobs.
+
+Management commands accept `library_root`, or use PHOTO_FINISH_STYLE_LIBRARY, or default to the OS user's application data directory. Never store private data inside the skill or any Git checkout. Multi-user hosts must assign trusted separate roots; ephemeral hosts must supply persistent storage. This is a local collection, with no built-in account service or cross-device sync. Empty lookup does not write files, and a damaged catalog raises an error. The distributed `reference_index.json` stays empty; `doctor` continues to validate the public package.
 
 ## Recovery and saving
 

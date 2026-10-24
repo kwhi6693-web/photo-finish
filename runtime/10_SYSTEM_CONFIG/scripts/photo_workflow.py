@@ -19,6 +19,7 @@ import workflow_session as workflow
 from runtime_io import atomic_json
 from png_color import declaration, export_web
 from style_match import features, distance, VERSION as MATCH_METHOD
+import style_library
 
 INSPECTION_VERSION=2
 
@@ -86,7 +87,8 @@ def prepare(project_root, source_path, path, started_unix_ns=None,
 
 
 @workflow.measured('reference_matching')
-def candidates(path, project_root, tags, limit=3, intent=None):
+def candidates(path, project_root, tags, limit=3, intent=None,
+               style_library_root=None, style_query=None, style_ids=None):
     """Scene-filtered pixel-feature rerank; actual visual selection remains required."""
     state = workflow._load(path, editable=True)
     if state['reviews'] or 'first_render' in state['milestones']:
@@ -107,6 +109,13 @@ def candidates(path, project_root, tags, limit=3, intent=None):
         raise ValueError('Source changed since intake')
     effective = set(tags) - {'L'}
     ranked = [r for r in index if r['include_in_dna'] and effective.intersection(r['tags'])]
+    personal = style_library.records(style_library_root, style_query, style_ids)
+    # Untagged collections remain usable; explicit user requests override scene hints.
+    personal = [r for r in personal if style_ids or style_query or not effective or
+                not set(r['tags'])-{'L'} or effective.intersection(r['tags'])]
+    if style_ids is not None or style_query is not None:
+        ranked = []
+    ranked += personal
     prior=state.get('reference_query') or {}
     measured=prior.get('features')
     if not measured or measured.get('version')!=MATCH_METHOD or measured.get('source_sha256')!=state['source']['sha256']:
@@ -115,23 +124,41 @@ def candidates(path, project_root, tags, limit=3, intent=None):
     from reference_semantics import assess, normalize_intent, VERSION as SEMANTIC_VERSION
     intent=normalize_intent(intent)
     semantic={r['id']:assess(intent,r) for r in ranked}
-    ranked.sort(key=lambda r:(-semantic[r['id']]['retrieval_score'], -len(effective.intersection(r['tags'])),
+    ranked.sort(key=lambda r:(r.get('origin') != 'personal', -semantic[r['id']]['retrieval_score'], -len(effective.intersection(r['tags'])),
                  scores[r['id']]['visual_distance'] is None,
                  scores[r['id']]['visual_distance'] if scores[r['id']]['visual_distance'] is not None else 1,
                  -r['style_weight'],r['id']))
     if workflow._file(state['source']['path']) != state['source']:
         raise ValueError('Source changed during reference matching')
+    shortlisted = []
+    unavailable = []
+    for reference in ranked:
+        if len(shortlisted) == limit:
+            break
+        if reference.get('origin') == 'personal':
+            try:
+                style_library.verify(reference)
+            except ValueError:
+                unavailable.append(reference['id'])
+                if style_ids:
+                    raise
+                continue
+        shortlisted.append(reference)
     query = {'source_sha256':state['source']['sha256'], 'index_sha256':identity['sha256'],
              'tags':tags, 'scope':'Scene-filtered tone/color pixel-feature shortlist, then actual material/light/semantic visual judgment',
              'method':MATCH_METHOD,'features':measured,'semantic_method':SEMANTIC_VERSION,
              'intent':intent,'visual_suitability_established':False,
              'match_probability':None,'limitations':'Relative tone/color distance is not style quality or semantic compatibility. Sparse/no suitable references use professional judgment; no forced transfer.',
              'eligible_count':len(ranked), 'limit':limit,
+             'personal_library':{'query':style_query,'requested_ids':style_ids,
+                                 'unavailable_ids':unavailable},
              'candidates':[{'reference_id':r['id'],'filename':r['original_filename'],
                             'overlap':sorted(effective.intersection(r['tags'])),
                             'note':r.get('individual_note',''), 'subject':r.get('subject',''),
                             'library_file_id':r.get('library_file_id'), 'relative_path':r.get('relative_path'),
-                            'semantic_evidence':semantic[r['id']], **scores[r['id']]} for r in ranked[:limit]]}
+                            'path':r.get('path'), 'sha256':r.get('sha256'),
+                            'origin':r.get('origin','project'), 'labels':r.get('labels',[]),
+                            'semantic_evidence':semantic[r['id']], **scores[r['id']]} for r in shortlisted]}
     state['reference_query'] = query
     state['reference_selection'] = None
     workflow._save(path,state)

@@ -30,7 +30,8 @@ class PublicationTests(unittest.TestCase):
         for value in ('https://example.com/image?'+'sig='+'private-value', '-----BE'+'GIN PRIVATE KEY-----'):
             self.assertTrue(findings_for('fixture.txt',value.encode()))
     def test_photographs_and_environment_files_are_rejected(self):
-        for name in ('private.jpeg','.env.production','outputs/job.json'):
+        for name in ('private.jpeg','.env.production','outputs/job.json', 'catalog.sqlite3',
+                     'backup.db', 'style-library/catalog.txt'):
             self.assertTrue(findings_for(name,b'{}'))
     def test_archive_traversal_duplicates_and_symlinks_are_rejected(self):
         for name,mode in (('../escape.txt',0o100644),('safe.txt',0o120777)):

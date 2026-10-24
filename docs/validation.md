@@ -1,8 +1,16 @@
 # Validation scope
 
-Main-branch package: **1.0.2**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
+Feature package: **1.1.0**, derived from workflow revision **2026-10-24.2** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
+
+## Personal style library — 2026-10-24
+
+The optional private collection is part of `photo_edit.py`: explicit collection, exact-byte SHA256 deduplication, keyword/ID retrieval, removal and automatic prepare candidates. It adds SQLite from the standard library, reuses Pillow and the existing selection/review gates, and includes no image service or private photographs.
+
+Local Linux / Python 3.12.14 / Pillow 12.3.0: **170 synthetic tests passed**, including fourteen private-library regressions and an adopted-reference submit/returned/review protocol. Tests isolate the collection root from developer data. Profiled non-RGB references preserve their source color mode for ICC analysis; invalid profiles fail before collection writes. Conflicting ID/keyword selectors fail explicitly. A native SQLite page-quota failure removes newly created unindexed copies while preserving preexisting files. The doctor, skill frontmatter validation and publication/history scan passed; deterministic package builds and relocated extraction are exercised by package tests.
+
+A separate agent exercised the documented CLI in isolated temporary storage: thirteen management calls and seven prepare calls verified fresh-process persistence, byte identity, duplicate handling, name/label/note search, automatic/query/ID retrieval, empty fallback, root isolation, explicit missing-ID errors and source-preserving deletion. This does not certify real photograph aesthetics, actual cloud rendering, host durability or cross-device synchronization. Platform CI results are reported separately from local checks.
 
 ## Public profile scope — 2026-10-24
 

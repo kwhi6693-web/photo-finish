@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.0.2-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.1.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -42,8 +42,19 @@ python tools/doctor.py
 - 保留、优化、重构构图同等可选，不限定轻裁、固定画幅或统一暖金色。
 - 长期保留去 AI 味：检查空间、反射、透视、塑料感、涂抹、假纹理与光晕。
 - 书画题字按原图可见内容保持，模糊处不猜写；严格逐笔或像素保真只在明确要求时启用。
-- 参考索引默认空。没有适用实例时，直接依据本片作专业判断，不依赖私人图库。
+- **个人照片风格库**：主动收藏喜欢的照片，记录名称、标签与喜欢之处；每次修图自动检索最多三张适用参考，可按关键词或收藏 ID 指定，并支持查看、搜索与删除。
+- 分发参考索引默认空。个人库无适用实例时，直接依据本片作专业判断。
 - 绑定原片与成片哈希、完整真实参数、保护方案、实际复核和计时，不以方案或提示词代替执行。
+
+## 个人照片风格库
+
+```text
+把这张收藏到我的风格库，命名“柔光木质”，我喜欢它的光影与质感。
+使用 $photo-finish 美化这张新照片，参考我的风格库。
+这张按风格库里的“柔光木质”处理。
+```
+
+收藏、查看和删除复用主入口的 `style-add / style-list / style-remove`，修图继续使用原有 `prepare → submit → returned → review`。仅明确收藏才入库，待修图和成片不自动加入。个人库保存在当前用户的私有持久目录，公开仓库不含照片或个人偏好；跨设备同步由宿主提供，临时环境需指定持久位置。详见[风格库接口](references/personal-style-library.md)。
 
 ## 🧭 执行与能力边界
 
