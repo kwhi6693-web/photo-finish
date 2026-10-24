@@ -1,5 +1,7 @@
 # Personal style library
 
+Historical implementation record for 1.1.0, delivered in [PR #6](https://github.com/kwhi6693-web/photo-finish/pull/6). Current interfaces and later changes are documented in [runtime.md](runtime.md), [architecture.md](architecture.md) and [CHANGELOG](../CHANGELOG.md).
+
 Goal: let each user explicitly collect photographs that express their preferred aesthetic, then retrieve applicable examples in the existing main editing flow.
 
 Use the existing Python/Pillow runtime with a small SQLite catalog and private image copies outside the skill and Git checkout. This reuses the current source-bound candidate/selection protocol. A hosted gallery would add accounts, services and dependencies; modifying the shipped reference index would mix user data with releases. Neither is needed for this feature.

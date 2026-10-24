@@ -1,12 +1,12 @@
 # Optional scene baselines
 
-These designed starting settings are advisory, not recovered camera settings or proof of a matching style. No reference photographs ship with this repository. Exposure, white balance, crop, skin and material color require per-photo judgment. Adobe import/render and all-scene validation remain unverified.
+These designed starting settings are advisory, not recovered camera settings or proof of a matching style. First read optional global instructions and retrieve/view suitable personal references; choose final direction afterward. Each scene below describes how that optional baseline preserves its stated lighting, not a compulsory aesthetic for every image. Creative time-of-day/weather treatment follows the current master policy and is recorded as an interpretation. No reference photographs ship with this repository. Exposure, white balance, crop, skin and material color require per-photo judgment. Adobe import/render and all-scene validation remain unverified.
 
 ## A — 晴天城市与建筑
 
 直射或方向明确的日光、天空与石材立面；先排除车内黑框。
 
-天空保留蓝青层次，石材暖灰；不要把日光照片修成夜景。
+该日光基准保留天空蓝青层次与石材暖灰；选择日夜演绎时独立设计并记作创作处理。
 
 ## B — 阴天与低对比街景
 
@@ -24,7 +24,7 @@ These designed starting settings are advisory, not recovered camera settings or 
 
 自然粉橙至灰蓝天空、远山与水面剪影；需区分自然天空和人工橙灯，精确时刻未知
 
-允许天空与湖面较亮，保留柔和色彩渐变；亭阁和人物剪影不强行提亮；不添加人工琥珀灯色
+该黄昏基准允许天空与湖面较亮、保留渐变和剪影；人工灯光或其他色彩演绎按当前表达独立设计并记录
 
 ## E — 蓝调时刻
 
@@ -72,4 +72,4 @@ These designed starting settings are advisory, not recovered camera settings or 
 
 无法可靠确认场景或样本分布之外；数值相似不等于语义相同。
 
-采用弱风格基准，保留曝光和白平衡自由度。
+依据原片、当次要求和适用参考作独立专业判断，构图、曝光、白平衡与表达强度由本片决定。

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.1 — 2026-10-24
+
+- Refresh all repository materials: three-language navigation, feature/architecture/operation map, contributor guidance and current security/privacy scope, including the history scanner's file-blob boundary.
+- Align optional Lightroom and scene guides, style translation, low-level retrieval descriptions and machine-readable explanatory metadata with the reference-first workflow and current feature method. Numeric presets, XMP compatibility versions and historical release facts remain unchanged.
+- Mark earlier design plans as historical, record completed 1.4.0 publication/validation, and rebuild the skill ZIP with synchronized guide/policy hashes.
+- No new rendering, management behavior, dependency or service. Existing 209 synthetic regressions remain the verification baseline; each release also verifies its own current-head CI and latest-download artifacts.
+
 ## 1.4.0 — 2026-10-24
 
 - **Reference-first direction:** observe the source, read optional global instructions, retrieve and view suitable private references, then lock final direction with submission. The four daily calls remain prepare/submit/returned/review.

@@ -1,5 +1,7 @@
 # User custom instructions
 
+Historical implementation record for 1.2.0, delivered in [PR #7](https://github.com/kwhi6693-web/photo-finish/pull/7). Current interfaces and later changes are documented in [runtime.md](runtime.md), [architecture.md](architecture.md) and [CHANGELOG](../CHANGELOG.md).
+
 Extend the primary workflow with a private, user-managed layer for durable rules and aesthetic preferences. Keep the current photograph collection, rendering, visual judgment and protection workflow.
 
 ## Contract

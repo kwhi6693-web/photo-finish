@@ -1,4 +1,6 @@
-"""Public-tree and optional all-history leak gate; never print matched values."""
+"""Public-tree and reachable-file-history leak gate; Git metadata is excluded.
+
+Never print matched values. Commit and annotated-tag messages are not scanned."""
 from pathlib import Path, PurePosixPath
 import argparse, hashlib, io, json, re, subprocess, sys, zipfile
 

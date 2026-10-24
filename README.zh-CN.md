@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -50,7 +50,7 @@ python tools/doctor.py
 - 分发参考索引默认空。个人库无适用实例时，直接依据本片作专业判断。
 - 绑定原片与成片哈希、完整真实参数、保护方案、实际复核和计时，不以方案或提示词代替执行。
 
-## 自定义指令与爱好
+## 可选全局指令与专业判断
 
 用户可以保存自己的长期修图规则和审美偏好，并查看、修改、删除单条或清空。每次调用先读取个人配置，再结合原片建立处理方向；本次要求优先，临时尝试不会自动改写长期爱好。
 
@@ -60,7 +60,7 @@ python tools/doctor.py
 这次按另一种色彩处理，不改变我的长期偏好。
 ```
 
-主入口新增 `profile-show / profile-set / profile-reset`，个人配置与图库一样独立私有保存，不进入公开仓库。详见[自定义指令接口](references/custom-instructions.md)。
+使用主入口 `profile-show / profile-set / profile-reset`，个人配置与图库一样独立私有保存，不进入公开仓库。详见[自定义指令接口](references/custom-instructions.md)。
 
 ## 管理、场景适配与备份
 
@@ -112,6 +112,17 @@ python tools/build_release.py --output dist/photo-finish.zip
 ```
 
 合成测试验证执行契约，不冒充真实照片质量证明。具体范围见[验证记录](docs/validation.md)。贡献前请阅读[贡献指南](CONTRIBUTING.md)。
+
+## 资料导航
+
+| 需要了解 | 资料 |
+|---|---|
+| 主要功能、架构与全部管理入口 | [架构与资料地图](docs/architecture.md) |
+| 实际运行和接口字段 | [运行指南](docs/runtime.md) · [主接口](references/delivery-adapter.md) |
+| 个人风格与可选全局指令 | [风格库](references/personal-style-library.md) · [自定义指令](references/custom-instructions.md) |
+| 私人资料备份和迁移 | [备份恢复](references/private-backup.md) |
+| 更新、验证与发布 | [更新记录](CHANGELOG.md) · [验证记录](docs/validation.md) · [发布流程](docs/releasing.md) |
+| 隐私边界与贡献 | [安全说明](SECURITY.md) · [发布审计](docs/security-audit.md) · [贡献指南](CONTRIBUTING.md) |
 
 ## 许可证
 
