@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -58,7 +58,7 @@ Python dependencies do not provide an image generator. The host agent must suppl
 - **References when useful.** Use authorized references as evidence, not an aesthetic ceiling. An empty or unsuitable reference library goes directly to professional source-based judgment.
 - **Real execution records.** Bind source/output hashes, actual tool arguments, protection strategy, observed review, corrections and timing. Do not call a plan a photograph.
 
-## Your rules and preferences
+## Optional global instructions and professional judgment
 
 Save your own editing rules and aesthetic preferences, then reuse them automatically on future edits. View, replace, remove or clear them through `profile-show / profile-set / profile-reset` in the same controller. Current instructions take priority, so a one-time experiment does not change your long-term profile.
 
@@ -145,6 +145,17 @@ The package builder uses an allowlist, rejects unsafe entries, writes determinis
 ## 🤝 Contributing
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md). Keep the ordinary edit path light, preserve actual visual review, and never add private photographs or credentials to tests or examples. A ⭐ helps others discover the project if it is useful to you.
+
+## Documentation
+
+| Need | Guide |
+|---|---|
+| Main features, architecture and all controller operations | [Architecture and document map](docs/architecture.md) |
+| Executable workflow and API fields | [Runtime guide](docs/runtime.md) · [Adapter contract](references/delivery-adapter.md) |
+| Personal references and optional global instructions | [Style library](references/personal-style-library.md) · [Custom instructions](references/custom-instructions.md) |
+| Private migration and recovery | [Backup guide](references/private-backup.md) |
+| Updates, evidence and publication | [Changelog](CHANGELOG.md) · [Validation](docs/validation.md) · [Release procedure](docs/releasing.md) |
+| Privacy boundaries and contributions | [Security](SECURITY.md) · [Audit](docs/security-audit.md) · [Contributing](CONTRIBUTING.md) |
 
 ## License
 

@@ -34,7 +34,7 @@
 
 ## Task 3: Publish verified source and release
 
-- [ ] Commit and publish a review branch/PR, verify remote tree identity and current-head platform CI, then merge.
-- [ ] Publish v1.4.0 from the exact verified main commit with ZIP/checksum attachments, mark Latest, and verify the latest download bytes/manifest.
+- [x] Commit and publish a review branch/PR, verify remote tree identity and current-head platform CI, then merge.
+- [x] Publish v1.4.0 from the exact verified main commit with ZIP/checksum attachments, mark Latest, and verify the latest download bytes/manifest.
 
-Review: independent synthetic CLI/code review completed; explicit group cross-scene behavior and guide ordering corrected. The added group regression failed before the fix and passed afterward. Final local suite: 209/209 passed. Metadata, doctor, publication/history scan and deterministic/relocated package checks passed. Publication remains pending until current-head CI and release downloads are verified.
+Review: independent synthetic CLI/code review completed; explicit group cross-scene behavior and guide ordering corrected. The added group regression failed before the fix and passed afterward. Final local suite: 209/209 passed. Metadata, doctor, publication/history scan and deterministic/relocated package checks passed. Published in [PR #11](https://github.com/kwhi6693-web/photo-finish/pull/11) and [v1.4.0](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.4.0), targeting commit `9b0402b6951eaa2616cf2c140452fa6bae3de328`. The remote tree matched verified local source, all PR/branch and main/tag checks passed, and latest-download bytes/manifest plus relocated prepare/submit were verified. This completed plan is a historical implementation record; current usage is documented in [runtime.md](../../runtime.md).

@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -50,7 +50,7 @@ python tools/doctor.py
 - 公開參考索引預設空，個人庫沒有適用案例時直接依原片作專業判斷。
 - 綁定原片與成片雜湊、真實參數、保護方案、實際複核與計時。
 
-## 自訂指令與喜好
+## 可選全域指令與專業判斷
 
 使用者可以保存長期修圖規則與審美偏好，並查看、修改、刪除單條或清空。每次調用先讀取個人設定，再結合原片建立處理方向；當次要求優先，暫時嘗試不會自動改寫長期喜好。
 
@@ -60,7 +60,7 @@ python tools/doctor.py
 這次使用另一種色彩，不改變我的長期偏好。
 ```
 
-主入口新增 `profile-show / profile-set / profile-reset`，個人設定與圖庫一樣獨立私有保存，不進入公開倉庫。詳見[自訂指令介面](references/custom-instructions.md)。
+使用主入口 `profile-show / profile-set / profile-reset`，個人設定與圖庫一樣獨立私有保存，不進入公開倉庫。詳見[自訂指令介面](references/custom-instructions.md)。
 
 ## 管理、場景適配與備份
 
@@ -100,6 +100,17 @@ python tools/build_release.py --output dist/photo-finish.zip
 ```
 
 合成測試不冒充真實照片品質證明。詳見[驗證記錄](docs/validation.md)、[安全說明](SECURITY.md)、[發布審計](docs/security-audit.md)及[貢獻指南](CONTRIBUTING.md)。
+
+## 資料導覽
+
+| 需要了解 | 資料 |
+|---|---|
+| 主要功能、架構與全部管理入口 | [架構與資料地圖](docs/architecture.md) |
+| 實際執行與介面欄位 | [執行指南](docs/runtime.md) · [主介面](references/delivery-adapter.md) |
+| 個人風格與可選全域指令 | [風格庫](references/personal-style-library.md) · [自訂指令](references/custom-instructions.md) |
+| 私人資料備份和遷移 | [備份恢復](references/private-backup.md) |
+| 更新、驗證與發布 | [更新記錄](CHANGELOG.md) · [驗證記錄](docs/validation.md) · [發布流程](docs/releasing.md) |
+| 隱私邊界與貢獻 | [安全說明](SECURITY.md) · [發布審計](docs/security-audit.md) · [貢獻指南](CONTRIBUTING.md) |
 
 ## 授權條款
 

@@ -1,5 +1,7 @@
 # Personal management and portability
 
+Historical implementation record for 1.3.0, delivered in [PR #8](https://github.com/kwhi6693-web/photo-finish/pull/8). Current interfaces and later changes are documented in [runtime.md](runtime.md), [architecture.md](architecture.md) and [CHANGELOG](../CHANGELOG.md).
+
 Implement the three recommended improvements within the existing private SQLite/Pillow runtime. No hosted service or additional dependency.
 
 ## Scope and contracts
