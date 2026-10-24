@@ -404,6 +404,8 @@ def review_protection(path, target, output_sha256, status, method, content_recre
 
 def select_references(path, branch, decisions, reason):
     state = _load(path, editable=True)
+    if state.get('direction_workflow')=='reference_first_v1' and state.get('professional_direction'):
+        raise ValueError('Reference selection is locked with final photographic direction')
     if state['reviews'] or 'first_render' in state['milestones']:
         raise ValueError('Reference selection must be recorded before rendering')
     query = state.get('reference_query')

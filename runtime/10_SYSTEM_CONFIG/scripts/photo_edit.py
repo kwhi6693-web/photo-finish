@@ -1,7 +1,7 @@
 """Compact daily entry points. No renderer and no automatic visual judgments.
 
-prepare merges intake/direction/candidate retrieval; submit binds actual choices
-and call parameters; returned attaches the real tool result and file inspection;
+prepare merges intake/candidate retrieval; submit binds viewed reference choices,
+final direction and call parameters; returned attaches the real tool result and inspection;
 review commits supplied actual judgments and creates one internal snapshot.
 Full proof remains in the job, compact responses avoid dumping policy/histograms.
 """
@@ -27,11 +27,13 @@ def _response(path):
             'next':a.plan(path)}
 
 
-def prepare(project_root,source_path,path,direction,tags,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,
+def prepare(project_root,source_path,path,direction=None,tags=None,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,
             style_library_root=None,style_query=None,style_ids=None,style_group=None,
             observed_profile_sha256=None,task_instructions=None,profile_scenes=None,task_settings=None):
-    """One local call; actual original-image observation must precede supplied direction."""
-    if not isinstance(direction,dict) or 'path' in direction:raise ValueError('Explicit photographic direction object required')
+    """Retrieve before final direction; a legacy direction is only a provisional draft."""
+    if direction is not None and (not isinstance(direction,dict) or 'path' in direction):raise ValueError('Photographic direction draft must be an object')
+    draft=a.direction_details(**direction) if direction is not None else None
+    tags=[] if tags is None else tags
     if evaluation_kind not in m.KINDS:raise ValueError('evaluation_kind must be live/replay/synthetic/unclassified')
     if scenario is not None:w._text(scenario,'scenario')
     customization=preferences.context(style_library_root,observed_profile_sha256,task_instructions,
@@ -42,11 +44,12 @@ def prepare(project_root,source_path,path,direction,tags,intent=None,started_uni
     with tempfile.TemporaryDirectory(dir=target.parent) as folder:
         temporary=Path(folder)/'job.json'
         p.prepare(project_root,source_path,temporary,started_unix_ns=started_unix_ns,observed_skill_revision=observed_skill_revision)
-        a.direction(temporary,**direction)
         candidates=p.candidates(temporary,project_root,tags,intent=intent,
                                 style_library_root=style_library_root,style_query=style_query,style_ids=style_ids,style_group=style_group)
         state=w._load(temporary);state['evaluation']={'kind':evaluation_kind,'scenario':scenario or ('/'.join(tags) if tags else 'unclassified')}
         state['user_customization']=customization
+        state['direction_workflow']='reference_first_v1'
+        if draft is not None:state['direction_proposal']=draft
         w._save(temporary,state)
         # Atomic no-overwrite publication after every preparation step succeeds.
         os.link(temporary,target)
@@ -56,10 +59,12 @@ def prepare(project_root,source_path,path,direction,tags,intent=None,started_uni
     value['personal_library']=candidates['personal_library']
     value['reference_limits']=candidates['limitations']
     value['customization']=customization
+    value['direction_status']={'final_locked':False,'draft_available':draft is not None,
+                               'next':'View suitable candidates, then supply final direction with submit'}
     return value
 
 
-def submit(path,protections,selection,tool_name,arguments,protected_regions,issues=None,display_mode='platform_auto',fidelity=None,input_references=None):
+def submit(path,protections,selection,tool_name,arguments,protected_regions,issues=None,display_mode='platform_auto',fidelity=None,input_references=None,direction=None):
     """Atomic source-bound decision and submission reservation, before the actual tool call."""
     if not isinstance(protections,dict) or not isinstance(selection,dict):raise ValueError('Explicit protection and reference decisions required')
     plan=c.fidelity_plan(protections,protected_regions,fidelity)
@@ -68,6 +73,15 @@ def submit(path,protections,selection,tool_name,arguments,protected_regions,issu
     def apply(temporary):
         w.transact(temporary,events)
         state=w._load(temporary);state['fidelity_plan']=plan;state['fidelity_source_sha256']=state['source']['sha256'];w._save(temporary,state)
+        if state.get('direction_workflow')=='reference_first_v1':
+            if direction is None and state['reference_selection']['branch']!='PROFESSIONAL_FALLBACK':
+                raise ValueError('Supply final photographic direction after viewing the selected references; the earlier draft is provisional')
+            final=direction if direction is not None else state.get('direction_proposal')
+            if final is None:raise ValueError('Supply final photographic direction after reference selection')
+            if not isinstance(final,dict):raise ValueError('Final photographic direction must be an object')
+            a.direction(temporary,**final)
+        elif direction is not None:
+            a.direction(temporary,**direction)
         return d.begin(temporary,tool_name,arguments,display_mode,protected_regions,input_references)
     ticket=d._transaction(path,apply)
     return dict(ticket,path=str(Path(path).resolve()),call_actual_tool_once=True)

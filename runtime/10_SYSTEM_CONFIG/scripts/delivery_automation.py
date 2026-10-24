@@ -31,18 +31,27 @@ def _fresh(path, editable=False):
     return state
 
 
-def direction(path,intent,hierarchy,light_material,output_use,route,qa_focus):
-    """Compact professional decision, never an aesthetic or print certification."""
-    state=_fresh(path,editable=True)
-    if state['reviews'] or state.get('render_result') or state.get('professional_direction'):
-        raise ValueError('Direction is locked before the first submission')
+def direction_details(intent,hierarchy,light_material,output_use,route,qa_focus):
+    """Validate observed photographic choices without locking a task."""
     if output_use not in ('screen','print_proof_requested') or route not in ('native','creative','hybrid'):
         raise ValueError('Explicit supported output scope and route required')
     if not isinstance(qa_focus,list) or not qa_focus:raise ValueError('Actual affected detail areas required')
-    value={'source_sha256':state['source']['sha256'],'intent':w._text(intent,'intent'),
+    return {'intent':w._text(intent,'intent'),
            'hierarchy':w._text(hierarchy,'hierarchy'),'light_material':w._text(light_material,'light_material'),
-           'output_use':output_use,'route':route,'qa_focus':[w._text(x,'qa_focus') for x in qa_focus],
-           'quality_certified':False,'print_calibrated':False}
+           'output_use':output_use,'route':route,'qa_focus':[w._text(x,'qa_focus') for x in qa_focus]}
+
+
+def direction(path,intent,hierarchy,light_material,output_use,route,qa_focus):
+    """Lock after reference decisions; never certify aesthetics or print color."""
+    state=_fresh(path,editable=True)
+    if state.get('direction_workflow')=='reference_first_v1' and state.get('reference_selection') is None:
+        raise ValueError('Record actual reference selection before final photographic direction')
+    if state['reviews'] or state.get('render_result') or state.get('professional_direction'):
+        raise ValueError('Direction is locked before the first submission')
+    value=dict(direction_details(intent,hierarchy,light_material,output_use,route,qa_focus),
+               source_sha256=state['source']['sha256'],quality_certified=False,print_calibrated=False)
+    if state.get('direction_workflow')=='reference_first_v1':
+        value['reference_branch']=state['reference_selection']['branch']
     state['professional_direction']=value;w._save(path,state);return value
 
 
@@ -83,6 +92,8 @@ def render_result(path,tool_name,input_sha256,status,output_url=None,task_id=Non
     state=_fresh(path,editable=True)
     if state.get('protection_plan') is None or state.get('reference_selection') is None:
         raise ValueError('Reference choice and protection plan must precede rendering')
+    if state.get('direction_workflow')=='reference_first_v1' and not state.get('professional_direction'):
+        raise ValueError('Lock final photographic direction after reference selection before rendering')
     if status not in ('ready','working','unknown'):raise ValueError('Unsupported render status')
     input_sha=w._input_hash(state,input_sha256);tool_name=w._text(tool_name,'tool_name')
     acquired=None;inspection=None
@@ -175,6 +186,8 @@ def plan(path):
         try:_receipt(intent['result_path'],record['path'])
         except (OSError,ValueError,TypeError):return result('INVESTIGATE_RECORD_SAVE','Unknown/failed record save result must be investigated')
         return result('CONFIRM_RECORD_SAVE','Consume the actual successful record-save receipt')
+    if state.get('direction_workflow')=='reference_first_v1' and not state.get('professional_direction'):
+        return result('SELECT_REFERENCES_AND_DIRECTION','View suitable references or choose professional fallback, then submit final direction and protections together')
     if state.get('protection_plan') is None:return result('ASSESS_PROTECTION','Define source-information protection before rendering')
     if state.get('reference_query') is None:return result('MATCH_REFERENCES','Query source-conditioned reference candidates')
     if state.get('reference_selection') is None:return result('SELECT_REFERENCES','Actual viewed selection or professional fallback required')

@@ -91,6 +91,8 @@ def candidates(path, project_root, tags, limit=3, intent=None,
                style_library_root=None, style_query=None, style_ids=None, style_group=None):
     """Scene-filtered pixel-feature rerank; actual visual selection remains required."""
     state = workflow._load(path, editable=True)
+    if state.get('direction_workflow')=='reference_first_v1' and state.get('professional_direction'):
+        raise ValueError('Reference query is locked with final photographic direction')
     if state['reviews'] or 'first_render' in state['milestones']:
         raise ValueError('Query references before rendering')
     if not isinstance(tags, list) or type(limit) is not int or not 1 <= limit <= 3:
@@ -111,8 +113,10 @@ def candidates(path, project_root, tags, limit=3, intent=None,
     ranked = [r for r in index if r['include_in_dna'] and effective.intersection(r['tags'])]
     personal = style_library.records(style_library_root, style_query, style_ids, group=style_group)
     # Untagged collections remain usable; explicit user requests override scene hints.
-    personal = [r for r in personal if style_ids or style_query or not effective or
+    personal = [r for r in personal if style_ids is not None or style_query is not None or style_group is not None or not effective or
                 not set(r['tags'])-{'L'} or effective.intersection(r['tags'])]
+    if (style_query is not None or style_group is not None) and not personal:
+        raise ValueError('No requested personal style matches the selector and observed scene; resolve the explicit request')
     if style_ids is not None or style_query is not None or style_group is not None:
         ranked = []
     ranked += personal
@@ -144,6 +148,8 @@ def candidates(path, project_root, tags, limit=3, intent=None,
                     raise
                 continue
         shortlisted.append(reference)
+    if (style_query is not None or style_group is not None) and not shortlisted:
+        raise ValueError('No requested personal style is available; inspect the missing or changed references')
     query = {'source_sha256':state['source']['sha256'], 'index_sha256':identity['sha256'],
              'tags':tags, 'scope':'Scene-filtered tone/color pixel-feature shortlist, then actual material/light/semantic visual judgment',
              'method':MATCH_METHOD,'features':measured,'semantic_method':SEMANTIC_VERSION,

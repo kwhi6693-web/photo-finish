@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Release-1.4.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -42,6 +42,8 @@ Python dependencies do not provide an image generator. The host agent must suppl
 
 <a id="capabilities"></a>
 
+**Reference-first workflow:** observe the source and read optional global instructions, retrieve and view suitable personal references, then lock the final direction before editing. With no custom instructions, use professional photographic judgment; with partial instructions, decide the remaining choices professionally. The original creative, fidelity, real-review and final-photo delivery requirements remain.
+
 ## ✨ Capabilities
 
 | Direction | Craft | Review | Delivery |
@@ -66,7 +68,7 @@ Show my saved editing rules and preferences.
 For this photo only, use a different color direction.
 ```
 
-The agent reads the private profile before choosing direction; each job binds the actual profile hash and a stable snapshot. User data stays outside the skill/Git checkout. See the [custom-instructions guide](references/custom-instructions.md). These are photographic instructions, not executable scripts or automatic quality certification.
+The agent reads the private profile before retrieving references and choosing final direction; each job binds the actual profile hash and a stable snapshot. User data stays outside the skill/Git checkout. See the [custom-instructions guide](references/custom-instructions.md). These are photographic instructions, not executable scripts or automatic quality certification.
 
 ## Manage and move your personal collection
 
@@ -92,8 +94,8 @@ The bundled controller groups routine work into four calls. It records the agent
 
 | Stage | Controller | Required real work |
 |---|---|---|
-| Understand | `photo_edit.py prepare` | Inspect the source; specify intent, hierarchy, light/material and review focus |
-| Commit direction | `photo_edit.py submit` | Select references, lock protected content, record the complete tool request |
+| Understand | `photo_edit.py prepare` | Inspect the source; observe subject, scene, light and material; retrieve references |
+| Commit direction | `photo_edit.py submit` | Select viewed references, lock final direction and protected content, record the complete tool request |
 | Acquire | `photo_edit.py returned` | Execute the actual editing tool once; inspect formal returned bytes |
 | Review | `photo_edit.py review` | Compare source and output, inspect affected details, resolve visible issues |
 

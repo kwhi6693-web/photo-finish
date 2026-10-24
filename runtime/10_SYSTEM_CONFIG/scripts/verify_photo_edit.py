@@ -32,7 +32,8 @@ class LeanEditTests(unittest.TestCase):
     def test_compact_preparation_does_not_emit_full_policy_or_histograms(self):
         self.assertIn('master_sha256',self.prepared);self.assertIn('candidates',self.prepared)
         raw=json.dumps(self.prepared);self.assertNotIn('luma_histogram32',raw);self.assertNotIn('runtime_policy',raw)
-        self.assertEqual(w._load(self.job)['professional_direction']['intent'],'Synthetic fixture')
+        self.assertEqual(w._load(self.job)['direction_proposal']['intent'],'Synthetic fixture')
+        self.assertFalse(w._load(self.job).get('professional_direction'))
     def test_submit_failure_rolls_back_locked_decisions(self):
         before=self.job.read_bytes()
         with self.assertRaises(ValueError):self.submit(arguments=['not an argument object'])

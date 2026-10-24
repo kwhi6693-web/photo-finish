@@ -25,7 +25,7 @@ def synchronize(root,skill=None):
         text=heading+''.join(lines[6:])
         if text!=path.read_text(encoding='utf-8'):path.write_text(text, encoding='utf-8', newline='\n')
     for name,title in [('QUICK_START.md','日常执行入口'),('NEW_PHOTO_WORKFLOW.md','新照片现行入口')]:
-        (cfg/name).write_text(f'# {title}\n\n执行编排{revision}。复用已加载现行[总规范](../我的照片美化偏好与修图标准.md)；字段按需见[工具与交付接口](DELIVERY_ADAPTER.md)。机器权威runtime_policy.json#/execution_adapter_policy。\n\nphoto_edit.py：实际看原片后prepare合并接入/意图/候选；实际参考判断后submit合并保护/取舍/问题/调用登记；真实工具两侧计时，returned合并返回与文件检查；实际全幅/细节终检后review合并证据/验收/可选快照。路径+实际SHA256+检查版本相同才复用正式文件检查；验收重核现行上下文与全部质量/保护条件。\n\n展示、用途接受与保存分开；无权威平台回执pending_confirmation，不等待或重传图。默认逐张只输出最终成片；表达更充分、构图自由、去AI味及题字与原图可见内容一致保留。普通EDIT不跑维护、82项研究、报告或全库导出。\n', encoding='utf-8', newline='\n')
+        (cfg/name).write_text(f'# {title}\n\n执行编排{revision}。复用已加载现行[总规范](../我的照片美化偏好与修图标准.md)；字段按需见[工具与交付接口](DELIVERY_ADAPTER.md)。机器权威runtime_policy.json#/execution_adapter_policy。\n\nphoto_edit.py：实际看原片后prepare合并接入/候选；实际参考判断后submit合并保护/取舍/最终方向/问题/调用登记；真实工具两侧计时，returned合并返回与文件检查；实际全幅/细节终检后review合并证据/验收/可选快照。路径+实际SHA256+检查版本相同才复用正式文件检查；验收重核现行上下文与全部质量/保护条件。\n\n展示、用途接受与保存分开；无权威平台回执pending_confirmation，不等待或重传图。默认逐张只输出最终成片；表达更充分、构图自由、去AI味及题字与原图可见内容一致保留。普通EDIT不跑维护、82项研究、报告或全库导出。\n', encoding='utf-8', newline='\n')
     if skill:
         skill=Path(skill)
         links=dict(GUIDES,**{'NATIVE_ADJUSTMENT_ROUTE.md':'native-adjustment-route.md','COMPOSITION_POLICY.md':'composition-guides.md'})

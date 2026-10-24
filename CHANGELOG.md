@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0 — 2026-10-24
+
+- **Reference-first direction:** observe the source, read optional global instructions, retrieve and view suitable private references, then lock final direction with submission. The four daily calls remain prepare/submit/returned/review.
+- **Optional global guidance:** no instructions means professional photographic autonomy; partial instructions guide the task while unspecified choices remain professional decisions. One-time requests do not rewrite saved rules or preferences.
+- **Selection integrity:** direction is bound after actual reference decisions; later query/selection changes are blocked. Invalid direction or unviewed adoption leaves the task unchanged and reserves no tool call.
+- **Explicit style requests:** missing keyword/group results and entirely unavailable explicit results report a problem instead of silently using another style or fallback. Automatic empty or unsuitable retrieval still allows professional source-based processing.
+- **Compatibility:** prepare.direction becomes a provisional draft. Existing professional-fallback callers can reuse it; adopted/partial reference callers now pass final submit.direction after viewing. Already recorded legacy jobs retain their original interface, subject to the existing current-context checks.
+- The first release's creative freedom, content protection, photographic realism, actual visual review and one-final-photo delivery remain. Private library management and backup remain on demand; no new dependency or image service is added.
+
 ## 1.3.0 — 2026-10-24
 
 This release includes the 1.1.0 and 1.2.0 features previously available on `main`. Those versions did not have separate GitHub Releases. The original v1.0.0 release remains historical.
