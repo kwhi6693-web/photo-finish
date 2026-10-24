@@ -5,13 +5,15 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.3.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.3.0)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、處理、複核](docs/assets/photo-finish.svg)
 
 ## ⚡ 快速開始
+
+從[正式發布頁](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.3.0)下載 [1.3.0 技能安裝包](https://github.com/kwhi6693-web/photo-finish/releases/download/v1.3.0/photo-finish.zip)與 [SHA-256 校驗檔](https://github.com/kwhi6693-web/photo-finish/releases/download/v1.3.0/photo-finish.zip.sha256)。核對雜湊後，安裝解壓得到的 `photo-finish/` 目錄。GitHub 自動產生的 Source code 壓縮檔包含整個儲存庫；技能安裝包是 `photo-finish.zip`。版本變化與升級說明見[更新記錄](CHANGELOG.md)。
 
 將整個儲存庫作為 `photo-finish` 技能安裝。`SKILL.md`、`references/`、`scripts/`、`agents/`、`assets/` 與 **`runtime/` 必須一起保留**。執行包已包含，不需個人資料庫或額外還原包。
 
