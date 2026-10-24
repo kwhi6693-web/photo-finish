@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.1.0-c45a2f?style=flat-square)](docs/validation.md)
+[![Version](https://img.shields.io/badge/Release-1.2.0-c45a2f?style=flat-square)](docs/validation.md)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -53,6 +53,18 @@ Python dependencies do not provide an image generator. The host agent must suppl
 - **Your personal style library.** Explicitly collect favorite photographs with names, labels and notes. Future edits automatically retrieve up to three relevant references; search by keyword or choose saved IDs. Private files live outside the installation and Git checkout.
 - **References when useful.** Use authorized references as evidence, not an aesthetic ceiling. An empty or unsuitable reference library goes directly to professional source-based judgment.
 - **Real execution records.** Bind source/output hashes, actual tool arguments, protection strategy, observed review, corrections and timing. Do not call a plan a photograph.
+
+## Your rules and preferences
+
+Save your own editing rules and aesthetic preferences, then reuse them automatically on future edits. View, replace, remove or clear them through `profile-show / profile-set / profile-reset` in the same controller. Current instructions take priority, so a one-time experiment does not change your long-term profile.
+
+```text
+Remember these editing rules and the visual qualities I like for future photographs.
+Show my saved editing rules and preferences.
+For this photo only, use a different color direction.
+```
+
+The agent reads the private profile before choosing direction; each job binds the actual profile hash and a stable snapshot. User data stays outside the skill/Git checkout. See the [custom-instructions guide](references/custom-instructions.md). These are photographic instructions, not executable scripts or automatic quality certification.
 
 ## Personal style library
 

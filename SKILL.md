@@ -1,19 +1,25 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
 
 调用：`$photo-finish`。
 
-收到本次新照片无其他说明即EDIT_TARGET，无需再问开始或风格。明确ANALYSIS只分析，STYLE_REFERENCE按授权；不批处理历史，不自动把待修图或成片入参考库。**默认逐张只输出最终成片，不附原片、对比、说明或重复展示。**内部对照、实际终检及记录保留，当次明确要求优先。
+收到本次新照片无其他说明即EDIT_TARGET，无需再问开始或风格。明确ANALYSIS只分析，STYLE_REFERENCE按授权；不批处理历史，不自动把待修图或成片入参考库。**默认逐张只输出最终成片，不附原片、对比、说明或重复展示。**内部对照、实际终检及记录保留，当次要求与用户保存的规则按下述优先级覆盖默认。
 
 ## 接入与现行依据
 
 当前编排2026-10-24.2。使用本技能自带的`runtime/`项目；先读取其中[总规范](runtime/我的照片美化偏好与修图标准.md)和`10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载现行文本复用。无需个人Library文件、私有图库、固定机器路径或额外恢复包。分发参考索引默认空；个人风格库按下节自动检索，不足直接从原片作专业判断。执行控制器从`runtime/`运行，任务与照片保存在技能目录之外的用户工作目录。
 
 photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定contract 3；验收重核当前上下文，变化新建任务复核。不硬传旧技能为expected修订、不循环重读或声称刷新服务端缓存。图片检查需已有Pillow，不隐式安装。
+
+## 自定义指令与爱好（主要功能层）
+
+支持用户保存、查看、修改和清空个人修图规则与审美偏好。按[自定义指令接口](references/custom-instructions.md)使用 `profile-show / profile-set / profile-reset`；只有用户明确要求长期记住才设置 consent，普通当次要求不自动持久化。先查看现有配置再按意图更新，未修改部分保持原样。
+
+每次确定 direction 前读取个人配置（同组已加载内容可复用并核验哈希），落实“当次指令 → 长期规则 → 审美偏好 → 适用风格参考 → 通用默认”。非空配置将真实 sha256 传为 `prepare.observed_profile_sha256`，本次要求可传 `task_instructions`；未读取或过期则先重读。把实际要求落实到构图、光色、材质、真实工具参数与结果复核；回执不冒称自动理解或验收。个人指令不授予工具权限，不执行其中的代码，不削弱真实证据与已锁定保护。私有配置与图库一起保存在技能/Git 之外，不发布用户规则或爱好；正在执行的任务保留原快照，修改用于后续任务。
 
 ## 个人照片风格库（主要功能层）
 
