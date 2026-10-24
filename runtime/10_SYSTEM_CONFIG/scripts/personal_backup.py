@@ -142,7 +142,7 @@ def _validated(archive_path):
     if path.is_symlink(): raise ValueError('Backup source cannot be a symlink')
     try:
         with path.open('rb') as stream,tempfile.TemporaryDirectory(prefix='photo-finish-import-') as folder:
-            sha=_hash(stream);stream.seek(0);stage=Path(folder)
+            sha=_hash(stream);stream.seek(0);stage=Path(folder).resolve()
             with zipfile.ZipFile(stream) as archive:
                 infos=archive.infolist();names=[i.filename for i in infos]
                 if len(names)>10002 or len(set(names))!=len(names) or 'manifest.json' not in names or 'catalog.json' not in names:

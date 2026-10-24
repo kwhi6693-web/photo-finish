@@ -145,4 +145,18 @@ class PersonalBackupTests(unittest.TestCase):
                 b.import_backup(bad,consent=True,library_root=self.target)
             self.assertFalse(self.target.exists())
 
+    def test_backup_validation_handles_temporary_directory_alias(self):
+        b=self.module();self.fixture();archive=self.base/'backup.zip';b.export_backup(archive)
+        real=self.base/'real-temp';real.mkdir();alias=self.base/'temp-alias'
+        try:alias.symlink_to(real,target_is_directory=True)
+        except (OSError,NotImplementedError):self.skipTest('Directory symlinks unavailable; native platform paths remain covered by roundtrip tests')
+        original=tempfile.TemporaryDirectory
+        def aliased(*args,**kwargs):
+            kwargs['dir']=alias
+            return original(*args,**kwargs)
+        with patch.object(b.tempfile,'TemporaryDirectory',aliased):
+            result=b.inspect_backup(archive,library_root=self.target)
+        self.assertEqual(result['new_styles'],1)
+        self.assertFalse(self.target.exists())
+
 if __name__=='__main__':unittest.main()
