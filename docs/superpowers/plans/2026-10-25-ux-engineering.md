@@ -18,8 +18,8 @@
 
 ## Tasks
 
-- [ ] 0. Baseline: doctor, 209 regressions, publication scan; investigate four Windows cases and collect existing CI evidence. Commit the plan and baseline report.
-- [ ] 1a. Presentation: add truthful Chinese phase/save/recovery mapping and one-time delivery hints, short local-edit clarification and comparison routing. Add failing behavior tests, implement, run full suite, commit.
+- [x] 0. Baseline: doctor, 209 regressions, publication scan; investigate four Windows cases and collect existing CI evidence. Commit the plan and baseline report.
+- [x] 1a. Presentation: add truthful Chinese phase/save/recovery mapping and one-time delivery hints, short local-edit clarification and comparison routing. Add failing behavior tests, implement, run full suite, commit.
 - [ ] 1b. Versions: private indexed V1/V2 history, source-bound revision preparation, locked inherited protections/direction and read-only rollback/comparison. Test hash changes, cross-turn reload, duplicate registration and zero render calls; run suite, commit.
 - [ ] 2. Professional layers: document conflict precedence and authorized collection; enforce inherited protection contracts across low-level entry points. Test user/profile/reference separation, run suite, commit.
 - [ ] 3. Performance: indexed task lookup, incremental metadata/style cache with content invalidation; retain full hashing at trust boundaries. Benchmark actual local metadata operations, explicitly exclude cloud/host latency. Test add/update/delete invalidation; run suite, commit.
@@ -33,3 +33,5 @@ Repository: kwhi6693-web/photo-finish; main 184a62c7122bd470ae0f2d0bec4838fe3bef
 Latest release: v1.4.2, same target commit; package SHA-256 23ce92b01a3d4c01fb81203f8d943fbd80a5fe912445e65041cd46b714d0139b.
 Linux Python 3.12.14: doctor passed (41 runtime links, 11 policy pointers); 209 tests passed in 6.866s.
 Existing same-commit CI run 40105427756: six jobs succeeded, including Windows Python 3.12 core. This is historical CI evidence, not a new native Windows run in this workspace. The handoff lacks exception traces; root cause of that specific Windows failure remains unconfirmed.
+
+Task 1a complete: experience.py plus photo_edit response and runtime export integration; seven new protocol tests RED (missing module) to GREEN; full suite 216/216 in 7.260s. No real image editing or host claims.

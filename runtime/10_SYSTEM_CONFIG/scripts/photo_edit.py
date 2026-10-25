@@ -16,6 +16,7 @@ import delivery_metrics as m
 import style_library as styles
 import user_preferences as preferences
 import personal_backup as backup
+import experience
 
 
 def _response(path):
@@ -24,7 +25,7 @@ def _response(path):
     return {'path':str(Path(path).resolve()),'workflow_revision':state['workflow_revision'],
             'source_sha256':state['source']['sha256'],'output':render.get('acquired'),
             'dimensions':inspection.get('dimensions'),'color':inspection.get('color'),
-            'next':a.plan(path)}
+            'next':a.plan(path),'experience':experience.describe(state,a.plan(path)['action'])}
 
 
 def prepare(project_root,source_path,path,direction=None,tags=None,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,

@@ -77,3 +77,7 @@ review返回quality_observation，snapshot同一次写入该观察，沿现有�
 维护时运行`python 10_SYSTEM_CONFIG/scripts/delivery_metrics.py report`，stdin为`{"paths":["/absolute/job.json","/absolute/saved_record.json"]}`。只读指定账本/快照；同源哈希+任务起点+修订去重，矛盾快照须明确选择现行一份，不默默覆盖。实际样本、复放、合成分组，不将旧记录自动改写为本版实测。
 
 first_output_acceptance显示分子/分母/比率，仅已知质量结论参与；图像有意精修另记image_revision，字段/事务失败单列，不当作重渲染。相同提交的轮询仅计一次生成提交。API真实调用区间去重后取中位数；photo_save仅真实回执确认的终点，缺测null，不冒称整体对话速度。小样本和同源重复不证明跨场景稳定性。
+
+## 中文展示协议
+
+photo_edit的experience为真实状态的中文视图，独立显示generated、quality_accepted、display_observed、persistence_confirmed。仅有正式文件仍等待实际看图，不冒称检查中或已通过。没有真实保存回执显示“成片已生成，保存状态待确认。”，错误说明附可执行恢复入口，不能把保存或未知渲染变成二次提交。新成片提示仅首次交付，批次末统一一次；关闭提示仅会话生效，长期保存另需授权。
