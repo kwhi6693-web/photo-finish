@@ -56,3 +56,17 @@ def shortcut(text):
     if text=='氛围更强':return {'action':'revise','instruction':'加强已选情绪的光影和层次，遵守原片事实与保护要求，不固定套用暖金、高饱和或HDR。'}
     if text=='保持构图只调色':return {'action':'revise','instruction':'保持构图，只调整光色。','protect':'构图、人物、文字及已认可方向保持不变；工具不能保证时如实说明。'}
     return {'action':'revise','instruction':text}
+
+
+def failure(error):
+    text=str(error).casefold()
+    if any(word in text for word in ('changed','stale','hash','reference')):
+        message='原片、参考或任务信息需要核对，已保留现有记录。'
+        recovery='核对当前文件与原任务，不重复提交'
+    elif any(word in text for word in ('save','snapshot','receipt')):
+        message='保存或记录结果尚未确认，请核对原结果；不需要重新修图。'
+        recovery='核对原回执或恢复已有文件保存'
+    else:
+        message='本次操作尚未完成，请核对任务状态和输入；不会据此重复生成。'
+        recovery='查询原任务并修正提示的输入或文件问题'
+    return {'message':message,'recovery':recovery,'render_retry_allowed':False}

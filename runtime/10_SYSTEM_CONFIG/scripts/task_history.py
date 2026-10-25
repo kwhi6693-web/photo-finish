@@ -40,10 +40,16 @@ def _number(version):
     return int(version[1:])
 
 
+def _contract(state):
+    return digest({key:state.get(key) for key in ('source','output','protection_plan','professional_direction',
+                   'reference_selection','render_result','render_history','revision')})
+
+
 def _verify(item):
     state=w._load(item['job'])
-    if state['status']!='accepted' or state.get('output')!=item['output']:
+    if state['status']!='accepted' or state.get('output')!=item['output'] or state.get('source')!=item['source']:
         raise ValueError('Version no longer matches its accepted ledger')
+    if item.get('accepted_contract_sha256')!=_contract(state):raise ValueError('Historical photographic contract changed')
     for identity in (item['output'],item['source'],item['original_source']):
         if w._file(identity['path'])!=identity:raise ValueError('Historical file changed or is missing; do not rerender')
     return state
@@ -63,7 +69,7 @@ def register(path, session_root):
         item={'series':series,'label':'V'+str(number),'job':job,'output':state['output'],'source':state['source'],
               'original_source':revision.get('original_source',state['source']),
               'parent_version':revision.get('parent_version'),'parent_output':revision.get('parent_output'),
-              'revision_request':revision.get('request')}
+              'revision_request':revision.get('request'),'accepted_contract_sha256':_contract(state)}
         _verify(item)
         db.execute('INSERT INTO versions(series,number,job,data) VALUES(?,?,?,?)',(series,number,job,json.dumps(item,ensure_ascii=False)))
         db.execute('INSERT OR REPLACE INTO session VALUES(?,?)',('current',json.dumps([series,item['label']])))
@@ -128,7 +134,7 @@ def _requirements(state):
 
 
 def validate_protections(state, requirements):
-    inherited=(state.get('revision') or {}).get('requirements',[])
+    inherited=(state.get('revision') or {}).get('requirements',[])+(state.get('recovery_contract') or {}).get('requirements',[])
     for locked in inherited:
         supplied=next((x for x in requirements if x.get('target')==locked['target']),None)
         if supplied is None or supplied.get('requirement')!=locked['requirement'] or (
@@ -148,6 +154,7 @@ def verify_revision(state):
     if digest(_requirements(parent))!=revision['parent_protection_sha256']:
         raise ValueError('Parent protection contract changed')
     if state.get('protection_plan') is not None:validate_protections(state,_requirements(state))
+    if state.get('execution_adapter'):validate_regions(state,state['execution_adapter']['protected_regions'])
 
 
 def revise(session_root, series, version, path, request, local=False, **prepare_options):
@@ -164,7 +171,8 @@ def revise(session_root, series, version, path, request, local=False, **prepare_
               'parent_version':version,'parent_output':item['output'],'original_source':item['original_source'],
               'root_started_unix_ns':(parent.get('revision') or {}).get('root_started_unix_ns',parent['milestones']['job_started']),
               'parent_protection_sha256':digest(_requirements(parent)),'requirements':requirements,
-              'inherited_direction':parent.get('professional_direction'),'request':request,'local':local}
+              'inherited_direction':parent.get('professional_direction'),
+              'protected_regions':(parent.get('execution_adapter') or {}).get('protected_regions',{}),'request':request,'local':local}
     target=Path(path).resolve()
     if os.path.lexists(target):raise FileExistsError('Revision destination exists')
     target.parent.mkdir(parents=True,exist_ok=True)
@@ -183,3 +191,21 @@ def revise(session_root, series, version, path, request, local=False, **prepare_
             'protections':{'requirements':requirements,'reason':'继承选定版本保护契约及本次修改范围'},
             'protected_regions':regions,'inherited_direction':revision['inherited_direction'],
             'shortcut':experience.shortcut(request),'next':'View applicable references and submit the new revision once'}
+
+
+def validate_regions(state, regions):
+    for inherited in (state.get('revision') or {},state.get('recovery_contract') or {}):
+        for target,planned in inherited.get('protected_regions',{}).items():
+            if not set(planned).issubset(regions.get(target,[])):
+                raise ValueError('Inherited comparison regions cannot be removed: '+target)
+
+
+def verify_recovery(state):
+    retry=state.get('retry_of')
+    if not retry:return
+    old=w._load(retry['path'])
+    if old['status']!='failed' or old.get('render_result') or old['source']!=retry['source'] or state['source']!=old['source']:
+        raise ValueError('Recovery requires the same confirmed never-submitted failed task')
+    if w._file(old['source']['path'])!=old['source']:raise ValueError('Recovery source changed')
+    if state.get('protection_plan') is not None:validate_protections(state,_requirements(state))
+    if state.get('execution_adapter'):validate_regions(state,state['execution_adapter']['protected_regions'])

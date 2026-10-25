@@ -545,8 +545,9 @@ def accept_job(path, output_path):
     verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),_file)
     from style_library import verify_selection
     verify_selection(state)
-    from task_history import verify_revision
+    from task_history import verify_revision, verify_recovery
     verify_revision(state)
+    verify_recovery(state)
     if state['status'] in ('failed','cancelled'):
         raise ValueError('Terminal job cannot be accepted; prepare a new job')
     output = _file(output_path)

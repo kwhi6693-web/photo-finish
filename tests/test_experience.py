@@ -59,3 +59,10 @@ class PresentationTests(unittest.TestCase):
             value=self.view(action)
             self.assertNotIn(action,value['message'])
             self.assertTrue(value['recovery'])
+
+    def test_errors_have_a_safe_chinese_next_step(self):
+        import experience
+        value=experience.failure(ValueError('Source changed since intake'))
+        self.assertIn('核对',value['message'])
+        self.assertFalse(value['render_retry_allowed'])
+        self.assertTrue(value['recovery'])

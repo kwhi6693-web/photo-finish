@@ -24,10 +24,11 @@ import batch_workflow as batches
 def _response(path):
     state=w._load(path);render=state.get('render_result') or {};review=state['reviews'][-1] if state['reviews'] else {}
     inspection=render.get('inspection') or review.get('inspection') or state.get('source_inspection') or {}
+    next_step=a.plan(path)
     return {'path':str(Path(path).resolve()),'workflow_revision':state['workflow_revision'],
             'source_sha256':state['source']['sha256'],'output':render.get('acquired'),
             'dimensions':inspection.get('dimensions'),'color':inspection.get('color'),
-            'next':a.plan(path),'experience':experience.describe(state,a.plan(path)['action'])}
+            'next':next_step,'experience':experience.describe(state,next_step['action'])}
 
 
 def prepare(project_root,source_path,path,direction=None,tags=None,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,
@@ -127,8 +128,8 @@ def main():
             'backup-export':backup.export_backup,'backup-inspect':backup.inspect_backup,'backup-import':backup.import_backup}
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('action',choices=routes);args=parser.parse_args()
     try:print(json.dumps(routes[args.action](**json.load(sys.stdin)),ensure_ascii=False,allow_nan=False));return 0
-    except c.InputError as error:print(json.dumps(error.payload(),ensure_ascii=False),file=sys.stderr);return 1
-    except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__}),file=sys.stderr);return 1
+    except c.InputError as error:print(json.dumps(dict(error.payload(),experience=experience.failure(error)),ensure_ascii=False),file=sys.stderr);return 1
+    except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__,'experience':experience.failure(error)}),file=sys.stderr);return 1
 
 if __name__ == '__main__':
     import sys

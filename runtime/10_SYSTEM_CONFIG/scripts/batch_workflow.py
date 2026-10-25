@@ -33,6 +33,7 @@ def _item(entry):
         if w._file(state['source']['path'])!=entry['source']:raise ValueError('Batch source file changed')
         retryable=False
         if state['status']=='accepted':
+            a._fresh(path)
             if w._file(state['output']['path'])!=state['output']:raise ValueError('Accepted batch output changed')
             label='已完成';reason='成片已接受；'+('已保存' if state.get('delivery_receipt') else '保存待确认')
         elif render.get('status')=='unknown':label='需确认';reason='原提交结果尚未确认，请查询原任务，不重复生成'
@@ -74,13 +75,23 @@ def retry_failed(session_root,batch_id,consent=False):
             if not _item(entry)['retryable']:continue
             old=w._load(entry['path']);target=Path(entry['path']).with_name('retry-'+uuid.uuid4().hex+'.json')
             try:
+                customization=old.get('user_customization') or {};profile=customization.get('profile') or {}
+                query=old.get('reference_query') or {};personal=query.get('personal_library') or {}
                 result=photo_edit.prepare(old['context']['project_root'],old['source']['path'],target,
+                      direction=old.get('professional_direction') or old.get('direction_proposal'),
+                      tags=query.get('tags',[]),intent=query.get('intent'),
+                      profile_scenes=profile.get('scenes'),task_settings=customization.get('task_settings'),
+                      style_query=personal.get('query'),style_ids=personal.get('requested_ids'),style_group=personal.get('group'),
                       evaluation_kind=old.get('evaluation',{}).get('kind','unclassified'),
                       scenario=old.get('evaluation',{}).get('scenario'),
                       style_library_root=old.get('reference_query',{}).get('personal_library',{}).get('root'),
-                      observed_profile_sha256=(old.get('user_customization') or {}).get('profile_sha256'),
+                      observed_profile_sha256=profile.get('sha256'),
                       task_instructions=(old.get('user_customization') or {}).get('task_instructions'))
                 state=w._load(target);state['retry_of']={'path':entry['path'],'source':old['source'],'reason':'Explicit retry of a failed task with no external submission'}
+                if old.get('revision'):state['revision']=old['revision']
+                state['recovery_contract']={'requirements':h._requirements(old),
+                    'protected_regions':(old.get('execution_adapter') or {}).get('protected_regions',{}),
+                    'approved_direction':old.get('professional_direction') or old.get('direction_proposal')}
                 w._save(target,state)
                 prepared.append(dict(path=str(target),retry_of=entry['path'],next=result['next']))
                 entry['previous_paths']=entry.get('previous_paths',[])+[entry['path']];entry['path']=str(target)
@@ -91,7 +102,7 @@ def retry_failed(session_root,batch_id,consent=False):
 
 def completed(session_root,batch_id):
     result=summary(session_root,batch_id)
-    if result['counts']['待处理'] or result['counts']['处理中']:
+    if result['counts']['待处理'] or result['counts']['处理中'] or not result['counts']['已完成']:
         return dict(result,hint='')
     with h._index(session_root,True) as db:
         enabled=db.execute('SELECT value FROM session WHERE key=?',('hints',)).fetchone()

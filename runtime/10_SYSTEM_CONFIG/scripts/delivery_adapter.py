@@ -37,8 +37,13 @@ def begin(path,tool_name,arguments,display_mode='manual',protected_regions=None,
     for regions in protected_regions.values():
         if not isinstance(regions,list) or not regions or any(not isinstance(x,str) or not x.strip() for x in regions):
             raise ValueError('Describe visible regions; no automatic per-stroke certification')
+    from task_history import validate_regions
+    validate_regions(state,protected_regions)
     encoded=json.dumps(arguments,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()
     inputs=capture_inputs(arguments,w._file,state['source']['path'],roles=input_references)
+    if state.get('revision') and inputs['files'] and not any(
+            x['path']==state['source']['path'] and x['sha256']==state['source']['sha256'] and x['role']=='edit_target' for x in inputs['files']):
+        raise ValueError('Revision local inputs must include the selected version as edit_target')
     def apply(p):
         token=a.begin_render(p,tool_name,state['source']['sha256'],recipe={'actual_arguments':arguments,'arguments_sha256':hashlib.sha256(encoded).hexdigest(),'input_references':inputs})
         value=w._load(p);value['execution_adapter']={'version':1,'display_mode':display_mode,

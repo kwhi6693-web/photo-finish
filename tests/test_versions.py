@@ -99,3 +99,26 @@ class VersionTests(unittest.TestCase):
         child=self.base/'child.json';h.revise(self.session,row['series'],'V1',child,'更自然')
         self.source.write_bytes(b'changed original')
         with self.assertRaises(ValueError):__import__('delivery_automation')._fresh(child)
+
+    def test_index_detects_changed_accepted_contract_without_blocking_save_metadata(self):
+        row=self.accepted();import task_history as h
+        state=w._load(self.job);state['delivery_receipt']={'file_id':'SYNTHETIC_LATE_SAVE'};w._save(self.job,state)
+        self.assertEqual(h.get(self.session,row['series'],'V1')['label'],'V1')
+        state['professional_direction']['intent']='changed historical direction';w._save(self.job,state)
+        with self.assertRaises(ValueError):h.restore(self.session,row['series'],'V1')
+
+    def test_status_plans_once_without_mutating_task(self):
+        before=self.job.read_bytes()
+        with patch.object(e.a,'plan',wraps=e.a.plan) as plan:
+            e._response(self.job)
+        self.assertEqual(plan.call_count,1);self.assertEqual(before,self.job.read_bytes())
+
+    def test_local_tool_inputs_must_include_selected_version_when_supplied(self):
+        row=self.accepted();import task_history as h
+        child=self.base/'child.json';result=h.revise(self.session,row['series'],'V1',child,'更自然')
+        before=child.read_bytes()
+        with self.assertRaises(ValueError):
+            e.submit(child,result['protections'],{'branch':'PROFESSIONAL_FALLBACK','decisions':[],'reason':'Synthetic'},
+                     'SYNTHETIC_TOOL',{'prompt':'Fixture','referenced_image_paths':[str(self.source)]},
+                     result['protected_regions'],direction=self.direction)
+        self.assertEqual(before,child.read_bytes())
