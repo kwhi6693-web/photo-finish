@@ -18,15 +18,19 @@ def _index(session_root, write=False):
     if db.is_symlink():raise ValueError('Task index cannot be a symlink')
     if not write and not db.exists():raise ValueError('No conversation history at this location')
     if write:root.mkdir(parents=True,exist_ok=True,mode=0o700)
-    connection=sqlite3.connect(db if write else db.as_uri()+'?mode=ro',uri=not write,timeout=10)
+    connection=None
     try:
+        connection=sqlite3.connect(db if write else db.as_uri()+'?mode=ro',uri=not write,timeout=10)
         if write:
             db.chmod(0o600);connection.execute('BEGIN IMMEDIATE')
             connection.execute('CREATE TABLE IF NOT EXISTS versions (series TEXT, number INTEGER, job TEXT UNIQUE, data TEXT, delivered INTEGER DEFAULT 0, PRIMARY KEY(series,number))')
             connection.execute('CREATE TABLE IF NOT EXISTS session (key TEXT PRIMARY KEY, value TEXT)')
         yield connection
         if write:connection.commit()
-    finally:connection.close()
+    except sqlite3.Error as error:
+        raise ValueError('Conversation index is unavailable or damaged; inspect private history without rerendering') from error
+    finally:
+        if connection is not None:connection.close()
 
 
 def _row(row):

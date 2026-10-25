@@ -122,3 +122,9 @@ class VersionTests(unittest.TestCase):
                      'SYNTHETIC_TOOL',{'prompt':'Fixture','referenced_image_paths':[str(self.source)]},
                      result['protected_regions'],direction=self.direction)
         self.assertEqual(before,child.read_bytes())
+
+    def test_corrupt_index_returns_controlled_error_without_touching_photos(self):
+        row=self.accepted();import task_history as h
+        before=self.output.read_bytes();(self.session/'tasks.sqlite3').write_bytes(b'invalid database')
+        with self.assertRaises(ValueError):h.hints(self.session)
+        self.assertEqual(before,self.output.read_bytes())
