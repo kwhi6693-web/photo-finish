@@ -66,3 +66,7 @@ The independent reviewer found four substantive bugs and one hint issue; all wer
 ## Resume / candidate CI correction
 
 The nine stage trees were recovered and verified exactly, and Draft PR #14 was opened. The first native Windows candidate lane passed all 246 tests (30.587s), then failed only in the newly added standalone four-case diagnostic because the temporary Python script did not include the repository root on sys.path. Three symlink cases passed explicitly. An isolated temporary-script reproduction confirmed the import error; adding the repository root made all four cases pass locally. The workflow-only correction does not alter packaged inputs or the ZIP hash; native current-head CI is checked on PR #14.
+
+## Verified native candidate results after recovery
+
+Candidate/CI-fix commit 7a6fa21c46c23d951ba5d1e18be17a34f8dd6b2f passed all six jobs in push run 40191479841 and all six PR jobs in run 40191482775. Actual Windows logs: 246 tests in 29.269s and all four explicitly named symlink/temporary-alias cases in 0.391s; zero skips, failures or errors. The isolated diagnostic import correction is now verified natively, not inferred from Linux. The candidate archive is unchanged. PR #14 remains draft pending exact-candidate host/real-photo/save acceptance and user approval. Latest progress-only commit identity and live checks resolve through the PR and docs/IMPLEMENTATION_PROGRESS.md.

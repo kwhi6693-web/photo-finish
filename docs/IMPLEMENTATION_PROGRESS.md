@@ -24,7 +24,7 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 | Completed and verified | Source/docs/runtime/candidate package consistency, publication scan, deterministic build and clean extraction | Exact checks below and docs/ux-engineering-validation.md |
 | Modified but untested | None in recovered product code | This progress document is a documentation-only addition; run doctor/link/publication checks |
 | Completed and verified | Publish development history and create Draft PR | Nine exact stage trees verified; PR #14; local active branch synchronized with remote |
-| In progress | Current-head matrix after isolated CI diagnostic fix | Initial run: Linux/macOS all passed; Windows full 246 passed but separate temporary diagnostic lacked repository root on sys.path. Fix adds only that root; isolated four-case reproduction passed, awaiting native CI |
+| Completed and verified | Native matrix and four explicit Windows diagnostics at 7a6fa21 | Push 40191479841 and PR 40191482775: all six lanes each passed. Windows 246/246 in 29.269s; four named diagnostics passed with zero skips, failures or errors |
 | Environment-dependent / unverified | Candidate installation, photo-only trigger, live rule/style behavior, real editing/visual acceptance, multi-turn continuity and authoritative host save | Installed exposed skill was 2026-10-24.2; inspected signed-in Work UI did not expose a verified candidate installer. Do not call fixtures host acceptance |
 | Not yet performed | Portrait, night, lettering, travel batch and special-light real-photo regression | No authorized anonymous photo set was supplied; do not access unrelated personal images |
 
@@ -65,7 +65,7 @@ Do not merge main, create a tag or publish a Release without explicit approval. 
 - Recovery verified the actual local 246-test log, Git diff, candidate hash, handoff criteria and absent remote branch/PR. Product work was not repeated.
 - Nine source trees were recreated from already uploaded blobs and matched local Git tree hashes exactly. Connector-generated commit timestamps/identity yield different commit IDs, with identical source content (mapping below).
 - Current-head push run 40191160098: five Linux/macOS lanes passed. Windows full suite passed 246 tests in 30.587s; the new standalone diagnostic then failed to import tests.test_personal_backup. Its first three symlink cases passed, with zero skips.
-- Root cause was reproduced in an isolated temporary Python script: the GitHub shell=python file runs outside the checkout, so repository root must explicitly enter sys.path. Adding only that root made all four named cases pass locally. Product code and candidate ZIP are unchanged; no full local rerun is needed for this CI-only fix. Native rerun is required.
+- Root cause was reproduced in an isolated temporary Python script: the GitHub shell=python file runs outside the checkout, so repository root must explicitly enter sys.path. Adding only that root made all four named cases pass locally. Product code and candidate ZIP are unchanged; no full local rerun is needed for this CI-only fix. Native rerun completed successfully; links and counts are below.
 - Evidence: https://github.com/kwhi6693-web/photo-finish/actions/runs/40191160098 . Failed diagnostic job: 121162277050. This finding is distinct from the handoff's untraced Windows environment errors.
 
 ## Original local to connector commit map
@@ -84,7 +84,15 @@ Do not merge main, create a tag or publish a Release without explicit approval. 
 
 ## Immediate next steps
 
-1. Verify current-head matrix and the four explicit Windows symlink/alias cases after the import-path correction. PR #14 is the live check-status entrypoint.
-2. Keep code/package evidence separate from progress-only commits; verify the unchanged ZIP hash. Update PR evidence after CI without repeatedly rebuilding unchanged packaged sources.
+1. Do not repeat completed implementation or its unchanged full local suite. For any subsequent product edit, run targeted regressions first; use the PR matrix for current-head platform verification.
+2. This final recovery update changes progress/validation documents only. Packaged sources and ZIP remain identical. Resolve its exact commit with git log; PR #14 provides the live latest-head checks.
 3. New-host/real-photo acceptance remains blocked as described above. Use only an actually supported candidate installer and authorized anonymous photographs; do not access unrelated personal images or simulate receipts.
 4. Keep PR draft until the real acceptance gates and user review are complete. Do not merge, tag or publish without explicit approval.
+
+## Verified recovery completion
+
+- Verified implementation/CI correction head: 7a6fa21c46c23d951ba5d1e18be17a34f8dd6b2f. [Push matrix](https://github.com/kwhi6693-web/photo-finish/actions/runs/40191479841) and [PR matrix](https://github.com/kwhi6693-web/photo-finish/actions/runs/40191482775) each passed all six lanes (12 successful checks).
+- The actual Windows log was read: 246 tests in 29.269s; four handoff-named cases in 0.391s, tests=4/skips=0/failures=0/errors=0. No Linux result is presented as native Windows evidence.
+- Local checkout was fast-forwarded to the connector branch with no force update, no uncommitted conflict and unchanged candidate SHA-256. Doctor, publication scan (153 files) and diff check passed after the CI-only fix. Final documentation-only changes receive the same focused documentation checks.
+- The local installed-skills workspace is present, but the existing personal Photo Finish skill remains 2026-10-24.2 without a bundled runtime and references private historical assets. It was inspected, not replaced. Candidate installation into an isolated real host, photo-only trigger and actual photo/receipt acceptance remain unverified; filesystem/CLI availability is not proof of those behaviors.
+- No main merge, version tag or GitHub Release has been performed. PR #14 remains draft. The remaining blocker is actual candidate host and authorized real-photo acceptance, followed by user approval, not missing product implementation or local protocol tests.
