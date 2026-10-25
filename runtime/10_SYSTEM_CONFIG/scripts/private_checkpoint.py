@@ -47,7 +47,8 @@ def _directory_sync(path):
 
 def _durable_json(path, value):
     atomic_json(path, value)
-    with Path(path).open('rb') as stream:
+    # Windows file flushing requires write access; r+b preserves existing bytes.
+    with Path(path).open('r+b') as stream:
         os.fsync(stream.fileno())
     _directory_sync(Path(path).parent)
 
@@ -110,7 +111,8 @@ def export(root, destination, files):
             info = zipfile.ZipInfo('manifest.json'); info.compress_type = zipfile.ZIP_DEFLATED
             info.create_system = 3; info.external_attr = 0o100600 << 16
             z.writestr(info, json.dumps(manifest, ensure_ascii=False, sort_keys=True))
-        with archive.open('rb') as stream:
+        # Keep a writable, non-truncating handle for Windows _commit/FlushFileBuffers.
+        with archive.open('r+b') as stream:
             os.fsync(stream.fileno())
         digest = _sha(archive)
         reused = False

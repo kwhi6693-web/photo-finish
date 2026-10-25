@@ -35,3 +35,13 @@
 Linux / Python3.12.14：受影响保存、检查点、版本与交付控制39项通过（3.043s）；最终源码的确定性双构建/干净解压专项1项通过（2.747s）；关闭SQLite句柄后的WAL快照专项复核通过。13个新增行为回归，未重跑原246项或宣称当前259项全套通过，新增代码Windows原生结果待CI。doctor、公开扫描及diff检查通过。当前候选包495065字节、116条目/115个manifest文件，SHA-256为8ac9faea4ecd2647b9839fffde471a84c6f91d14fc36f505ba9e294406745cce；真实安装与包一致。
 
 代码提交：713dbb103e782b8ae30236835ee4c7a625b833e8（本地原提交69f3b08cc98946ae9d5d75d8a4e982e459ba147c，树完全一致10de741fc5cbb885c0f06068373cc0b1b15f0a76）。安装推送先3700477，SQLite句柄清理后为4e37d5d；115个manifest文件与最终候选一致。已安装CLI另实际检查并恢复新检查点9个文件，V1完整哈希一致；历史路径未改写。
+
+## Windows刷盘阻断续接 — 2026-10-25
+
+实际失败证据：7d252ed 的 PR run 40208085792 / Windows job 121213245466，Windows Server 2025 / Python3.12；259项在23.825s内出现7个错误，均在private_checkpoint.export的只读文件句柄fsync处报EBADF。其他五个平台组合通过不代表Windows通过。
+
+根因是归档以rb重开后调用fsync；恢复日志也有相同的潜在只读句柄问题。Python的Windows fsync使用MS _commit，底层文件刷盘要求写权限。最小修复仅将归档与恢复日志刷盘句柄改为r+b（不截断），保留fsync、错误传播、内容哈希与排他发布。恢复数据的已有写入句柄不变，未通过捕获/忽略异常绕过持久化。
+
+新增跨平台回归用真实零字节write验证文件描述符写权限，再执行真实fsync、导出/恢复/重复恢复并核对原字节；这在Linux上先复现EBADF，不冒称原生Windows结果。另一回归验证真实刷盘错误会阻止归档发布。修改后本地检查点12项通过（0.248s）。Windows CI新增独立12项检查点步骤，先验证该模块，再运行当前261项全套及既有4项符号链接诊断；原生结果以本提交CI日志为准。
+
+官方依据：[Python os.fsync](https://docs.python.org/3.12/library/os.html#os.fsync)、[Windows FlushFileBuffers写权限要求](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-flushfilebuffers)。

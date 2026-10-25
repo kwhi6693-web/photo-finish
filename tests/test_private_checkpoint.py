@@ -3,6 +3,7 @@ from pathlib import Path
 import importlib.util
 import json
 import sqlite3
+import stat
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -28,6 +29,31 @@ class PrivateCheckpointTests(unittest.TestCase):
 
     def export(self):
         return self.api().export(self.root, self.archive, ['job.json', 'output.bin'])
+
+    def test_file_flush_handles_support_windows_write_access_without_changing_bytes(self):
+        c = self.api(); fsync = c.os.fsync
+        def windows_file_flush(fd):
+            if stat.S_ISREG(c.os.fstat(fd).st_mode):
+                # A real zero-byte write tests descriptor access without changing data.
+                # This exercises Windows' file-flush prerequisite on other platforms.
+                c.os.write(fd, b'')
+            return fsync(fd)
+        with patch.object(c.os, 'fsync', side_effect=windows_file_flush):
+            receipt = self.export()
+            dest = self.base/'restored'
+            c.restore(self.archive, dest, receipt['sha256'])
+            c.restore(self.archive, dest, receipt['sha256'])
+        self.assertEqual((dest/'job.json').read_bytes(), b'{"kind":"synthetic","status":"unknown"}')
+        self.assertEqual((dest/'output.bin').read_bytes(), b'synthetic-immutable-output')
+        self.assertEqual((self.root/'output.bin').read_bytes(), b'synthetic-immutable-output')
+
+    def test_flush_failure_prevents_archive_publication(self):
+        c = self.api()
+        with patch.object(c.os, 'fsync', side_effect=OSError('Synthetic disk flush failure')):
+            with self.assertRaises(OSError):
+                self.export()
+        self.assertFalse(self.archive.exists())
+        self.assertEqual((self.root/'output.bin').read_bytes(), b'synthetic-immutable-output')
 
     def test_repeat_export_reuses_exact_bytes_without_claiming_remote_persistence(self):
         c = self.api()

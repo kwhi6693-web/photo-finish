@@ -72,6 +72,18 @@ jobs:
           print({name: importlib.metadata.version(name) for name in ('Pillow', 'numpy', 'scipy')})
       - run: python tools/doctor.py
       - run: python tools/check_publication.py --history
+      - name: Windows checkpoint durability regression
+        if: runner.os == 'Windows'
+        shell: python
+        run: |
+          import sys, unittest
+          sys.path.insert(0, '.')
+          sys.path.insert(0, 'runtime/10_SYSTEM_CONFIG/scripts')
+          suite = unittest.defaultTestLoader.loadTestsFromName('tests.test_private_checkpoint')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          print({'tests': result.testsRun, 'skips': len(result.skipped),
+                 'failures': len(result.failures), 'errors': len(result.errors)})
+          sys.exit(not result.wasSuccessful())
       - run: python tools/run_tests.py
       - name: Windows symlink and temporary-alias diagnostics
         if: runner.os == 'Windows'

@@ -7,7 +7,7 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Repository: kwhi6693-web/photo-finish; default branch: main.
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
-- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current reliability/scope candidate package SHA-256: 8ac9faea4ecd2647b9839fffde471a84c6f91d14fc36f505ba9e294406745cce. Earlier package hashes below are historical.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current Windows-fsync-fix candidate package SHA-256: c3ef681c313bf094f9cecc03f8527ca4159bd0daf7273fb15b36b666b3e3d8c5. Earlier package hashes below are historical.
 - Verified code/package commit: remote 23e0587c7490a134a6b956af7dcd529c79e9dda8, identical source tree to local 811c081. Recovery/upload checkpoint: cb212e7550d96248381f53c27e02f07beab5fd5c. Current checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
@@ -153,3 +153,11 @@ This entry supersedes earlier zero-image-call/download-blocked and unchanged-pac
 当前针对性结果：Linux/Python3.12.14，保存/检查点/版本/交付状态39项通过（3.043s），最终源码确定性打包/异地恢复专项1项通过（2.747s），SQLite句柄关闭调整后的WAL专项复核通过。新增加13个行为回归，未运行259项全套，不冒称新增代码Windows原生已通过。doctor为45个运行链接、11个政策指针；publication160个文件无发现。当前包495065字节、116条目/115个manifest文件，SHA-256见本页顶部；已同步到真实技能工作区并推送，宿主读回含七类范围及检查点指南，SKILL哈希587e47344a1a1727ae7efd4a9c1f1b76f23241e9dbd44c3577b9f1c3fcf1c8ba。
 
 可靠性代码当前提交713dbb103e782b8ae30236835ee4c7a625b833e8，保留本地69f3b08cc98946ae9d5d75d8a4e982e459ba147c，完全相同源树10de741fc5cbb885c0f06068373cc0b1b15f0a76；未强推。技能工作区实际推送4e37d5d，115个文件匹配，已安装CLI检查与9文件恢复实测通过。公开修复明细见RELIABILITY_FIXES.md；私有图像/账本/路径/回执不入仓库。
+
+## Windows CI失败恢复与最小修复 — 2026-10-25
+
+- 当前工作目录仍在，7d252ed开发分支干净，原成果及本地历史未覆盖。实际读取PR run40208085792的Windows job121213245466：259项，7个EBADF错误，归档fsync只读句柄为共同触发点。
+- private_checkpoint.py仅两处刷盘句柄由rb改r+b，覆盖归档及恢复日志；不截断文件、不删除fsync、不吞错误、不放宽哈希/历史保护。
+- 新增2个回归：真实描述符写权限+导出/恢复字节保持，以及刷盘失败阻止发布。先RED复现后GREEN，本地该模块12项通过；原生Windows专项由新增CI步骤先跑，随后261项完整回归与原4项诊断。Linux结果不当作Windows证据。
+- 候选仍1.5.0-rc.1；Windows修复包495152字节、116条目/115个manifest文件，SHA-256见顶部。原生CI与后续完整回归结果将在PR与验收记录中留证。
+- 私有检查点、V1及失败候选保持，未新增图像生成或保存回执。保持非人像范围与Draft PR14；待修复CI后继续宿主验收，不合并/打标签/发布。
