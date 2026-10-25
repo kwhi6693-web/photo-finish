@@ -45,3 +45,15 @@ Linux / Python3.12.14：受影响保存、检查点、版本与交付控制39项
 新增跨平台回归用真实零字节write验证文件描述符写权限，再执行真实fsync、导出/恢复/重复恢复并核对原字节；这在Linux上先复现EBADF，不冒称原生Windows结果。另一回归验证真实刷盘错误会阻止归档发布。修改后本地检查点12项通过（0.248s）。Windows CI新增独立12项检查点步骤，先验证该模块，再运行当前261项全套及既有4项符号链接诊断；原生结果以本提交CI日志为准。
 
 官方依据：[Python os.fsync](https://docs.python.org/3.12/library/os.html#os.fsync)、[Windows FlushFileBuffers写权限要求](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-flushfilebuffers)。
+
+## Windows原生复测与关闭连接 — 2026-10-26
+
+修复代码提交：ffdbe9ae0ecad6e3df5d9c122adcfcdf1deacd1c。该提交的Windows检查点步骤中，原7个fsync错误均消失，新增描述符回归也通过；随后12项中仅WAL测试在清理阶段出现WinError32。真实日志：[run40208864203](https://github.com/kwhi6693-web/photo-finish/actions/runs/40208864203/job/121215589936)。原因是测试使用SQLite事务上下文，退出时没有关闭恢复后的连接；产品_snapshot已经使用closing关闭两个连接。最小测试修正e0e10d10e632f9f31cb9de86ccdee39d18c7de19用contextlib.closing明确释放恢复连接，不跳过WAL测试，也不忽略临时目录清理异常。产品包不因该测试修正再次变化。
+
+已读取e0e10d1的真实Windows Server2025 / Python3.12日志：[PR run40246818450 / job121330018203](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246818450/job/121330018203)。先12项检查点测试通过（0.555s，skips/failures/errors均0），再261项全套通过（29.315s），再原4项符号链接/临时别名诊断通过（0.391s，skips/failures/errors均0）。[Push run40246813935](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246813935)与PR run各六个组合全部通过，共12个成功任务。
+
+同源本地Linux/Python3.12.14完整261项通过（8.721s，包含确定性双构建/干净解压）；doctor通过45个runtime链接/11个政策指针/189个文档链接；publication --history通过160个文件/582个历史blob、无发现；pip check、确定性再构建及dist无差异检查通过。ZIP495152字节、116条目/115个manifest文件，SHA-256 c3ef681c313bf094f9cecc03f8527ca4159bd0daf7273fb15b36b666b3e3d8c5。实际安装提交355df17与115个manifest文件逐字节一致。
+
+持久保存复核：再次从原私有存储取得同一db3cdd2f…检查点，完整哈希通过；用已安装修复运行时在Git外新私有根恢复9个文件，重复恢复后所有文件字节不变。V1完整哈希仍268db8bc1a2e92fa61f2884503e9c15444ebd01d0220fd9d1d8cf1d2cf1a4226，完整解码1536×1024；图像工具新增调用0。恢复根不同、历史路径未重绑，原账本与原成片自动保存回执仍缺失。没有把本次恢复返回的persistent_save_confirmed:false改成true；可恢复持久性依据是真实私有存储取回与哈希验证。
+
+真实图像质量和独立触发没有被此次Windows通过替代。自然度返工与局部天空仍为真实失败，V2、四类剩余风景、独立照片触发与真实保存失败/未知状态恢复仍未验证。仅检查到新浏览器空会话可打开真实Work界面；未提交照片，也未盲目重复之前结果未知的长上传。不合并、不打标签、不发布；保持非人像定位与Draft/RC。

@@ -1,6 +1,6 @@
 # Photo Finish implementation progress
 
-Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspect Git and actual evidence before resuming. Do not recreate completed features or rerun the entire suite without a changed input or unresolved concern.
+Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspect Git and actual evidence before resuming. Do not recreate completed features or rerun the entire suite without a changed input or unresolved concern.
 
 ## Current state
 
@@ -8,7 +8,7 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
 - Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current Windows-fsync-fix candidate package SHA-256: c3ef681c313bf094f9cecc03f8527ca4159bd0daf7273fb15b36b666b3e3d8c5. Earlier package hashes below are historical.
-- Verified code/package commit: remote 23e0587c7490a134a6b956af7dcd529c79e9dda8, identical source tree to local 811c081. Recovery/upload checkpoint: cb212e7550d96248381f53c27e02f07beab5fd5c. Current checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
+- Current verified code/test commit: e0e10d10e632f9f31cb9de86ccdee39d18c7de19; Windows runtime fix ffdbe9ae0ecad6e3df5d9c122adcfcdf1deacd1c. Both push and PR matrices passed all six lanes. Earlier source commits below are historical. Current document checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
@@ -161,3 +161,16 @@ This entry supersedes earlier zero-image-call/download-blocked and unchanged-pac
 - 新增2个回归：真实描述符写权限+导出/恢复字节保持，以及刷盘失败阻止发布。先RED复现后GREEN，本地该模块12项通过；原生Windows专项由新增CI步骤先跑，随后261项完整回归与原4项诊断。Linux结果不当作Windows证据。
 - 候选仍1.5.0-rc.1；Windows修复包495152字节、116条目/115个manifest文件，SHA-256见顶部。原生CI与后续完整回归结果将在PR与验收记录中留证。
 - 私有检查点、V1及失败候选保持，未新增图像生成或保存回执。保持非人像范围与Draft PR14；待修复CI后继续宿主验收，不合并/打标签/发布。
+
+## Windows阻断最终验证与下一断点 — 2026-10-26
+
+此条覆盖上一节“原生结果待CI”。修复ffdbe9a在Windows消除了原7个EBADF；其检查点12项随后暴露WAL测试连接未关闭的WinError32。测试修正e0e10d1使用closing释放连接，产品SQLite快照本身已显式关闭。未跳过测试、吞fsync错误或删除持久化刷新。
+
+- 已验证源头：e0e10d10e632f9f31cb9de86ccdee39d18c7de19，树71609a126c9fa54e33a937d641fa498c25f3ab46。本地原96dec1a及670262c保存在checkpoint/windows-fsync-local-20261026，树与远端完全一致；开发分支已同步，无历史覆盖或强推。
+- [PR CI40246818450](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246818450)和[Push CI40246813935](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246813935)：6+6组合全部通过。实际Windows job121330018203先12项（0.555s，零跳过/失败/错误），后261项（29.315s），再4项原诊断（0.391s，零跳过/失败/错误）。这些是原生Windows日志，不是Linux模拟结果。
+- 本地Linux/Python3.12.14：完整261项通过8.721s；doctor45/11/189、public scan160文件/582历史blob无发现、pip check、确定性重建、dist无变化和diff检查通过。文档提交不改产品字节，不再次手动重复整套。
+- 当前候选ZIP仍为顶部c3ef681c…，495152字节，116条目/115个manifest文件；实际技能安装推送355df17，115文件逐字节匹配。本轮仅两个fsync打开模式改变产品包，测试连接关闭不改变包。
+- 再次真实私有存储取回db3cdd2f…检查点，已安装固定运行时恢复9文件，重复恢复全部字节不变；V1全哈希/1536×1024一致，新增编辑调用0。新私有根仅是工作副本，持久性依据为已保存的原检查点和本次取回核验；原账本/自动保存回执未补造。私有日志及取回证据不入公开Git。
+- 浏览器现有清理后不再有原验收标签页；新空Work界面可加载，但没有照片已发送事件。没有重试长上传或推断旧请求成败。独立自动触发仍未验证。
+- 下一具体工作：取得真实可用的区域遮罩编辑器及当前V1输入/输出证据后，才继续天空保护；更自然候选必须实看改善才登记V2。先确保新的操作证据可恢复，再完成独立照片触发、四类剩余风景及正式V2回退/保存回执。原真实失败不能因CI通过改成通过。
+- 状态：Windows阻断已解决；自然度/局部编辑未通过；其他真实宿主门槛未验证。保持1.5.0-rc.1、Draft PR14；不合并、不建正式标签、不发布。

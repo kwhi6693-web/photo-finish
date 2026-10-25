@@ -1,6 +1,6 @@
 # Photo Finish actual host acceptance
 
-Updated 2026-10-25 (Asia/Shanghai), PR #14, continuing e67cd4d. Candidate remains **1.5.0-rc.1**, workflow 2026-10-25.1. Prior 246 tests and native Windows/12 CI results are retained, not rerun. The earlier scope-only round changed no execution code; the current continuation adds the minimal reliability fixes documented below.
+Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing 7d252ed. Candidate remains **1.5.0-rc.1**, workflow 2026-10-25.1. Earlier 246-test evidence is retained. The Windows checkpoint fix now has its own native 261-test and matrix evidence; see the dated entry below.
 
 ## Product scope and exact installation
 
@@ -8,10 +8,10 @@ Long-term product scope: professional non-portrait photography for natural lands
 
 The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed (the original scope correction was d47ffd7; current reliability installation is recorded in progress). Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 115 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.
 
-- Package: 495065 bytes / 116 entries including manifest.
-- Package SHA-256: `8ac9faea4ecd2647b9839fffde471a84c6f91d14fc36f505ba9e294406745cce`.
+- Package: 495152 bytes / 116 entries including manifest.
+- Package SHA-256: `c3ef681c313bf094f9cecc03f8527ca4159bd0daf7273fb15b36b666b3e3d8c5`.
 - Installed SKILL SHA-256: `587e47344a1a1727ae7efd4a9c1f1b76f23241e9dbd44c3577b9f1c3fcf1c8ba`.
-- Doctor, publication scan, one targeted deterministic-build/relocated-install regression and diff checks passed. No full-suite rerun was requested.
+- Doctor, publication/history scan, deterministic-build/relocated-install regression and diff checks passed. The requested Windows-fix full regression passed; installation commit 355df17 matches all 115 manifest files.
 
 ## Real landscape run
 
@@ -77,3 +77,11 @@ Use authorized actual bytes only, outside Git/skill directories. Next perform a 
 See [actual causes, minimal repairs and evidence](RELIABILITY_FIXES.md). A new private checkpoint was actually saved, remotely retrieved, restored and verified, including unchanged V1 bytes; original raw ledgers remain missing and no original image-auto-save receipt was synthesized. Same-intent save recovery was fixed. Current known full-frame imagegen is rejected before submission for local-only version revisions; local visual quality itself remains failed. No new image render was issued.
 
 Scope coverage beyond the existing five-category matrix: still life, food and product photography are supported non-portrait scenarios, but their real visual acceptance remains unverified. Portrait photos and portrait-effect metrics remain excluded; generic incidental-person protection tests remain. Fresh-chat upload result is unknown at the automation transport boundary, not an established Skill auto-trigger failure.
+
+## Windows修复后的真实续接 — 2026-10-26
+
+当前运行时修复ffdbe9a、测试连接清理e0e10d1；原生Windows先12项检查点、261项全套和4项符号链接/临时别名检查通过，Push/PR共12个任务成功。可核实日志：[Windows job121330018203](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246818450/job/121330018203)。这属于代码与跨平台回归，不计入真实照片质量通过。
+
+已安装355df17逐字节匹配当前115个manifest文件。此前持久检查点再次从私有存储取回，ZIP完整哈希db3cdd2fb4bb0fbe8f21f536e67d3b8a76683ce2b819a8d9674cebb278252f3c一致；固定运行时恢复9文件并重复恢复，全部字节保持。V1完整解码1536×1024，哈希与本页记录一致。没有调用图像编辑器，没有伪造原图自动保存回执或原始私有账本。恢复路径改变未自动重绑旧记录。
+
+当前真实Work空会话界面可加载，原清理后的浏览器无旧标签页可检查。没有重发结果未知的原上传；此轮没有照片已发送/自动选Skill/渲染事件，因此独立触发继续未验证。现有全幅imagegen接口仍无mask参数；未通过的自然度和天空局部边界不重新生成碰运气。其余真实场景、正式V2连续验收、原图片保存回执仍待完成。Windows修复不解除HOLD。
