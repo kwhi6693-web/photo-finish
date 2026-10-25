@@ -107,6 +107,8 @@ def review(path,events,output_path,record_destination=None,brief=None):
     w.transact(path,events,accept_output_path=output_path)
     result=_response(path)
     result['quality_observation']=m.sample(path)
+    try:styles.record_accepted_use(w._load(path))
+    except (OSError,ValueError) as error:result['style_usage_warning']=str(error)
     if record_destination is not None:
         result['record']=d.snapshot(path,record_destination,brief)
     return result
