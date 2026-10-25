@@ -359,6 +359,8 @@ def set_protections(path, requirements, reason):
         raise ValueError('Protection contract is locked; define it once before rendering')
     if not isinstance(requirements, list):
         raise ValueError('Protection requirements must be a list, including an explicit empty list')
+    from task_history import validate_protections
+    validate_protections(state, requirements)
     targets = {}
     for requirement in requirements:
         target = _text(requirement.get('target'), 'Protection target')
@@ -543,6 +545,8 @@ def accept_job(path, output_path):
     verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),_file)
     from style_library import verify_selection
     verify_selection(state)
+    from task_history import verify_revision
+    verify_revision(state)
     if state['status'] in ('failed','cancelled'):
         raise ValueError('Terminal job cannot be accepted; prepare a new job')
     output = _file(output_path)

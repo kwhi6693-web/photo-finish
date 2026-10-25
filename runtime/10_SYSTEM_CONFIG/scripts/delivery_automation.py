@@ -28,6 +28,8 @@ def _fresh(path, editable=False):
     verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),w._file)
     from style_library import verify_selection
     verify_selection(state)
+    from task_history import verify_revision
+    verify_revision(state)
     return state
 
 

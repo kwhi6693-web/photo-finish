@@ -20,8 +20,8 @@
 
 - [x] 0. Baseline: doctor, 209 regressions, publication scan; investigate four Windows cases and collect existing CI evidence. Commit the plan and baseline report.
 - [x] 1a. Presentation: add truthful Chinese phase/save/recovery mapping and one-time delivery hints, short local-edit clarification and comparison routing. Add failing behavior tests, implement, run full suite, commit.
-- [ ] 1b. Versions: private indexed V1/V2 history, source-bound revision preparation, locked inherited protections/direction and read-only rollback/comparison. Test hash changes, cross-turn reload, duplicate registration and zero render calls; run suite, commit.
-- [ ] 2. Professional layers: document conflict precedence and authorized collection; enforce inherited protection contracts across low-level entry points. Test user/profile/reference separation, run suite, commit.
+- [x] 1b. Versions: private indexed V1/V2 history, source-bound revision preparation, locked inherited protections/direction and read-only rollback/comparison. Test hash changes, cross-turn reload, duplicate registration and zero render calls; run suite, commit.
+- [x] 2. Professional layers: document conflict precedence and authorized collection; enforce inherited protection contracts across low-level entry points. Test user/profile/reference separation, run suite, commit.
 - [ ] 3. Performance: indexed task lookup, incremental metadata/style cache with content invalidation; retain full hashing at trust boundaries. Benchmark actual local metadata operations, explicitly exclude cloud/host latency. Test add/update/delete invalidation; run suite, commit.
 - [ ] 4. P1/P2: batch summaries and safe recovery lists, synonym keyword matching, recent/frequent styles, concise onboarding/export boundaries and observational UX metrics. Test partial failures and no completed resubmission; run suite, commit.
 - [ ] 5. Host/visual: inspect available host capabilities; use anonymous authorized fixtures if available. Record installation, photo-only trigger, actual editing/review/save and continuity separately; mark inaccessible capabilities unverified.
@@ -35,3 +35,5 @@ Linux Python 3.12.14: doctor passed (41 runtime links, 11 policy pointers); 209 
 Existing same-commit CI run 40105427756: six jobs succeeded, including Windows Python 3.12 core. This is historical CI evidence, not a new native Windows run in this workspace. The handoff lacks exception traces; root cause of that specific Windows failure remains unconfirmed.
 
 Task 1a complete: experience.py plus photo_edit response and runtime export integration; seven new protocol tests RED (missing module) to GREEN; full suite 216/216 in 7.260s. No real image editing or host claims.
+
+Tasks 1b/2 complete: private task_history index, version and delivery CLI routes, source-bound separate revisions, low-level inherited-protection and provenance gates. Nine new synthetic tests, 225/225 full regression passed in 7.619s. Rollback verified no render and unchanged historical bytes. Private session roots are explicit; no promise of host persistence beyond supplied storage.

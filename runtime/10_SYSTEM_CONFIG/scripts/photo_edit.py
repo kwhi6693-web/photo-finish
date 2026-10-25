@@ -17,6 +17,7 @@ import style_library as styles
 import user_preferences as preferences
 import personal_backup as backup
 import experience
+import task_history as history
 
 
 def _response(path):
@@ -112,7 +113,9 @@ def review(path,events,output_path,record_destination=None,brief=None):
 
 
 def main():
-    routes={'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
+    routes={'version-register':history.register,'versions':history.history,'restore':history.restore,
+            'revise':history.revise,'compare':history.compare,'delivered':history.delivered,'hints':history.hints,'current-version':history.current,
+            'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
             'style-add':styles.add,'style-list':styles.list_references,'style-update':styles.update,'style-remove':styles.remove,
             'profile-show':preferences.show,'profile-set':preferences.save,'profile-reset':preferences.reset,
             'profile-rule-add':preferences.add_rule,'profile-rule-set':preferences.update_rule,
