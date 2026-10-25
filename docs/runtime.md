@@ -75,3 +75,7 @@ Use the existing job's status to continue a tool task or acquire a formal result
 The normal image pipeline is unchanged. Add private session_root to version/delivery commands, independent from the style-library root. See [versions](../references/conversation-versions.md) and [batch recovery](../references/batch-recovery.md). Index rows locate accepted ledgers; output/source hashes are checked on use. Never use an index or displayed image as visual/save evidence. Natural-language selection is performed by the host assistant, with deterministic source/version/protection gates in Python.
 
 For screen sharing use actual supported color declarations; export-web creates a separate tagged derivative only when needed, without silently relabeling P3/HDR. Printing requires target paper/device ICC, actual soft proof, dimensions and rendering intent; absent those, deliver a bounded screen result and state that printing is unverified. No printing calibration is inferred from an embedded ICC.
+
+## 私有恢复与保存续接
+
+任务源图/成片/账本/日志/索引按需使用[检查点接口](../references/private-checkpoints.md)，不是风格库备份格式。明确私有根必须在所有Git与Skill之外；本地ZIP不等于持久保存。真实存储回执、归档取回和关键文件哈希核验分别留证。已登记的同一保存意图可在回执已到达后只读恢复，仍需独立确认，不能因此重新修图。

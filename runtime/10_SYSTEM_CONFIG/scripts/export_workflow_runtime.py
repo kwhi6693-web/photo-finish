@@ -7,6 +7,7 @@ FILES=(
  '10_SYSTEM_CONFIG/scripts/workflow_session.py',
  '10_SYSTEM_CONFIG/scripts/photo_workflow.py',
  '10_SYSTEM_CONFIG/scripts/photo_edit.py',
+ '10_SYSTEM_CONFIG/scripts/private_checkpoint.py',
  '10_SYSTEM_CONFIG/scripts/experience.py',
  '10_SYSTEM_CONFIG/scripts/task_history.py',
  '10_SYSTEM_CONFIG/scripts/batch_workflow.py',

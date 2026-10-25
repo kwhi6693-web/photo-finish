@@ -7,7 +7,7 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Repository: kwhi6693-web/photo-finish; default branch: main.
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
-- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current scope-corrected package SHA-256: 6e73b9ddb260f0d2a028a1020d7434ded4bac52456727bab71eab3ce0cf026e9. Earlier package hashes below are historical.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current reliability/scope candidate package SHA-256: 8ac9faea4ecd2647b9839fffde471a84c6f91d14fc36f505ba9e294406745cce. Earlier package hashes below are historical.
 - Verified code/package commit: remote 23e0587c7490a134a6b956af7dcd529c79e9dda8, identical source tree to local 811c081. Recovery/upload checkpoint: cb212e7550d96248381f53c27e02f07beab5fd5c. Current checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
@@ -138,3 +138,16 @@ This entry supersedes earlier zero-image-call/download-blocked and unchanged-pac
 - Actual V1 is still readable at 1536x1024 with the same full hash. Its controller persistence receipt was absent before the loss; direct photo saving remains pending/unverified. Available manual method: open the displayed V1 and use its save/download control; no re-edit required.
 - Current unresolved gates: naturalness and local-only editing failed in real image results; accepted V2-to-V1 sequence was not completed; four remaining real-photo categories were not run; independent photo-only trigger and authoritative save/real save-failure/unknown recovery were not established; original private audit trail/index retention is now also blocked.
 - Next: preserve retained artifacts, use a genuinely durable private root/evidence checkpoint before long UI actions, and obtain missing host/photographic evidence without rewriting prior records or rerunning the 246 unchanged tests. Remain Draft/RC.
+
+## 可靠性与长期产品定位续接 — 2026-10-25
+
+- 长期定位已统一为专业非人像摄影，主要支持自然风光、城市夜景、建筑、旅行、静物、美食与产品。SKILL、三种README、agent说明、机器政策、专业规范及验收说明同步；人像专门处理/人像效果指标排除，通用身份/结构/内容保护保留。
+- 现有持久证据包实际取回并验证，6张原片/输出均可恢复；旧原始账本、匿名SQLite、完整CLI日志及原自动保存回执仍缺失，没有推测重建。外部临时盘清理机制无宿主日志，不能将上传超时当删除原因。
+- 新增独立私有检查点模块与按需CLI，明确文件列表、SQLite在线快照、哈希/路径/大小检查、排他发布、同内容重复导出及中断恢复；改变已有历史字节时拒绝覆盖。存储位置真实检查发现宿主工作区也受外层Git管理，已换用Git/Skill之外的受控验收目录，未放宽隐私门槛。
+- 新检查点9个真实资料文件，真实保存回执成功，远端取回ZIP哈希和隔离恢复V1哈希一致。V1已在持久检查点中可恢复；原图片自动保存状态仍未知，不拿归档回执补造原任务保存成功。
+- workflow_session.save_intent重复调用缺陷先RED复现后修复：回执已存在时仍可复用同一输出/路径的已登记意图；不同旧回执不能开启意图，确认仍独立。
+- photo_edit.submit对已知无区域mask接口的imagegen局部版本修订，在生成提交令牌之前拒绝；父账本与图片不变。只是阻止重走真实失败路线，不冒称局部画质修复完成。
+- 本轮未新增图像生成：更自然的植被真实改善、局部天空质量、正式V2、独立触发和剩余场景仍未通过/未验证。另有Adobe遮罩接口只查到声明，当前V1输入/实际遮罩/像素输出未验证；未新增付费服务或后端。
+- 实际原因、修改位置、RED/GREEN与真实存储证据见RELIABILITY_FIXES.md；本轮不重跑246项全套，不进入正式发行。下一步先使用可恢复检查点，再取得真正可用的局部编辑与独立宿主证据，不能降低验收门槛。
+
+当前针对性结果：Linux/Python3.12.14，保存/检查点/版本/交付状态39项通过（3.043s），确定性打包/异地恢复专项1项通过（7.398s），SQLite句柄关闭调整后的WAL专项复核通过。新增加13个行为回归，未运行259项全套，不冒称新增代码Windows原生已通过。doctor为45个运行链接、11个政策指针；publication160个文件无发现。当前包495065字节、116条目/115个manifest文件，SHA-256见本页顶部；已同步到真实技能工作区并推送，宿主读回含七类范围及检查点指南，SKILL哈希587e47344a1a1727ae7efd4a9c1f1b76f23241e9dbd44c3577b9f1c3fcf1c8ba。

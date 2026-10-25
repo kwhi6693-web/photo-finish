@@ -1,15 +1,15 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, landscape, architecture, city-night and travel-scenery edits (not portrait photographs or portrait beautification), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, professional non-portrait edits for natural landscapes, city nights, architecture, travel, still life, food and product photography (no face beautification, skin smoothing, reshaping or portrait optimization), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
 
 调用：`$photo-finish`。
 
-Photo Finish 处理自然风景、建筑、城市夜景与旅行风景照片，不处理人像照片或提供人像美化。照片偶然包含人物时，保留身份、关键外观及原有内容保护，不进行针对性的人像美化；以人物为主体的输入简短说明范围并请提供风景照片，不提交修图。
+Photo Finish 是面向非人像摄影场景的专业照片美化 Skill，主要支持自然风光、城市夜景、建筑、旅行场景、静物、美食和产品摄影。不开发人脸美化、磨皮、塑形、五官调整或针对性肖像优化，不处理以人物为主体的人像照片。偶然入镜人物仍保留身份、结构和内容保护；不削弱哈希绑定、真实复核、历史不可变及保存回执要求。优先优化自然纹理、光影、色彩、构图保护、风格一致性和真实细节。
 
-收到本次新风景或建筑照片无其他说明即EDIT_TARGET，无需再问开始或风格。明确ANALYSIS只分析，STYLE_REFERENCE按授权；不批处理历史，不自动把待修图或成片入参考库。**默认逐张只输出最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示，不附原片、默认对比、参数或重复展示。**内部对照、实际终检及记录保留，当次要求与用户保存的规则按下述优先级覆盖默认。
+收到上述非人像场景的新照片无其他说明即EDIT_TARGET，无需再问开始或风格。明确ANALYSIS只分析，STYLE_REFERENCE按授权；不批处理历史，不自动把待修图或成片入参考库。**默认逐张只输出最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示，不附原片、默认对比、参数或重复展示。**内部对照、实际终检及记录保留，当次要求与用户保存的规则按下述优先级覆盖默认。
 
 ## 接入与现行依据
 
@@ -29,9 +29,13 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 
 先观察原片、读取适用指令，再由 `prepare` 自动读取当前用户的私有风格库；指定风格用 `style_query`，分组用 style_group，指定收藏用真实 `style_ids`（与其他筛选二选一）。实际查看最多三张候选，再按原有流程取舍；有 use_for 用途限制时，采用决策传范围内的 uses 并在真实处理和终检中落实，结合新原片迁移光影、色彩、材质与氛围。先检索并实际查看拟采用参考，再确定最终修图方向；同场景或高匹配分数不代表适用，可仅借鉴部分元素，不默认复制参考中的人物、物体或文字。自动检索无适用参考直接专业设计；明确指定的收藏/关键词/分组缺失或不可用须说明具体问题，不默默切换风格。优先当次指令与原片保护，不把相似度当审美结论。个人库位于技能/Git 目录之外，跨会话使用同一持久位置；临时宿主先指定私有持久根目录，多用户宿主须隔离各自根目录，不能承诺未提供的云同步。详细存储和失败处理只按需读接口。
 
+长期定位与验收边界见[非人像产品范围](references/product-scope.md)。
+
 ## 私有备份与恢复
 
 分组、置顶、用途限定、撤销与备份均按需管理，普通收藏不强制填写全部字段。仅用户需要备份或迁移时按[备份接口](references/private-backup.md)使用 `backup-export / backup-inspect / backup-import`。先检查版本、内容与冲突，默认合并保留已有值；用户明确希望覆盖对应元数据或配置时才使用 use_backup。导入可绑定检查回执 SHA256；空目标恢复原规则历史，现有目标保留本地历史。备份含私图和偏好，禁止放入技能/Git 或公开安装包；不得声称未获得回执的跨会话保存。日常修图不运行备份或全库重测。
+
+长操作、验收或断点续接前按[任务检查点](references/private-checkpoints.md)保存明确选定的原片、输出、账本、日志与索引；不能用临时目录承诺持久性，只有实际私有保存回执和取回复核后才确认检查点持久保存。检查点不代替成片保存回执；缺失历史不得重建冒充。普通修图不扫描或导出全库。
 
 ## 专业表达与保护
 
@@ -41,7 +45,7 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 
 长期保留去AI味：实际看光影空间、材质、原生细节与边缘，修正假纹理、涂抹、HDR光晕和结构变形；不凭提示词或分数通过。身份与关键事实继续保护。题字印章与原图可见内容一致，模糊处不猜写；普通后期semantic_identity，不自行升级逐笔/像素认证。已知重绘不能满足exact_content。保留真实生成来源。自然度是选定表达内的摄影可信度检查，不预设构图、调色与塑光的保守强度上限。质感先用光影、明暗分离和反射落实；普通摄影以原片材质、表面粗细及字纹深浅为依据，避免无意新增斑点、锈纹、纤维或刻痕。明确选定的材质转译按创作自由执行并记录。
 
-局部反馈修正指定目标，保留已认可的整体表达，复核目标、边缘及全幅协调。柔和低曝光仅作适用场景的可选表达，其他照片独立判断。
+局部反馈先确认实际区域遮罩及边缘保护能力；当前仅全幅生成且无区域接口时，保留已认可版本并说明限制，不靠加强提示词反复生成。局部反馈修正指定目标，保留已认可的整体表达，复核目标、边缘及全幅协调。柔和低曝光仅作适用场景的可选表达，其他照片独立判断。
 
 ## 日常固定入口
 

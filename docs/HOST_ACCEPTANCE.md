@@ -1,16 +1,16 @@
 # Photo Finish actual host acceptance
 
-Updated 2026-10-25 (Asia/Shanghai), PR #14, continuing e67cd4d. Candidate remains **1.5.0-rc.1**, workflow 2026-10-25.1. Prior 246 tests and native Windows/12 CI results are retained, not rerun. This round changes scope instructions and their synchronized package, with no execution-code changes.
+Updated 2026-10-25 (Asia/Shanghai), PR #14, continuing e67cd4d. Candidate remains **1.5.0-rc.1**, workflow 2026-10-25.1. Prior 246 tests and native Windows/12 CI results are retained, not rerun. The earlier scope-only round changed no execution code; the current continuation adds the minimal reliability fixes documented below.
 
 ## Product scope and exact installation
 
-Use natural landscapes, architecture, city night scenes and travel scenery. Portrait photographs and portrait beautification are excluded. Incidental people retain the existing identity/content protections and receive no targeted retouching. Earlier portrait examples and acceptance requirements are superseded. Historical numerical scene J remains only for compatibility, not current orchestration or a product promise.
+Long-term product scope: professional non-portrait photography for natural landscapes, city nights, architecture, travel, still life, food and products. Portrait photographs and portrait beautification are excluded. Incidental people retain the existing identity/content protections and receive no targeted retouching. Earlier portrait examples and acceptance requirements are superseded. Historical numerical scene J remains only for compatibility, not current orchestration or a product promise.
 
-The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed as d47ffd7. Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 112 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.
+The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed (the original scope correction was d47ffd7; current reliability installation is recorded in progress). Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 115 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.
 
-- Package: 485802 bytes / 113 entries including manifest.
-- Package SHA-256: `6e73b9ddb260f0d2a028a1020d7434ded4bac52456727bab71eab3ce0cf026e9`.
-- Installed SKILL SHA-256: `ca31ad88e9dcb137622178c5872840227a287da29ac36fd624ac8999c02ddaac`.
+- Package: 495065 bytes / 116 entries including manifest.
+- Package SHA-256: `8ac9faea4ecd2647b9839fffde471a84c6f91d14fc36f505ba9e294406745cce`.
+- Installed SKILL SHA-256: `587e47344a1a1727ae7efd4a9c1f1b76f23241e9dbd44c3577b9f1c3fcf1c8ba`.
 - Doctor, publication scan, one targeted deterministic-build/relocated-install regression and diff checks passed. No full-suite rerun was requested.
 
 ## Real landscape run
@@ -71,3 +71,9 @@ Do not synthesize replacement historical records or claim that a new index is th
 Use authorized actual bytes only, outside Git/skill directories. Next perform a photo-only user message in the installed host; then obtain reliable local edit evidence without changing non-target regions, successful accepted V2/rollback, authoritative photo-save receipts and remaining four categories. Do not introduce a paid service, key or new infrastructure just to obtain a pass. Current whole-image generative local editing is a real failed acceptance item, not merely a missing test.
 
 **Release decision: HOLD.** Keep PR #14 Draft and 1.5.0-rc.1. No main merge, formal tag, Release or final release notes until necessary acceptance passes and explicit user approval is given.
+
+## Reliability repair continuation
+
+See [actual causes, minimal repairs and evidence](RELIABILITY_FIXES.md). A new private checkpoint was actually saved, remotely retrieved, restored and verified, including unchanged V1 bytes; original raw ledgers remain missing and no original image-auto-save receipt was synthesized. Same-intent save recovery was fixed. Current known full-frame imagegen is rejected before submission for local-only version revisions; local visual quality itself remains failed. No new image render was issued.
+
+Scope coverage beyond the existing five-category matrix: still life, food and product photography are supported non-portrait scenarios, but their real visual acceptance remains unverified. Portrait photos and portrait-effect metrics remain excluded; generic incidental-person protection tests remain. Fresh-chat upload result is unknown at the automation transport boundary, not an established Skill auto-trigger failure.

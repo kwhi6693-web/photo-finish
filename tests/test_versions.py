@@ -62,6 +62,24 @@ class VersionTests(unittest.TestCase):
         self.assertEqual(before,self.job.read_bytes())
         self.assertIn('Synthetic fixture',result['inherited_direction']['intent'])
 
+    def test_local_only_revision_refuses_known_full_frame_editor_before_reservation(self):
+        row=self.accepted();import task_history as h
+        child=self.base/'sky.json'
+        r=h.revise(self.session,row['series'],'V1',child,'只改善天空，其他保持不变',local=True)
+        before=child.read_bytes();parent=self.job.read_bytes();photo=self.output.read_bytes()
+        direction={k:r['inherited_direction'][k] for k in ('intent','hierarchy','light_material','output_use','route','qa_focus')}
+        with self.assertRaisesRegex(ValueError,'region-mask'):
+            e.submit(child,r['protections'],{'branch':'PROFESSIONAL_FALLBACK','decisions':[],
+                     'reason':'Synthetic no-reference fixture'},'image_gen.imagegen',
+                     {'prompt':'Synthetic sky-only protocol fixture','referenced_image_paths':[str(self.output)]},
+                     r['protected_regions'],direction=direction,
+                     fidelity={target:{'strategy':'generative_compare','capability_basis':'Full-frame generated fixture',
+                                'repair_route':'Preserve old V1 if local protection is unavailable'}
+                               for target in r['protected_regions']})
+        self.assertEqual(child.read_bytes(),before)
+        self.assertEqual(self.job.read_bytes(),parent)
+        self.assertEqual(self.output.read_bytes(),photo)
+
     def test_inherited_contract_cannot_be_dropped_by_low_level_protect(self):
         row=self.accepted();import task_history as h
         child=self.base/'child.json';h.revise(self.session,row['series'],'V1',child,'保持构图只调色')

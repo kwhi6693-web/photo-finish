@@ -460,11 +460,12 @@ def save_intent(path, result_path):
     result = Path(result_path).resolve()
     if state['status'] != 'accepted' or _file(state['output']['path']) != state['output']:
         raise ValueError('A fresh accepted output is required for save intent')
-    if result.exists():
-        raise FileExistsError('Use a new result path; old upload receipts cannot confirm new bytes')
     if state.get('save_intent') is not None:
-        if state['save_intent']['result_path'] == str(result): return state
+        if (state['save_intent']['result_path'] == str(result) and
+                state['save_intent']['output_sha256'] == state['output']['sha256']): return state
         raise ValueError('An existing save intent must be resumed or explicitly investigated')
+    if os.path.lexists(result):
+        raise FileExistsError('Use a new result path; old upload receipts cannot confirm new bytes')
     state['save_intent'] = {'output_sha256':state['output']['sha256'], 'result_path':str(result),
                             'observed_unix_ns':time.time_ns()}
     return _save(path,state)

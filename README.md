@@ -19,9 +19,9 @@ This branch prepares **1.5.0-rc.1** for review. Latest stable downloads remain *
 
 ## First use
 
-Scope: natural landscapes, architecture, city night scenes and travel scenery. Portrait photographs and portrait beautification are not supported. Incidental people keep the existing identity/content protections and receive no targeted portrait retouching.
+Photo Finish is a professional non-portrait photography Skill for natural landscapes, city nights, architecture, travel, still life, food and products. It does not develop face beautification, skin smoothing, reshaping, facial-feature changes or portrait optimization. Incidental people retain identity, structure and content protections. Priorities are natural texture, light, color, composition protection, consistent style and real detail. See [product scope](references/product-scope.md).
 
-Send a landscape or architecture photograph to start editing composition, light, color and detail.
+Send a non-portrait photograph to start editing composition, light, color and detail.
 
 Local changes depend on actual tool capabilities. Whole-image generation can change untargeted regions; each result needs visual review and is not a pixel-lock guarantee.
 
