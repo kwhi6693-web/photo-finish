@@ -31,7 +31,9 @@ This measures SQLite metadata reads, normalization and keyword expansion only. I
 
 Metrics separate live/replay/synthetic/unclassified, first output acceptance, per-root observed revision average, duplicate submissions (same input/complete arguments, distinct tokens), accepted-output elapsed and actual persistence receipts. Missing timing is null; incomplete task histories underestimate revision rounds. No current live aesthetic rates are claimed.
 
-## Real host and visual acceptance: open release gates
+## Historical real-host baseline (superseded by later entries)
+
+For the current scope-corrected installation, actual image failures and lost private-record limitation, use [HOST_ACCEPTANCE.md](HOST_ACCEPTANCE.md). The following table records the earlier pre-install state, not current status.
 
 The actual browser was inspected: a signed-in ChatGPT account and Work mode are accessible. Settings search, plugin settings, personalization and the Work plugin picker were inspected; no verified candidate Skill import/install or automated photo-sequence testing entrypoint was found there. The currently exposed installed Photo Finish skill was read and is still workflow 2026-10-24.2, not this repository candidate. It was not silently replaced.
 
@@ -84,3 +86,7 @@ No 246-test rerun, product-code change, regenerated installation ZIP or formal r
 See [current host acceptance](HOST_ACCEPTANCE.md), which supersedes the earlier image-calls=0 result. Product instructions now exclude portraits, retaining incidental-person protections. Exact corrected RC package was installed and pushed; no execution-code rewrite or 246-test rerun. One targeted package regression passed, with doctor/publication/diff checks.
 
 One authorized CC0 landscape, five real image-tool calls and actual full-frame/native-detail reviews are recorded. Initial output failed; one original-based correction became screen-scoped V1. Grass-only, more-natural and sky-only revisions failed actual texture/local-preservation criteria and were not promoted to V2. Returning to existing V1 used zero editor calls and preserved accepted file/ledger hashes. Actual V1 file/dimension/hash readback succeeded, but no authoritative image persistence receipt was available; saving remains pending. These real failures are release blockers, not missing static tests or a reason to lower protection. Other four scene categories and independent fresh-user photo-only triggering remain unverified.
+
+### Latest limitation
+
+A fresh browser Work conversation exposed the updated Skill summary, but the photo upload tool timed out; no automatic-trigger success was observed. During that long wait, the temporary private acceptance root disappeared. Original private ledgers/CLI logs/session index could not be retained; no replacement was fabricated. Five actual output images still decode and match recorded hashes; retained tool metadata and source/output bytes were saved as an explicitly partial private evidence archive. Historical restore results are not now a resumable cross-session test. This audit-retention gap is an additional release blocker. See HOST_ACCEPTANCE.md for current boundaries.

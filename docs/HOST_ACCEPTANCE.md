@@ -50,6 +50,14 @@ Accepted V1 SHA-256: `268db8bc1a2e92fa61f2884503e9c15444ebd01d0220fd9d1d8cf1d2cf
 - This demonstrates read-only return from a rejected displayed attempt to existing V1. It does **not** establish a successful accepted V2-to-V1 sequence, a fresh user conversation's context restoration or a real photo-only auto-trigger.
 - No real save failure or unknown external render occurred. Their live recovery remains unverified; existing automated evidence is retained separately. Anonymous evidence-archive saving is not an edited-photo save receipt.
 
+## Independent-session attempt and evidence-retention incident
+
+A real fresh empty ChatGPT Work browser conversation was opened. Its file menu showed the updated landscape/architecture Skill summary. Only the authorized CC0 landscape was selected for upload; the file-chooser/upload tool timed out. No sent photo-only message, skill-selection trace or automatic render was observed. This case remains **unverified**; no repeated upload/submission was made after the unknown outcome.
+
+After that long timeout, the temporary private acceptance root was no longer present. Its original ledgers, anonymous SQLite profile/session index and detailed CLI logs are unavailable. The five actual generated output files and authorized source bytes survived; they were re-read, fully decoded and matched all five recorded hashes. Retained actual tool-return metadata/timings and the first complete arguments also survived. A **partial** evidence archive with those bytes was successfully persisted, clearly declaring missing raw records. It must not be presented as a recovered original ledger, a photo-save receipt, or a completed cross-session version test. Previously observed restores/immutability are historical execution results; they cannot currently be resumed from the lost private index. This retention gap is an additional release blocker.
+
+Do not synthesize replacement historical records or claim that a new index is the original one. Before another long UI task, persist private evidence and session state outside disposable temporary storage; any restoration must validate actual bytes and provenance.
+
 ## Required visual matrix and remaining work
 
 | Required category | Current result / next evidence |
