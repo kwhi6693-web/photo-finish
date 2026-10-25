@@ -1,5 +1,6 @@
 """Private snapshot integrity/recovery using synthetic files, no host claims."""
 from pathlib import Path
+from contextlib import closing
 import importlib.util
 import json
 import sqlite3
@@ -117,7 +118,9 @@ class PrivateCheckpointTests(unittest.TestCase):
         connection.execute("INSERT INTO tasks VALUES ('SYNTHETIC_V1')"); connection.commit()
         result = c.export(self.root, self.archive, ['tasks.sqlite3'])
         dest = self.base/'restored'; c.restore(self.archive, dest, result['sha256'])
-        with sqlite3.connect(dest/'tasks.sqlite3') as restored:
+        # The SQLite transaction context manager does not close its connection.
+        # Windows must release the handle before TemporaryDirectory cleanup.
+        with closing(sqlite3.connect(dest/'tasks.sqlite3')) as restored:
             self.assertEqual(restored.execute('SELECT label FROM tasks').fetchall(), [('SYNTHETIC_V1',)])
         self.assertEqual(connection.execute('SELECT label FROM tasks').fetchall(), [('SYNTHETIC_V1',)])
 
