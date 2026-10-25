@@ -25,8 +25,10 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 | Modified but untested | None in recovered product code | This progress document is a documentation-only addition; run doctor/link/publication checks |
 | Completed and verified | Publish development history and create Draft PR | Nine exact stage trees verified; PR #14; local active branch synchronized with remote |
 | Completed and verified | Native matrix and four explicit Windows diagnostics at 7a6fa21 | Push 40191479841 and PR 40191482775: all six lanes each passed. Windows 246/246 in 29.269s; four named diagnostics passed with zero skips, failures or errors |
-| Environment-dependent / unverified | Candidate installation, photo-only trigger, live rule/style behavior, real editing/visual acceptance, multi-turn continuity and authoritative host save | Installed exposed skill was 2026-10-24.2; inspected signed-in Work UI did not expose a verified candidate installer. Do not call fixtures host acceptance |
-| Not yet performed | Portrait, night, lettering, travel batch and special-light real-photo regression | No authorized anonymous photo set was supplied; do not access unrelated personal images |
+| Completed and verified (current host) | Actual candidate installation and host text readback | Installed exact RC through the real Skills workspace; pushed; host Skills readback is 2026-10-25.1 and matches candidate SKILL bytes. All 112 manifest files match; no extra installed files |
+| Completed with limited scope | Anonymous instruction persistence/readback | Five actual installed-CLI operations in separate processes; unchanged hash on repeated profile read; empty style collection remains empty. This does not prove image application |
+| Environment-dependent / unverified | Photo-only trigger, actual style/theory/image application, five real-photo cases, multi-turn edit/rollback and image-save recovery | No photo input bytes acquired: public metadata and original-image requests returned HTTP 403. No image-tool call or visual pass was fabricated |
+| Blocked / not performed | Portrait, night, lettering, travel batch and soft-focus/low-exposure real-photo regression | No photos attached; licensed public input acquisition returned 403. Provide actual authorized photographs; do not substitute search previews or synthetic images |
 
 ## Verification already completed
 
@@ -96,3 +98,18 @@ Do not merge main, create a tag or publish a Release without explicit approval. 
 - Local checkout was fast-forwarded to the connector branch with no force update, no uncommitted conflict and unchanged candidate SHA-256. Doctor, publication scan (153 files) and diff check passed after the CI-only fix. Final documentation-only changes receive the same focused documentation checks.
 - The local installed-skills workspace is present, but the existing personal Photo Finish skill remains 2026-10-24.2 without a bundled runtime and references private historical assets. It was inspected, not replaced. Candidate installation into an isolated real host, photo-only trigger and actual photo/receipt acceptance remain unverified; filesystem/CLI availability is not proof of those behaviors.
 - No main merge, version tag or GitHub Release has been performed. PR #14 remains draft. The remaining blocker is actual candidate host and authorized real-photo acceptance, followed by user approval, not missing product implementation or local protocol tests.
+
+## Actual host installation acceptance — 2026-10-25
+
+This entry supersedes the earlier statement that candidate installation was unverified. Product source and the 1.5.0-rc.1 archive remain unchanged. The 246 tests and prior 12 CI jobs were not rerun in this round.
+
+- Before install: actual exposed personal skill was workflow 2026-10-24.2 with no bundled runtime. Restore point in the private Skills workspace: a433ca5173b793956b128cc2321b4a5c46bb7922.
+- Installed all candidate archive files into the existing Photo Finish skill; committed/pushed through the actual authenticated Skills Git workflow. Installation commit 9e9e29f; generated Python bytecode was subsequently removed, concurrent host normalization was merged without overwriting history, and final push 8f22060cf1a6b7fe7a55e31c0fddd01a44f4fe82 succeeded. Final tree is clean, with exact manifest contents and no extra files.
+- Host Skills readback, not just a local file read: workflow 2026-10-25.1 and byte-for-byte candidate SKILL match. Installed SKILL SHA-256: 793efbd0343b3079323feab1833b3aa5eb003231c16a5e675d6f17c4329e57ef. Installed doctor passed (not a rerun of the test suite).
+- Anonymous rule configuration used a separate private root, outside all Git/skill directories. Five real CLI calls (show/set/show/show/style-list) ran in separate Python processes. Profile persistence/readback matched; collection remained empty. The initial in-checkout path was correctly refused and replaced with an external private root. Production photos, styles and profile data were not accessed or changed.
+- Two actual public input acquisition attempts returned HTTP 403: Commons metadata API and the licensed original-image host. Public source pages and licensing could be read, but no original image bytes were obtained. Do not infer native-detail visual acceptance from search display previews. No further ineffective retries were made.
+- Actual image-editor invocations: 0; actual render submissions: 0; actual visual reviews: 0. Consequently no real edited-photo history, rollback, unknown-render recovery or generated-image save receipt was tested.
+- Raw install/configuration/error evidence and the isolated anonymous profile were saved as a private acceptance evidence archive with a real successful save and local identity writeback. That archive-save receipt is not an edited-photo persistence receipt. No private evidence or photos enter this public branch.
+- Current host now has the RC installed; do not mistake stable GitHub v1.4.2 for the installed runtime. Earlier personal Library references were not migrated or read.
+
+Continue with the concrete input matrix and steps in [HOST_ACCEPTANCE.md](HOST_ACCEPTANCE.md). Keep PR #14 draft; no merge, tag or Release. Formal release notes are deferred until the necessary real cases pass.

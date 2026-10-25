@@ -70,3 +70,11 @@ The nine stage trees were recovered and verified exactly, and Draft PR #14 was o
 ## Verified native candidate results after recovery
 
 Candidate/CI-fix commit 7a6fa21c46c23d951ba5d1e18be17a34f8dd6b2f passed all six jobs in push run 40191479841 and all six PR jobs in run 40191482775. Actual Windows logs: 246 tests in 29.269s and all four explicitly named symlink/temporary-alias cases in 0.391s; zero skips, failures or errors. The isolated diagnostic import correction is now verified natively, not inferred from Linux. The candidate archive is unchanged. PR #14 remains draft pending exact-candidate host/real-photo/save acceptance and user approval. Latest progress-only commit identity and live checks resolve through the PR and docs/IMPLEMENTATION_PROGRESS.md.
+
+## Actual installed-host evidence (supersedes earlier installation blocker)
+
+On 2026-10-25 the real Skills workspace was used to install/push the exact 1.5.0-rc.1 candidate. Host Skills readback returned the new 2026-10-25.1 SKILL text, exactly matching candidate bytes, rather than the former 2026-10-24.2 text. All 112 manifest entries match and there are no extra installed files. Final private installation push: 8f22060. The old version remains recoverable in private Git history.
+
+Five real installed-CLI configuration operations and repeated separate-process profile reads succeeded in an isolated anonymous root. These demonstrate configuration persistence only. No actual photograph input was available: the public metadata API and original-image download returned HTTP 403 despite readable source/license pages. Image-editor calls, renders and visual reviews all remain zero. Automatic photo-only triggering, actual style/theory effect, five photo categories, multi-round real edits, zero-render rollback of real edits and real image-save/failure/unknown recovery are unverified. A successfully saved private evidence archive is not counted as an image-save receipt.
+
+No 246-test rerun, product-code change, regenerated installation ZIP or formal release note was performed. See [host acceptance matrix and manual continuation](HOST_ACCEPTANCE.md). Release decision: HOLD, keep 1.5.0-rc.1 and Draft PR #14 until the remaining actual cases pass and user approval is given.
