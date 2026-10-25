@@ -12,7 +12,7 @@
 {"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json","tags":[],"evaluation_kind":"live","scenario":"本次实际场景","intent":{"subject":["architecture"],"light":["sunlight"],"material":["wood"],"expression":["depth"]}}
 ```
 
-tags用实际场景A–L；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。最终direction在submit中提供，route为native/creative/hybrid；output_use为screen/print_proof_requested。兼容prepare.direction仅作已验证草案；采用参考时必须在查看后显式提交最终direction，无参考的专业判断可沿用草案。新调用建议直接省略prepare.direction。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。
+tags用实际场景A–L（J仅历史兼容，不用于当前产品）；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。最终direction在submit中提供，route为native/creative/hybrid；output_use为screen/print_proof_requested。兼容prepare.direction仅作已验证草案；采用参考时必须在查看后显式提交最终direction，无参考的专业判断可沿用草案。新调用建议直接省略prepare.direction。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。
 
 2. 实际查看拟采用参考后submit依次合并protect、select、最终direction、可选issues和adapter.begin；先持久化提交再调用真实工具：
 
@@ -40,7 +40,7 @@ review事件必须来自实际看图，profile_passed和color_scope按真实声�
 
 ## 参考检索参数
 
-photo_workflow.py candidates可传intent，例如{"subject":["architecture","garden","foliage"],"light":["sunlight"],"material":["tile","wood"],"expression":["depth"]}。四个字段的值都是标签列表，每字段最多12项，缺少观察就省略，不传中文自由文本字符串。支持标签：architecture、garden、foliage、water、urban、portrait、sunlight、warm_light、soft_light、night、wood、stone、tile、glass、metal、depth、reflection、low_key。标签来自本次实际看图，索引侧仅作文字元数据推断；不确定时省略intent或用空对象，保留原场景/色彩检索，不为填标签增加一轮图像调用。
+photo_workflow.py candidates可传intent，例如{"subject":["architecture","garden","foliage"],"light":["sunlight"],"material":["tile","wood"],"expression":["depth"]}。四个字段的值都是标签列表，每字段最多12项，缺少观察就省略，不传中文自由文本字符串。支持标签：architecture、garden、foliage、water、urban、portrait、sunlight、warm_light、soft_light、night、wood、stone、tile、glass、metal、depth、reflection、low_key。portrait仅为旧接口兼容标签，不用于当前人像修图；偶然人物继续受通用内容保护。标签来自本次实际看图，索引侧仅作文字元数据推断；不确定时省略intent或用空对象，保留原场景/色彩检索，不为填标签增加一轮图像调用。
 
 ## 调用与真实返回
 

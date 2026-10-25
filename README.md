@@ -19,7 +19,11 @@ This branch prepares **1.5.0-rc.1** for review. Latest stable downloads remain *
 
 ## First use
 
-Send a photograph to start editing composition, light, color and detail.
+Scope: natural landscapes, architecture, city night scenes and travel scenery. Portrait photographs and portrait beautification are not supported. Incidental people keep the existing identity/content protections and receive no targeted portrait retouching.
+
+Send a landscape or architecture photograph to start editing composition, light, color and detail.
+
+Local changes depend on actual tool capabilities. Whole-image generation can change untargeted regions; each result needs visual review and is not a pixel-lock guarantee.
 
 - `Beautify this photo.`
 - `Keep the people and lettering; improve only light and color.`
@@ -131,7 +135,7 @@ Read the [runtime guide](docs/runtime.md) for executable examples, [the complete
 
 Pillow is bounded to `>=12.3,<14`. pip selects a compatible 12.x release on Python 3.10 and permits 13.x on Python 3.11+. NumPy and SciPy remain optional; their version ranges already permit newer compatible releases.
 
-The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW, print and identity-sensitive portrait results need task-specific verification.
+The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW and print results need task-specific verification. Portrait photographs are outside the product scope.
 
 <a id="privacy"></a>
 

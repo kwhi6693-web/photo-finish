@@ -1,55 +1,65 @@
-# Photo Finish actual host acceptance and remaining manual steps
+# Photo Finish actual host acceptance
 
-Date: 2026-10-25. Candidate: 1.5.0-rc.1, workflow 2026-10-25.1, based on PR #14 / code 796c68a. Product code and candidate ZIP were not changed in this round. Prior automated results are reused, not rerun.
+Updated 2026-10-25 (Asia/Shanghai), PR #14, continuing e67cd4d. Candidate remains **1.5.0-rc.1**, workflow 2026-10-25.1. Prior 246 tests and native Windows/12 CI results are retained, not rerun. This round changes scope instructions and their synchronized package, with no execution-code changes.
 
-## Actual results
+## Product scope and exact installation
 
-| Item | Result | Scope / evidence |
+Use natural landscapes, architecture, city night scenes and travel scenery. Portrait photographs and portrait beautification are excluded. Incidental people retain the existing identity/content protections and receive no targeted retouching. Earlier portrait examples and acceptance requirements are superseded. Historical numerical scene J remains only for compatibility, not current orchestration or a product promise.
+
+The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed as d47ffd7. Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 112 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.
+
+- Package: 485802 bytes / 113 entries including manifest.
+- Package SHA-256: `6e73b9ddb260f0d2a028a1020d7434ded4bac52456727bab71eab3ce0cf026e9`.
+- Installed SKILL SHA-256: `ca31ad88e9dcb137622178c5872840227a287da29ac36fd624ac8999c02ddaac`.
+- Doctor, publication scan, one targeted deterministic-build/relocated-install regression and diff checks passed. No full-suite rerun was requested.
+
+## Real landscape run
+
+The earlier download blocker was overcome through the authorized GitHub connector using actual base64 file bytes, not search thumbnails. The [ArrayFire asset license index](https://github.com/arrayfire/assets/blob/master/examples/images/README.md) marks both `nature.jpg` and `trees_ctm.jpg` CC0. No test photo is shipped in this repository or skill package.
+
+- Target: real grove/meadow/bright-sky photograph, 1920x1280 JPEG, 934266 bytes; Git blob `854d43c68afa874523974ff3abe5e01e7e7cf73f`; SHA-256 `8e1d84df59988537c9c2176bcb973b443dfc124e0ca35ae77c692b05691e3273`. This is the repository-distributed photograph, not a claimed original camera master. Visual category: backlit trees against bright sky; exact sun position/time is not asserted.
+- Reference: real monochrome winter tree landscape, Git blob `37b1fa35321bc5eb5035ef4d9804478ffea7fdff`; SHA-256 `2193bc3b9f2b944dd696f63becb67b71acb00a86f72f6a302525e5ac60f48a99`. Distant incidental people are not targets and were not copied.
+- An isolated anonymous library stored the authorized reference with tags, `use_for=[light]` and a no-scene-copy note. Query **宁静** actually matched **安静** through finite keyword expansion, not vector search. Actual prepare/submit carried the viewed reference and light-only decision into real image-tool arguments.
+- Anonymous rules required preserved composition/objects and natural greens without HDR/false texture. Separate CLI processes repeatedly returned the same profile hash. No production preferences were accessed or inferred. Explicit private root configuration is required: one unsubmitted revision draft omitted it and saw the empty default; it was retained unused and corrected before any submission.
+- The actual theory chapter on tone/color hierarchy informed the direction: keep trees darker than sky, separate shadows selectively and avoid inventing clipped-highlight detail. This is observed reasoning/application, not an isolated causal test of theory or reference effectiveness.
+
+| Actual image_gen.imagegen call | Observed result | Quality decision |
 |---|---|---|
-| Real host installation | Passed | Exact candidate copied to the authenticated Skills workspace, committed and pushed; old version has a Git restore point |
-| Current host text / cache distinction | Passed | Host Skills readback returned new 2026-10-25.1 text exactly matching the candidate; all 112 manifest files match |
-| Installed integrity / doctor | Passed | Actual installed folder checked; no extra files remain; not an image or aesthetic test |
-| Anonymous instructions across processes | Passed, component scope | Actual show/set/show/show calls, identical repeated profile hash; production personal data not read |
-| Empty style collection / no implicit collection | Passed, component scope | Actual style-list returned zero, no image was silently collected |
-| Photo-only automatic triggering | Unverified | Requires an actual new user photo-only message; metadata and SKILL text are not an event trace |
-| Instructions, style and theory in actual pixels | Unverified | No actual image tool execution |
-| Five real-photo categories | Blocked / unperformed | No attached inputs; public source/license pages readable, but metadata/original download requests returned HTTP 403 |
-| Real multi-round revisions and zero-render rollback | Unverified | No real edited V1/V2 exists in this round |
-| Generated image shown vs saved | Unverified live | No edited-image return or authoritative image save receipt |
-| Actual save failure / unknown result recovery | Unverified live | No artificial failure or tool status was invented to obtain a pass |
-| Private evidence archive saving | Passed, different artifact | Real archive save and local identity writeback succeeded; not an image-save receipt |
+| Initial edit, 28.333s | Added dramatic clouds/sunbeams and changed fence details | Failed actual full-frame/native-detail review; protected-content failure retained |
+| One deliberate correction from original, 24.696s | No invented rays; recognizable canopy, mountains and fence positions correspond; natural greens and soft sky transitions | Accepted as **V1**, 1536x1024, ordinary screen / `screen_srgb_assumed` / semantic identity only. Fine leaves/grass were regenerated; no pixel preservation, recovered-detail or print claim |
+| Local revision from accepted V1, 21.403s | Requested only lower-left grass color, but non-target canopy/right-grass texture changed and coarsened | Failed local preservation review; **no formal V2** registered; no further repeated generations |
 
-Actual image-editor calls: **0**. Render submissions: **0**. Visual reviews: **0**. No search preview, simulated picture or parameter report was substituted for visual acceptance.
+Additional user-ordered checks were then performed: V1 was re-read at 1536x1024 with the exact accepted hash, but no authoritative save receipt or identity metadata existed; saving remains pending. Opening the rendered V1 and using its save/download action is the available manual method, with no re-edit. A filename search returning no result is not proof of absence.
 
-## How to continue without repeating completed work
+| Additional actual call | Result | Decision |
+|---|---|---|
+| More natural from V1, 26.414s | More restrained color, but coarse/smoothed leaf clumps and restructured grass did not establish reduced false texture | Rejected; no formal V2 |
+| Sky-only from explicit V1, 36.930s | Reconstructed cloud forms and changed non-sky grass/canopy texture | Rejected; no formal V2. Real non-sky RGB absolute-difference probe also recorded; it is not an automatic aesthetic score |
 
-The candidate is now installed. In a fresh Work conversation, first read the current skill version and confirm 2026-10-25.1; then use only the authorized test collection. Keep task, profile, style, output and receipt data outside Git and the installed skill. Do not access the user's unrelated private collection.
+Both cases restored exact existing V1 with zero new editor calls; accepted ledger/output hashes remained unchanged. Naturalness output SHA-256: `b6760d23b5201923416b6eba016516a008f802fe8ce72ba04b03ddd10de124f1`; sky-only output SHA-256: `fe7828d1b3edcfe1c7abc8ed2210f1152b3270759720009dcef8fb1c21517d0e`.
 
-1. Send one authorized backlit portrait as the only message content. Retain the host's actual skill-selection/loading trace and actual editing call/result. This establishes automatic photo-only triggering separately from explicit invocation.
-2. Use the actual candidate prepare/submit/returned/review workflow. Record real tool boundaries and exact original/output hashes; actually inspect full frame plus affected native details. Do not pass identity, lettering or aesthetics from prompt text.
-3. For custom instructions, use an isolated anonymous test profile and explicitly request a concrete constraint (for example preserve composition and visible lettering). Check the selected active rules, actual tool parameters and actual pixels.
-4. Explicitly collect an authorized style reference into that anonymous library; list its real ID/hash/tags and verify a subsequent matching photo actually uses only the allowed components. Ordinary edit inputs must not be collected automatically. Load an applicable theory chapter only when needed and evaluate its actual result, including counterexamples to automatic brightening/strong contrast.
-5. Accept a real V1, request one localized revision to create V2, then request return to V1. Verify selected bytes match the original V1 hash, old ledgers and outputs remain unchanged, and actual render count does not increase on rollback. Reload the host/context and re-read profile/version association.
-6. Record generated, actually displayed, quality-accepted and persistently-saved states separately. Confirm saving only from an authoritative receipt binding the exact output identity/hash. Without it retain pending confirmation and end the turn. Do not upload again solely to manufacture a platform receipt.
-7. Only observe actual save failures or unknown render results; do not fabricate them. On failure recover the existing result/save, and verify no new render submission. On unknown continue/investigate the same task. Destructive network/account changes are not needed for this test.
+These are actual tool-boundary durations at millisecond precision, not end-to-end latency claims. There is **one independent edit target**, five actual editor calls and five real visual reviews. Do not count the correction as a new independent scene or report first-source acceptance as 100%. The initial edit failed; source-level first acceptance is 0/1 in this small run.
 
-## Required real-photo matrix
+Accepted V1 SHA-256: `268db8bc1a2e92fa61f2884503e9c15444ebd01d0220fd9d1d8cf1d2cf1a4226`. Initial rejected output: `4bb7a0cb4a8e3263caad57ce81590b3b0c6634c576b36c164c2a832d36e2d997`. Rejected local output: `b63ebc14e2186c1c3ce9642032c0fce3125fa7404a3970e2ce5af539cad424d0`.
 
-| Input to provide | Native-detail checks |
+## Delivery, restoration and limits
+
+- Real generated/displayed/quality-accepted/save-confirmed states stayed separate. V1 is generated, displayed and accepted for its limited screen scope; persistent image saving is **pending confirmation**. The image tool supplies no authoritative persistence identity/hash receipt during this turn. No duplicate upload manufactured one.
+- The failed first output could not enter `next-step` because the existing gate requires a passed upstream review. This refusal was preserved; no pass flag or protection was weakened. A new correction from the known original was deliberately prepared, with the failed ledger retained. This is not an unknown/working retry.
+- After the rejected local attempt, actual `restore(V1)` returned the exact accepted bytes with **zero new editor calls**. The accepted ledger and output hashes stayed unchanged. Independent CLI processes re-read the V1 cursor and identical profile; repeated delivery returned no new hint.
+- This demonstrates read-only return from a rejected displayed attempt to existing V1. It does **not** establish a successful accepted V2-to-V1 sequence, a fresh user conversation's context restoration or a real photo-only auto-trigger.
+- No real save failure or unknown external render occurred. Their live recovery remains unverified; existing automated evidence is retained separately. Anonymous evidence-archive saving is not an edited-photo save receipt.
+
+## Required visual matrix and remaining work
+
+| Required category | Current result / next evidence |
 |---|---|
-| Backlit portrait | Same face/identity and pose; believable skin/hair; controlled backlight/highlights; no plastic texture |
-| Night photograph | Lamp/neon shape, noise and shadow texture; no halos, invented detail or unnatural color |
-| Photograph with readable text | Visible characters, sign/seal layout and edges; compare against actual source, no guessed words |
-| At least three travel photos in one batch | Per-photo review and ordered delivery; shared direction without copying exposure/WB/masks blindly; single-photo recovery leaves completed outputs unchanged |
-| Intentional soft focus or low exposure | Preserve the intended softness/darkness; avoid turning it into artificial sharpness or flattened brightness |
+| Backlit natural landscape | One actual source edited; V1 accepted in limited screen scope after a failed first output; local revision failed |
+| City night | Unverified; needs real lamp/neon, shadow/noise, color and halo review |
+| Architecture and lettering | Unverified; needs original/result characters, sign geometry and structural comparison |
+| Travel landscape group | Unverified; needs at least three authorized photos, per-photo acceptance, ordered delivery and completed-photo preservation |
+| Soft-focus or low-exposure landscape | Unverified; preserve intended softness/darkness without invented detail or forced brightening |
 
-Public real-photo sources whose description/licensing pages were inspected (their bytes were not acquired):
-- [Backlighting portrait — Guillermo Carlos Gómez](https://commons.wikimedia.org/wiki/File:Backlighting_portrait.jpg), CC BY-SA 4.0. If an edited derivative is shared, retain attribution, license and change notice.
-- [Kuala Lumpur Sentral at night — Rohitjahnavi](https://commons.wikimedia.org/wiki/File:Downtown_Kuala_Lumpur_Sentral_in_night,_Malaysia_IMG20250927194645.jpg), CC0.
-- [Main Street sign — Benoît Prieur](https://commons.wikimedia.org/wiki/File:Street_sign_Main_Street_(Los_Angeles)_July_2022.JPG), CC0.
+Use authorized actual bytes only, outside Git/skill directories. Next perform a photo-only user message in the installed host; then obtain reliable local edit evidence without changing non-target regions, successful accepted V2/rollback, authoritative photo-save receipts and remaining four categories. Do not introduce a paid service, key or new infrastructure just to obtain a pass. Current whole-image generative local editing is a real failed acceptance item, not merely a missing test.
 
-These are possible authorized inputs, not a completed five-category dataset. Alternatively supply your own authorized photos. A low-contrast fog photograph alone must not be relabeled a soft-focus/low-exposure test without actually inspecting it.
-
-## Release decision
-
-**HOLD.** Keep PR #14 Draft and retain 1.5.0-rc.1. Installation is now verified, while necessary photographic/event/save cases remain unverified. Do not merge main, create a formal version tag, publish Release or issue final release notes before those cases pass and user approval is given. The existing candidate ZIP SHA-256 remains 384c44eff01e0c0d6c75eed8ad1e51076d6f6db2a812bf412484c4ec9c2202b3.
+**Release decision: HOLD.** Keep PR #14 Draft and 1.5.0-rc.1. No main merge, formal tag, Release or final release notes until necessary acceptance passes and explicit user approval is given.

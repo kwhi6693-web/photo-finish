@@ -7,7 +7,7 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Repository: kwhi6693-web/photo-finish; default branch: main.
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
-- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current scope-corrected package SHA-256: 6e73b9ddb260f0d2a028a1020d7434ded4bac52456727bab71eab3ce0cf026e9. Earlier package hashes below are historical.
 - Verified code/package commit: remote 23e0587c7490a134a6b956af7dcd529c79e9dda8, identical source tree to local 811c081. Recovery/upload checkpoint: cb212e7550d96248381f53c27e02f07beab5fd5c. Current checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
@@ -28,7 +28,7 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 | Completed and verified (current host) | Actual candidate installation and host text readback | Installed exact RC through the real Skills workspace; pushed; host Skills readback is 2026-10-25.1 and matches candidate SKILL bytes. All 112 manifest files match; no extra installed files |
 | Completed with limited scope | Anonymous instruction persistence/readback | Five actual installed-CLI operations in separate processes; unchanged hash on repeated profile read; empty style collection remains empty. This does not prove image application |
 | Environment-dependent / unverified | Photo-only trigger, actual style/theory/image application, five real-photo cases, multi-turn edit/rollback and image-save recovery | No photo input bytes acquired: public metadata and original-image requests returned HTTP 403. No image-tool call or visual pass was fabricated |
-| Blocked / not performed | Portrait, night, lettering, travel batch and soft-focus/low-exposure real-photo regression | No photos attached; licensed public input acquisition returned 403. Provide actual authorized photographs; do not substitute search previews or synthetic images |
+| Blocked / not performed | Backlit landscape, city night, architecture/lettering, travel landscape batch and soft-focus/low-exposure landscape real-photo regression | No photos attached; licensed public input acquisition returned 403. Provide actual authorized photographs; do not substitute search previews or synthetic images |
 
 ## Verification already completed
 
@@ -113,3 +113,18 @@ This entry supersedes the earlier statement that candidate installation was unve
 - Current host now has the RC installed; do not mistake stable GitHub v1.4.2 for the installed runtime. Earlier personal Library references were not migrated or read.
 
 Continue with the concrete input matrix and steps in [HOST_ACCEPTANCE.md](HOST_ACCEPTANCE.md). Keep PR #14 draft; no merge, tag or Release. Formal release notes are deferred until the necessary real cases pass.
+
+## Scope correction and first real landscape acceptance — 2026-10-25
+
+This entry supersedes earlier zero-image-call/download-blocked and unchanged-package statements. Continue from e67cd4d; no architecture or execution script was rewritten.
+
+- Current scope excludes portrait photographs/beautification. SKILL metadata/body, agent metadata, three READMEs, master rules, fidelity/theory/scene/grid/caption guides and generated policy/hash mirrors were corrected. Generic incidental-person identity/content protections and the frozen numerical compatibility assets remain.
+- Corrected 1.5.0-rc.1 package: 485802 bytes, 113 entries / 112 manifest files, SHA-256 6e73b9ddb260f0d2a028a1020d7434ded4bac52456727bab71eab3ce0cf026e9. Actually installed, doctor-checked, committed/pushed in the Skills workspace as d47ffd7; host readback contains corrected scope, SKILL SHA-256 ca31ad88e9dcb137622178c5872840227a287da29ac36fd624ac8999c02ddaac.
+- Prior 246 tests and native CI evidence retained. Only doctor, publication, diff and the one targeted deterministic-build/relocation regression ran; that regression passed in 1.230s.
+- Actual CC0 grove/meadow JPEG and winter-tree reference obtained through the authorized GitHub connector, decoded, hashed and visually inspected; no thumbnail/synthetic substitution. Only anonymous isolated test configuration was used. Natural-language keyword query, scoped light-only selection, actual reference tool inputs, saved rules and a theory-informed direction were traced. This is not vector search or causal proof of independent style/theory effectiveness.
+- Five real image-tool calls on one independent source: initial 28.333s (failed clouds/fence), deliberate original-based correction 24.696s (accepted V1), grass-only 21.403s (failed non-target texture), user-ordered more-natural 26.414s (failed texture/naturalness), sky-only 36.930s (failed cloud/non-target preservation). No formal V2 was registered. Do not report source first acceptance as 100%; initial source result failed.
+- V1: 1536x1024, SHA-256 268db8bc1a2e92fa61f2884503e9c15444ebd01d0220fd9d1d8cf1d2cf1a4226. Accepted only for ordinary screen with explicit sRGB assumption/semantic identity; fine vegetation is regenerated, no pixel preservation or print claim. Re-read bytes/dimensions match; no authoritative image save receipt exists, so persistence remains pending. User can open the displayed V1 and use save/download without a new edit.
+- Actual read-only restore after failed attempts: zero new image-tool calls; accepted V1 image and ledger hashes unchanged; independent CLI process readback retained cursor and anonymous profile. Repeated delivery returned an empty hint. This is not an accepted V2-to-V1 or independent fresh-chat trigger test.
+- Existing next-step gate correctly refused the failed upstream output. No false pass was inserted; correction used a distinct deliberate original-based task, keeping failed ledgers. One unsubmitted revision draft omitted the anonymous library root and read the empty default; preserved unused and corrected before submit. Future host calls must carry the trusted private root.
+- **Actual failed acceptance items:** naturalness refinement and localized preservation with the current whole-image generator. No new paid service/key/infrastructure was introduced. Remaining four visual categories, fresh photo-only trigger, successful accepted V2 sequence, authoritative image-save confirmation and real save-failure/unknown recovery remain open.
+- Raw private ledgers/photos/receipts stay outside Git/skill. Public trace and next steps: HOST_ACCEPTANCE.md. Keep Draft PR #14, no merge/tag/Release or final release notes.

@@ -1,13 +1,15 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, faithful portrait or travel edits, explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, landscape, architecture, city-night and travel-scenery edits (not portrait photographs or portrait beautification), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
 
 调用：`$photo-finish`。
 
-收到本次新照片无其他说明即EDIT_TARGET，无需再问开始或风格。明确ANALYSIS只分析，STYLE_REFERENCE按授权；不批处理历史，不自动把待修图或成片入参考库。**默认逐张只输出最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示，不附原片、默认对比、参数或重复展示。**内部对照、实际终检及记录保留，当次要求与用户保存的规则按下述优先级覆盖默认。
+Photo Finish 处理自然风景、建筑、城市夜景与旅行风景照片，不处理人像照片或提供人像美化。照片偶然包含人物时，保留身份、关键外观及原有内容保护，不进行针对性的人像美化；以人物为主体的输入简短说明范围并请提供风景照片，不提交修图。
+
+收到本次新风景或建筑照片无其他说明即EDIT_TARGET，无需再问开始或风格。明确ANALYSIS只分析，STYLE_REFERENCE按授权；不批处理历史，不自动把待修图或成片入参考库。**默认逐张只输出最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示，不附原片、默认对比、参数或重复展示。**内部对照、实际终检及记录保留，当次要求与用户保存的规则按下述优先级覆盖默认。
 
 ## 接入与现行依据
 
@@ -65,7 +67,7 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 
 ## 色彩与交付事实
 
-ICC和PNG有效声明综合判断，缺ICC不直接判偏色。仅普通screen未标记8位RGB/RGBA PNG可显式screen_srgb_assumed并写理由，profile_passed保持false；不冒称源编码、专业标定或打印通过。已有P3/HDR、无效/不支持声明不可用。确需独立带标签副本才export-web，不为标签重传生成图。打印/RAW/肤色按实际条件验证。
+ICC和PNG有效声明综合判断，缺ICC不直接判偏色。仅普通screen未标记8位RGB/RGBA PNG可显式screen_srgb_assumed并写理由，profile_passed保持false；不冒称源编码、专业标定或打印通过。已有P3/HDR、无效/不支持声明不可用。确需独立带标签副本才export-web，不为标签重传生成图。打印/RAW按实际条件验证；不提供人像美化或肤色标定服务。
 
 展示、用途验收与保存确认分别记录。platform_auto可先展示；实际复核接受后无权威保存回执则pending_confirmation，snapshot保存内部待确认记录并结束回合，不等待、重传/重复展示或补造保存。仅真实关联准确输出哈希的权威凭据才confirm-platform-save；未安装后台回调，不承诺自动补记。manual须真实save-intent、成片回执及最终记录回执才DELIVER。snapshot失败按已接受状态恢复，不把验收和快照称同一原子事务。
 
