@@ -62,3 +62,7 @@ Review the PR source, tests, evidence and candidate ZIP manifest/checksum. After
 - `git diff --check`: passed. Windows/macOS/Python 3.10/current-head CI results are available on the draft PR after push; do not substitute the historical baseline result.
 
 The independent reviewer found four substantive bugs and one hint issue; all were reproduced and fixed with regression assertions. Additional review found duplicate status planning and corrupt-index error handling; both now have regression coverage. No known code-review finding is deferred. Real-host/photograph gates above remain open.
+
+## Resume / candidate CI correction
+
+The nine stage trees were recovered and verified exactly, and Draft PR #14 was opened. The first native Windows candidate lane passed all 246 tests (30.587s), then failed only in the newly added standalone four-case diagnostic because the temporary Python script did not include the repository root on sys.path. Three symlink cases passed explicitly. An isolated temporary-script reproduction confirmed the import error; adding the repository root made all four cases pass locally. The workflow-only correction does not alter packaged inputs or the ZIP hash; native current-head CI is checked on PR #14.

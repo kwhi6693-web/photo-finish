@@ -8,9 +8,9 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
 - Candidate: 1.5.0-rc.1, workflow 2026-10-25.1.
-- Latest verified local code/package commit before this progress checkpoint: 811c081. Working tree was clean at recovery.
-- Eight local stage commits existed at recovery. Command-line push failed because it had no HTTPS credentials. Connector blob upload was interrupted before branch creation; remote branch and PR were actually absent on recovery.
-- Resume delivery through the authorized GitHub connector. Uploaded Git object IDs can be reused; create and verify each stage tree before creating commits/branch. Do not force-push or change historical commits.
+- Verified code/package commit: remote 23e0587c7490a134a6b956af7dcd529c79e9dda8, identical source tree to local 811c081. Recovery/upload checkpoint: cb212e7550d96248381f53c27e02f07beab5fd5c. Current checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
+- Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
+- Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
 ## Task classification
@@ -23,8 +23,8 @@ Updated: 2026-10-25 (Asia/Shanghai). This file is the restart checkpoint; inspec
 | Completed and verified | Ordered batch status, never-submitted failure recovery, completed/working/unknown exclusion, observed UX metrics | tests/test_batches.py, tests/test_ux_metrics.py; four independent reviewer defects and hint issue fixed |
 | Completed and verified | Source/docs/runtime/candidate package consistency, publication scan, deterministic build and clean extraction | Exact checks below and docs/ux-engineering-validation.md |
 | Modified but untested | None in recovered product code | This progress document is a documentation-only addition; run doctor/link/publication checks |
-| In progress | Publish development history and maintain this restart file | Verify remote Git trees against local trees, then create branch and Draft PR |
-| Not yet completed | Current-head Windows/macOS/Linux CI and final remote readback | Read actual Actions results and explicit four-case Windows diagnostics; repair only actual failures |
+| Completed and verified | Publish development history and create Draft PR | Nine exact stage trees verified; PR #14; local active branch synchronized with remote |
+| In progress | Current-head matrix after isolated CI diagnostic fix | Initial run: Linux/macOS all passed; Windows full 246 passed but separate temporary diagnostic lacked repository root on sys.path. Fix adds only that root; isolated four-case reproduction passed, awaiting native CI |
 | Environment-dependent / unverified | Candidate installation, photo-only trigger, live rule/style behavior, real editing/visual acceptance, multi-turn continuity and authoritative host save | Installed exposed skill was 2026-10-24.2; inspected signed-in Work UI did not expose a verified candidate installer. Do not call fixtures host acceptance |
 | Not yet performed | Portrait, night, lettering, travel batch and special-light real-photo regression | No authorized anonymous photo set was supplied; do not access unrelated personal images |
 
@@ -60,9 +60,31 @@ No deferred code-review defect is known. External unknown/error submissions rema
 
 Do not merge main, create a tag or publish a Release without explicit approval. Real-photo and exact-candidate host acceptance are still open. Preserve stable v1.4.2 and its assets. A future stable version bump requires rebuilding and verifying the exact approved source; do not relabel this RC archive.
 
+## Recovery timeline and current CI finding
+
+- Recovery verified the actual local 246-test log, Git diff, candidate hash, handoff criteria and absent remote branch/PR. Product work was not repeated.
+- Nine source trees were recreated from already uploaded blobs and matched local Git tree hashes exactly. Connector-generated commit timestamps/identity yield different commit IDs, with identical source content (mapping below).
+- Current-head push run 40191160098: five Linux/macOS lanes passed. Windows full suite passed 246 tests in 30.587s; the new standalone diagnostic then failed to import tests.test_personal_backup. Its first three symlink cases passed, with zero skips.
+- Root cause was reproduced in an isolated temporary Python script: the GitHub shell=python file runs outside the checkout, so repository root must explicitly enter sys.path. Adding only that root made all four named cases pass locally. Product code and candidate ZIP are unchanged; no full local rerun is needed for this CI-only fix. Native rerun is required.
+- Evidence: https://github.com/kwhi6693-web/photo-finish/actions/runs/40191160098 . Failed diagnostic job: 121162277050. This finding is distinct from the handoff's untraced Windows environment errors.
+
+## Original local to connector commit map
+
+| Local commit | Connector commit | Exact tree |
+|---|---|---|
+| 2f76d8e6cade9ece48ac8566ca87f1641234b6e7 | cd169cd1d325d6e43f71afbc8fde30203429fa28 | 60d56c493ae623bf34ef8fbf5b5436e739712497 |
+| 5e34096a8611aea17d285d0505b86d1734236680 | c149d5b6d3cd2727a9147fa80287d0ede5e4cf1e | d67a459b7463dd4b8671b33839c408f9d0d0d471 |
+| 5e11681929d1309b302796a47b53f6bb528902e3 | 4b80189f5241fc76938d39f0d2ae30e43f5c825f | 478e1bcc402102666cbf40be54714a85163d9694 |
+| 763f7a06aa50db8a5510c1552b05ec1c4aae3a0f | 8d1b9058d50bc6bf6a601b131ee40f8220af5141 | 371f878e465b7ac6a110e2f860ba942396c2938c |
+| 4a7a33b764650a7517994188b0bf7b2d37ef7006 | d6c392aa5e1adca69d867f3579d7b01b499797db | 4ca0c15be3e3d87fa8a1f909196ecceb76c0ce01 |
+| fb2717cbba32b85c6cb8dcbd1035aaaebe5e89ab | e425a75ee4c7734b637b3f30819ce775d6c7a954 | 9235cec9801d3d5df9426a8a092765de6e92cd3b |
+| 0d2ce43fe27f527fc170d4f3624788b4a26e298e | 7963ad5cb8f42f31996cd60bbae8746650fd38ec | b4304d994f55bbc92f6d529dca92d369892faf6b |
+| 811c0811777e669604b023f4810cdfd7c0bff6a0 | 23e0587c7490a134a6b956af7dcd529c79e9dda8 | 93f5dab21be00f8e97f5e3928dec105c701256fb |
+| 7b447459b86beb6a51b3b14a0c7e7e34fae6ceff | cb212e7550d96248381f53c27e02f07beab5fd5c | 428797f2fd42c2f0799ffabee6fc24a9c6f03d7e |
+
 ## Immediate next steps
 
-1. Complete connector-backed branch upload, preserving stage messages and verifying exact tree equality. Record remote commit mapping without rewriting existing history.
-2. Open a Draft PR with the test report and unverified host/photo gates. Inspect current-head matrix, including four named Windows symlink/alias tests.
-3. Update this file with remote branch/PR/CI evidence; documentation-only updates require doctor/link/publication checks, not another unchanged full local regression.
-4. Inspect any newly available supported host/installer interface. If unavailable, document the exact remaining blocker and leave the PR draft; never manufacture installation, photo review or saving evidence.
+1. Verify current-head matrix and the four explicit Windows symlink/alias cases after the import-path correction. PR #14 is the live check-status entrypoint.
+2. Keep code/package evidence separate from progress-only commits; verify the unchanged ZIP hash. Update PR evidence after CI without repeatedly rebuilding unchanged packaged sources.
+3. New-host/real-photo acceptance remains blocked as described above. Use only an actually supported candidate installer and authorized anonymous photographs; do not access unrelated personal images or simulate receipts.
+4. Keep PR draft until the real acceptance gates and user review are complete. Do not merge, tag or publish without explicit approval.

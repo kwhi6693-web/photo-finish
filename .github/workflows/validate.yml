@@ -78,6 +78,7 @@ jobs:
         shell: python
         run: |
           import sys, unittest
+          sys.path.insert(0, '.')
           sys.path.insert(0, 'runtime/10_SYSTEM_CONFIG/scripts')
           names = [
             'verify_input_delivery_safety.DownloadSafetyTests.test_dangling_symlink_is_an_existing_target',
