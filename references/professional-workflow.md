@@ -22,3 +22,5 @@
 ## 会话版本与保护继承
 
 跨回合版本用photo_edit的version-register/delivered/versions/current-version定位，实际accepted输出与完整哈希为权威。继续改经revise从选定正式成片创建新任务并绑定系列原片；局部要求继承已认可direction和构图、人物保护。底层protect和accept同样验证继承条件，不能通过低层接口削弱。回退restore仅读既有文件并更新会话游标，历史照片/账本不写，不渲染；compare返回同一任务source/output，实际比较不得混版。
+
+批量用batch-create/batch-status核对真实单张状态；batch-retry-failed只为确定未提交的失败项准备替代任务，未知提交继续调查、已完成不重复生成。每张版本注册但不重复hint，批末batch-completed统一一次。近期/常用参考来自实际接受采用记录，不推断长期爱好。

@@ -162,6 +162,7 @@ def revise(session_root, series, version, path, request, local=False, **prepare_
             if target not in targets:requirements.append({'target':target,'level':'semantic_identity','requirement':requirement})
     revision={'series':series,'session_root':str(location(session_root)),'parent_job':item['job'],
               'parent_version':version,'parent_output':item['output'],'original_source':item['original_source'],
+              'root_started_unix_ns':(parent.get('revision') or {}).get('root_started_unix_ns',parent['milestones']['job_started']),
               'parent_protection_sha256':digest(_requirements(parent)),'requirements':requirements,
               'inherited_direction':parent.get('professional_direction'),'request':request,'local':local}
     target=Path(path).resolve()

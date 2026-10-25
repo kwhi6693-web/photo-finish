@@ -18,6 +18,7 @@ import user_preferences as preferences
 import personal_backup as backup
 import experience
 import task_history as history
+import batch_workflow as batches
 
 
 def _response(path):
@@ -115,7 +116,8 @@ def review(path,events,output_path,record_destination=None,brief=None):
 
 
 def main():
-    routes={'version-register':history.register,'versions':history.history,'restore':history.restore,
+    routes={'batch-create':batches.create,'batch-status':batches.summary,'batch-retry-failed':batches.retry_failed,'batch-completed':batches.completed,
+            'version-register':history.register,'versions':history.history,'restore':history.restore,
             'revise':history.revise,'compare':history.compare,'delivered':history.delivered,'hints':history.hints,'current-version':history.current,
             'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
             'style-add':styles.add,'style-list':styles.list_references,'style-update':styles.update,'style-remove':styles.remove,

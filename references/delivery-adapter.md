@@ -81,3 +81,5 @@ first_output_acceptance显示分子/分母/比率，仅已知质量结论参与�
 ## 中文展示协议
 
 photo_edit的experience为真实状态的中文视图，独立显示generated、quality_accepted、display_observed、persistence_confirmed。仅有正式文件仍等待实际看图，不冒称检查中或已通过。没有真实保存回执显示“成片已生成，保存状态待确认。”，错误说明附可执行恢复入口，不能把保存或未知渲染变成二次提交。新成片提示仅首次交付，批次末统一一次；关闭提示仅会话生效，长期保存另需授权。
+
+体验指标另含average_revision_rounds（显式样本内每个原片/任务根的返工轮数）、duplicate_render_count（相同输入与完整参数的不同实际提交）、persistence_confirmation和accepted_output_median_seconds。后者仅从任务接入到正式文件/实际视觉接受，不包括接入前或宿主展示延迟，不冒称完整对话耗时；缺测null，复放/合成与live分开。独立修订保留根来源，样本不全会低估返工次数。

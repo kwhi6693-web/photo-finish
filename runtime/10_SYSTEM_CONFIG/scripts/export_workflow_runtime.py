@@ -9,6 +9,7 @@ FILES=(
  '10_SYSTEM_CONFIG/scripts/photo_edit.py',
  '10_SYSTEM_CONFIG/scripts/experience.py',
  '10_SYSTEM_CONFIG/scripts/task_history.py',
+ '10_SYSTEM_CONFIG/scripts/batch_workflow.py',
  '10_SYSTEM_CONFIG/scripts/review_contract.py',
  '10_SYSTEM_CONFIG/scripts/delivery_metrics.py',
  '10_SYSTEM_CONFIG/scripts/style_match.py',

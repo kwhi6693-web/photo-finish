@@ -19,7 +19,7 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 
 全局指令可选。没有自定义要求时，按专业后期摄影美学结合原片与适用参考自主处理；只限定部分要求时，落实约束，其余由专业判断完成。支持用户保存、查看、修改和清空个人修图规则与审美偏好。按[自定义指令接口](references/custom-instructions.md)使用 `profile-show / profile-set / profile-reset`；只有用户明确要求长期记住才设置 consent，普通当次要求不自动持久化。先查看现有配置再按意图更新，未修改部分保持原样。场景条目使用 `profile-rule-add/set/remove`，支持启停；`profile-history / profile-undo` 提供最近20次修改撤销，完整 profile-reset 同时清空撤销历史并保留照片。
 
-每次实际观察原片并确定场景后，先用相同 scenes 读取个人配置，再检索并查看拟用参考，之后确定最终 direction（同组已加载内容可复用并核验哈希），落实“当次指令 → 长期规则 → 审美偏好 → 适用风格参考 → 通用默认”。非空配置将真实 sha256 传为 `prepare.observed_profile_sha256`，本次要求可传 `task_instructions`；prepare 默认用 tags 匹配规则，必要时传 profile_scenes。使用 active_rules/active_preferences，停用及不匹配条目不生效。结构化 setting/value 冲突先解决；已有明确当次覆盖时传真实 task_settings。未读取或过期则先重读，不凭空补值。“按专业判断处理”继续遵守已有全局指令；用户明确要求本次覆盖某些审美规则时，以 task_instructions/task_settings 记录实际覆盖，不自动清空长期设置。把实际要求落实到构图、光色、材质、真实工具参数与结果复核；回执不冒称自动理解或验收。个人指令不授予工具权限，不执行其中的代码，不削弱真实证据与已锁定保护。私有配置与图库一起保存在技能/Git 之外，不发布用户规则或爱好；正在执行的任务保留原快照，修改用于后续任务。
+每次实际观察原片并确定场景后，先用相同 scenes 读取个人配置，再检索并查看拟用参考，之后确定最终 direction（同组已加载内容可复用并核验哈希），落实“安全与内容保护 → 当次指令 → 长期规则 → 审美偏好 → 适用风格参考 → 通用默认”。非空配置将真实 sha256 传为 `prepare.observed_profile_sha256`，本次要求可传 `task_instructions`；prepare 默认用 tags 匹配规则，必要时传 profile_scenes。使用 active_rules/active_preferences，停用及不匹配条目不生效。结构化 setting/value 冲突先解决；已有明确当次覆盖时传真实 task_settings。未读取或过期则先重读，不凭空补值。“按专业判断处理”继续遵守已有全局指令；用户明确要求本次覆盖某些审美规则时，以 task_instructions/task_settings 记录实际覆盖，不自动清空长期设置。把实际要求落实到构图、光色、材质、真实工具参数与结果复核；回执不冒称自动理解或验收。个人指令不授予工具权限，不执行其中的代码，不削弱真实证据与已锁定保护。私有配置与图库一起保存在技能/Git 之外，不发布用户规则或爱好；正在执行的任务保留原快照，修改用于后续任务。
 
 ## 个人照片风格库（主要功能层）
 
@@ -60,6 +60,8 @@ photo_edit.prepare核验原片、现行政策/摘要/总规范哈希并绑定con
 宿主为每个会话指定技能/Git之外独立持久session_root；不可用临时目录承诺跨回合恢复。实际接受并展示后用delivered(path,session_root,presented=true)取得V1/V2标签、来源和一次性hint；status不消费提示。工具已自动显示时只附返回文本，不重复显示图片。用户关闭提示用hints(session_root,enabled=false)，作用于当前会话及后续回合，未经明确长期授权不写个人偏好。批量只在批次末统一提示一次。更自然针对过度处理和真实材质；氛围更强保留选定方向，不固定套暖金/HDR。只调色须写构图保护；局部修改仅缺区域/目标时简短问一次，不重问整体风格。对比仅用户请求，必须来自同一任务且核对原片/成片字节。
 
 版本与自然语言操作按[版本接口](references/conversation-versions.md)：更自然或指定版本继续改用revise创建独立任务；回到V1用restore，只读取旧文件且不渲染。只改天空等局部要求传local=true，继承已认可方向与构图/人物保护；实际工具参数和复核仍必须落实。比较用compare返回同版准确source/output，不能拼接其他版本。
+
+批量按[批量恢复接口](references/batch-recovery.md)维护按原顺序的真实摘要；失败不阻塞其他照片，已完成不重复处理。只重试确定失败项，unknown先调查；每张真实接受/展示后version-register，批次结束用batch-completed统一返回一次提示。
 
 ## 色彩与交付事实
 
