@@ -69,3 +69,9 @@ Use the existing job's status to continue a tool task or acquire a formal result
 ## Optional baselines
 
 `runtime/06_SCENE_PRESETS/` and `style_config.json` contain advisory numerical settings and XMP files. Their numeric controls are engine-specific. They do not replace actual rendering, image-tool discovery, RAW interpretation, visual review or per-image exposure/white-balance decisions. Use `requirements-analysis.txt` only for optional numerical/report tools that need those dependencies.
+
+## Conversation and batch UX (1.5.0 candidate)
+
+The normal image pipeline is unchanged. Add private session_root to version/delivery commands, independent from the style-library root. See [versions](../references/conversation-versions.md) and [batch recovery](../references/batch-recovery.md). Index rows locate accepted ledgers; output/source hashes are checked on use. Never use an index or displayed image as visual/save evidence. Natural-language selection is performed by the host assistant, with deterministic source/version/protection gates in Python.
+
+For screen sharing use actual supported color declarations; export-web creates a separate tagged derivative only when needed, without silently relabeling P3/HDR. Printing requires target paper/device ICC, actual soft proof, dimensions and rendering intent; absent those, deliver a bounded screen result and state that printing is unverified. No printing calibration is inferred from an embedded ICC.

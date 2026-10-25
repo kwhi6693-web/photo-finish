@@ -44,7 +44,8 @@ flowchart TB
 |---|---|
 | `SKILL.md`、`agents/openai.yaml` | 技能触发、主要行为和宿主显示信息 |
 | `runtime/我的照片美化偏好与修图标准.md`、`runtime_policy.json` | 当前行为规范与机器契约；通过摘要和哈希绑定任务 |
-| `photo_edit.py` | 四步主入口及图库、规则、备份管理入口 |
+| `photo_edit.py` | 四步主入口及图库、规则、备份、会话版本和批量入口 |
+| `experience.py`、`task_history.py`、`batch_workflow.py` | 中文事实视图、私有会话版本索引、只读成片回退及安全批量恢复 |
 | `photo_workflow.py`、`style_match.py`、`reference_semantics.py` | 原片/结果文件检查、候选检索和透明的相对特征排序 |
 | `style_library.py`、`user_preferences.py` | 用户私有 SQLite 图库、规则和修改历史 |
 | `workflow_session.py`、`delivery_adapter.py`、`delivery_automation.py` | 事务、源/参考/输出身份、真实调用记录、复核与保存状态 |
@@ -58,6 +59,8 @@ flowchart TB
 | 用途 | `photo_edit.py` 操作 |
 |---|---|
 | 普通修图 | `prepare`、`submit`、`returned`、`review`、`status` |
+| 会话版本 | `version-register`、`versions`、`current-version`、`revise`、`restore`、`compare`、`delivered`、`hints` |
+| 批量 | `batch-create`、`batch-status`、`batch-retry-failed`、`batch-completed` |
 | 图库 | `style-add`、`style-list`、`style-update`、`style-remove` |
 | 全局规则与偏好 | `profile-show`、`profile-set`、`profile-reset` |
 | 场景规则与撤销 | `profile-rule-add`、`profile-rule-set`、`profile-rule-remove`、`profile-history`、`profile-undo` |

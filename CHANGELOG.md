@@ -1,5 +1,16 @@
 # Changelog
 
+
+## 1.5.0-rc.1 — 2026-10-25 (unreleased candidate)
+
+- Truthful Chinese stage/recovery/save messages and once-per-conversation-version delivery hints with opt-out.
+- Private indexed V1/V2 history, selected-output revisions with inherited protections, verified existing-byte rollback and same-task comparisons.
+- Ordered batch status and never-submitted failure recovery; completed/working/unknown tasks are excluded from new rendering.
+- Finite keyword synonym expansion, recent/frequent accepted-style use and exact-row metadata cache; no vector-search claim.
+- Observed revision/duplicate-render/save/readiness metrics, concise onboarding and explicit screen/print boundaries.
+- Existing source bindings, real review, content protection and authoritative save receipts remain mandatory. Host/real-photo acceptance remains a release gate, reported separately.
+
+
 ## 1.4.2 — 2026-10-24
 
 - Add a practical theory reference for tonal organization, color restraint, local separation and visual hierarchy, with approximate tutorial timestamps, official Adobe mechanism references and clearly labeled application reasoning.

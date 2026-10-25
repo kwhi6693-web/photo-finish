@@ -21,3 +21,7 @@ The public installation ZIP and a user's private backup ZIP are separate formats
 For 1.4.2 the expected installation ZIP is 463,846 bytes, has 108 entries including its manifest, and has SHA-256 `23ce92b01a3d4c01fb81203f8d943fbd80a5fe912445e65041cd46b714d0139b`. Documentation-only changes outside the package allowlist do not change this archive. Future releases must calculate their own values.
 
 The [validation guide](validation.md) distinguishes local checks, platform CI and photographic evidence. Publishing a release does not update a user's installed skill or transfer their private collection.
+
+## 1.5.0 candidate approval gate
+
+The current branch builds 1.5.0-rc.1 for review only. Do not merge, create a tag or publish a release without user approval. Real-photo and current-host acceptance in ux-engineering-validation.md remain open until actual evidence is available. Before a stable 1.5.0 release, update candidate version fields and rebuild/reverify the exact approved source; the stable manifest must match its tag and attached archive. Historical v1.4.2 assets are unchanged.

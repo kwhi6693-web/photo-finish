@@ -5,11 +5,25 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.2-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Candidate-1.5.0--rc.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
+
+当前分支准备 **1.5.0-rc.1** 供审阅；最新正式下载仍为 **1.4.2**，批准、合并、打标签与发布后才更新。见[工程验收记录](docs/ux-engineering-validation.md)。
+
+## 第一次使用
+
+发一张照片，我会直接完成构图、光影、色彩和细节优化。
+
+- `直接美化这张照片。`
+- `保留人物和文字，只改善光影和色彩。`
+- `参考我收藏的「柔光木质」，但不要改变构图。`
+
+成片附简短版本和真实保存状态；可继续说“更自然”“只改天空”或“回到 V1”。
+效果依赖宿主真实看图和图像编辑能力。原片保留；人物、文字及指定内容列为保护项，生成式工具不能保证逐像素不变。
+个人照片、风格与任务记录使用私有位置，是否上传取决于实际宿主工具；不承诺云同步。
 
 ## ⚡ 快速开始
 
@@ -21,7 +35,7 @@
 使用 $photo-finish 处理这张照片。
 ```
 
-默认逐张只输出最终成片，不附原片、前后对比、参数或说明。内部原片对照、实际看图验收和记录继续执行。当次明确要求优先。
+默认逐张交付最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示；不附原片、默认对比或参数。内部原片对照、实际看图验收和记录继续执行。当次明确要求优先。
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
