@@ -2,6 +2,12 @@
 
 Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.3. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
 
+## 最新独立匿名版本链（2026-10-26）
+
+[全新独立版本链](INDEPENDENT_VERSION_CHAIN_20261026.md)：另用未编辑匿名非人像山景、全新私有索引/空风格库，真实原生V1、合法V2、逐版实际视觉复核/PNG/真实保存/登记通过。一次V2→V1及同版重复恢复均零新增编辑，历史哈希和版本行不变；新进程和真正全新Work会话实际查询当前V1、父版正确。四正式文件保存后完整取回匹配，新会话只读43项引用哈希/4回执一致。
+
+当前机制在现有持久根的独立新任务与跨会话重读已验证；不冒称跨设备同步、数据物理丢失恢复或自动触发复测。旧宿主历史缺口与后来恢复链继续分开，上传/预览精确时间缺测不补造。无产品代码或候选改动，不重跑旧测试/CI；其余门槛与RC/Draft/HOLD保留。
+
 ## 最新交付恢复与回退（2026-10-26）
 
 [当前恢复链实测](VERSION_DELIVERY_RECOVERY_20261026.md)：原当前索引不可恢复，不追认旧V2；真实历史V1行作为恢复起点，原有接受修订/PNG/成功回执完成当前时间归档，实际最终记录保存并取回校验，登记当前V2。原独立工具返回缺失继续保留。

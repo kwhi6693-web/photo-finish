@@ -13,6 +13,16 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
+## 最新断点：新独立匿名版本链已实测
+
+详见[独立版本链报告](INDEPENDENT_VERSION_CHAIN_20261026.md)。旧32文件恢复检查点与当前恢复索引/游标已核验一致；旧PNG和任务不修改。ed06299三份文档核验后，以相同文件树同步dd435bf到PR #14，不覆盖远端改动，保留本地提交。原宿主索引/游标/独立原调用返回仍不可恢复，后来恢复链不追认原历史。
+
+另设全新匿名山景任务与空索引/风格库。真实原生编辑2次，逐版正式PNG/视觉复核、照片及最终记录各2次真实成功保存、同系列V1/V2登记及父版绑定通过。四文件均完整取回哈希匹配。一次V2→V1回退及一次同V1重复恢复，新增编辑0、历史文件/账本/版本行不变；新进程current-version为V1。
+
+真正全新ChatGPT Work会话只读访问该持久目录，实际current-version/versions/两版verify返回V1与正确父版关系，43项引用哈希、4份回执匹配、旧文件未变。报告原件私有保存。此为跨会话读取现有持久根，不认证跨设备、物理数据丢失恢复或重新自动触发。delivered=0保持，不用保存成功冒充展示；上传/预览精确边界时间缺失如实保留，渲染/保存/本地阶段/宿主查询时间已留证。
+
+下一断点复用本独立链与私有证据，不重复编辑、保存PNG或执行已有回退。本轮无产品代码变更或旧测试/CI重跑，候选包保持1.5.0-rc.1原哈希；其他门槛仍按各报告范围，继续RC/Draft/HOLD。
+
 ## 最新断点：当前恢复链交付完成，已一次回退V1
 
 基线fdb1343，见[雪雾树林交付恢复](VERSION_DELIVERY_RECOVERY_20261026.md)。只读查找9个相关SQLite，含目标series的7个副本均仅历史V1，原当前索引/游标未找到，明确标记“原版本状态不可恢复”，不推定过去已登记V2，独立V2工具返回继续缺失。
