@@ -1,4 +1,4 @@
-# 默认照片编辑接口 2026-10-26.2
+# 默认照片编辑接口 2026-10-26.3
 
 日常决策读总规范一次。日常优先photo_edit.py的prepare/submit/returned/review合并入口，完整字段按DELIVERY_ADAPTER.md；本页低层接口仅兼容/诊断按需读取。平台本地正式文件和自动展示/延后保存不走本页manual上传分支。本页仅接口/恢复按需读取；机器契约为runtime_policy.json#/fast_edit_workflow及protection_policy、color_delivery_policy。专业摄影判断覆盖所有分支，依据当次目的统筹构图与光色，强度保持开放。以下检查保护信息与真实执行，不限制审美。
 
