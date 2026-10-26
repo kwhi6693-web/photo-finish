@@ -13,6 +13,14 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
+## 最新断点：用户旅行组照已完成
+
+基线9a8a510，实际执行仍为1.5.0-rc.1 / 2026-10-26.3。新增[旅行组照验收](TRAVEL_BATCH_ACCEPTANCE_20261026.md)：用户授权三张园林旅行照片，实际3次Adobe原生编辑、1次原任务查询，3/3质量接受、正式PNG和最终记录各3个真实成功回执；三张PNG独立取回，尺寸和完整哈希一致；SQLite完整性ok，三个独立V1登记，控制器均DELIVER。个人规则/风格库实际为空，不宣称采用未取得的个人参考。
+
+单张真实受控归档写入错误（只读文件系统）及本地输出暂不可用已实际检查；其他两张历史文件全哈希不变，摘要正确隔离，恢复不新增编辑/不重新上传成片。实际Adobe单张服务失败、远端保存失败和未知渲染未发生，继续未验证。没有改产品代码、重跑旧CI或重建候选包。本轮仅更新三份验收/进度文档；下一提交由git log确定，不填写自引用SHA。
+
+私有原片/成片/QA/原账本/真实工具返回/保存回执/SQLite快照纳入新61文件检查点，与既有35文件检查点区分；真实持久保存状态见旅行报告收尾。本批不进入公开Git/发行包，不再重修。此前另一个会话已发V2请求，后续首先只读核实实际结果，结果未明不重发；该任务不在本轮旅行验收范围。其余门槛（正式V2/回退、柔焦或低曝光自然风景、天空受限结论等）留待下一单元，继续Draft PR #14 / RC / HOLD。
+
 ## Task classification
 
 最新单一门槛见[DEFAULT_DELIVERY_GATE_20261026.md](DEFAULT_DELIVERY_GATE_20261026.md)。已定位STOP/明确授权与客户端反馈缺口，修正过宽的卡片失败续接指令。真正独立预授权会话中，仅照片消息自动完成一次原生编辑、终检、正式PNG、照片及最终记录回执、V1 delivered索引；根检查端已取回和交叉验哈希。无预授权空白照片流程不合并为通过。新证据是同一任务链，不复测旧35文件检查点，也不提交旧城市未知令牌。以下较早结论保留历史范围。

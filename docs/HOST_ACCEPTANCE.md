@@ -2,6 +2,14 @@
 
 Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.3. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
 
+## 最新旅行批量结论（2026-10-26）
+
+[用户授权旅行组照实测](TRAVEL_BATCH_ACCEPTANCE_20261026.md)：新上传三张园林旅行照片，真实原生编辑3次、原任务查询1次；3张通过全幅/原生细节复核，正式PNG及最终记录各3个真实成功保存回执，独立取回PNG全哈希/尺寸匹配，3个独立V1系列，全部控制器DELIVER。实际读取的个人配置/风格库为空，按本次要求和专业理论处理，不声称使用未取得的参考。
+
+受控第三张归档只读写入故障及正式文件暂不可用检查：其他两张账本/成片/记录哈希不变，摘要2完成/1需确认；恢复已有文件和归档后3完成，额外编辑0。此为真实文件故障，不是Adobe服务或远端保存故障；后两者继续未验证。批次末提示一次。无产品代码修改、未重跑旧测试/CI，候选包不变。
+
+下文早期表格/状态为历史记录，旅行组照一项以本节为准。非人像定位、明确预授权闭环和35文件恢复既有证据保留；正式V2、天空局部及其他开放门槛不在本轮展开。继续RC/Draft/HOLD。
+
 ## Product scope and exact installation
 
 最新[授权与默认交付门槛](DEFAULT_DELIVERY_GATE_20261026.md)已经完成一个独立、明确预授权后仅照片的同任务链：真实原生编辑、终检、正式PNG、照片/最终记录保存回执和V1 delivered索引均匹配。无预授权案例仍因单图交互STOP及客户端故障未回传受限，不能混并。此前单元与检查点不重复验证。
