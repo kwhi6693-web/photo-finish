@@ -7,15 +7,21 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Repository: kwhi6693-web/photo-finish; default branch: main.
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
-- Candidate: 1.5.0-rc.1, workflow 2026-10-25.1. Current Windows-fsync-fix candidate package SHA-256: c3ef681c313bf094f9cecc03f8527ca4159bd0daf7273fb15b36b666b3e3d8c5. Earlier package hashes below are historical.
-- Current verified code/test commit: e0e10d10e632f9f31cb9de86ccdee39d18c7de19; Windows runtime fix ffdbe9ae0ecad6e3df5d9c122adcfcdf1deacd1c. Both push and PR matrices passed all six lanes. Earlier source commits below are historical. Current document checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-26.1. Current native-route instruction candidate SHA-256: 01677e288698718496879dea4e684ed33c57e9877ae830dde05a6a628d65adfc (496730 bytes). Earlier package hashes below are historical.
+- Current native-route instruction commit: a4ec61cb6bb0ce87c73305bf235184026827bf0f; installed Skills commit 8d888eb and full cloud SKILL byte readback verified. Targeted 33 checks pass; native-route forward test and its latest CI must be read from current evidence. Windows runtime fix ffdbe9a and test fix e0e10d1 remain preserved. Current document checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
 ## Task classification
 
-最新真实验收覆盖：[HOST_CAPABILITIES_20261026.md](HOST_CAPABILITIES_20261026.md)。独立仅照片触发和原V1平台文件保存已有真实证据；默认全幅生成新图仍保真失败。Adobe天空局部本例蒙版外986992像素完全不变，未登记正式V2。三张街景完成真实原生工具组件批处理，完整旅行/自然风景、版本链和失败恢复仍未完成。旧账本缺失不补造；下表早期“触发/原图保存未知”以此条和新报告为准。本轮产品源码与候选包不变。
+最新真实验收覆盖：[HOST_CAPABILITIES_20261026.md](HOST_CAPABILITIES_20261026.md)。独立仅照片触发和原V1平台文件保存已有真实证据。最小原生优先编排修正a4ec61c已安装/读回且12项CI通过；新版实测改用Adobe，交互卡片设备受限，明确续接后取得正式建筑文件。风景天空候选正式PNG及蒙版外986992像素零差再次核验；因树间天空漏选和边缘过渡未充分证明，完整成片仍未通过，原V1保留，不登记正式V2。三张街景为原生组件测试；完整旅行/自然风景、版本索引和失败恢复仍未完成。旧账本缺失不补造；旧表的触发/保存未知及早期包身份以本页顶部与新报告为准。
+
+本次Adobe续接仅更新HOST_ACCEPTANCE、HOST_CAPABILITIES_20261026及本文件，不改产品代码、不重复渲染。实际查看两个天空mask、树冠/山体/围栏边界叠加图和原生前后细节；输出1536×1024/2826991字节及全哈希再次匹配。新增建筑局部文件及首文件返回已可见，但完整版本账本与独立零渲染计数未核实。当前交互卡片设备不支持，无需新增Adobe授权；不因卡片失败否认已取得的服务端PNG，也不把预览当正式成片。
+
+私有原证据包从持久存储取回并验证完整哈希54bf2fd7…，再保留原记录、增补本次边缘检查及观察；新版137763419字节、SHA-256为3e3127b6724114334fb9c876e0e519df624e6b6dfb4fa4e47647809012ef4dbf，取得真实保存回执（版本2）。新版归档未再次全量取回；不冒称旧原任务账本已恢复。独立未接受天空探针PNG另存供审阅，不是正式V2，所有图片和私有标识均在Git外。
+
+本次文档检查：doctor通过（runtime链接46、政策指针11、文档链接192），公开扫描161文件无发现，git diff --check通过；候选ZIP全字节SHA-256仍01677e28…，没有重建或改版。保留a4ec61c已通过的33项针对性回归及12项CI，不手动重跑261项。下一步只处理可靠边缘/真实自然度改善、默认自动正式交付与完整版本/保存契约；在工具不足时保持失败，不再生成碰运气。
 
 | State | Work | Evidence / next action |
 |---|---|---|
