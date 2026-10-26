@@ -2,6 +2,12 @@
 
 Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.3. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
 
+## 最新交付恢复与回退（2026-10-26）
+
+[当前恢复链实测](VERSION_DELIVERY_RECOVERY_20261026.md)：原当前索引不可恢复，不追认旧V2；真实历史V1行作为恢复起点，原有接受修订/PNG/成功回执完成当前时间归档，实际最终记录保存并取回校验，登记当前V2。原独立工具返回缺失继续保留。
+
+在当前恢复链上一次真实V2→V1回退通过：新增渲染0、PNG保存0；回退前后历史文件/账本/版本行不变，current-version准确返回V1，SQLite完整性ok。恢复对账阶段对修订账本的真实写入与回退阶段不变分开记录，不声称原宿主历史状态恢复。无代码/候选改动或旧测试/CI重跑；其他门槛及RC/Draft/HOLD保留。以下上轮未执行结论按其历史范围阅读。
+
 ## 最新版本核查（2026-10-26）
 
 [既有V2状态审计](VERSION_STATE_AUDIT_20261026.md)找到真实accepted修订账本、父版V1、ready调用凭据及正式PNG，既有照片保存回执经独立取回全字节核验。归档尚未对账：delivery_receipt/final_record为空；当前索引和游标不可取得，独立V2工具返回对象缺失。历史V1快照不能代表当前V2登记。

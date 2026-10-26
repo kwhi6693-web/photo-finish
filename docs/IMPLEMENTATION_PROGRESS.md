@@ -13,6 +13,16 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
+## 最新断点：当前恢复链交付完成，已一次回退V1
+
+基线fdb1343，见[雪雾树林交付恢复](VERSION_DELIVERY_RECOVERY_20261026.md)。只读查找9个相关SQLite，含目标series的7个副本均仅历史V1，原当前索引/游标未找到，明确标记“原版本状态不可恢复”，不推定过去已登记V2，独立V2工具返回继续缺失。
+
+在保留恢复前原件后，从真实V1快照排他恢复缺失索引，原V1行data逐字节不变，另记当前恢复来源；复用原成功照片回执完成当前时间对账，未生成/保存PNG。新最终记录真实保存一次并完整取回验证，控制器DELIVER。随后当前时间登记现存接受输出为V2，父版V1；这不是中断前登记的证明。
+
+回退前current-version为V2，实际restore(V1)一次，新增渲染0、PNG保存0，10个被保护文件/账本及版本行在回退前后全哈希/内容不变，调用列表未增加，SQLite完整性ok；current-version实际返回V1及原正式哈希。当前恢复链的版本/交付/回退验证通过，原宿主遗失状态与证据缺口不改称恢复成功。修订账本本轮因实际归档对账有真实变更，旧字节保留；“账本不变”限于归档完成后的回退前后。V1账本和两张PNG全程不变。
+
+下一断点复用当前恢复链和V1游标，先核验新私有检查点，不重复修图、保存PNG、登记或回退。没有产品代码修改、旧测试或CI重跑、候选重建；其他门槛不展开，继续RC/Draft/HOLD。
+
 ## 最新断点：既有修订已接受/照片已保存，正式V2索引不可核实
 
 基线c3b849f，本轮只读检查此前雪雾树林V1全局柔和修订，详见[版本状态审计](VERSION_STATE_AUDIT_20261026.md)。原修订账本accepted、图像ready，明确父版V1；现存PNG1280×800/1177203字节、SHA-256 bb5dccfb902faaf49496538b7921f3bc909b6fc778ed4769488086c4a3197719。既有真实照片成功回执已独立完整取回核实，没有重修或重保存照片。
