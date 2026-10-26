@@ -1,8 +1,10 @@
 # Photo Finish actual host acceptance
 
-Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.1. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
+Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.2. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
 
 ## Product scope and exact installation
+
+最新断点见[单张原生交付恢复单元](DELIVERY_RECOVERY_20261026.md)：502b8f6的独立原片任务已闭合真实PNG/照片及最终记录回执/版本登记/只读恢复/35文件持久检查点。独立仅照片默认一次交付仍停在不支持卡片，不能将两个任务拼成端到端通过。本轮没有新增编辑。以下a4ec61c等段落为历史证据。
 
 最新真实续接见[2026-10-26区域工具与宿主验收](HOST_CAPABILITIES_20261026.md)：原V1平台文件已通过权威资料库元数据及完整字节取回核验；独立Work仅照片触发已观察通过，但该新任务生成图未通过保真。Adobe风景天空已核验真实mask、正式PNG及蒙版外986992像素零差；树间天空漏选、边缘过渡未充分通过，保留V1、不登记正式V2。新建筑宿主任务取得正式原生文件及一次局部返工文件，首文件回退可见，完整版本索引/零调用仍未独立核实。城市夜景/建筑文字/低曝光街景完成原生工具组件实测，尚不等于完整旅行批次或版本链验收。下文此前“平台保存/独立触发待确认”为历史状态，旧账本仍未恢复。
 
@@ -10,10 +12,10 @@ Long-term product scope: professional non-portrait photography for natural lands
 
 The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed (the original scope correction was d47ffd7; current reliability installation is recorded in progress). Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 115 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.
 
-- Package: 496730 bytes / 116 entries including manifest.
-- Package SHA-256: `01677e288698718496879dea4e684ed33c57e9877ae830dde05a6a628d65adfc`.
-- Installed SKILL SHA-256: `66b40dc2802637be136f6107896f877c2b55f66026313079cd3046197ee33b39`.
-- Doctor, publication scan, targeted deterministic-build/relocated-install and version-protection regressions, diff and Skill validation passed. Installation commit 8d888eb matches all 115 manifest files and current cloud SKILL text; Windows-fix full regression remains valid historical evidence, current checks are recorded separately.
+- Package: 497576 bytes / 116 entries including manifest.
+- Package SHA-256: `3c7a423dfc820190ac41761cc401628d00b0d010266d86d58b52f7136529b31f`.
+- Installed SKILL SHA-256: `79f8eada1e7cfa3649cbf232d7343f04844f827339fc74f5ff7b13838d78da84`.
+- Doctor, publication scan, targeted deterministic-build/relocated-install and version-protection regressions, diff and Skill validation passed. Installation commit 2225730 matches all 115 manifest files and the independent host read-only hash audit; Windows-fix full regression remains valid historical evidence, current checks are recorded separately.
 
 ## Real landscape run
 

@@ -7,13 +7,15 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Repository: kwhi6693-web/photo-finish; default branch: main.
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
-- Candidate: 1.5.0-rc.1, workflow 2026-10-26.1. Current native-route instruction candidate SHA-256: 01677e288698718496879dea4e684ed33c57e9877ae830dde05a6a628d65adfc (496730 bytes). Earlier package hashes below are historical.
-- Current native-route instruction commit: a4ec61cb6bb0ce87c73305bf235184026827bf0f; installed Skills commit 8d888eb and full cloud SKILL byte readback verified. Targeted 33 checks pass; native-route forward test and its latest CI must be read from current evidence. Windows runtime fix ffdbe9a and test fix e0e10d1 remain preserved. Current document checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-26.2. Current native-route instruction candidate SHA-256: 3c7a423dfc820190ac41761cc401628d00b0d010266d86d58b52f7136529b31f (497576 bytes). Earlier package hashes below are historical.
+- Current native-route instruction commit: 502b8f6a2bb7e0f6ae6a02bb1c6b41fb131bff28; installed Skills commit 2225730, 115 manifest files matched; independent host read-only audit matches current SKILL hash. Targeted 33 checks and 12 CI checks pass. Default one-photo delivery still stops at an unsupported widget; do not infer a pass from installation. Windows runtime fix ffdbe9a and test fix e0e10d1 remain preserved. Current document checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
 ## Task classification
+
+最新单元恢复见[DELIVERY_RECOVERY_20261026.md](DELIVERY_RECOVERY_20261026.md)。中断前执行成果已核实保留；独立原片原生V1的正式文件、真实保存、最终记录、版本登记、只读恢复及完整检查点已经闭合，控制器DELIVER。检查点35文件实际保存/取回/恢复通过，SHA-256 e88e23522fc458bbdd1e488d9d503a68936ba9b616c7cab0b67479a3b19fb49b。此单元不等于独立自动触发后的默认一次正式交付；该链仍停在设备不支持卡片。城市自动影调预留令牌无输出/调用回执，保留未知不提交。当前只收尾这一个单元，不展开旅行组照或其他渲染。以下较早状态与包身份保留为历史。
 
 最新真实验收覆盖：[HOST_CAPABILITIES_20261026.md](HOST_CAPABILITIES_20261026.md)。独立仅照片触发和原V1平台文件保存已有真实证据。最小原生优先编排修正a4ec61c已安装/读回且12项CI通过；新版实测改用Adobe，交互卡片设备受限，明确续接后取得正式建筑文件。风景天空候选正式PNG及蒙版外986992像素零差再次核验；因树间天空漏选和边缘过渡未充分证明，完整成片仍未通过，原V1保留，不登记正式V2。三张街景为原生组件测试；完整旅行/自然风景、版本索引和失败恢复仍未完成。旧账本缺失不补造；旧表的触发/保存未知及早期包身份以本页顶部与新报告为准。
 
