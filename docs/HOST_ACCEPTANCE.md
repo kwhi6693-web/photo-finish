@@ -117,3 +117,8 @@ Scope coverage beyond the existing five-category matrix: still life, food and pr
 已安装355df17逐字节匹配当前115个manifest文件。此前持久检查点再次从私有存储取回，ZIP完整哈希db3cdd2fb4bb0fbe8f21f536e67d3b8a76683ce2b819a8d9674cebb278252f3c一致；固定运行时恢复9文件并重复恢复，全部字节保持。V1完整解码1536×1024，哈希与本页记录一致。没有调用图像编辑器，没有伪造原图自动保存回执或原始私有账本。恢复路径改变未自动重绑旧记录。
 
 当前真实Work空会话界面可加载，原清理后的浏览器无旧标签页可检查。没有重发结果未知的原上传；此轮没有照片已发送/自动选Skill/渲染事件，因此独立触发继续未验证。现有全幅imagegen接口仍无mask参数；未通过的自然度和天空局部边界不重新生成碰运气。其余真实场景、正式V2连续验收、原图片保存回执仍待完成。Windows修复不解除HOLD。
+
+
+## 2026-10-27 unattended gate update
+
+See [release gate](RELEASE_GATE_20261027.md). One new atmospheric landscape native candidate was actually checked and rejected for insufficient improvement; no formal version/save. Private evidence saved and fully read back. External-provider fault tests remain unverified; NO-GO / RC / Draft retained. Prior passed tasks and CI not repeated.

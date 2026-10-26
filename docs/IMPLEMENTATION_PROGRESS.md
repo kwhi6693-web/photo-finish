@@ -224,3 +224,8 @@ This entry supersedes earlier zero-image-call/download-blocked and unchanged-pac
 - 浏览器现有清理后不再有原验收标签页；新空Work界面可加载，但没有照片已发送事件。没有重试长上传或推断旧请求成败。独立自动触发仍未验证。
 - 下一具体工作：取得真实可用的区域遮罩编辑器及当前V1输入/输出证据后，才继续天空保护；更自然候选必须实看改善才登记V2。先确保新的操作证据可恢复，再完成独立照片触发、四类剩余风景及正式V2回退/保存回执。原真实失败不能因CI通过改成通过。
 - 状态：Windows阻断已解决；自然度/局部编辑未通过；其他真实宿主门槛未验证。保持1.5.0-rc.1、Draft PR14；不合并、不建正式标签、不发布。
+
+
+## 2026-10-27 unattended gate update
+
+See [release gate](RELEASE_GATE_20261027.md). One new atmospheric landscape native candidate was actually checked and rejected for insufficient improvement; no formal version/save. Private evidence saved and fully read back. External-provider fault tests remain unverified; NO-GO / RC / Draft retained. Prior passed tasks and CI not repeated.
