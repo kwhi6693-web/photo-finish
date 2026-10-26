@@ -1,6 +1,6 @@
 # 日常执行入口
 
-执行编排2026-10-25.1。复用已加载现行[总规范](../我的照片美化偏好与修图标准.md)；字段按需见[工具与交付接口](DELIVERY_ADAPTER.md)。机器权威runtime_policy.json#/execution_adapter_policy。
+执行编排2026-10-26.1。复用已加载现行[总规范](../我的照片美化偏好与修图标准.md)；字段按需见[工具与交付接口](DELIVERY_ADAPTER.md)。机器权威runtime_policy.json#/execution_adapter_policy。
 
 photo_edit.py：实际看原片后prepare合并接入/候选；实际参考判断后submit合并保护/取舍/最终方向/问题/调用登记；真实工具两侧计时，returned合并返回与文件检查；实际全幅/细节终检后review合并证据/验收/可选快照。路径+实际SHA256+检查版本相同才复用正式文件检查；验收重核现行上下文与全部质量/保护条件。
 
