@@ -2,6 +2,12 @@
 
 Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.3. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
 
+## 最新版本核查（2026-10-26）
+
+[既有V2状态审计](VERSION_STATE_AUDIT_20261026.md)找到真实accepted修订账本、父版V1、ready调用凭据及正式PNG，既有照片保存回执经独立取回全字节核验。归档尚未对账：delivery_receipt/final_record为空；当前索引和游标不可取得，独立V2工具返回对象缺失。历史V1快照不能代表当前V2登记。
+
+因此本轮只核实“修订输出已接受、照片已保存”，未执行restore或补登记，V2→V1回退和后续默认基准继续未验证。新增编辑/照片保存/回退调用均0，8个原文件哈希不变。最小恢复条件及证据边界见报告；旅行3/3和此前已通过的工程检查不重复。继续RC/Draft/HOLD。
+
 ## 最新旅行批量结论（2026-10-26）
 
 [用户授权旅行组照实测](TRAVEL_BATCH_ACCEPTANCE_20261026.md)：新上传三张园林旅行照片，真实原生编辑3次、原任务查询1次；3张通过全幅/原生细节复核，正式PNG及最终记录各3个真实成功保存回执，独立取回PNG全哈希/尺寸匹配，3个独立V1系列，全部控制器DELIVER。实际读取的个人配置/风格库为空，按本次要求和专业理论处理，不声称使用未取得的参考。

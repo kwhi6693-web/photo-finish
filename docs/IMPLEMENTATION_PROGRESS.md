@@ -13,6 +13,16 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
+## 最新断点：既有修订已接受/照片已保存，正式V2索引不可核实
+
+基线c3b849f，本轮只读检查此前雪雾树林V1全局柔和修订，详见[版本状态审计](VERSION_STATE_AUDIT_20261026.md)。原修订账本accepted、图像ready，明确父版V1；现存PNG1280×800/1177203字节、SHA-256 bb5dccfb902faaf49496538b7921f3bc909b6fc778ed4769488086c4a3197719。既有真实照片成功回执已独立完整取回核实，没有重修或重保存照片。
+
+账本delivery_receipt/final_record/record_delivery为空，save_completed未记；原session_root/tasks.sqlite3在检查端与原宿主均不可取得，当前V2行/游标不能确认，独立V2工具返回对象缺失。可读历史SQLite仅含V1，不用它伪装当前索引。原宿主回合显示暂停；不能据此认定外部编辑仍运行，也不知道索引消失的确切原因。
+
+本轮没有执行restore、登记V2、消费保存回执或续跑交付；新增编辑0、照片保存0、回退0。核查前后8个原文件全哈希一致。**V2→V1及回退后修订基准仍未验证**，不能把已接受/保存照片与正式版本链合并为通过。下一步最小条件为恢复可信当前索引和可得原调用证据；若获准完成交付恢复，只对现存输出/回执实际对账、保存真实最终记录及当前时间登记，不重渲染、不补造过去。之后才进行一次回退与current-version核验。
+
+三张旅行正式V1与61文件检查点成果保留，本轮未重复验证；其他验收不展开。仅更新三份文档，不改产品代码、不重跑旧测试/CI，候选包保持原哈希，继续RC/Draft/HOLD。
+
 ## 最新断点：用户旅行组照已完成
 
 基线9a8a510，实际执行仍为1.5.0-rc.1 / 2026-10-26.3。新增[旅行组照验收](TRAVEL_BATCH_ACCEPTANCE_20261026.md)：用户授权三张园林旅行照片，实际3次Adobe原生编辑、1次原任务查询，3/3质量接受、正式PNG和最终记录各3个真实成功回执；三张PNG独立取回，尺寸和完整哈希一致；SQLite完整性ok，三个独立V1登记，控制器均DELIVER。个人规则/风格库实际为空，不宣称采用未取得的个人参考。
