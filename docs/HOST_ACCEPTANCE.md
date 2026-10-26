@@ -4,6 +4,8 @@ Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing 7d252ed. Candidate remain
 
 ## Product scope and exact installation
 
+最新真实续接见[2026-10-26区域工具与宿主验收](HOST_CAPABILITIES_20261026.md)：原V1平台文件已通过权威资料库元数据及完整字节取回核验；独立Work仅照片触发已观察通过，但该新任务生成图未通过保真。Adobe天空局部光色本例已完成真实mask、原PNG与蒙版外零差验证。城市夜景/建筑文字/低曝光街景完成原生工具组件实测，尚不等于完整旅行批次或版本链验收。下文此前“平台保存/独立触发待确认”为历史状态，旧账本仍未恢复。
+
 Long-term product scope: professional non-portrait photography for natural landscapes, city nights, architecture, travel, still life, food and products. Portrait photographs and portrait beautification are excluded. Incidental people retain the existing identity/content protections and receive no targeted retouching. Earlier portrait examples and acceptance requirements are superseded. Historical numerical scene J remains only for compatibility, not current orchestration or a product promise.
 
 The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed (the original scope correction was d47ffd7; current reliability installation is recorded in progress). Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 115 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.

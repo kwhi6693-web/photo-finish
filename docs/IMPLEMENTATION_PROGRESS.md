@@ -15,6 +15,8 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 
 ## Task classification
 
+最新真实验收覆盖：[HOST_CAPABILITIES_20261026.md](HOST_CAPABILITIES_20261026.md)。独立仅照片触发和原V1平台文件保存已有真实证据；默认全幅生成新图仍保真失败。Adobe天空局部本例蒙版外986992像素完全不变，未登记正式V2。三张街景完成真实原生工具组件批处理，完整旅行/自然风景、版本链和失败恢复仍未完成。旧账本缺失不补造；下表早期“触发/原图保存未知”以此条和新报告为准。本轮产品源码与候选包不变。
+
 | State | Work | Evidence / next action |
 |---|---|---|
 | Completed and verified | P0 Chinese truthful status/save view, one-time hints and opt-out, V1/V2 history, selected-version revisions, zero-render rollback/comparison | tests/test_experience.py, tests/test_versions.py; full 246-test log and engineering validation |
