@@ -1,8 +1,10 @@
 # Photo Finish actual host acceptance
 
-Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.2. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
+Updated 2026-10-26 (Asia/Shanghai), PR #14, continuing c2e8a42. Candidate remains **1.5.0-rc.1**, current workflow 2026-10-26.3. Earlier Windows/261-test evidence is retained. The native-route instruction correction has targeted validation and a separate live forward test; see the dated capability report.
 
 ## Product scope and exact installation
+
+最新[授权与默认交付门槛](DEFAULT_DELIVERY_GATE_20261026.md)已经完成一个独立、明确预授权后仅照片的同任务链：真实原生编辑、终检、正式PNG、照片/最终记录保存回执和V1 delivered索引均匹配。无预授权案例仍因单图交互STOP及客户端故障未回传受限，不能混并。此前单元与检查点不重复验证。
 
 最新断点见[单张原生交付恢复单元](DELIVERY_RECOVERY_20261026.md)：502b8f6的独立原片任务已闭合真实PNG/照片及最终记录回执/版本登记/只读恢复/35文件持久检查点。独立仅照片默认一次交付仍停在不支持卡片，不能将两个任务拼成端到端通过。本轮没有新增编辑。以下a4ec61c等段落为历史证据。
 
@@ -12,10 +14,10 @@ Long-term product scope: professional non-portrait photography for natural lands
 
 The corrected candidate was actually copied to the authenticated Skills workspace, validated, committed and successfully pushed (the original scope correction was d47ffd7; current reliability installation is recorded in progress). Host Skills readback contains the corrected scope and exactly matches the source SKILL text. All 115 manifest files match, with no extra installed files. This proves installation/loading; it does not prove a new user photo-only event.
 
-- Package: 497576 bytes / 116 entries including manifest.
-- Package SHA-256: `3c7a423dfc820190ac41761cc401628d00b0d010266d86d58b52f7136529b31f`.
-- Installed SKILL SHA-256: `79f8eada1e7cfa3649cbf232d7343f04844f827339fc74f5ff7b13838d78da84`.
-- Doctor, publication scan, targeted deterministic-build/relocated-install and version-protection regressions, diff and Skill validation passed. Installation commit 2225730 matches all 115 manifest files and the independent host read-only hash audit; Windows-fix full regression remains valid historical evidence, current checks are recorded separately.
+- Package: 497953 bytes / 116 entries including manifest.
+- Package SHA-256: `8cb0e595648f1f23fe5821fc9ebd7b72f461a6916e80fddc45f253cba549da54`.
+- Installed SKILL SHA-256: `0784e605ed65216352ca809eabcaa10a20f21c2d17e76444a880980cd4d5392d`.
+- Doctor, publication scan, targeted deterministic-build/relocated-install and version-protection regressions, diff and Skill validation passed. Installation commit e038822 matches all 115 manifest files and the independent host read-only hash audit; Windows-fix full regression remains valid historical evidence, current checks are recorded separately.
 
 ## Real landscape run
 

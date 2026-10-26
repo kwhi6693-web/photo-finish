@@ -7,13 +7,15 @@ Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspec
 - Repository: kwhi6693-web/photo-finish; default branch: main.
 - Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
 - Development branch: feat/ux-engineering-20261025.
-- Candidate: 1.5.0-rc.1, workflow 2026-10-26.2. Current native-route instruction candidate SHA-256: 3c7a423dfc820190ac41761cc401628d00b0d010266d86d58b52f7136529b31f (497576 bytes). Earlier package hashes below are historical.
-- Current native-route instruction commit: 502b8f6a2bb7e0f6ae6a02bb1c6b41fb131bff28; installed Skills commit 2225730, 115 manifest files matched; independent host read-only audit matches current SKILL hash. Targeted 33 checks and 12 CI checks pass. Default one-photo delivery still stops at an unsupported widget; do not infer a pass from installation. Windows runtime fix ffdbe9a and test fix e0e10d1 remain preserved. Current document checkpoint identity: `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-26.3. Current native-route instruction candidate SHA-256: 8cb0e595648f1f23fe5821fc9ebd7b72f461a6916e80fddc45f253cba549da54 (497953 bytes). Earlier package hashes below are historical.
+- Current native-route instruction commit: ce35a5c278f0eba2ad1fde369c6a350c5678c386; installed Skills commit e038822, 115 manifest files matched. Real independent preauthorized host readback matches SKILL 0784e605… and workflow 2026-10-26.3. Targeted 33 checks and 12 source-CI checks pass. Preauthorized photo-only end-to-end case passed; blank no-authorization single-photo flow remains limited by widget STOP and unavailable client feedback. Windows/runtime/history protection unchanged.
 - Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
 - Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
 - The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
 
 ## Task classification
+
+最新单一门槛见[DEFAULT_DELIVERY_GATE_20261026.md](DEFAULT_DELIVERY_GATE_20261026.md)。已定位STOP/明确授权与客户端反馈缺口，修正过宽的卡片失败续接指令。真正独立预授权会话中，仅照片消息自动完成一次原生编辑、终检、正式PNG、照片及最终记录回执、V1 delivered索引；根检查端已取回和交叉验哈希。无预授权空白照片流程不合并为通过。新证据是同一任务链，不复测旧35文件检查点，也不提交旧城市未知令牌。以下较早结论保留历史范围。
 
 最新单元恢复见[DELIVERY_RECOVERY_20261026.md](DELIVERY_RECOVERY_20261026.md)。中断前执行成果已核实保留；独立原片原生V1的正式文件、真实保存、最终记录、版本登记、只读恢复及完整检查点已经闭合，控制器DELIVER。检查点35文件实际保存/取回/恢复通过，SHA-256 e88e23522fc458bbdd1e488d9d503a68936ba9b616c7cab0b67479a3b19fb49b。此单元不等于独立自动触发后的默认一次正式交付；该链仍停在设备不支持卡片。城市自动影调预留令牌无输出/调用回执，保留未知不提交。当前只收尾这一个单元，不展开旅行组照或其他渲染。以下较早状态与包身份保留为历史。
 

@@ -23,6 +23,8 @@ Photo Finish is a professional non-portrait photography Skill for natural landsc
 
 Send a non-portrait photograph to start editing composition, light, color and detail.
 
+Some single-photo tools require explicit permission to edit for you. Where needed, first say “Please directly edit, check, save and deliver the photo I am about to upload.” Then send the photo. A photo-only upload does not grant blanket tool authority. An interactive preview is not a formal file or save confirmation; tool instructions to stop remain binding.
+
 Local changes depend on actual tool capabilities. Whole-image generation can change untargeted regions; each result needs visual review and is not a pixel-lock guarantee.
 
 - `Beautify this photo.`
