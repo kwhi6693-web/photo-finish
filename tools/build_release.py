@@ -6,8 +6,10 @@ ROOT=Path(__file__).resolve().parents[1]
 TOP={'SKILL.md','LICENSE','THIRD_PARTY_NOTICES.md','requirements.txt','requirements-analysis.txt'}
 TOOLS={'tools/doctor.py','tools/sync_public.py','tools/check_publication.py'}
 DIRS={'agents','assets','references','scripts','runtime'}
-def build(destination,root=ROOT):
+def build(destination,root=ROOT,*,candidate=False):
     root=Path(root);destination=Path(destination).resolve()
+    if candidate and destination.is_relative_to(root.resolve()):
+        raise ValueError('Candidate archive must be outside the repository')
     if destination.suffix!='.zip':raise ValueError('Release destination must be a ZIP')
     if destination.is_relative_to(root) and any(v in DIRS for v in destination.relative_to(root).parts[:-1]):
         raise ValueError('Archive must not be inside the skill runtime')
@@ -21,6 +23,8 @@ def build(destination,root=ROOT):
             if p.is_symlink():raise ValueError('Symlink not allowed')
             files.append((rel.as_posix(),p.read_bytes()))
     manifest={'name':'photo-finish','version':'1.5.0','files':{n:hashlib.sha256(b).hexdigest() for n,b in files}}
+    if candidate:
+        manifest.update(version='0+candidate',distribution_channel='candidate')
     files.append(('release-manifest.json',(json.dumps(manifest,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode()))
     destination.parent.mkdir(parents=True,exist_ok=True)
     temporary=destination.with_suffix('.tmp')
@@ -43,5 +47,6 @@ if __name__ == '__main__':
             _photo_finish_stream.reconfigure(encoding='utf-8')
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, default=ROOT / 'dist/photo-finish.zip')
+    p.add_argument('--candidate', action='store_true', help='Non-release build; output must be outside the repository')
     a = p.parse_args()
-    print(json.dumps(build(a.output), indent=2))
+    print(json.dumps(build(a.output,candidate=a.candidate), indent=2))
