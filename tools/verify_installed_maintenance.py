@@ -24,7 +24,7 @@ def verify(skill, tests):
     # Reuse existing anonymous tests; give their relative paths the installed root.
     # No repository runtime directory is put on sys.path and no test alters the package.
     names = ('test_manual_display', 'test_versions', 'test_save_resume',
-             'test_fault_injection_release', 'test_experience')
+             'test_fault_injection_release', 'test_experience', 'test_local_routes')
     suite = unittest.TestSuite()
     for name in names:
         module = types.ModuleType(name)
