@@ -3,6 +3,7 @@ import json
 import sqlite3
 import sys
 import unittest
+from contextlib import closing
 from pathlib import Path
 from unittest.mock import patch
 
@@ -54,7 +55,7 @@ class ManualDisplayTests(unittest.TestCase):
         self.assertTrue(first['hint'])
         self.assertEqual(second['hint'], '')
         self.assertEqual(first['version'], second['version'])
-        with sqlite3.connect(self.session / 'tasks.sqlite3') as db:
+        with closing(sqlite3.connect(self.session / 'tasks.sqlite3')) as db:
             self.assertEqual(db.execute('SELECT number, delivered FROM versions').fetchall(), [(1, 1)])
         self.assertEqual(before, self.job.read_bytes())
 
