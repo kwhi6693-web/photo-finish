@@ -129,7 +129,7 @@ def delivered(path, session_root, presented):
         enabled=json.loads(setting[0]) if setting else True
         changed=db.execute('UPDATE versions SET delivered=1 WHERE job=? AND delivered=0',(item['job'],)).rowcount
     return {'version':item,'hint':experience.hint(state,new_delivery=bool(changed),enabled=enabled),
-            'experience':experience.describe(state,__import__('delivery_automation').plan(path)['action'])}
+            'experience':experience.describe(state,__import__('delivery_automation').plan(path)['action'],manual_presented=presented)}
 
 
 def _requirements(state):

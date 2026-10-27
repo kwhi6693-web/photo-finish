@@ -29,8 +29,12 @@ MESSAGES = {
 HINT='可以继续回复：更自然｜氛围更强｜保持构图只调色｜局部修改｜看前后对比'
 
 
-def describe(state, action):
+def describe(state, action, *, manual_presented=False):
+    """Current explicit confirmation is response-scoped, never persisted or inferred."""
+    if type(manual_presented) is not bool:
+        raise ValueError('Manual presentation confirmation must be boolean')
     platform=state.get('platform_delivery') or {}
+    platform_observed=platform.get('display',{}).get('status')=='observed'
     accepted=state['status']=='accepted'
     saved=accepted and bool(state.get('delivery_receipt'))
     generated=bool((state.get('render_result') or {}).get('acquired')) or accepted
@@ -40,7 +44,9 @@ def describe(state, action):
         message='成片已生成，保存状态待确认。' if generated else '任务状态尚未确认，已保留记录。'
     return {'message':message,'recovery':recovery,'render_retry_allowed':False,
             'generated':generated,'quality_accepted':accepted,
-            'display_observed':platform.get('display',{}).get('status')=='observed',
+            'display_observed':manual_presented or platform_observed,
+            'display_observation_source':'current_manual_confirmation' if manual_presented else ('platform_delivery' if platform_observed else 'unobserved'),
+            'display_observation_scope':'current_delivery_response' if manual_presented else 'platform_ledger',
             'persistence_confirmed':saved,
             'save_message':'成片已保存。' if saved else ('成片已生成，保存状态待确认。' if generated else None)}
 

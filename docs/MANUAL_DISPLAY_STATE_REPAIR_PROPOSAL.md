@@ -1,6 +1,6 @@
 # Manual presentation observation: confirmed expression gap and minimal repair proposal
 
-Status: proposal only. No product code, executable regression tests, installed skill, stable archive or historical task has been changed by this document. Keep this Draft separate from performance PR #16. No merge, tag or release is authorized.
+Status: minimal implementation now submitted in this Draft; see [implementation validation](MANUAL_DISPLAY_STATE_VALIDATION.md). The original proposal below records the design and its limits. Installed skill, stable archive and historical tasks remain unchanged. Keep this Draft separate from performance PR #16. No merge, tag or release is authorized.
 
 ## Confirmed cause
 
@@ -45,7 +45,7 @@ This fixes the contradictory current `delivered` response with a small scoped ch
 
 ## Targeted regression tests to implement with the repair
 
-These are proposed test cases, not tests already added/run:
+These were the proposed test cases. Their implemented coverage and actual results are recorded in the implementation validation document:
 
 1. Synthetic accepted manual task: current explicit confirmation yields display=true with manual-current basis; no `platform_delivery` is created and accepted job bytes remain identical.
 2. Manual task with save receipt but no presentation confirmation: cannot become display=true merely because it is saved or accepted.
@@ -61,4 +61,4 @@ Use generated anonymous fixtures only. Do not import either actual photo, filena
 
 ## Validation and release boundary
 
-Current evidence confirms a missing manual confirmation input at the experience boundary, not an implemented fix. This document is the only file in this proposal branch. No runtime tests were run against a nonexistent patch and no new photo operations were performed. Product repair should be implemented and tested on this independent Draft before review; the stable v1.5.0 and installed runtime remain unchanged.
+At proposal submission this document was the only change and no repair tests had run. The subsequent minimal implementation and real validation are reported separately in the linked document. No new photo operations were performed; the stable v1.5.0 and installed runtime remain unchanged.
