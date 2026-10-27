@@ -1,0 +1,156 @@
+{
+  "baseline_commit": "5045c9d6220cb62dbeb8e90dec64a80a130b7c92",
+  "method": "Six paired alternating order runs, same 1000 synthetic rows/query, 15 warm repeats per run; OS cache uncontrolled; cache reset per metadata benchmark",
+  "results": [
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 138.3215,
+      "warm_median_ms": 46.770775,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "before"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 139.289655,
+      "warm_median_ms": 43.679976,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "after"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 129.717027,
+      "warm_median_ms": 49.942043,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "after"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 163.288084,
+      "warm_median_ms": 47.383241,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "before"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 136.847102,
+      "warm_median_ms": 46.900939,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "before"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 145.36019,
+      "warm_median_ms": 43.95953,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "after"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 129.637167,
+      "warm_median_ms": 44.935927,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "after"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 142.74951,
+      "warm_median_ms": 50.21818,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "before"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 136.263665,
+      "warm_median_ms": 49.529948,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "before"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 135.253326,
+      "warm_median_ms": 46.064515,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "after"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 139.368663,
+      "warm_median_ms": 46.974626,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "after"
+    },
+    {
+      "scope": "local SQLite metadata reads, normalization, keyword expansion; excludes image decode, host, rendering, network and actual end-to-end delivery",
+      "python": "3.12.14",
+      "records": 1000,
+      "repeats": 15,
+      "cold_ms": 134.832059,
+      "warm_median_ms": 47.653409,
+      "cache_hits": 15000,
+      "cache_misses": 1000,
+      "cache_capacity": 2048,
+      "variant": "before"
+    }
+  ],
+  "summary": {
+    "before": 47.518325000000004,
+    "after": 45.500220999999996
+  },
+  "query_cache": "CacheInfo(hits=95999, misses=1, maxsize=256, currsize=1)",
+  "external_calls": 0
+}

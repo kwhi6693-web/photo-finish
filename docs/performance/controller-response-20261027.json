@@ -1,0 +1,12 @@
+{
+  "ledger_load_calls": 3,
+  "ledger_bytes_read": 19530,
+  "identity_hash_calls": 2,
+  "identity_bytes_hashed": 987,
+  "scenario": "synthetic accepted 32x48 fixture, pending save",
+  "next_action": "PREPARE_PHOTO_SAVE",
+  "median_ms": 2.1372745,
+  "samples": 30,
+  "scope": "local response only, counters in separate observation run",
+  "external_calls": 0
+}
