@@ -39,6 +39,8 @@ The formal builder's default output and stable manifest format remain byte-compa
 - The existing public v1.5.0 Release assets were actually downloaded read-only and verified against the pinned tagged source/installer, not just trusted from metadata.
 - Full local suite and six remote matrix outcomes are recorded in the PR comments after their actual completion. Formal published-event workflow dispatch is not simulated by creating or re-publishing a Release.
 
+First remote run 40480801086 passed Linux/macOS, while Windows caught CRLF translation in the new nondeterminism test's synthetic checksum. The fixture now writes canonical LF bytes so it reaches the intended determinism guard. Production checksum validation was not relaxed. The first failure is retained; follow-up matrix results must be checked separately.
+
 ## Merge dependencies
 
 The CI strategy PR targets main and contains only packaging/CI/tests/documentation. PR #17 can temporarily target this CI branch so its diff remains only the product fix/tests/evidence, while remote validation tests the combined tree. After approval: merge the CI strategy first, retarget/update PR #17 onto main, verify its final head again, then consider product merge. No PR is merged, no tag created and no version published by this work.

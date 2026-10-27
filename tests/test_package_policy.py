@@ -68,8 +68,8 @@ class PackagePolicyTests(unittest.TestCase):
                         for name, body in entries:
                             info = zipfile.ZipInfo(name, date_time=(2025, 1, 1, 0, 0, 0))
                             z.writestr(info, body)
-                    destination.with_suffix('.zip.sha256').write_text(
-                        hashlib.sha256(destination.read_bytes()).hexdigest() + '  candidate.zip\n', encoding='utf-8')
+                    destination.with_suffix('.zip.sha256').write_bytes(
+                        (hashlib.sha256(destination.read_bytes()).hexdigest() + '  candidate.zip\n').encode())
                 return result
             with patch.object(b, 'build', side_effect=altered), self.assertRaisesRegex(ValueError, 'deterministic'):
                 v.candidate(root)
