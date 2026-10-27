@@ -1,0 +1,44 @@
+{
+  "base": "3661f50528c4e7a6595ba907a5d65a48efaaa55c",
+  "validation_date": "2026-10-27",
+  "local_regressions": {
+    "tests": 281,
+    "passed": true
+  },
+  "clean_virtualenv": {
+    "python": "3.12.14",
+    "Pillow": "13.0.0",
+    "pip_check": "passed"
+  },
+  "package": {
+    "status": "passed",
+    "version": "1.5.1",
+    "scope": "staged_unpublished_maintenance",
+    "sha256": "0d929e31f4cf132c9855b933771c0c8fc98ece4702f598aaca759b9444d70608",
+    "bytes": 498139,
+    "payload_files": 115,
+    "deterministic_builds": 2,
+    "isolated_install": {
+      "status": "passed",
+      "runtime_version": "1.5.1",
+      "tests": 34,
+      "skipped": 0,
+      "production_module_origin": "extracted_package_only",
+      "entrypoint_sha256": "0784e605ed65216352ca809eabcaa10a20f21c2d17e76444a880980cd4d5392d",
+      "integrity": "passed",
+      "host_scope": "isolated_python_loader_not_chatgpt_registration_or_real_display"
+    }
+  },
+  "stable": {
+    "tag_target": "48b7e2bfcbd8a4b111ec3815186c96ef14c807fe",
+    "sha256": "84fbc42db21d2aa7dc8122152d4390a526761519eb58a212534f4266bd46fb9f",
+    "installed_files_unchanged": 116
+  },
+  "limits": [
+    "No ChatGPT UI registration or automatic invocation verified",
+    "No real display or remote save repeated",
+    "No historical task mutation",
+    "No tag, Release, main merge or live installation replacement authorized"
+  ],
+  "ci": "See exact-head PR audit; local results do not imply platform CI success"
+}

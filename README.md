@@ -17,6 +17,8 @@
 
 **1.5.0 is the current stable release.** Download from the [v1.5.0 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0). Dated candidate and approval reports remain historical records.
 
+**v1.5.1 maintenance preparation is unpublished and pending approval.** Scope: manual presentation response and CI package boundaries only. Stable downloads remain v1.5.0. See [preparation and upgrade/downgrade steps](docs/RELEASE_1_5_1_PREPARATION.md).
+
 ## First use
 
 Photo Finish is a professional non-portrait photography Skill for natural landscapes, city nights, architecture, travel, still life, food and products. It does not develop face beautification, skin smoothing, reshaping, facial-feature changes or portrait optimization. Incidental people retain identity, structure and content protections. Priorities are natural texture, light, color, composition protection, consistent style and real detail. See [product scope](references/product-scope.md).

@@ -1,7 +1,15 @@
 # Changelog
 
 
-## 1.5.0 — 2026-10-27 (prepared, unpublished)
+## 1.5.1 — pending approval (unpublished)
+
+- Report explicit successful manual presentation in the current delivery response, with `current_manual_confirmation` evidence and `current_delivery_response` scope (PR #17).
+- Keep platform display observation, manual confirmation, actual persistence and SQLite delivered semantics independent; saved files, URLs and version flags never imply display success.
+- Separate frozen v1.5.0 archive protection from isolated deterministic development builds, retaining strict formal source/manifest/installer/attachment checks (PR #18).
+- Align runtime/distribution version metadata and generated manifest for this maintenance package. No performance change, new image call, ledger migration or portrait-editing feature.
+- See [release preparation and upgrade/downgrade instructions](docs/RELEASE_1_5_1_PREPARATION.md). The published/installed stable remains v1.5.0 until separately approved.
+
+## 1.5.0 — 2026-10-27 (released)
 
 - Truthful Chinese stage/recovery/save messages and once-per-conversation-version delivery hints with opt-out.
 - Private indexed V1/V2 history, selected-output revisions with inherited protections, verified existing-byte rollback and same-task comparisons.
