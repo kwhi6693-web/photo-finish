@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Stable-1.5.0-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -15,7 +15,7 @@
 
 <a id="quick-start"></a>
 
-This branch prepares **1.5.0 (unpublished)** for review. Latest stable downloads remain **1.4.2** until approval, merge, tagging and release publication. See [engineering evidence](docs/ux-engineering-validation.md).
+**1.5.0 is the current stable release.** Download from the [v1.5.0 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0). Dated candidate and approval reports remain historical records.
 
 ## First use
 
@@ -25,7 +25,7 @@ Send a non-portrait photograph to start editing composition, light, color and de
 
 Some single-photo tools require explicit permission to edit for you. Where needed, first say “Please directly edit, check, save and deliver the photo I am about to upload.” Then send the photo. A photo-only upload does not grant blanket tool authority. An interactive preview is not a formal file or save confirmation; tool instructions to stop remain binding.
 
-Local changes depend on actual tool capabilities. Whole-image generation can change untargeted regions; each result needs visual review and is not a pixel-lock guarantee.
+Local edits require verified tool capabilities. Precise sky selection and protection around complex tree canopies and building edges are not guaranteed. Check actual masks, edge transitions and non-target regions; safely refuse edits that fail quality or protection requirements. Whole-image generation is not a pixel-lock guarantee.
 
 - `Beautify this photo.`
 - `Keep the people and lettering; improve only light and color.`

@@ -5,17 +5,17 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Stable-1.5.0-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
 
-当前分支准备 **1.5.0 (unpublished)** 供审阅；最新正式下载仍为 **1.4.2**，批准、合并、打标签与发布后才更新。见[工程验收记录](docs/ux-engineering-validation.md)。
+当前稳定版为 **1.5.0**，从 [v1.5.0 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0)下载。带日期的候选与审批报告保留为真实历史记录。
 
 ## 第一次使用
 
-局部修改按实际工具能力执行；全幅生成可能改变非目标区域，必须实际复核，不承诺像素锁定。
+局部修改依赖经核验的工具能力。目前不能保证复杂树冠、建筑边缘与天空区域的精确选区和保护；须实际检查遮罩、边缘过渡及非目标区域。不符合质量或保护要求时必须安全拒绝。全幅生成不承诺像素锁定。
 
 Photo Finish 是面向非人像摄影场景的专业照片美化 Skill，主要支持自然风光、城市夜景、建筑、旅行场景、静物、美食和产品摄影。不开发人脸美化、磨皮、塑形、五官调整或针对性肖像优化，不处理以人物为主体的人像照片。偶然入镜人物仍保留身份、结构和内容保护；不削弱哈希绑定、真实复核、历史不可变及保存回执要求。优先优化自然纹理、光影、色彩、构图保护、风格一致性和真实细节。
 
@@ -27,7 +27,7 @@ Photo Finish 是面向非人像摄影场景的专业照片美化 Skill，主要�
 - `保留人物和文字，只改善光影和色彩。`
 - `参考我收藏的「柔光木质」，但不要改变构图。`
 
-成片附简短版本和真实保存状态；可继续说“更自然”“只改天空”或“回到 V1”。
+成片附简短版本和真实保存状态；可继续说“更自然”“保持构图只调色”或“回到 V1”；“只改天空”仍须满足上述局部保护条件。
 效果依赖宿主真实看图和图像编辑能力。原片保留；人物、文字及指定内容列为保护项，生成式工具不能保证逐像素不变。
 个人照片、风格与任务记录使用私有位置，是否上传取决于实际宿主工具；不承诺云同步。
 
