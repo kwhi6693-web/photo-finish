@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 STABLE_TAG = 'v1.5.0'
 STABLE_COMMIT = '48b7e2bfcbd8a4b111ec3815186c96ef14c807fe'
 STABLE_SHA256 = '84fbc42db21d2aa7dc8122152d4390a526761519eb58a212534f4266bd46fb9f'
+FROZEN_DIRECTORY = 'dist/v1.5.0'
+RELEASE_VERSION = '1.5.1'
+RELEASE_SHA256 = '0d929e31f4cf132c9855b933771c0c8fc98ece4702f598aaca759b9444d70608'
 ARCHIVE = 'photo-finish.zip'
 CHECKSUM = ARCHIVE + '.sha256'
 MANIFEST = 'photo-finish/release-manifest.json'
@@ -84,10 +87,11 @@ def check_archive(data, expected, *, candidate=False, version='1.5.0'):
 
 def check_frozen_files(root):
     root = Path(root)
-    if any((root / 'dist' / name).is_symlink() for name in (ARCHIVE, CHECKSUM)):
+    folder = root / FROZEN_DIRECTORY
+    if (root / 'dist').is_symlink() or folder.is_symlink() or any((folder / name).is_symlink() for name in (ARCHIVE, CHECKSUM)):
         raise ValueError('Frozen artifacts cannot be symlinks')
-    data = (root / 'dist' / ARCHIVE).read_bytes()
-    checksum = (root / 'dist' / CHECKSUM).read_bytes()
+    data = (folder / ARCHIVE).read_bytes()
+    checksum = (folder / CHECKSUM).read_bytes()
     if digest(data) != STABLE_SHA256 or checksum != (STABLE_SHA256 + '  ' + ARCHIVE + '\n').encode():
         raise ValueError('Frozen stable archive/checksum changed')
     return data
@@ -100,10 +104,30 @@ def stable(root=ROOT):
     data = check_frozen_files(root)
     if data != git(root, 'show', STABLE_COMMIT + ':dist/' + ARCHIVE):
         raise ValueError('Stable checkout artifact differs from tagged artifact')
+    if (Path(root) / FROZEN_DIRECTORY / CHECKSUM).read_bytes() != git(root, 'show', STABLE_COMMIT + ':dist/' + CHECKSUM):
+        raise ValueError('Frozen checksum differs from tagged checksum')
     expected = tagged_files(root, STABLE_COMMIT)
     count = check_archive(data, expected)
     return {'status': 'passed', 'scope': 'frozen_stable', 'tag': STABLE_TAG,
             'sha256': STABLE_SHA256, 'payload_files': count}
+
+
+def canonical(root=ROOT):
+    """Pin release-ready canonical bytes without claiming the version is published."""
+    root = Path(root)
+    folder = root / 'dist'
+    staged = folder / ('v' + RELEASE_VERSION)
+    if folder.is_symlink() or staged.is_symlink() or any(
+            (directory / name).is_symlink()
+            for directory in (folder, staged) for name in (ARCHIVE, CHECKSUM)):
+        raise ValueError('Canonical artifacts cannot be symlinks')
+    data = (folder / ARCHIVE).read_bytes()
+    checksum = (folder / CHECKSUM).read_bytes()
+    if digest(data) != RELEASE_SHA256:
+        raise ValueError('Pinned canonical release-ready archive changed')
+    count = check_release_bytes(data, checksum, source_files(root), RELEASE_VERSION, staged)
+    return {'status': 'passed', 'scope': 'canonical_release_ready_not_published',
+            'version': RELEASE_VERSION, 'sha256': RELEASE_SHA256, 'payload_files': count}
 
 
 def candidate(root=ROOT):
@@ -175,7 +199,7 @@ def published(root=ROOT, tag=STABLE_TAG):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=['stable', 'candidate', 'release', 'published'])
+    parser.add_argument('mode', choices=['stable', 'canonical', 'candidate', 'release', 'published'])
     parser.add_argument('--root', type=Path, default=ROOT)
     parser.add_argument('--tag', default=STABLE_TAG)
     parser.add_argument('--attachments', type=Path)

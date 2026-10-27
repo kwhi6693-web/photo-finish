@@ -105,8 +105,10 @@ jobs:
           sys.exit(not result.wasSuccessful())
       - name: Protect frozen v1.5.0 archive and tagged source mapping
         run: python tools/verify_packages.py stable
+      - name: Protect canonical release-ready v1.5.1 bytes and staged mapping
+        run: python tools/verify_packages.py canonical
       - name: Verify isolated deterministic development candidate
         run: python tools/verify_packages.py candidate
-      - name: Verify staged v1.5.1 maintenance and isolated installed protocols
-        run: python tools/verify_release_preparation.py
+      - name: Verify canonical v1.5.1 deterministic build and isolated installed protocols
+        run: python tools/verify_release_preparation.py --canonical
       - run: git diff --exit-code -- dist

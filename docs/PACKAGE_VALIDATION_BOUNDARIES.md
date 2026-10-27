@@ -1,5 +1,7 @@
 # Frozen stable release and development candidate validation
 
+Historical preparation/design record. The current authorized path transition and protection policy are described in [v1.5.1 finalization](RELEASE_1_5_1_FINALIZATION.md); earlier canonical-path statements below refer to the preparation stage.
+
 This CI change is independent of the manual-display product repair in PR #17. No stable tag, published asset, tracked ZIP/checksum, installed skill or private task is modified. No photo operations or performance analysis are performed.
 
 ## A. Frozen stable protection

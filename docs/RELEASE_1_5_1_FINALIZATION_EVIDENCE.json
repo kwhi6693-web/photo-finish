@@ -1,0 +1,47 @@
+{
+  "base_merge": "1b9e2a47e5d2e75c50e7f24e6a901aa2b7e8e739",
+  "date": "2026-10-27",
+  "authorization": "Merge PR19 only; finalization remains Draft; no tag/publication/live install",
+  "local_tests": {
+    "passed": true,
+    "tests": 284,
+    "existing": 281,
+    "finalization_adversaries": 3
+  },
+  "canonical": {
+    "status": "passed",
+    "version": "1.5.1",
+    "scope": "canonical_release_ready_not_published",
+    "sha256": "0d929e31f4cf132c9855b933771c0c8fc98ece4702f598aaca759b9444d70608",
+    "bytes": 498139,
+    "payload_files": 115,
+    "deterministic_builds": 2,
+    "isolated_install": {
+      "status": "passed",
+      "runtime_version": "1.5.1",
+      "tests": 34,
+      "skipped": 0,
+      "production_module_origin": "extracted_package_only",
+      "entrypoint_sha256": "0784e605ed65216352ca809eabcaa10a20f21c2d17e76444a880980cd4d5392d",
+      "integrity": "passed",
+      "host_scope": "isolated_python_loader_not_chatgpt_registration_or_real_display"
+    }
+  },
+  "historical_v1_5_0": {
+    "tag_commit": "48b7e2bfcbd8a4b111ec3815186c96ef14c807fe",
+    "sha256": "84fbc42db21d2aa7dc8122152d4390a526761519eb58a212534f4266bd46fb9f",
+    "retained_path": "dist/v1.5.0/photo-finish.zip",
+    "tagged_zip_and_checksum_exact": true,
+    "published_attachments_download_verified": true,
+    "installed_files_unchanged": 116
+  },
+  "product_modules_unchanged": true,
+  "public_scan": "passed_no_findings",
+  "ci": "Exact-head actual six-job outcomes recorded in Draft PR audit comment; local tests are separate evidence",
+  "limitations": [
+    "No ChatGPT UI installation/automatic invocation check",
+    "No actual display or new remote save",
+    "No photographic aesthetics/performance claim",
+    "No historical photo/task operations"
+  ]
+}
