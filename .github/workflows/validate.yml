@@ -103,5 +103,8 @@ jobs:
           print({'tests': result.testsRun, 'skips': len(result.skipped),
                  'failures': len(result.failures), 'errors': len(result.errors)})
           sys.exit(not result.wasSuccessful())
-      - run: python tools/build_release.py --output dist/photo-finish.zip
+      - name: Protect frozen v1.5.0 archive and tagged source mapping
+        run: python tools/verify_packages.py stable
+      - name: Verify isolated deterministic development candidate
+        run: python tools/verify_packages.py candidate
       - run: git diff --exit-code -- dist
