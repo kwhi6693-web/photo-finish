@@ -1,5 +1,7 @@
 # v1.5.1 maintenance release preparation
 
+Historical preparation/design record. The current authorized path transition and protection policy are described in [v1.5.1 finalization](RELEASE_1_5_1_FINALIZATION.md); earlier canonical-path statements below refer to the preparation stage.
+
 Status: unpublished, Draft PR review only. Merge, tag creation, Release publication and live installed-skill replacement require separate approval.
 
 ## Scope

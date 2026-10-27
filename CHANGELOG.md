@@ -7,6 +7,7 @@
 - Keep platform display observation, manual confirmation, actual persistence and SQLite delivered semantics independent; saved files, URLs and version flags never imply display success.
 - Separate frozen v1.5.0 archive protection from isolated deterministic development builds, retaining strict formal source/manifest/installer/attachment checks (PR #18).
 - Align runtime/distribution version metadata and generated manifest for this maintenance package. No performance change, new image call, ledger migration or portrait-editing feature.
+- Final canonical package, protection transition, release notes and approval boundaries: [v1.5.1 finalization](docs/RELEASE_1_5_1_FINALIZATION.md).
 - See [release preparation and upgrade/downgrade instructions](docs/RELEASE_1_5_1_PREPARATION.md). The published/installed stable remains v1.5.0 until separately approved.
 
 ## 1.5.0 — 2026-10-27 (released)

@@ -79,18 +79,18 @@ class PackagePolicyTests(unittest.TestCase):
         actual = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / 'dist').mkdir()
+            (root / v.FROZEN_DIRECTORY).mkdir(parents=True)
             for name in ('photo-finish.zip', 'photo-finish.zip.sha256'):
-                shutil.copyfile(actual / 'dist' / name, root / 'dist' / name)
+                shutil.copyfile(actual / v.FROZEN_DIRECTORY / name, root / v.FROZEN_DIRECTORY / name)
             for name in ('photo-finish.zip', 'photo-finish.zip.sha256'):
-                original = (root / 'dist' / name).read_bytes()
-                (root / 'dist' / name).write_bytes(original + b'tamper')
+                original = (root / v.FROZEN_DIRECTORY / name).read_bytes()
+                (root / v.FROZEN_DIRECTORY / name).write_bytes(original + b'tamper')
                 with self.assertRaises(ValueError):
                     v.check_frozen_files(root)
-                (root / 'dist' / name).write_bytes(original)
+                (root / v.FROZEN_DIRECTORY / name).write_bytes(original)
             changed = b'changed synthetic artifact'
-            (root / 'dist/photo-finish.zip').write_bytes(changed)
-            (root / 'dist/photo-finish.zip.sha256').write_text(
+            (root / v.FROZEN_DIRECTORY / 'photo-finish.zip').write_bytes(changed)
+            (root / v.FROZEN_DIRECTORY / 'photo-finish.zip.sha256').write_text(
                 hashlib.sha256(changed).hexdigest() + '  photo-finish.zip\n', encoding='utf-8')
             with self.assertRaises(ValueError):
                 v.check_frozen_files(root)
