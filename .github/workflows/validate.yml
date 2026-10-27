@@ -107,4 +107,6 @@ jobs:
         run: python tools/verify_packages.py stable
       - name: Verify isolated deterministic development candidate
         run: python tools/verify_packages.py candidate
+      - name: Verify staged v1.5.1 maintenance and isolated installed protocols
+        run: python tools/verify_release_preparation.py
       - run: git diff --exit-code -- dist

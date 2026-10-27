@@ -22,7 +22,8 @@ def build(destination,root=ROOT,*,candidate=False):
         if p.is_file() and (rel.as_posix() in TOP|TOOLS or rel.parts[0] in DIRS):
             if p.is_symlink():raise ValueError('Symlink not allowed')
             files.append((rel.as_posix(),p.read_bytes()))
-    manifest={'name':'photo-finish','version':'1.5.0','files':{n:hashlib.sha256(b).hexdigest() for n,b in files}}
+    version=json.loads(dict(files)['runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json'])['runtime_version']
+    manifest={'name':'photo-finish','version':version,'files':{n:hashlib.sha256(b).hexdigest() for n,b in files}}
     if candidate:
         manifest.update(version='0+candidate',distribution_channel='candidate')
     files.append(('release-manifest.json',(json.dumps(manifest,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode()))
