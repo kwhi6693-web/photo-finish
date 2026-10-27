@@ -5,11 +5,31 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.2-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、處理、複核](docs/assets/photo-finish.svg)
+
+目前分支準備 **1.5.0 (unpublished)** 供審閱；最新正式下載仍為 **1.4.2**，批准、合併、標籤與發行後才更新。見[工程驗收記錄](docs/ux-engineering-validation.md)。
+
+## 第一次使用
+
+局部修改依實際工具能力執行；全幅生成可能改變非目標區域，須實際複核，不承諾像素鎖定。
+
+Photo Finish 是專業非人像照片美化 Skill，主要支援自然風光、城市夜景、建築、旅行場景、靜物、美食和產品攝影。不開發人臉美化、磨皮、塑形、五官調整或針對性肖像優化。偶然入鏡人物保留身份、結構與內容保護，既有安全契約不變。優先自然紋理、光影、色彩、構圖保護、風格一致性和真實細節。正式驗收不用人像照片，詳見[產品定位](references/product-scope.md)。
+
+傳一張非人像照片，我會直接改善構圖、光影、色彩與細節。
+
+部分單圖工具要求明確代做授權；需要時可先說「請直接替我完成下一張照片的修圖、檢查、儲存並交付正式檔案」，再上傳照片。僅傳照片不授予所有工具的代操作權限；互動預覽不等於正式檔案或儲存確認，工具要求停止時仍須遵守。
+
+- `直接美化這張照片。`
+- `保留人物和文字，只改善光影和色彩。`
+- `參考我收藏的「柔光木質」，但不要改變構圖。`
+
+成片附簡短版本與真實儲存狀態；可說「更自然」「只改天空」或「回到 V1」。
+效果取決於宿主實際看圖和編輯能力；原片保留，生成式工具無法保證人物、文字逐像素不變。
+個人照片、風格與任務記錄放於私有位置，是否上傳取決於宿主工具，不承諾雲端同步。
 
 ## ⚡ 快速開始
 
@@ -21,7 +41,7 @@
 使用 $photo-finish 處理這張照片。
 ```
 
-預設逐張僅輸出最終成片，不附原片、前後對比、參數或說明。內部原片對照、實際看圖驗收與記錄持續執行；當次明確要求優先。
+預設逐張交付最終成片，附簡短版本/儲存狀態及首次交付的一行可選修改提示；不附原片、預設對比或參數。內部原片對照、實際看圖驗收與記錄持續執行；當次明確要求優先。
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
@@ -116,3 +136,5 @@ python tools/build_release.py --output dist/photo-finish.zip
 ## 授權條款
 
 [MIT](LICENSE)，copyright © 2026 kwhi。[方法來源](THIRD_PARTY_NOTICES.md)保留歸屬說明。使用者照片與第三方服務各自遵守其權利與條款。
+
+指令優先順序：安全與內容保護、當次指令、長期規則/偏好、適用風格、專業預設。單次反饋不會擅自保存為長期喜好。

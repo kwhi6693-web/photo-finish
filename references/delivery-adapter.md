@@ -1,4 +1,4 @@
-# 真实工具与交付接口 2026-10-24.3
+# 真实工具与交付接口 2026-10-26.3
 
 权威runtime_policy.json#/execution_adapter_policy。助手仍执行真实工具和实际看图；接口不渲染、不上传照片、不安装后台回调。普通任务按总规范，本页仅字段需要时读取。
 
@@ -12,7 +12,7 @@
 {"project_root":".","source_path":"/absolute/source.jpeg","path":"/absolute/job.json","tags":[],"evaluation_kind":"live","scenario":"本次实际场景","intent":{"subject":["architecture"],"light":["sunlight"],"material":["wood"],"expression":["depth"]}}
 ```
 
-tags用实际场景A–L；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。最终direction在submit中提供，route为native/creative/hybrid；output_use为screen/print_proof_requested。兼容prepare.direction仅作已验证草案；采用参考时必须在查看后显式提交最终direction，无参考的专业判断可沿用草案。新调用建议直接省略prepare.direction。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。
+tags用实际场景A–L（J仅历史兼容，不用于当前产品）；不确定可空。evaluation_kind为live/replay/synthetic/unclassified，默认unclassified；只有实际调用/实际看图的任务才标live，测试夹具用synthetic，历史复放用replay。scenario填写实际场景，供统计分组。最终direction在submit中提供，route为native/creative/hybrid；output_use为screen/print_proof_requested。兼容prepare.direction仅作已验证草案；采用参考时必须在查看后显式提交最终direction，无参考的专业判断可沿用草案。新调用建议直接省略prepare.direction。可传首工具真实started_unix_ns和observed_skill_revision；不硬传旧技能修订作为期望版本。prepare失败不当成功，不绕过核心契约。
 
 2. 实际查看拟采用参考后submit依次合并protect、select、最终direction、可选issues和adapter.begin；先持久化提交再调用真实工具：
 
@@ -40,7 +40,7 @@ review事件必须来自实际看图，profile_passed和color_scope按真实声�
 
 ## 参考检索参数
 
-photo_workflow.py candidates可传intent，例如{"subject":["architecture","garden","foliage"],"light":["sunlight"],"material":["tile","wood"],"expression":["depth"]}。四个字段的值都是标签列表，每字段最多12项，缺少观察就省略，不传中文自由文本字符串。支持标签：architecture、garden、foliage、water、urban、portrait、sunlight、warm_light、soft_light、night、wood、stone、tile、glass、metal、depth、reflection、low_key。标签来自本次实际看图，索引侧仅作文字元数据推断；不确定时省略intent或用空对象，保留原场景/色彩检索，不为填标签增加一轮图像调用。
+photo_workflow.py candidates可传intent，例如{"subject":["architecture","garden","foliage"],"light":["sunlight"],"material":["tile","wood"],"expression":["depth"]}。四个字段的值都是标签列表，每字段最多12项，缺少观察就省略，不传中文自由文本字符串。支持标签：architecture、garden、foliage、water、urban、portrait、sunlight、warm_light、soft_light、night、wood、stone、tile、glass、metal、depth、reflection、low_key。portrait仅为旧接口兼容标签，不用于当前人像修图；偶然人物继续受通用内容保护。标签来自本次实际看图，索引侧仅作文字元数据推断；不确定时省略intent或用空对象，保留原场景/色彩检索，不为填标签增加一轮图像调用。
 
 ## 调用与真实返回
 
@@ -77,3 +77,9 @@ review返回quality_observation，snapshot同一次写入该观察，沿现有�
 维护时运行`python 10_SYSTEM_CONFIG/scripts/delivery_metrics.py report`，stdin为`{"paths":["/absolute/job.json","/absolute/saved_record.json"]}`。只读指定账本/快照；同源哈希+任务起点+修订去重，矛盾快照须明确选择现行一份，不默默覆盖。实际样本、复放、合成分组，不将旧记录自动改写为本版实测。
 
 first_output_acceptance显示分子/分母/比率，仅已知质量结论参与；图像有意精修另记image_revision，字段/事务失败单列，不当作重渲染。相同提交的轮询仅计一次生成提交。API真实调用区间去重后取中位数；photo_save仅真实回执确认的终点，缺测null，不冒称整体对话速度。小样本和同源重复不证明跨场景稳定性。
+
+## 中文展示协议
+
+photo_edit的experience为真实状态的中文视图，独立显示generated、quality_accepted、display_observed、persistence_confirmed。仅有正式文件仍等待实际看图，不冒称检查中或已通过。没有真实保存回执显示“成片已生成，保存状态待确认。”，错误说明附可执行恢复入口，不能把保存或未知渲染变成二次提交。新成片提示仅首次交付，批次末统一一次；关闭提示仅会话生效，长期保存另需授权。
+
+体验指标另含average_revision_rounds（显式样本内每个原片/任务根的返工轮数）、duplicate_render_count（相同输入与完整参数的不同实际提交）、persistence_confirmation和accepted_output_median_seconds。后者仅从任务接入到正式文件/实际视觉接受，不包括接入前或宿主展示延迟，不冒称完整对话耗时；缺测null，复放/合成与live分开。独立修订保留根来源，样本不全会低估返工次数。

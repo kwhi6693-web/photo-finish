@@ -1,6 +1,6 @@
 # Validation scope
 
-Feature package: **1.4.2**, derived from workflow revision **2026-10-24.3** with a self-contained runtime and no private reference corpus.
+Prepared unpublished package: **1.5.0**, derived from workflow revision **2026-10-26.3** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 
@@ -87,3 +87,9 @@ The main branch permits Pillow `>=12.3,<14`; pip respects package `Requires-Pyth
 CI retains the four core platform/interpreter jobs and adds optional-analysis jobs on Linux/Python 3.10 and 3.12. These install `requirements-analysis.txt`, run `pip check`, exercise the actual color measurement, palette and perceptual-hash functions on a synthetic fixture, and run the full suite and archive checks. The linked workflow records the actual outcomes; configuration is not a claim that a pending run has passed.
 
 NumPy and SciPy remain optional with broad compatible ranges. Dependabot uses `increase-if-necessary` to avoid raising a minimum solely because the current range already admits a newer release. Dependency PRs must include rebuilt archives and checksums when packaged inputs change. The tagged v1.0.0 release remains immutable; main-branch maintenance is separate from that published snapshot.
+
+The 1.5.0 candidate adds controller-level UX behavior. Its current evidence, historical Windows comparison, performance scope and open host/visual release gates are recorded in [UX engineering validation](ux-engineering-validation.md). Older counts above describe their original releases; they are not current candidate acceptance.
+
+## 当前长期范围与缺陷续接
+
+正式视觉样本限非人像：自然风光、城市夜景、建筑、旅行、静物、美食和产品。不要把既有合成people/identity契约断言当人像美化测试，也不删除这些保护测试。当前真实通过/失败和未验证项以[宿主矩阵](HOST_ACCEPTANCE.md)及[可靠性修复](RELIABILITY_FIXES.md)为准；范围声明不代表各场景已通过实修。

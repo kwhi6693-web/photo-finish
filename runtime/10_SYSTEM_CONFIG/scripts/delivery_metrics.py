@@ -27,13 +27,25 @@ def observe(state,sidecar=None):
     validation_errors=len(w._merged_intervals(spans))
     render_intervals=[(x['start_unix_ns'],x['end_unix_ns']) for x in receipts]
     render_seconds=sum(b-a for a,b in w._merged_intervals(render_intervals))/1e9 if receipts else None
+    renders=history+([state['render_result']] if state.get('render_result') else [])
+    observed={x['submission_id'] for x in receipts};fingerprints=[]
+    for render in renders:
+        arguments=(render.get('recipe') or {}).get('arguments_sha256')
+        if render.get('submission_id') in observed and arguments:
+            fingerprints.append((render.get('input_sha256'),arguments))
+    duplicate_renders=len(fingerprints)-len(set(fingerprints))
+    milestones=state['milestones'];ready=milestones.get('local_final_ready');judged=milestones.get('visual_accepted')
+    revision=state.get('revision') or {}
     started=state['milestones']['job_started'];saved=state['milestones'].get('save_completed') if state.get('delivery_receipt') else None
     return {'schema':1,'kind':kind,'scenario':evaluation.get('scenario','unclassified'),
       'workflow_revision':state['workflow_revision'],'source_sha256':state['source']['sha256'],
       'job_started_unix_ns':started,'output_sha256':(state.get('output') or {}).get('sha256'),
       'quality_status':state['status'],'acceptance_scope':state.get('acceptance_scope'),
       'first_output_accepted':first_pass,'render_submissions_observed':len(submissions),
-      'image_revision_count':len(history),'validation_failure_count':validation_errors,
+      'image_revision_count':len(history)+bool(revision),'duplicate_render_count':duplicate_renders,
+      'root_source_sha256':revision.get('original_source',state['source'])['sha256'],
+      'root_started_unix_ns':revision.get('root_started_unix_ns',started),
+      'accepted_output_elapsed_seconds':(max(ready,judged)-started)/1e9 if accepted and ready is not None and judged is not None else None,'validation_failure_count':validation_errors,
       'render_call_seconds_union':render_seconds,
       'photo_save_elapsed_seconds':(saved-started)/1e9 if saved is not None else None,
       'persistence_confirmed':saved is not None and bool(state.get('delivery_receipt')),
@@ -66,12 +78,19 @@ def report(paths):
             'rate':sum(x['first_output_accepted'] is True for x in judged)/len(judged) if judged else None},
           'image_revision':{'tasks':sum(x['image_revision_count']>0 for x in rendered),'denominator':len(rendered),
             'rate':sum(x['image_revision_count']>0 for x in rendered)/len(rendered) if rendered else None},
+          'average_revision_rounds':sum(x['image_revision_count'] for x in items)/len({(x.get('root_source_sha256',x['source_sha256']),x.get('root_started_unix_ns',x['job_started_unix_ns'])) for x in items}) if items else None,
+          'duplicate_render_count':sum(x.get('duplicate_render_count',0) for x in items),
+          'persistence_confirmation':{'confirmed':sum(x['persistence_confirmed'] for x in items),'tasks':len(items)},
+          'accepted_output_median_seconds':statistics.median([x['accepted_output_elapsed_seconds'] for x in items if x.get('accepted_output_elapsed_seconds') is not None]) if any(x.get('accepted_output_elapsed_seconds') is not None for x in items) else None,
           'validation_failure_count':sum(x['validation_failure_count'] for x in items),
           'render_call_median_seconds':statistics.median(durations) if durations else None,
           'confirmed_photo_save_samples':len(saves),'photo_save_median_seconds':statistics.median(saves) if saves else None}
     return {'schema':1,'groups':groups,'duplicate_records_omitted':duplicates,'samples':rows,
       'measurement_scope':{'render_call_median_seconds':'Median across tasks of each task\'s union of observed external-call intervals; not a median of individual calls or end-to-end delivery latency',
         'validation_failure_count':'Recorded review_receipt/ledger_transaction/acceptance failures only; unrecorded submit/save errors are not inferred',
+        'average_revision_rounds':'Observed refinement steps and separate revision tasks divided by distinct original photo/task roots in the supplied sample; incomplete histories underestimate rounds',
+        'duplicate_render_count':'Distinct observed submission tokens with the same input and complete arguments hash; polls do not count',
+        'accepted_output_median_seconds':'Job intake to observed local readiness and visual acceptance; excludes time before intake and host delivery/save latency',
         'artifact_status':'Historical recorded judgments and receipts; report does not re-inspect photographs or certify current file availability'},
       'limitations':['No inferred missing timing or platform save','No automatic declaration of stable quality from a small sample','Synthetic and replay counts excluded from live rates','Same-source repetitions are not independent scene coverage']}
 

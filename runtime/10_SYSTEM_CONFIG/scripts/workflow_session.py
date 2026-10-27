@@ -359,6 +359,8 @@ def set_protections(path, requirements, reason):
         raise ValueError('Protection contract is locked; define it once before rendering')
     if not isinstance(requirements, list):
         raise ValueError('Protection requirements must be a list, including an explicit empty list')
+    from task_history import validate_protections
+    validate_protections(state, requirements)
     targets = {}
     for requirement in requirements:
         target = _text(requirement.get('target'), 'Protection target')
@@ -458,11 +460,12 @@ def save_intent(path, result_path):
     result = Path(result_path).resolve()
     if state['status'] != 'accepted' or _file(state['output']['path']) != state['output']:
         raise ValueError('A fresh accepted output is required for save intent')
-    if result.exists():
-        raise FileExistsError('Use a new result path; old upload receipts cannot confirm new bytes')
     if state.get('save_intent') is not None:
-        if state['save_intent']['result_path'] == str(result): return state
+        if (state['save_intent']['result_path'] == str(result) and
+                state['save_intent']['output_sha256'] == state['output']['sha256']): return state
         raise ValueError('An existing save intent must be resumed or explicitly investigated')
+    if os.path.lexists(result):
+        raise FileExistsError('Use a new result path; old upload receipts cannot confirm new bytes')
     state['save_intent'] = {'output_sha256':state['output']['sha256'], 'result_path':str(result),
                             'observed_unix_ns':time.time_ns()}
     return _save(path,state)
@@ -543,6 +546,9 @@ def accept_job(path, output_path):
     verify_inputs(((state.get('render_result') or {}).get('recipe') or {}).get('input_references'),_file)
     from style_library import verify_selection
     verify_selection(state)
+    from task_history import verify_revision, verify_recovery
+    verify_revision(state)
+    verify_recovery(state)
     if state['status'] in ('failed','cancelled'):
         raise ValueError('Terminal job cannot be accepted; prepare a new job')
     output = _file(output_path)

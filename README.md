@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.2-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -14,6 +14,26 @@
 **Jump to:** [Quick Start](#quick-start) · [Capabilities](#capabilities) · [Compatibility](#compatibility) · [Privacy](#privacy) · [Validation](#validation)
 
 <a id="quick-start"></a>
+
+This branch prepares **1.5.0 (unpublished)** for review. Latest stable downloads remain **1.4.2** until approval, merge, tagging and release publication. See [engineering evidence](docs/ux-engineering-validation.md).
+
+## First use
+
+Photo Finish is a professional non-portrait photography Skill for natural landscapes, city nights, architecture, travel, still life, food and products. It does not develop face beautification, skin smoothing, reshaping, facial-feature changes or portrait optimization. Incidental people retain identity, structure and content protections. Priorities are natural texture, light, color, composition protection, consistent style and real detail. See [product scope](references/product-scope.md).
+
+Send a non-portrait photograph to start editing composition, light, color and detail.
+
+Some single-photo tools require explicit permission to edit for you. Where needed, first say “Please directly edit, check, save and deliver the photo I am about to upload.” Then send the photo. A photo-only upload does not grant blanket tool authority. An interactive preview is not a formal file or save confirmation; tool instructions to stop remain binding.
+
+Local changes depend on actual tool capabilities. Whole-image generation can change untargeted regions; each result needs visual review and is not a pixel-lock guarantee.
+
+- `Beautify this photo.`
+- `Keep the people and lettering; improve only light and color.`
+- `Use my saved soft-light wood reference without changing the composition.`
+
+The result carries a compact version and truthful save status. Ask for a local change or “back to V1” to reuse an earlier file.
+Actual viewing and editing depend on host tools. Originals are retained; generative editing cannot guarantee pixel-identical people or lettering.
+Photos, styles and task records use private storage. Upload behavior depends on the actual host; cloud sync is not promised.
 
 ## ⚡ Quick Start
 
@@ -25,7 +45,7 @@ Install this repository as the `photo-finish` skill in your agent's skill direct
 Use $photo-finish to edit this photograph.
 ```
 
-The agent examines the actual source, develops photographic direction, edits through an available image tool, inspects the result, and makes targeted corrections when needed. **Default delivery: one final photograph at a time.** Originals, comparisons, parameters and reports stay internal unless requested.
+The agent examines the actual source, develops photographic direction, edits through an available image tool, inspects the result, and makes targeted corrections when needed. **Default delivery: one final photograph at a time, compact version/save status and one optional first-delivery hint.** Originals, comparisons, parameters and reports stay internal unless requested.
 
 For a local checkout:
 
@@ -117,7 +137,7 @@ Read the [runtime guide](docs/runtime.md) for executable examples, [the complete
 
 Pillow is bounded to `>=12.3,<14`. pip selects a compatible 12.x release on Python 3.10 and permits 13.x on Python 3.11+. NumPy and SciPy remain optional; their version ranges already permit newer compatible releases.
 
-The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW, print and identity-sensitive portrait results need task-specific verification.
+The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW and print results need task-specific verification. Portrait photographs are outside the product scope.
 
 <a id="privacy"></a>
 
@@ -161,3 +181,5 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md). Keep the ordinary edit path light, pres
 ## License
 
 [MIT](LICENSE), copyright © 2026 kwhi. Method references and dependency boundaries are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). User photographs remain subject to their own rights; this license does not grant rights to third-party images or services.
+
+Instruction priority: safety and content protection, current task instructions, saved rules/preferences, suitable style, professional defaults. A single feedback turn never silently becomes a saved preference.

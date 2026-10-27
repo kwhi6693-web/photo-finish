@@ -1,6 +1,6 @@
 # Optional scene baselines
 
-These designed starting settings are advisory, not recovered camera settings or proof of a matching style. First read optional global instructions and retrieve/view suitable personal references; choose final direction afterward. Each scene below describes how that optional baseline preserves its stated lighting, not a compulsory aesthetic for every image. Creative time-of-day/weather treatment follows the current master policy and is recorded as an interpretation. No reference photographs ship with this repository. Exposure, white balance, crop, skin and material color require per-photo judgment. Adobe import/render and all-scene validation remain unverified.
+These designed starting settings are advisory, not recovered camera settings or proof of a matching style. First read optional global instructions and retrieve/view suitable personal references; choose final direction afterward. Each scene below describes how that optional baseline preserves its stated lighting, not a compulsory aesthetic for every image. Creative time-of-day/weather treatment follows the current master policy and is recorded as an interpretation. No reference photographs ship with this repository. Exposure, white balance, crop and material color require per-photo judgment. Portrait photographs and portrait beautification are outside the product scope; incidental people retain all content protections. Adobe import/render and all-scene validation remain unverified.
 
 ## A — 晴天城市与建筑
 
@@ -56,11 +56,9 @@ These designed starting settings are advisory, not recovered camera settings or 
 
 保留受光叶片与阴影、真实水面和主体材质；植物蒙版减去车辆、衣物、天空与路牌。蓝色水面不用天空蒙版，不把整幅树冠压成暗橄榄色
 
-## J — 人像与环境人像
+## J — 历史保留编号，当前产品不适用
 
-清晰人物面部或皮肤为重要主体；屏幕里的照片不算肤色样本。
-
-先保护肤色和面部亮度；不依据城市夜景参考强行染肤色。
+旧数值资料中的人像基准仅保留供历史兼容，不用于当前修图或正式验收。人像主体照片不处理；风景偶然入镜人物保留通用身份与内容保护，不进行人像美化。
 
 ## K — 车窗、玻璃与遮挡
 

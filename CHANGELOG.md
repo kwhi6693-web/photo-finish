@@ -1,5 +1,16 @@
 # Changelog
 
+
+## 1.5.0 — 2026-10-27 (prepared, unpublished)
+
+- Truthful Chinese stage/recovery/save messages and once-per-conversation-version delivery hints with opt-out.
+- Private indexed V1/V2 history, selected-output revisions with inherited protections, verified existing-byte rollback and same-task comparisons.
+- Ordered batch status and never-submitted failure recovery; completed/working/unknown tasks are excluded from new rendering.
+- Finite keyword synonym expansion, recent/frequent accepted-style use and exact-row metadata cache; no vector-search claim.
+- Observed revision/duplicate-render/save/readiness metrics, concise onboarding and explicit screen/print boundaries.
+- Existing source bindings, real review, content protection and authoritative save receipts remain mandatory. Host/real-photo acceptance remains a release gate, reported separately.
+
+
 ## 1.4.2 — 2026-10-24
 
 - Add a practical theory reference for tonal organization, color restraint, local separation and visual hierarchy, with approximate tutorial timestamps, official Adobe mechanism references and clearly labeled application reasoning.
@@ -56,3 +67,13 @@ Install the new `photo-finish/` directory in your host's skill location, retaini
 - Initial public Agent Skill: photographic direction, composition, light/color treatment, local retouching, observed review and one-final-photo delivery.
 - Bundled controller/runtime, empty public reference index, three-language README, MIT license and deterministic installation package.
 - Initial publication validation: 138 synthetic tests and cross-platform CI. Later main-branch maintenance is included in 1.3.0; it does not alter the historical v1.0.0 tag.
+
+### 1.5.0-rc.1 reliability continuation (unreleased)
+
+- Establish professional non-portrait scope including landscapes, nights, architecture, travel, still life, food and products; keep incidental-person protections.
+- Add explicit private task checkpoints with bounded verification, SQLite WAL-safe snapshots, idempotent export and resumable non-overwriting restore. Local checkpoints never imply remote persistence.
+- Resume an existing source-bound save intent after its receipt arrives without another save or render.
+- Reject known unmasked whole-image generation for local-only version revisions before reservation; real naturalness/local quality gates remain open.
+
+
+Formal package prepared from reviewed rc.1 runtime; no new behavior. Limited support, upgrade/downgrade and known limitations: [final approval packet](docs/FINAL_APPROVAL_1_5_0.md). No stable tag or Release has been created.

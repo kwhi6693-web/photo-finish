@@ -72,6 +72,36 @@ jobs:
           print({name: importlib.metadata.version(name) for name in ('Pillow', 'numpy', 'scipy')})
       - run: python tools/doctor.py
       - run: python tools/check_publication.py --history
+      - name: Windows checkpoint durability regression
+        if: runner.os == 'Windows'
+        shell: python
+        run: |
+          import sys, unittest
+          sys.path.insert(0, '.')
+          sys.path.insert(0, 'runtime/10_SYSTEM_CONFIG/scripts')
+          suite = unittest.defaultTestLoader.loadTestsFromName('tests.test_private_checkpoint')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          print({'tests': result.testsRun, 'skips': len(result.skipped),
+                 'failures': len(result.failures), 'errors': len(result.errors)})
+          sys.exit(not result.wasSuccessful())
       - run: python tools/run_tests.py
+      - name: Windows symlink and temporary-alias diagnostics
+        if: runner.os == 'Windows'
+        shell: python
+        run: |
+          import sys, unittest
+          sys.path.insert(0, '.')
+          sys.path.insert(0, 'runtime/10_SYSTEM_CONFIG/scripts')
+          names = [
+            'verify_input_delivery_safety.DownloadSafetyTests.test_dangling_symlink_is_an_existing_target',
+            'verify_input_delivery_safety.InputBindingTests.test_fetch_rejects_dangling_alias_before_network',
+            'verify_input_delivery_safety.InputBindingTests.test_reference_symlink_retarget_is_detected',
+            'tests.test_personal_backup.PersonalBackupTests.test_backup_validation_handles_temporary_directory_alias',
+          ]
+          suite = unittest.defaultTestLoader.loadTestsFromNames(names)
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          print({'tests': result.testsRun, 'skips': len(result.skipped),
+                 'failures': len(result.failures), 'errors': len(result.errors)})
+          sys.exit(not result.wasSuccessful())
       - run: python tools/build_release.py --output dist/photo-finish.zip
       - run: git diff --exit-code -- dist

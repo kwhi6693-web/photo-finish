@@ -1,0 +1,246 @@
+# Photo Finish implementation progress
+
+Updated: 2026-10-26 (Asia/Shanghai). This file is the restart checkpoint; inspect Git and actual evidence before resuming. Do not recreate completed features or rerun the entire suite without a changed input or unresolved concern.
+
+## Current state
+
+- Repository: kwhi6693-web/photo-finish; default branch: main.
+- Stable main and Release: v1.4.2, commit 184a62c7122bd470ae0f2d0bec4838fe3bef0a68, unchanged.
+- Development branch: feat/ux-engineering-20261025.
+- Candidate: 1.5.0-rc.1, workflow 2026-10-26.3. Current native-route instruction candidate SHA-256: 8cb0e595648f1f23fe5821fc9ebd7b72f461a6916e80fddc45f253cba549da54 (497953 bytes). Earlier package hashes below are historical.
+- Current native-route instruction commit: ce35a5c278f0eba2ad1fde369c6a350c5678c386; installed Skills commit e038822, 115 manifest files matched. Real independent preauthorized host readback matches SKILL 0784e605… and workflow 2026-10-26.3. Targeted 33 checks and 12 source-CI checks pass. Preauthorized photo-only end-to-end case passed; blank no-authorization single-photo flow remains limited by widget STOP and unavailable client feedback. Windows/runtime/history protection unchanged.
+- Recovery completed: all nine stage trees were reused and verified exactly, then saved through the authorized GitHub connector. Existing history and main were not rewritten. Original local history remains on checkpoint/ux-engineering-local-20261025; the active branch tracks the remote development branch.
+- Draft PR: https://github.com/kwhi6693-web/photo-finish/pull/14 . No merge, tag or Release has occurred.
+- The commit containing this document is identified by `git log -1 -- docs/IMPLEMENTATION_PROGRESS.md`; do not guess a self-referential commit hash.
+
+## 最新断点：新独立匿名版本链已实测
+
+详见[独立版本链报告](INDEPENDENT_VERSION_CHAIN_20261026.md)。旧32文件恢复检查点与当前恢复索引/游标已核验一致；旧PNG和任务不修改。ed06299三份文档核验后，以相同文件树同步dd435bf到PR #14，不覆盖远端改动，保留本地提交。原宿主索引/游标/独立原调用返回仍不可恢复，后来恢复链不追认原历史。
+
+另设全新匿名山景任务与空索引/风格库。真实原生编辑2次，逐版正式PNG/视觉复核、照片及最终记录各2次真实成功保存、同系列V1/V2登记及父版绑定通过。四文件均完整取回哈希匹配。一次V2→V1回退及一次同V1重复恢复，新增编辑0、历史文件/账本/版本行不变；新进程current-version为V1。
+
+真正全新ChatGPT Work会话只读访问该持久目录，实际current-version/versions/两版verify返回V1与正确父版关系，43项引用哈希、4份回执匹配、旧文件未变。报告原件私有保存。此为跨会话读取现有持久根，不认证跨设备、物理数据丢失恢复或重新自动触发。delivered=0保持，不用保存成功冒充展示；上传/预览精确边界时间缺失如实保留，渲染/保存/本地阶段/宿主查询时间已留证。
+
+下一断点复用本独立链与私有证据，不重复编辑、保存PNG或执行已有回退。本轮无产品代码变更或旧测试/CI重跑，候选包保持1.5.0-rc.1原哈希；其他门槛仍按各报告范围，继续RC/Draft/HOLD。
+
+## 最新断点：当前恢复链交付完成，已一次回退V1
+
+基线fdb1343，见[雪雾树林交付恢复](VERSION_DELIVERY_RECOVERY_20261026.md)。只读查找9个相关SQLite，含目标series的7个副本均仅历史V1，原当前索引/游标未找到，明确标记“原版本状态不可恢复”，不推定过去已登记V2，独立V2工具返回继续缺失。
+
+在保留恢复前原件后，从真实V1快照排他恢复缺失索引，原V1行data逐字节不变，另记当前恢复来源；复用原成功照片回执完成当前时间对账，未生成/保存PNG。新最终记录真实保存一次并完整取回验证，控制器DELIVER。随后当前时间登记现存接受输出为V2，父版V1；这不是中断前登记的证明。
+
+回退前current-version为V2，实际restore(V1)一次，新增渲染0、PNG保存0，10个被保护文件/账本及版本行在回退前后全哈希/内容不变，调用列表未增加，SQLite完整性ok；current-version实际返回V1及原正式哈希。当前恢复链的版本/交付/回退验证通过，原宿主遗失状态与证据缺口不改称恢复成功。修订账本本轮因实际归档对账有真实变更，旧字节保留；“账本不变”限于归档完成后的回退前后。V1账本和两张PNG全程不变。
+
+下一断点复用当前恢复链和V1游标，先核验新私有检查点，不重复修图、保存PNG、登记或回退。没有产品代码修改、旧测试或CI重跑、候选重建；其他门槛不展开，继续RC/Draft/HOLD。
+
+## 最新断点：既有修订已接受/照片已保存，正式V2索引不可核实
+
+基线c3b849f，本轮只读检查此前雪雾树林V1全局柔和修订，详见[版本状态审计](VERSION_STATE_AUDIT_20261026.md)。原修订账本accepted、图像ready，明确父版V1；现存PNG1280×800/1177203字节、SHA-256 bb5dccfb902faaf49496538b7921f3bc909b6fc778ed4769488086c4a3197719。既有真实照片成功回执已独立完整取回核实，没有重修或重保存照片。
+
+账本delivery_receipt/final_record/record_delivery为空，save_completed未记；原session_root/tasks.sqlite3在检查端与原宿主均不可取得，当前V2行/游标不能确认，独立V2工具返回对象缺失。可读历史SQLite仅含V1，不用它伪装当前索引。原宿主回合显示暂停；不能据此认定外部编辑仍运行，也不知道索引消失的确切原因。
+
+本轮没有执行restore、登记V2、消费保存回执或续跑交付；新增编辑0、照片保存0、回退0。核查前后8个原文件全哈希一致。**V2→V1及回退后修订基准仍未验证**，不能把已接受/保存照片与正式版本链合并为通过。下一步最小条件为恢复可信当前索引和可得原调用证据；若获准完成交付恢复，只对现存输出/回执实际对账、保存真实最终记录及当前时间登记，不重渲染、不补造过去。之后才进行一次回退与current-version核验。
+
+三张旅行正式V1与61文件检查点成果保留，本轮未重复验证；其他验收不展开。仅更新三份文档，不改产品代码、不重跑旧测试/CI，候选包保持原哈希，继续RC/Draft/HOLD。
+
+## 最新断点：用户旅行组照已完成
+
+基线9a8a510，实际执行仍为1.5.0-rc.1 / 2026-10-26.3。新增[旅行组照验收](TRAVEL_BATCH_ACCEPTANCE_20261026.md)：用户授权三张园林旅行照片，实际3次Adobe原生编辑、1次原任务查询，3/3质量接受、正式PNG和最终记录各3个真实成功回执；三张PNG独立取回，尺寸和完整哈希一致；SQLite完整性ok，三个独立V1登记，控制器均DELIVER。个人规则/风格库实际为空，不宣称采用未取得的个人参考。
+
+单张真实受控归档写入错误（只读文件系统）及本地输出暂不可用已实际检查；其他两张历史文件全哈希不变，摘要正确隔离，恢复不新增编辑/不重新上传成片。实际Adobe单张服务失败、远端保存失败和未知渲染未发生，继续未验证。没有改产品代码、重跑旧CI或重建候选包。本轮仅更新三份验收/进度文档；下一提交由git log确定，不填写自引用SHA。
+
+私有原片/成片/QA/原账本/真实工具返回/保存回执/SQLite快照纳入新61文件检查点，与既有35文件检查点区分；真实持久保存状态见旅行报告收尾。本批不进入公开Git/发行包，不再重修。此前另一个会话已发V2请求，后续首先只读核实实际结果，结果未明不重发；该任务不在本轮旅行验收范围。其余门槛（正式V2/回退、柔焦或低曝光自然风景、天空受限结论等）留待下一单元，继续Draft PR #14 / RC / HOLD。
+
+## Task classification
+
+最新单一门槛见[DEFAULT_DELIVERY_GATE_20261026.md](DEFAULT_DELIVERY_GATE_20261026.md)。已定位STOP/明确授权与客户端反馈缺口，修正过宽的卡片失败续接指令。真正独立预授权会话中，仅照片消息自动完成一次原生编辑、终检、正式PNG、照片及最终记录回执、V1 delivered索引；根检查端已取回和交叉验哈希。无预授权空白照片流程不合并为通过。新证据是同一任务链，不复测旧35文件检查点，也不提交旧城市未知令牌。以下较早结论保留历史范围。
+
+最新单元恢复见[DELIVERY_RECOVERY_20261026.md](DELIVERY_RECOVERY_20261026.md)。中断前执行成果已核实保留；独立原片原生V1的正式文件、真实保存、最终记录、版本登记、只读恢复及完整检查点已经闭合，控制器DELIVER。检查点35文件实际保存/取回/恢复通过，SHA-256 e88e23522fc458bbdd1e488d9d503a68936ba9b616c7cab0b67479a3b19fb49b。此单元不等于独立自动触发后的默认一次正式交付；该链仍停在设备不支持卡片。城市自动影调预留令牌无输出/调用回执，保留未知不提交。当前只收尾这一个单元，不展开旅行组照或其他渲染。以下较早状态与包身份保留为历史。
+
+最新真实验收覆盖：[HOST_CAPABILITIES_20261026.md](HOST_CAPABILITIES_20261026.md)。独立仅照片触发和原V1平台文件保存已有真实证据。最小原生优先编排修正a4ec61c已安装/读回且12项CI通过；新版实测改用Adobe，交互卡片设备受限，明确续接后取得正式建筑文件。风景天空候选正式PNG及蒙版外986992像素零差再次核验；因树间天空漏选和边缘过渡未充分证明，完整成片仍未通过，原V1保留，不登记正式V2。三张街景为原生组件测试；完整旅行/自然风景、版本索引和失败恢复仍未完成。旧账本缺失不补造；旧表的触发/保存未知及早期包身份以本页顶部与新报告为准。
+
+本次Adobe续接仅更新HOST_ACCEPTANCE、HOST_CAPABILITIES_20261026及本文件，不改产品代码、不重复渲染。实际查看两个天空mask、树冠/山体/围栏边界叠加图和原生前后细节；输出1536×1024/2826991字节及全哈希再次匹配。新增建筑局部文件及首文件返回已可见，但完整版本账本与独立零渲染计数未核实。当前交互卡片设备不支持，无需新增Adobe授权；不因卡片失败否认已取得的服务端PNG，也不把预览当正式成片。
+
+私有原证据包从持久存储取回并验证完整哈希54bf2fd7…，再保留原记录、增补本次边缘检查及观察；新版137763419字节、SHA-256为3e3127b6724114334fb9c876e0e519df624e6b6dfb4fa4e47647809012ef4dbf，取得真实保存回执（版本2）。新版归档未再次全量取回；不冒称旧原任务账本已恢复。独立未接受天空探针PNG另存供审阅，不是正式V2，所有图片和私有标识均在Git外。
+
+本次文档检查：doctor通过（runtime链接46、政策指针11、文档链接192），公开扫描161文件无发现，git diff --check通过；候选ZIP全字节SHA-256仍01677e28…，没有重建或改版。保留a4ec61c已通过的33项针对性回归及12项CI，不手动重跑261项。下一步只处理可靠边缘/真实自然度改善、默认自动正式交付与完整版本/保存契约；在工具不足时保持失败，不再生成碰运气。
+
+| State | Work | Evidence / next action |
+|---|---|---|
+| Completed and verified | P0 Chinese truthful status/save view, one-time hints and opt-out, V1/V2 history, selected-version revisions, zero-render rollback/comparison | tests/test_experience.py, tests/test_versions.py; full 246-test log and engineering validation |
+| Completed and verified | Custom instructions, authorized style collection, priority and locked protection inheritance | Existing preference/style suites plus revision/recovery regressions; no inferred long-term preferences |
+| Completed and verified | Keyword synonym discovery, recent/frequent styles, exact-content row cache and indexed task lookup | tests/test_style_discovery.py; local 1000-row benchmark only, no vector/host speed claim |
+| Completed and verified | Ordered batch status, never-submitted failure recovery, completed/working/unknown exclusion, observed UX metrics | tests/test_batches.py, tests/test_ux_metrics.py; four independent reviewer defects and hint issue fixed |
+| Completed and verified | Source/docs/runtime/candidate package consistency, publication scan, deterministic build and clean extraction | Exact checks below and docs/ux-engineering-validation.md |
+| Modified and verified within scope | Scope instructions, synchronized runtime mirrors and RC package; execution code unchanged | Doctor, publication, diff and one targeted deterministic-package/relocation test passed; no full-suite rerun |
+| Completed and verified | Publish development history and create Draft PR | Nine exact stage trees verified; PR #14; local active branch synchronized with remote |
+| Completed and verified | Native matrix and four explicit Windows diagnostics at 7a6fa21 | Push 40191479841 and PR 40191482775: all six lanes each passed. Windows 246/246 in 29.269s; four named diagnostics passed with zero skips, failures or errors |
+| Completed and verified (current host) | Actual candidate installation and host text readback | Installed exact RC through the real Skills workspace; pushed; workflow 2026-10-25.1 and candidate SKILL bytes match. Current installation 355df17 matches all 115 manifest files; earlier 112-file installation below is historical |
+| Historical live component evidence; current private state lost | Anonymous rule/style persistence, matching and actual tool inputs | Same profile read across independent processes, scoped reference matched/viewed/passed to tool; temporary private database later disappeared during browser timeout. Retained partial archive declares missing raw records |
+| Actual failures / remaining host gates | Naturalness and local-only preservation failed; independent trigger, authoritative image save and accepted V2 sequence unverified | Five real calls/outputs on one source; restored accepted V1 without rendering before private index loss. Fresh-chat upload timed out, no photo-only event observed |
+| Limited pass / four categories not performed | Backlit landscape V1 screen-scoped acceptance; city night, architecture/lettering, travel group and soft-focus/low-exposure landscape remain unverified | Actual CC0 source acquired through GitHub; no portrait samples. Do not substitute uninspected/licensing-only candidates or synthetic images for the four missing cases |
+
+## Verification already completed
+
+Source/package commit: 811c081 (before progress-only updates). Linux, Python 3.12.14, Pillow 12.3.0.
+
+- 246/246 tests passed in 8.723s; 209 original plus 37 additional tests.
+- Doctor/integrity: passed; 43 runtime links, 11 policy pointers, 174 documentation links before this file.
+- Publication scan including 464 reachable historical blobs: passed, no findings.
+- `pip check` and optional 5184-pixel numerical-analysis fixture: passed.
+- Deterministic double build: byte-identical, 484608 bytes, 113 ZIP entries including manifest.
+- ZIP SHA-256: 384c44eff01e0c0d6c75eed8ad1e51076d6f6db2a812bf412484c4ec9c2202b3.
+- All 112 manifest-listed files verified in a clean extraction; bundled doctor and isolated synthetic prepare/status CLI smoke passed. This did not call an editor.
+- `git diff --check`: passed.
+- Historical Windows same-baseline CI run 40105427756: 209/209, no skips, Python 3.12.10. This is not candidate CI. The handoff's separate four Windows errors lacked exception traces and were not reproduced locally; no test was deleted or disabled.
+
+## Important code locations
+
+- runtime/10_SYSTEM_CONFIG/scripts/experience.py: Chinese fact and recovery presentation.
+- task_history.py: private SQLite version/cursor/hint index, immutable photographic contract, revision provenance/regions and rollback.
+- batch_workflow.py: ordered summary and isolated safe failed-task recovery.
+- photo_edit.py / delivery_adapter.py / delivery_automation.py / workflow_session.py: existing execution and protection integration.
+- style_library.py: finite keyword expansion, exact-row cache and accepted-use records.
+- delivery_metrics.py: observed first acceptance/refinement/duplicate render/save/readiness metrics.
+- references/conversation-versions.md and references/batch-recovery.md: operator protocols.
+- docs/ux-engineering-validation.md: detailed evidence, reviewer fixes, performance scope and open acceptance gates.
+- docs/superpowers/plans/2026-10-25-ux-engineering.md: original implementation ledger.
+
+## Known limitations and release gates
+
+No deferred code-review defect is known. External unknown/error submissions remain needs-confirmation until actual investigation; automated replacement is limited to proven never-submitted failures. A save failure must never trigger rendering. Session roots must be private and genuinely persistent for cross-turn recovery; no cloud sync is promised. The keyword matcher is not vector semantic search. Local metadata timing is not end-to-end host latency.
+
+Do not merge main, create a tag or publish a Release without explicit approval. Real-photo and exact-candidate host acceptance are still open. Preserve stable v1.4.2 and its assets. A future stable version bump requires rebuilding and verifying the exact approved source; do not relabel this RC archive.
+
+## Recovery timeline and current CI finding
+
+- Recovery verified the actual local 246-test log, Git diff, candidate hash, handoff criteria and absent remote branch/PR. Product work was not repeated.
+- Nine source trees were recreated from already uploaded blobs and matched local Git tree hashes exactly. Connector-generated commit timestamps/identity yield different commit IDs, with identical source content (mapping below).
+- Current-head push run 40191160098: five Linux/macOS lanes passed. Windows full suite passed 246 tests in 30.587s; the new standalone diagnostic then failed to import tests.test_personal_backup. Its first three symlink cases passed, with zero skips.
+- Root cause was reproduced in an isolated temporary Python script: the GitHub shell=python file runs outside the checkout, so repository root must explicitly enter sys.path. Adding only that root made all four named cases pass locally. Product code and candidate ZIP are unchanged; no full local rerun is needed for this CI-only fix. Native rerun completed successfully; links and counts are below.
+- Evidence: https://github.com/kwhi6693-web/photo-finish/actions/runs/40191160098 . Failed diagnostic job: 121162277050. This finding is distinct from the handoff's untraced Windows environment errors.
+
+## Original local to connector commit map
+
+| Local commit | Connector commit | Exact tree |
+|---|---|---|
+| 2f76d8e6cade9ece48ac8566ca87f1641234b6e7 | cd169cd1d325d6e43f71afbc8fde30203429fa28 | 60d56c493ae623bf34ef8fbf5b5436e739712497 |
+| 5e34096a8611aea17d285d0505b86d1734236680 | c149d5b6d3cd2727a9147fa80287d0ede5e4cf1e | d67a459b7463dd4b8671b33839c408f9d0d0d471 |
+| 5e11681929d1309b302796a47b53f6bb528902e3 | 4b80189f5241fc76938d39f0d2ae30e43f5c825f | 478e1bcc402102666cbf40be54714a85163d9694 |
+| 763f7a06aa50db8a5510c1552b05ec1c4aae3a0f | 8d1b9058d50bc6bf6a601b131ee40f8220af5141 | 371f878e465b7ac6a110e2f860ba942396c2938c |
+| 4a7a33b764650a7517994188b0bf7b2d37ef7006 | d6c392aa5e1adca69d867f3579d7b01b499797db | 4ca0c15be3e3d87fa8a1f909196ecceb76c0ce01 |
+| fb2717cbba32b85c6cb8dcbd1035aaaebe5e89ab | e425a75ee4c7734b637b3f30819ce775d6c7a954 | 9235cec9801d3d5df9426a8a092765de6e92cd3b |
+| 0d2ce43fe27f527fc170d4f3624788b4a26e298e | 7963ad5cb8f42f31996cd60bbae8746650fd38ec | b4304d994f55bbc92f6d529dca92d369892faf6b |
+| 811c0811777e669604b023f4810cdfd7c0bff6a0 | 23e0587c7490a134a6b956af7dcd529c79e9dda8 | 93f5dab21be00f8e97f5e3928dec105c701256fb |
+| 7b447459b86beb6a51b3b14a0c7e7e34fae6ceff | cb212e7550d96248381f53c27e02f07beab5fd5c | 428797f2fd42c2f0799ffabee6fc24a9c6f03d7e |
+
+## Immediate next steps
+
+1. Do not repeat completed implementation or its unchanged full local suite. For any subsequent product edit, run targeted regressions first; use the PR matrix for current-head platform verification.
+2. This final recovery update changes progress/validation documents only. Packaged sources and ZIP remain identical. Resolve its exact commit with git log; PR #14 provides the live latest-head checks.
+3. New-host/real-photo acceptance remains blocked as described above. Use only an actually supported candidate installer and authorized anonymous photographs; do not access unrelated personal images or simulate receipts.
+4. Keep PR draft until the real acceptance gates and user review are complete. Do not merge, tag or publish without explicit approval.
+
+## Verified recovery completion
+
+- Verified implementation/CI correction head: 7a6fa21c46c23d951ba5d1e18be17a34f8dd6b2f. [Push matrix](https://github.com/kwhi6693-web/photo-finish/actions/runs/40191479841) and [PR matrix](https://github.com/kwhi6693-web/photo-finish/actions/runs/40191482775) each passed all six lanes (12 successful checks).
+- The actual Windows log was read: 246 tests in 29.269s; four handoff-named cases in 0.391s, tests=4/skips=0/failures=0/errors=0. No Linux result is presented as native Windows evidence.
+- Local checkout was fast-forwarded to the connector branch with no force update, no uncommitted conflict and unchanged candidate SHA-256. Doctor, publication scan (153 files) and diff check passed after the CI-only fix. Final documentation-only changes receive the same focused documentation checks.
+- The local installed-skills workspace is present, but the existing personal Photo Finish skill remains 2026-10-24.2 without a bundled runtime and references private historical assets. It was inspected, not replaced. Candidate installation into an isolated real host, photo-only trigger and actual photo/receipt acceptance remain unverified; filesystem/CLI availability is not proof of those behaviors.
+- No main merge, version tag or GitHub Release has been performed. PR #14 remains draft. The remaining blocker is actual candidate host and authorized real-photo acceptance, followed by user approval, not missing product implementation or local protocol tests.
+
+## Actual host installation acceptance — 2026-10-25
+
+This entry supersedes the earlier statement that candidate installation was unverified. Product source and the 1.5.0-rc.1 archive remain unchanged. The 246 tests and prior 12 CI jobs were not rerun in this round.
+
+- Before install: actual exposed personal skill was workflow 2026-10-24.2 with no bundled runtime. Restore point in the private Skills workspace: a433ca5173b793956b128cc2321b4a5c46bb7922.
+- Installed all candidate archive files into the existing Photo Finish skill; committed/pushed through the actual authenticated Skills Git workflow. Installation commit 9e9e29f; generated Python bytecode was subsequently removed, concurrent host normalization was merged without overwriting history, and final push 8f22060cf1a6b7fe7a55e31c0fddd01a44f4fe82 succeeded. Final tree is clean, with exact manifest contents and no extra files.
+- Host Skills readback, not just a local file read: workflow 2026-10-25.1 and byte-for-byte candidate SKILL match. Installed SKILL SHA-256: 793efbd0343b3079323feab1833b3aa5eb003231c16a5e675d6f17c4329e57ef. Installed doctor passed (not a rerun of the test suite).
+- Anonymous rule configuration used a separate private root, outside all Git/skill directories. Five real CLI calls (show/set/show/show/style-list) ran in separate Python processes. Profile persistence/readback matched; collection remained empty. The initial in-checkout path was correctly refused and replaced with an external private root. Production photos, styles and profile data were not accessed or changed.
+- Two actual public input acquisition attempts returned HTTP 403: Commons metadata API and the licensed original-image host. Public source pages and licensing could be read, but no original image bytes were obtained. Do not infer native-detail visual acceptance from search display previews. No further ineffective retries were made.
+- Actual image-editor invocations: 0; actual render submissions: 0; actual visual reviews: 0. Consequently no real edited-photo history, rollback, unknown-render recovery or generated-image save receipt was tested.
+- Raw install/configuration/error evidence and the isolated anonymous profile were saved as a private acceptance evidence archive with a real successful save and local identity writeback. That archive-save receipt is not an edited-photo persistence receipt. No private evidence or photos enter this public branch.
+- Current host now has the RC installed; do not mistake stable GitHub v1.4.2 for the installed runtime. Earlier personal Library references were not migrated or read.
+
+Continue with the concrete input matrix and steps in [HOST_ACCEPTANCE.md](HOST_ACCEPTANCE.md). Keep PR #14 draft; no merge, tag or Release. Formal release notes are deferred until the necessary real cases pass.
+
+## Scope correction and first real landscape acceptance — 2026-10-25
+
+This entry supersedes earlier zero-image-call/download-blocked and unchanged-package statements. Continue from e67cd4d; no architecture or execution script was rewritten.
+
+- Current scope excludes portrait photographs/beautification. SKILL metadata/body, agent metadata, three READMEs, master rules, fidelity/theory/scene/grid/caption guides and generated policy/hash mirrors were corrected. Generic incidental-person identity/content protections and the frozen numerical compatibility assets remain.
+- Corrected 1.5.0-rc.1 package: 485802 bytes, 113 entries / 112 manifest files, SHA-256 6e73b9ddb260f0d2a028a1020d7434ded4bac52456727bab71eab3ce0cf026e9. Actually installed, doctor-checked, committed/pushed in the Skills workspace as d47ffd7; host readback contains corrected scope, SKILL SHA-256 ca31ad88e9dcb137622178c5872840227a287da29ac36fd624ac8999c02ddaac.
+- Prior 246 tests and native CI evidence retained. Only doctor, publication, diff and the one targeted deterministic-build/relocation regression ran; that regression passed in 1.230s.
+- Actual CC0 grove/meadow JPEG and winter-tree reference obtained through the authorized GitHub connector, decoded, hashed and visually inspected; no thumbnail/synthetic substitution. Only anonymous isolated test configuration was used. Natural-language keyword query, scoped light-only selection, actual reference tool inputs, saved rules and a theory-informed direction were traced. This is not vector search or causal proof of independent style/theory effectiveness.
+- Five real image-tool calls on one independent source: initial 28.333s (failed clouds/fence), deliberate original-based correction 24.696s (accepted V1), grass-only 21.403s (failed non-target texture), user-ordered more-natural 26.414s (failed texture/naturalness), sky-only 36.930s (failed cloud/non-target preservation). No formal V2 was registered. Do not report source first acceptance as 100%; initial source result failed.
+- V1: 1536x1024, SHA-256 268db8bc1a2e92fa61f2884503e9c15444ebd01d0220fd9d1d8cf1d2cf1a4226. Accepted only for ordinary screen with explicit sRGB assumption/semantic identity; fine vegetation is regenerated, no pixel preservation or print claim. Re-read bytes/dimensions match; no authoritative image save receipt exists, so persistence remains pending. User can open the displayed V1 and use save/download without a new edit.
+- Actual read-only restore after failed attempts: zero new image-tool calls; accepted V1 image and ledger hashes unchanged; independent CLI process readback retained cursor and anonymous profile. Repeated delivery returned an empty hint. This is not an accepted V2-to-V1 or independent fresh-chat trigger test.
+- Existing next-step gate correctly refused the failed upstream output. No false pass was inserted; correction used a distinct deliberate original-based task, keeping failed ledgers. One unsubmitted revision draft omitted the anonymous library root and read the empty default; preserved unused and corrected before submit. Future host calls must carry the trusted private root.
+- **Actual failed acceptance items:** naturalness refinement and localized preservation with the current whole-image generator. No new paid service/key/infrastructure was introduced. Remaining four visual categories, fresh photo-only trigger, successful accepted V2 sequence, authoritative image-save confirmation and real save-failure/unknown recovery remain open.
+- Raw private ledgers/photos/receipts stay outside Git/skill. Public trace and next steps: HOST_ACCEPTANCE.md. Keep Draft PR #14, no merge/tag/Release or final release notes.
+
+## Latest checkpoint after browser timeout and private evidence loss
+
+- Public source/scope/package/live-failure checkpoint: **52ae9f1b569397372e0f65ac7b35ae877dce658b**, tree c07cf3df9633b3ae737e375c34656dad5a367cc9, on the same PR #14 branch. Local original commit fe529853b4b589bb79f456f09dbb465f83a734d6 is preserved on checkpoint/landscape-local-20261025; exact trees match, no forced update or main merge.
+- Fresh empty browser Work conversation and updated Skill summary were actually observed. Photo upload tool timed out before a sent-message/auto-trigger result could be observed. No duplicate submission was issued. Independent photo-only triggering remains unverified.
+- **Evidence-retention incident:** temporary private acceptance root disappeared during the long browser timeout. Original private job ledgers, detailed CLI logs, anonymous profile/session SQLite and rollback index are no longer available. Never rebuild them from prose and call them originals. Previously observed restore/immutable checks remain historical evidence, not a resumable current index.
+- Real original/photo-output bytes remain in the working area and all five output hashes/dimensions were rechecked. Actual tool-return metadata, tool-boundary timings and first-call arguments were retained. These were saved in a successful **partial** private evidence archive, explicitly declaring missing raw records. That archive receipt is not the edited-photo persistence receipt.
+- Actual V1 is still readable at 1536x1024 with the same full hash. Its controller persistence receipt was absent before the loss; direct photo saving remains pending/unverified. Available manual method: open the displayed V1 and use its save/download control; no re-edit required.
+- Current unresolved gates: naturalness and local-only editing failed in real image results; accepted V2-to-V1 sequence was not completed; four remaining real-photo categories were not run; independent photo-only trigger and authoritative save/real save-failure/unknown recovery were not established; original private audit trail/index retention is now also blocked.
+- Next: preserve retained artifacts, use a genuinely durable private root/evidence checkpoint before long UI actions, and obtain missing host/photographic evidence without rewriting prior records or rerunning the 246 unchanged tests. Remain Draft/RC.
+
+## 可靠性与长期产品定位续接 — 2026-10-25
+
+- 长期定位已统一为专业非人像摄影，主要支持自然风光、城市夜景、建筑、旅行、静物、美食与产品。SKILL、三种README、agent说明、机器政策、专业规范及验收说明同步；人像专门处理/人像效果指标排除，通用身份/结构/内容保护保留。
+- 现有持久证据包实际取回并验证，6张原片/输出均可恢复；旧原始账本、匿名SQLite、完整CLI日志及原自动保存回执仍缺失，没有推测重建。外部临时盘清理机制无宿主日志，不能将上传超时当删除原因。
+- 新增独立私有检查点模块与按需CLI，明确文件列表、SQLite在线快照、哈希/路径/大小检查、排他发布、同内容重复导出及中断恢复；改变已有历史字节时拒绝覆盖。存储位置真实检查发现宿主工作区也受外层Git管理，已换用Git/Skill之外的受控验收目录，未放宽隐私门槛。
+- 新检查点9个真实资料文件，真实保存回执成功，远端取回ZIP哈希和隔离恢复V1哈希一致。V1已在持久检查点中可恢复；原图片自动保存状态仍未知，不拿归档回执补造原任务保存成功。
+- workflow_session.save_intent重复调用缺陷先RED复现后修复：回执已存在时仍可复用同一输出/路径的已登记意图；不同旧回执不能开启意图，确认仍独立。
+- photo_edit.submit对已知无区域mask接口的imagegen局部版本修订，在生成提交令牌之前拒绝；父账本与图片不变。只是阻止重走真实失败路线，不冒称局部画质修复完成。
+- 本轮未新增图像生成：更自然的植被真实改善、局部天空质量、正式V2、独立触发和剩余场景仍未通过/未验证。另有Adobe遮罩接口只查到声明，当前V1输入/实际遮罩/像素输出未验证；未新增付费服务或后端。
+- 实际原因、修改位置、RED/GREEN与真实存储证据见RELIABILITY_FIXES.md；本轮不重跑246项全套，不进入正式发行。下一步先使用可恢复检查点，再取得真正可用的局部编辑与独立宿主证据，不能降低验收门槛。
+
+当前针对性结果：Linux/Python3.12.14，保存/检查点/版本/交付状态39项通过（3.043s），最终源码确定性打包/异地恢复专项1项通过（2.747s），SQLite句柄关闭调整后的WAL专项复核通过。新增加13个行为回归，未运行259项全套，不冒称新增代码Windows原生已通过。doctor为45个运行链接、11个政策指针；publication160个文件无发现。当前包495065字节、116条目/115个manifest文件，SHA-256见本页顶部；已同步到真实技能工作区并推送，宿主读回含七类范围及检查点指南，SKILL哈希587e47344a1a1727ae7efd4a9c1f1b76f23241e9dbd44c3577b9f1c3fcf1c8ba。
+
+可靠性代码当前提交713dbb103e782b8ae30236835ee4c7a625b833e8，保留本地69f3b08cc98946ae9d5d75d8a4e982e459ba147c，完全相同源树10de741fc5cbb885c0f06068373cc0b1b15f0a76；未强推。技能工作区实际推送4e37d5d，115个文件匹配，已安装CLI检查与9文件恢复实测通过。公开修复明细见RELIABILITY_FIXES.md；私有图像/账本/路径/回执不入仓库。
+
+## Windows CI失败恢复与最小修复 — 2026-10-25
+
+- 当前工作目录仍在，7d252ed开发分支干净，原成果及本地历史未覆盖。实际读取PR run40208085792的Windows job121213245466：259项，7个EBADF错误，归档fsync只读句柄为共同触发点。
+- private_checkpoint.py仅两处刷盘句柄由rb改r+b，覆盖归档及恢复日志；不截断文件、不删除fsync、不吞错误、不放宽哈希/历史保护。
+- 新增2个回归：真实描述符写权限+导出/恢复字节保持，以及刷盘失败阻止发布。先RED复现后GREEN，本地该模块12项通过；原生Windows专项由新增CI步骤先跑，随后261项完整回归与原4项诊断。Linux结果不当作Windows证据。
+- 候选仍1.5.0-rc.1；Windows修复包495152字节、116条目/115个manifest文件，SHA-256见顶部。原生CI与后续完整回归结果将在PR与验收记录中留证。
+- 私有检查点、V1及失败候选保持，未新增图像生成或保存回执。保持非人像范围与Draft PR14；待修复CI后继续宿主验收，不合并/打标签/发布。
+
+## Windows阻断最终验证与下一断点 — 2026-10-26
+
+此条覆盖上一节“原生结果待CI”。修复ffdbe9a在Windows消除了原7个EBADF；其检查点12项随后暴露WAL测试连接未关闭的WinError32。测试修正e0e10d1使用closing释放连接，产品SQLite快照本身已显式关闭。未跳过测试、吞fsync错误或删除持久化刷新。
+
+- 已验证源头：e0e10d10e632f9f31cb9de86ccdee39d18c7de19，树71609a126c9fa54e33a937d641fa498c25f3ab46。本地原96dec1a及670262c保存在checkpoint/windows-fsync-local-20261026，树与远端完全一致；开发分支已同步，无历史覆盖或强推。
+- [PR CI40246818450](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246818450)和[Push CI40246813935](https://github.com/kwhi6693-web/photo-finish/actions/runs/40246813935)：6+6组合全部通过。实际Windows job121330018203先12项（0.555s，零跳过/失败/错误），后261项（29.315s），再4项原诊断（0.391s，零跳过/失败/错误）。这些是原生Windows日志，不是Linux模拟结果。
+- 本地Linux/Python3.12.14：完整261项通过8.721s；doctor45/11/189、public scan160文件/582历史blob无发现、pip check、确定性重建、dist无变化和diff检查通过。文档提交不改产品字节，不再次手动重复整套。
+- 当前候选ZIP仍为顶部c3ef681c…，495152字节，116条目/115个manifest文件；实际技能安装推送355df17，115文件逐字节匹配。本轮仅两个fsync打开模式改变产品包，测试连接关闭不改变包。
+- 再次真实私有存储取回db3cdd2f…检查点，已安装固定运行时恢复9文件，重复恢复全部字节不变；V1全哈希/1536×1024一致，新增编辑调用0。新私有根仅是工作副本，持久性依据为已保存的原检查点和本次取回核验；原账本/自动保存回执未补造。私有日志及取回证据不入公开Git。
+- 浏览器现有清理后不再有原验收标签页；新空Work界面可加载，但没有照片已发送事件。没有重试长上传或推断旧请求成败。独立自动触发仍未验证。
+- 下一具体工作：取得真实可用的区域遮罩编辑器及当前V1输入/输出证据后，才继续天空保护；更自然候选必须实看改善才登记V2。先确保新的操作证据可恢复，再完成独立照片触发、四类剩余风景及正式V2回退/保存回执。原真实失败不能因CI通过改成通过。
+- 状态：Windows阻断已解决；自然度/局部编辑未通过；其他真实宿主门槛未验证。保持1.5.0-rc.1、Draft PR14；不合并、不建正式标签、不发布。
+
+
+## 2026-10-27 unattended gate update
+
+See [release gate](RELEASE_GATE_20261027.md). One new atmospheric landscape native candidate was actually checked and rejected for insufficient improvement; no formal version/save. Private evidence saved and fully read back. External-provider fault tests remain unverified; NO-GO / RC / Draft retained. Prior passed tasks and CI not repeated.
+
+
+## Scoped review / 2026-10-27
+
+See [scoped release review](SCOPED_RELEASE_REVIEW_20261027.md): two new isolated synthetic fault-combination tests passed; no live outage certification. Original atmospheric image retained, zero new editing. Conditional GO only for documented limited core scope, pending latest CI and explicit user approval. Prior observations remain unchanged.
+
+
+## Final approval packet — 2026-10-27
+
+See [final packet](FINAL_APPROVAL_1_5_0.md). Scope frozen at implementation 9871904. Six CI jobs passed; payload source/package/installation matches, but installed manifest mapping differs, so complete installation identity is not certified. Reinstall/reload requirement documented. Candidate remains rc.1; formal 1.5.0 packaging is a post-approval promotion, not an existing artifact. No runtime changes or old tests rerun.
+
+
+## Formal artifact prepared / candidate installation repaired
+
+See [packaging evidence](PACKAGING_1_5_0_20261027.md). Verified candidate reinstallation including manifest, skill-resource read and installed runtime bootstrap. New unpublished 1.5.0 ZIP: 497949 bytes, SHA-256 84fbc42db21d2aa7dc8122152d4390a526761519eb58a212534f4266bd46fb9f. Runtime unchanged, no new photo or old regression. Pending latest CI and final publication approval.

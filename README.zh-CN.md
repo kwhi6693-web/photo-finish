@@ -5,11 +5,33 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Release-1.4.2-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
+
+当前分支准备 **1.5.0 (unpublished)** 供审阅；最新正式下载仍为 **1.4.2**，批准、合并、打标签与发布后才更新。见[工程验收记录](docs/ux-engineering-validation.md)。
+
+## 第一次使用
+
+局部修改按实际工具能力执行；全幅生成可能改变非目标区域，必须实际复核，不承诺像素锁定。
+
+Photo Finish 是面向非人像摄影场景的专业照片美化 Skill，主要支持自然风光、城市夜景、建筑、旅行场景、静物、美食和产品摄影。不开发人脸美化、磨皮、塑形、五官调整或针对性肖像优化，不处理以人物为主体的人像照片。偶然入镜人物仍保留身份、结构和内容保护；不削弱哈希绑定、真实复核、历史不可变及保存回执要求。优先优化自然纹理、光影、色彩、构图保护、风格一致性和真实细节。
+
+发一张非人像照片，我会直接完成构图、光影、色彩和细节优化。
+
+部分单图工具要求明确代做授权；需要时可先说“请直接替我完成下一张照片的修图、检查、保存并交付正式文件”，再上传照片。仅传照片不授予所有工具的代操作权限；交互预览不等于正式文件或保存确认，工具要求停止时仍须遵守。
+
+- `直接美化这张照片。`
+- `保留人物和文字，只改善光影和色彩。`
+- `参考我收藏的「柔光木质」，但不要改变构图。`
+
+成片附简短版本和真实保存状态；可继续说“更自然”“只改天空”或“回到 V1”。
+效果依赖宿主真实看图和图像编辑能力。原片保留；人物、文字及指定内容列为保护项，生成式工具不能保证逐像素不变。
+个人照片、风格与任务记录使用私有位置，是否上传取决于实际宿主工具；不承诺云同步。
+
+长期定位见[非人像产品范围](references/product-scope.md)。正式验收不用人像照片；通用人物保护契约测试继续保留。
 
 ## ⚡ 快速开始
 
@@ -21,7 +43,7 @@
 使用 $photo-finish 处理这张照片。
 ```
 
-默认逐张只输出最终成片，不附原片、前后对比、参数或说明。内部原片对照、实际看图验收和记录继续执行。当次明确要求优先。
+默认逐张交付最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示；不附原片、默认对比或参数。内部原片对照、实际看图验收和记录继续执行。当次明确要求优先。
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
@@ -70,7 +92,7 @@ python tools/doctor.py
 
 ```text
 把这张参考分到“旅行”，只借鉴光影和材质。
-这条规则只用于夜景，先停用人像那条规则。
+这条规则只用于夜景，先停用雨天那条规则。
 撤销刚才的规则修改；检查备份后合并到我的个人图库。
 ```
 

@@ -16,15 +16,20 @@ import delivery_metrics as m
 import style_library as styles
 import user_preferences as preferences
 import personal_backup as backup
+import experience
+import task_history as history
+import batch_workflow as batches
+import private_checkpoint as checkpoints
 
 
 def _response(path):
     state=w._load(path);render=state.get('render_result') or {};review=state['reviews'][-1] if state['reviews'] else {}
     inspection=render.get('inspection') or review.get('inspection') or state.get('source_inspection') or {}
+    next_step=a.plan(path)
     return {'path':str(Path(path).resolve()),'workflow_revision':state['workflow_revision'],
             'source_sha256':state['source']['sha256'],'output':render.get('acquired'),
             'dimensions':inspection.get('dimensions'),'color':inspection.get('color'),
-            'next':a.plan(path)}
+            'next':next_step,'experience':experience.describe(state,next_step['action'])}
 
 
 def prepare(project_root,source_path,path,direction=None,tags=None,intent=None,started_unix_ns=None,observed_skill_revision=None,evaluation_kind='unclassified',scenario=None,
@@ -68,6 +73,12 @@ def submit(path,protections,selection,tool_name,arguments,protected_regions,issu
     """Atomic source-bound decision and submission reservation, before the actual tool call."""
     if not isinstance(protections,dict) or not isinstance(selection,dict):raise ValueError('Explicit protection and reference decisions required')
     plan=c.fidelity_plan(protections,protected_regions,fidelity)
+    # The exposed imagegen API has no region-mask argument. Real sky/grass-only
+    # acceptance failed outside the target; a prompt is not a local exclusion.
+    if ((w._load(path).get('revision') or {}).get('local') is True and
+            tool_name in ('image_gen.imagegen', 'image_gen__imagegen')):
+        raise ValueError('Local-only revision requires a verified region-mask editor; '
+                         'this full-frame image tool is blocked. Keep the accepted version.')
     events=[{'action':'protect','arguments':protections},{'action':'select','arguments':selection}]
     for issue in issues or []:events.append({'action':'issue','arguments':issue})
     def apply(temporary):
@@ -105,13 +116,19 @@ def review(path,events,output_path,record_destination=None,brief=None):
     w.transact(path,events,accept_output_path=output_path)
     result=_response(path)
     result['quality_observation']=m.sample(path)
+    try:styles.record_accepted_use(w._load(path))
+    except (OSError,ValueError) as error:result['style_usage_warning']=str(error)
     if record_destination is not None:
         result['record']=d.snapshot(path,record_destination,brief)
     return result
 
 
 def main():
-    routes={'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
+    routes={'checkpoint-export':checkpoints.export,'checkpoint-inspect':checkpoints.inspect,'checkpoint-restore':checkpoints.restore,
+            'batch-create':batches.create,'batch-status':batches.summary,'batch-retry-failed':batches.retry_failed,'batch-completed':batches.completed,
+            'version-register':history.register,'versions':history.history,'restore':history.restore,
+            'revise':history.revise,'compare':history.compare,'delivered':history.delivered,'hints':history.hints,'current-version':history.current,
+            'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
             'style-add':styles.add,'style-list':styles.list_references,'style-update':styles.update,'style-remove':styles.remove,
             'profile-show':preferences.show,'profile-set':preferences.save,'profile-reset':preferences.reset,
             'profile-rule-add':preferences.add_rule,'profile-rule-set':preferences.update_rule,
@@ -119,8 +136,8 @@ def main():
             'backup-export':backup.export_backup,'backup-inspect':backup.inspect_backup,'backup-import':backup.import_backup}
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('action',choices=routes);args=parser.parse_args()
     try:print(json.dumps(routes[args.action](**json.load(sys.stdin)),ensure_ascii=False,allow_nan=False));return 0
-    except c.InputError as error:print(json.dumps(error.payload(),ensure_ascii=False),file=sys.stderr);return 1
-    except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__}),file=sys.stderr);return 1
+    except c.InputError as error:print(json.dumps(dict(error.payload(),experience=experience.failure(error)),ensure_ascii=False),file=sys.stderr);return 1
+    except (OSError,ValueError,TypeError,KeyError) as error:print(json.dumps({'error':str(error),'type':type(error).__name__,'experience':experience.failure(error)}),file=sys.stderr);return 1
 
 if __name__ == '__main__':
     import sys
