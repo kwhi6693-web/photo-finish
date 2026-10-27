@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.5.0-rc.1 — 2026-10-25 (unreleased candidate)
+## 1.5.0 — 2026-10-27 (prepared, unpublished)
 
 - Truthful Chinese stage/recovery/save messages and once-per-conversation-version delivery hints with opt-out.
 - Private indexed V1/V2 history, selected-output revisions with inherited protections, verified existing-byte rollback and same-task comparisons.
@@ -74,3 +74,6 @@ Install the new `photo-finish/` directory in your host's skill location, retaini
 - Add explicit private task checkpoints with bounded verification, SQLite WAL-safe snapshots, idempotent export and resumable non-overwriting restore. Local checkpoints never imply remote persistence.
 - Resume an existing source-bound save intent after its receipt arrives without another save or render.
 - Reject known unmasked whole-image generation for local-only version revisions before reservation; real naturalness/local quality gates remain open.
+
+
+Formal package prepared from reviewed rc.1 runtime; no new behavior. Limited support, upgrade/downgrade and known limitations: [final approval packet](docs/FINAL_APPROVAL_1_5_0.md). No stable tag or Release has been created.

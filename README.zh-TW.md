@@ -5,13 +5,13 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Candidate-1.5.0--rc.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、處理、複核](docs/assets/photo-finish.svg)
 
-目前分支準備 **1.5.0-rc.1** 供審閱；最新正式下載仍為 **1.4.2**，批准、合併、標籤與發行後才更新。見[工程驗收記錄](docs/ux-engineering-validation.md)。
+目前分支準備 **1.5.0 (unpublished)** 供審閱；最新正式下載仍為 **1.4.2**，批准、合併、標籤與發行後才更新。見[工程驗收記錄](docs/ux-engineering-validation.md)。
 
 ## 第一次使用
 

@@ -239,3 +239,8 @@ See [scoped release review](SCOPED_RELEASE_REVIEW_20261027.md): two new isolated
 ## Final approval packet — 2026-10-27
 
 See [final packet](FINAL_APPROVAL_1_5_0.md). Scope frozen at implementation 9871904. Six CI jobs passed; payload source/package/installation matches, but installed manifest mapping differs, so complete installation identity is not certified. Reinstall/reload requirement documented. Candidate remains rc.1; formal 1.5.0 packaging is a post-approval promotion, not an existing artifact. No runtime changes or old tests rerun.
+
+
+## Formal artifact prepared / candidate installation repaired
+
+See [packaging evidence](PACKAGING_1_5_0_20261027.md). Verified candidate reinstallation including manifest, skill-resource read and installed runtime bootstrap. New unpublished 1.5.0 ZIP: 497949 bytes, SHA-256 84fbc42db21d2aa7dc8122152d4390a526761519eb58a212534f4266bd46fb9f. Runtime unchanged, no new photo or old regression. Pending latest CI and final publication approval.

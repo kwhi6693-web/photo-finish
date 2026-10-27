@@ -1,6 +1,6 @@
 # Validation scope
 
-Candidate package: **1.5.0-rc.1**, derived from workflow revision **2026-10-25.1** with a self-contained runtime and no private reference corpus.
+Prepared unpublished package: **1.5.0**, derived from workflow revision **2026-10-26.3** with a self-contained runtime and no private reference corpus.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 

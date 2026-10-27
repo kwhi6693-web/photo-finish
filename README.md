@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Candidate-1.5.0--rc.1-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
+[![Version](https://img.shields.io/badge/Candidate-1.5.0-c45a2f?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -15,7 +15,7 @@
 
 <a id="quick-start"></a>
 
-This branch prepares **1.5.0-rc.1** for review. Latest stable downloads remain **1.4.2** until approval, merge, tagging and release publication. See [engineering evidence](docs/ux-engineering-validation.md).
+This branch prepares **1.5.0 (unpublished)** for review. Latest stable downloads remain **1.4.2** until approval, merge, tagging and release publication. See [engineering evidence](docs/ux-engineering-validation.md).
 
 ## First use
 
