@@ -122,3 +122,8 @@ Scope coverage beyond the existing five-category matrix: still life, food and pr
 ## 2026-10-27 unattended gate update
 
 See [release gate](RELEASE_GATE_20261027.md). One new atmospheric landscape native candidate was actually checked and rejected for insufficient improvement; no formal version/save. Private evidence saved and fully read back. External-provider fault tests remain unverified; NO-GO / RC / Draft retained. Prior passed tasks and CI not repeated.
+
+
+## Scoped review / 2026-10-27
+
+See [scoped release review](SCOPED_RELEASE_REVIEW_20261027.md): two new isolated synthetic fault-combination tests passed; no live outage certification. Original atmospheric image retained, zero new editing. Conditional GO only for documented limited core scope, pending latest CI and explicit user approval. Prior observations remain unchanged.
