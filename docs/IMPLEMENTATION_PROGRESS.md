@@ -234,3 +234,8 @@ See [release gate](RELEASE_GATE_20261027.md). One new atmospheric landscape nati
 ## Scoped review / 2026-10-27
 
 See [scoped release review](SCOPED_RELEASE_REVIEW_20261027.md): two new isolated synthetic fault-combination tests passed; no live outage certification. Original atmospheric image retained, zero new editing. Conditional GO only for documented limited core scope, pending latest CI and explicit user approval. Prior observations remain unchanged.
+
+
+## Final approval packet — 2026-10-27
+
+See [final packet](FINAL_APPROVAL_1_5_0.md). Scope frozen at implementation 9871904. Six CI jobs passed; payload source/package/installation matches, but installed manifest mapping differs, so complete installation identity is not certified. Reinstall/reload requirement documented. Candidate remains rc.1; formal 1.5.0 packaging is a post-approval promotion, not an existing artifact. No runtime changes or old tests rerun.
