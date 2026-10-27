@@ -1,0 +1,9 @@
+{
+  "kind": "synthetic observer overhead, not live photo data",
+  "pairs": 30,
+  "median_pair_ms": 1.789949,
+  "max_pair_ms": 2.441174,
+  "real_photo_tasks_observed": 0,
+  "real_stage_coverage": null,
+  "new_edit_save_calls": 0
+}
