@@ -10,7 +10,7 @@ import observe_delivery as o
 
 class ObserverTests(unittest.TestCase):
     def setUp(self):
-        self.t=tempfile.TemporaryDirectory();self.addCleanup(self.t.cleanup);self.p=Path(self.t.name)/'trace.json';o.create(self.p)
+        self.t=tempfile.TemporaryDirectory();self.addCleanup(self.t.cleanup);self.p=Path(self.t.name).resolve()/'trace.json';o.create(self.p)
     def clock(self,n):return {'wall_ns':n*10**9,'mono_ns':n*10**9}
     def test_unknown_open_span_does_not_certify_completion(self):
         o.mark(self.p,'edit_call','external_tool');r=o.summary(self.p)

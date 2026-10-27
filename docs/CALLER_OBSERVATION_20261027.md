@@ -13,7 +13,7 @@ Baseline022e4c9 / Draft PR #16. No new live photo task, image-tool call, save, r
 
 Added tools/observe_delivery.py, an optional caller-only timing sidecar, not installed by the build allowlist. No runtime imports/hooks, new cache, framework, daemon, telemetry or automatic scheduling. Data: random anonymous task/span IDs, fixed stage/kind/status labels, local wall/monotonic starts and ends. No free-text metadata, paths to photos, tool identifiers, prompts, tool arguments/returns, URLs, receipts or secrets are stored in trace. Actual task mapping stays in the existing private authoritative job, not public timing output.
 
-Specify a new sidecar path outside all Git worktrees; symlink traversal is rejected. Exclusive lock prevents concurrent writers; atomic replace plus file fsync checkpoints each event. A stale lock after process loss stops observation; inspect it in private, do not blindly remove it or restart a business task. No cross-device or reboot-safe monotonic clock promise. Use the same host/boot; wall/monotonic disagreement invalidates coverage. File fsync is not a remote persistent-store receipt.
+Specify a new sidecar path outside all Git worktrees using its actual canonical parent (for example resolve the private temporary root before constructing its trace filename); symlink traversal is rejected. macOS /var temporary aliases must not be passed as a symlink path. Exclusive lock prevents concurrent writers; atomic replace plus file fsync checkpoints each event. A stale lock after process loss stops observation; inspect it in private, do not blindly remove it or restart a business task. No cross-device or reboot-safe monotonic clock promise. Use the same host/boot; wall/monotonic disagreement invalidates coverage. File fsync is not a remote persistent-store receipt.
 
 ## Use without additional business calls
 
@@ -72,3 +72,6 @@ On the next naturally occurring user-authorized non-portrait task only, attach t
 Compare at least two equivalent observed executions before proposing a scheduling change. Require honest interval coverage and available host signals; the prior90% coverage target is an observation goal, not permission to classify unknown gaps. A removable gap must recur outside quality judgement, actual service execution, required poll delay and authorization/STOP boundaries. Success: reduced comparable ready→fetch or receipt→next-operation gaps, equal unique edit/save counts, real quality/receipts/version/hash protections unchanged. Reject a speed claim caused by skipped quality, missing save proof, clock issues, workload differences or shifted logging overhead.
 
 Doctor/publication/diff and exact-head platform CI results are recorded in PR #16. No merge, new tag, 1.6.0 Release or stable package change.
+
+
+Cross-platform fixture correction: first macOS CI on7fbbe2d failed at setup because its temporary /var alias was rejected by the existing symlink guard. Test fixture now resolves the actual private temporary root before creating the trace. The observer guard is unchanged; no runtime or v1.5.0 repair is implied. Latest-head CI results are reported separately in the PR.
