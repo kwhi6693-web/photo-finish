@@ -31,4 +31,16 @@ Ruling: allow only the documented Adobe native adjustment adapter names for loca
 
 ## Pending
 
-Six-matrix exact-final-head CI and whole-branch review. All new real-photo quality/performance measurements remain unmeasured. Historical evidence is cited by public audit document, not copied from private ledgers. No new device display, photo-only trigger, remote-save or provider-outage certification is claimed.
+Exact-final-head six-matrix CI results are recorded in Draft PR #21 to avoid making a documentation-only commit recursively invalidate its own CI claim. All new real-photo quality/performance measurements remain unmeasured. Historical evidence is cited by public audit document, not copied from private ledgers. No new device display, photo-only trigger, remote-save or provider-outage certification is claimed.
+
+## Independent whole-branch review and correction
+
+A fresh reviewer inspected baseline→development source and the five-scene audit without private data. It independently ran 23 targeted tests and the immutable v1.5.1 gate, all passed. It found one existing P1 reservation inconsistency: known full-frame generation could be labelled native_preserved/local_excluded on a non-local exact_content task. No accepted damaged image was demonstrated.
+
+The fix pass first reproduced four failing subcases across non-local preserved strategies, the low-level exact-content route without a plan and next-step route switching. The shared adapter now rejects those combinations before reservation. Tests preserve semantic-comparison and unprotected creative generation. The review's two coverage gaps were also closed with actual nested-options.maskURI and successful masked next-step/latest-output/parent-provenance cases. No rendering, photo saving or historical mutation occurred.
+
+The first fix-pass run still reported two failures plus one nested installed-suite error: one assertion expected the older local-route message after the stricter fidelity guard rejected correctly; the new non-local next-step fixture had no preservation target/plan and therefore did not exercise its named condition. Established an explicit exact lettering/native-preserved contract in that fixture and accepted either appropriate rejection category in the local test. No guard was relaxed. Final targeted local/fidelity suite: **13 tests passed**. Final full suite: **300 tests passed in 22.052s**. The new 47-test extracted-candidate smoke suite is a subset/overlap, not 47 additional unique product tests.
+
+Final current-source candidate: two identical builds, 115 payload files, manifest `0+candidate`, SHA-256 `ce08cf695121176d71c8201f82a6425e6a36a758ae3fc52be2e41ff113827744`; extracted production modules only, 47 protocol tests passed, zero skips. This archive is neither a release nor a live installation. The earlier candidate digest above belongs to its earlier source checkpoint.
+
+Review disposition: P1 compatibility hole fixed in the single RED→GREEN pass; both reported P3 coverage gaps covered. No unresolved reviewer finding. No new visual or latency pass is implied. The known-mask URL still requires actual source/mask/final-image review. No further architectural work or performance optimization was justified.

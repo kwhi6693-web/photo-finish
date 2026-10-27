@@ -11,13 +11,21 @@ import workflow_session as w
 from input_references import capture as capture_inputs
 
 
-def _local_route(state, tool_name, arguments):
-    """Reject unsupported local revisions before reserving any external call.
+def _edit_route(state, tool_name, arguments):
+    """Reject known incompatible fidelity/local routes before reserving a call.
 
     A mask parameter is necessary, never proof of a correct/feathered mask or
     non-target preservation. The caller still inspects the actual source/mask
     and final pixels under the existing quality/protection contract.
     """
+    tool_name = w._text(tool_name, 'tool_name')
+    generator = tool_name.removeprefix('tools.') in ('image_gen.imagegen', 'image_gen__imagegen')
+    plans = (state.get('fidelity_plan') or {}).values()
+    targets = ((state.get('protection_plan') or {}).get('targets') or {}).values()
+    if generator and (any(p.get('strategy') in ('native_preserved', 'local_excluded') for p in plans) or
+                      any(p.get('level') == 'exact_content' for p in targets)):
+        raise ValueError('Full-frame generation cannot satisfy source-preserving fidelity or exact_content. '
+                         'Use an actually compatible editor or keep the source/accepted version.')
     if (state.get('revision') or {}).get('local') is not True:
         return
     names = {'image_apply_adjustments', 'adobe.image_apply_adjustments',
@@ -48,7 +56,7 @@ def begin(path,tool_name,arguments,display_mode='manual',protected_regions=None,
     protected_regions=protected_regions or {}
     if not isinstance(protected_regions,dict):raise ValueError('Protected review regions must be an object')
     state=a._fresh(path,editable=True)
-    _local_route(state,tool_name,arguments)
+    _edit_route(state,tool_name,arguments)
     if not state.get('professional_direction'):raise ValueError('Set photographic direction/output use before tool submission')
     targets=set((state.get('protection_plan') or {}).get('targets',{}))
     if set(protected_regions)!=targets:raise ValueError('Each protected target requires a planned comparison scope')
@@ -113,7 +121,7 @@ def next_step(path,tool_name,arguments,input_references=None):
     """Deliberate refinement of the reviewed latest bytes; never a retry of unknown work."""
     if not isinstance(arguments,dict):raise ValueError('Actual next-step arguments must be an object')
     state=a._fresh(path,editable=True)
-    _local_route(state,tool_name,arguments)
+    _edit_route(state,tool_name,arguments)
     if not state.get('execution_adapter'):raise ValueError('Use begin for the first actual invocation')
     encoded=json.dumps(arguments,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()
     prior=(state.get('render_result') or {}).get('acquired') or {}

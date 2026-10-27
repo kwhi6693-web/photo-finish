@@ -99,7 +99,7 @@ class LocalRouteTests(unittest.TestCase):
                      color_assumption_reason='Synthetic screen fixture', note='Synthetic protocol review')
         for name in ('image_apply_adjustments', 'image_gen.imagegen'):
             before = path.read_bytes()
-            with self.subTest(name=name), self.assertRaisesRegex(ValueError, 'region-mask'):
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, 'region-mask|Full-frame'):
                 adapter.next_step(path, name, {'prompt': 'Synthetic unmasked next step'})
             self.assertEqual(path.read_bytes(), before)
 
@@ -108,3 +108,96 @@ class LocalRouteTests(unittest.TestCase):
         token = self.send(path, result, direction, fidelity, 'image_apply_adjustments',
                           {'options': {'exposure': 0.2}})
         self.assertEqual(w._load(path)['render_result']['submission_id'], token['submission_id'])
+
+    def test_full_frame_generator_cannot_claim_source_preservation_on_nonlocal_job(self):
+        for i, strategy in enumerate(('native_preserved', 'local_excluded')):
+            with self.subTest(strategy=strategy):
+                path = self.base / ('preserved-' + str(i) + '.json')
+                e.prepare(self.root, self.source, path, direction=self.direction, evaluation_kind='synthetic')
+                before = path.read_bytes()
+                with self.assertRaisesRegex(ValueError, 'Full-frame'):
+                    e.submit(path, {'requirements': [{'target': 'text', 'level': 'exact_content',
+                                                      'requirement': 'Synthetic visible lettering'}],
+                                    'reason': 'Synthetic protected source'},
+                             {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic'},
+                             'tools.image_gen__imagegen', {'referenced_image_paths': [str(self.source)]},
+                             {'text': ['glyphs']}, direction=self.direction,
+                             fidelity={'text': {'strategy': strategy, 'capability_basis': 'Synthetic assertion',
+                                               'repair_route': 'Keep the source'}})
+                self.assertEqual(path.read_bytes(), before)
+
+    def test_low_level_generator_cannot_bypass_exact_content_without_fidelity_plan(self):
+        w.set_protections(self.job, [{'target': 'text', 'level': 'exact_content',
+                                     'requirement': 'Synthetic lettering'}], 'Synthetic')
+        w.select_references(self.job, 'PROFESSIONAL_FALLBACK', [], 'Synthetic')
+        automation.direction(self.job, **self.direction)
+        before = self.job.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'Full-frame'):
+            adapter.begin(self.job, 'image_gen.imagegen', {}, protected_regions={'text': ['glyphs']})
+        self.assertEqual(self.job.read_bytes(), before)
+
+    def test_nonlocal_semantic_generation_remains_available(self):
+        token = e.submit(self.job, {'requirements': [{'target': 'text', 'level': 'semantic_identity',
+                                                     'requirement': 'Synthetic semantic comparison'}],
+                                   'reason': 'Synthetic'},
+                         {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic'},
+                         'image_gen.imagegen', {}, {'text': ['glyphs']}, direction=self.direction,
+                         fidelity={'text': {'strategy': 'generative_compare',
+                                           'capability_basis': 'Synthetic generated result requires comparison',
+                                           'repair_route': 'Reject if source content differs'}})
+        self.assertEqual(w._load(self.job)['render_result']['submission_id'], token['submission_id'])
+
+    def test_unprotected_nonlocal_generation_remains_available(self):
+        token = e.submit(self.job, {'requirements': [], 'reason': 'Synthetic'},
+                         {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic'},
+                         'image_gen__imagegen', {}, {}, direction=self.direction)
+        self.assertEqual(w._load(self.job)['render_result']['submission_id'], token['submission_id'])
+
+    def test_nonlocal_next_step_rejects_generator_with_preserved_contract(self):
+        path = self.job
+        token = e.submit(path, {'requirements': [{'target': 'text', 'level': 'exact_content',
+                                                 'requirement': 'Synthetic preserved lettering'}],
+                               'reason': 'Synthetic'},
+                         {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic'},
+                         'image_apply_adjustments', {'options': {}}, {'text': ['glyphs']},
+                         direction=self.direction,
+                         fidelity={'text': {'strategy': 'native_preserved', 'capability_basis': 'Synthetic',
+                                           'repair_route': 'Keep source'}})
+        output = self.base / 'synthetic-nonlocal-output.png'
+        Image.new('RGB', (32, 48), (80, 100, 110)).save(output)
+        now = time.time_ns()
+        e.returned(path, token['submission_id'], 'ready', now, now + 10, output_path=output)
+        w.add_review(path, output_path=output, input_sha256=w._file(self.source)['sha256'],
+                     visual_passed=True, profile_passed=False, color_scope='screen_srgb_assumed',
+                     color_assumption_reason='Synthetic screen fixture', note='Synthetic protocol review')
+        before = path.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'Full-frame'):
+            adapter.next_step(path, 'image_gen.imagegen', {})
+        self.assertEqual(path.read_bytes(), before)
+
+    def test_nested_options_mask_is_not_a_top_level_mask(self):
+        path, result, direction, fidelity = self.child('nested')
+        before = path.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'region-mask'):
+            self.send(path, result, direction, fidelity, 'image_apply_adjustments',
+                      {'options': {'maskURI': 'https://example.invalid/synthetic.png'}})
+        self.assertEqual(path.read_bytes(), before)
+
+    def test_masked_next_step_binds_latest_reviewed_output_and_keeps_parent(self):
+        path, result, direction, fidelity = self.child('masked-next')
+        args = {'maskURI': 'https://example.invalid/synthetic.png', 'options': {}}
+        token = self.send(path, result, direction, fidelity, 'image_apply_adjustments', args)
+        output = self.base / 'synthetic-masked-output.png'
+        Image.new('RGB', (32, 48), (80, 100, 110)).save(output)
+        now = time.time_ns()
+        e.returned(path, token['submission_id'], 'ready', now, now + 10, output_path=output)
+        w.add_review(path, output_path=output, input_sha256=w._file(self.output)['sha256'],
+                     visual_passed=True, profile_passed=False, color_scope='screen_srgb_assumed',
+                     color_assumption_reason='Synthetic screen fixture', note='Synthetic protocol review')
+        parent = w._load(path)['revision']['parent_output']
+        next_token = adapter.next_step(path, 'image_apply_adjustments', args)
+        state = w._load(path)
+        self.assertEqual(next_token['input'], w._file(output))
+        self.assertEqual(state['render_result']['input_sha256'], w._file(output)['sha256'])
+        self.assertEqual(state['render_result']['recipe']['actual_arguments'], args)
+        self.assertEqual(state['revision']['parent_output'], parent)
