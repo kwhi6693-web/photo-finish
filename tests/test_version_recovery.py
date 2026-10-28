@@ -40,7 +40,10 @@ class VersionRecoveryTests(unittest.TestCase):
             cloud.append({'path': str(local), 'result_path': str(result)})
         return dict(archive_path=str(package), expected_sha256=state['archive']['sha256'],
                     archive_library_file_id='SYNTHETIC_ARCHIVE', result_path=str(transfer),
-                    cloud_files=cloud, destination=str(self.d / 'restored-private'))
+                    # macOS temporary roots may use /var -> /private/var. Pass
+                    # the canonical host target; production must still reject
+                    # arbitrary symlink traversal rather than weaken its guard.
+                    cloud_files=cloud, destination=str(self.d.resolve() / 'restored-private'))
 
     def module(self):
         import version_recovery
@@ -165,10 +168,7 @@ class VersionRecoveryTests(unittest.TestCase):
         assets = root / 'assets'
         moved = root.parent / 'external-assets'
         assets.rename(moved)
-        try:
-            assets.symlink_to(moved, target_is_directory=True)
-        except OSError:
-            self.skipTest('Host does not allow directory symlinks')
+        assets.symlink_to(moved, target_is_directory=True)
         with self.assertRaises(ValueError):
             module.status(root)
 
