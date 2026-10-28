@@ -15,7 +15,10 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = '1.5.1'
 
 
-def verify(root=ROOT, *, canonical=False):
+def verify(root=ROOT, *, canonical=False, candidate=False):
+    if candidate:
+        if canonical: raise ValueError('Candidate and canonical verification are separate')
+        return verify_candidate(root)
     root = Path(root)
     expected = packages.source_files(root)
     brief = json.loads(expected['runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json'])
@@ -59,9 +62,40 @@ def verify(root=ROOT, *, canonical=False):
             'deterministic_builds': 2, 'isolated_install': installed}
 
 
+def verify_candidate(root=ROOT):
+    """Build/load current source without overwriting or identifying as a release."""
+    root = Path(root)
+    expected = packages.source_files(root)
+    with tempfile.TemporaryDirectory(prefix='photo-finish-development-') as tmp:
+        base = Path(tmp)
+        builds = [base / name / 'candidate.zip' for name in ('first', 'second')]
+        for output in builds:
+            builder.build(output, root, candidate=True)
+            packages.check_archive(output.read_bytes(), expected, candidate=True)
+            if output.with_suffix('.zip.sha256').read_bytes() != (
+                    packages.digest(output.read_bytes()) + '  candidate.zip\n').encode():
+                raise ValueError('Candidate checksum differs')
+        data = builds[0].read_bytes()
+        if data != builds[1].read_bytes(): raise ValueError('Candidate is not reproducible')
+        with zipfile.ZipFile(builds[0]) as archive:
+            archive.extractall(base / 'installed')  # Exact mapping/path checks above.
+        skill = base / 'installed' / 'photo-finish'
+        environment = dict(os.environ, PHOTO_FINISH_STYLE_LIBRARY=str(base / 'anonymous-styles'),
+                           PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
+        result = subprocess.run([sys.executable, '-I', '-B', str(root / 'tools/verify_installed_maintenance.py'),
+                                 str(skill), str(root / 'tests')], cwd=base, env=environment,
+                                check=True, capture_output=True, text=True, encoding='utf-8')
+        installed = json.loads(result.stdout)
+    return {'status': 'passed', 'scope': 'development_candidate_not_release',
+            'manifest_version': '0+candidate', 'source_runtime_version': installed['runtime_version'],
+            'sha256': packages.digest(data), 'payload_files': len(expected),
+            'deterministic_builds': 2, 'isolated_install': installed}
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=ROOT)
     parser.add_argument('--canonical', action='store_true', help='Verify/install the canonical release-ready artifact')
+    parser.add_argument('--candidate', action='store_true', help='Verify/install current source as a non-release candidate')
     args = parser.parse_args()
-    print(json.dumps(verify(args.root, canonical=args.canonical), ensure_ascii=False))
+    print(json.dumps(verify(args.root, canonical=args.canonical, candidate=args.candidate), ensure_ascii=False))

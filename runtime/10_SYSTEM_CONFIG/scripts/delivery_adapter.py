@@ -11,6 +11,36 @@ import workflow_session as w
 from input_references import capture as capture_inputs
 
 
+def _edit_route(state, tool_name, arguments):
+    """Reject known incompatible fidelity/local routes before reserving a call.
+
+    A mask parameter is necessary, never proof of a correct/feathered mask or
+    non-target preservation. The caller still inspects the actual source/mask
+    and final pixels under the existing quality/protection contract.
+    """
+    tool_name = w._text(tool_name, 'tool_name')
+    generator = tool_name.removeprefix('tools.') in (
+        'image_gen.imagegen', 'image_gen__imagegen',
+        'image_instruct_edit', 'adobe.image_instruct_edit',
+        'mcp__codex_apps__adobe_image_instruct_edit',
+        'image_generate', 'adobe.image_generate',
+        'mcp__codex_apps__adobe_image_generate')
+    plans = (state.get('fidelity_plan') or {}).values()
+    targets = ((state.get('protection_plan') or {}).get('targets') or {}).values()
+    if generator and (any(p.get('strategy') in ('native_preserved', 'local_excluded') for p in plans) or
+                      any(p.get('level') == 'exact_content' for p in targets)):
+        raise ValueError('Full-frame generation cannot satisfy source-preserving fidelity or exact_content. '
+                         'Use an actually compatible editor or keep the source/accepted version.')
+    if (state.get('revision') or {}).get('local') is not True:
+        return
+    names = {'image_apply_adjustments', 'adobe.image_apply_adjustments',
+             'mcp__codex_apps__adobe_image_apply_adjustments',
+             'tools.mcp__codex_apps__adobe_image_apply_adjustments'}
+    if tool_name not in names or not isinstance(arguments.get('maskURI'), str) or not arguments['maskURI'].strip():
+        raise ValueError('Local-only revision requires a verified region-mask editor '
+                         'and its actual top-level maskURI. Keep the accepted version.')
+
+
 def _transaction(path, mutate):
     path=Path(path).resolve(strict=True);original=path.read_bytes();temporary=None
     try:
@@ -31,6 +61,7 @@ def begin(path,tool_name,arguments,display_mode='manual',protected_regions=None,
     protected_regions=protected_regions or {}
     if not isinstance(protected_regions,dict):raise ValueError('Protected review regions must be an object')
     state=a._fresh(path,editable=True)
+    _edit_route(state,tool_name,arguments)
     if not state.get('professional_direction'):raise ValueError('Set photographic direction/output use before tool submission')
     targets=set((state.get('protection_plan') or {}).get('targets',{}))
     if set(protected_regions)!=targets:raise ValueError('Each protected target requires a planned comparison scope')
@@ -95,6 +126,7 @@ def next_step(path,tool_name,arguments,input_references=None):
     """Deliberate refinement of the reviewed latest bytes; never a retry of unknown work."""
     if not isinstance(arguments,dict):raise ValueError('Actual next-step arguments must be an object')
     state=a._fresh(path,editable=True)
+    _edit_route(state,tool_name,arguments)
     if not state.get('execution_adapter'):raise ValueError('Use begin for the first actual invocation')
     encoded=json.dumps(arguments,ensure_ascii=False,sort_keys=True,allow_nan=False).encode()
     prior=(state.get('render_result') or {}).get('acquired') or {}

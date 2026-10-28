@@ -1,8 +1,8 @@
 # Validation scope
 
-Prepared unpublished maintenance package: **1.5.1**, derived from workflow revision **2026-10-26.3** with a self-contained runtime and no private reference corpus.
+Published stable maintenance package: **1.5.1**, derived from workflow revision **2026-10-26.3** with a self-contained runtime and no private reference corpus.
 
-Current finalization evidence: [v1.5.1](RELEASE_1_5_1_FINALIZATION.md). Historical preparation evidence: [v1.5.1](RELEASE_1_5_1_PREPARATION.md). Published stable v1.5.0 remains frozen.
+Current finalization evidence: [v1.5.1](RELEASE_1_5_1_FINALIZATION.md). Historical preparation evidence: [v1.5.1](RELEASE_1_5_1_PREPARATION.md). Published v1.5.0 and v1.5.1 artifacts remain frozen. Current unshipped branch evidence: [quality engineering](QUALITY_ENGINEERING_EVIDENCE_20261027.md) and [capability audit](QUALITY_AUDIT_20261027.md).
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 

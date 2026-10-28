@@ -5,15 +5,15 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.0-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0)
+[![Version](https://img.shields.io/badge/Stable-1.5.1-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
 
-当前稳定版为 **1.5.0**，从 [v1.5.0 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0)下载。带日期的候选与审批报告保留为真实历史记录。
+当前稳定版为 **1.5.1**，从 [v1.5.1 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1)下载。带日期的候选与审批报告保留为真实历史记录。
 
-**v1.5.1 维护版正在准备，尚未发布，等待审批。** 范围仅限手动展示响应与 CI 包验证边界；稳定下载仍为 v1.5.0。见[准备记录与升级/降级步骤](docs/RELEASE_1_5_1_PREPARATION.md)。
+本分支包含尚未发行的局部编辑安全改进；已发布的 v1.5.1 安装包保持不变。见[质量与能力审计](docs/QUALITY_AUDIT_20261027.md)。
 
 ## 第一次使用
 

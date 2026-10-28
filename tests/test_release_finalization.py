@@ -16,7 +16,9 @@ class FinalizationPolicyTests(unittest.TestCase):
         actual = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            for name, body in packages.source_files(actual).items():
+            # Exercise the frozen release fixture, independently of current development source.
+            # canonical() must still reject later fixture/source/manifest disagreement.
+            for name, body in packages.tagged_files(actual, 'v1.5.1').items():
                 target = root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(body)

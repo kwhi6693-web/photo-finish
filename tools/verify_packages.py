@@ -20,6 +20,7 @@ STABLE_COMMIT = '48b7e2bfcbd8a4b111ec3815186c96ef14c807fe'
 STABLE_SHA256 = '84fbc42db21d2aa7dc8122152d4390a526761519eb58a212534f4266bd46fb9f'
 FROZEN_DIRECTORY = 'dist/v1.5.0'
 RELEASE_VERSION = '1.5.1'
+RELEASE_COMMIT = '1020cc0a2ff7d18e681fb2f201614adcd8f47cb3'
 RELEASE_SHA256 = '0d929e31f4cf132c9855b933771c0c8fc98ece4702f598aaca759b9444d70608'
 ARCHIVE = 'photo-finish.zip'
 CHECKSUM = ARCHIVE + '.sha256'
@@ -130,6 +131,27 @@ def canonical(root=ROOT):
             'version': RELEASE_VERSION, 'sha256': RELEASE_SHA256, 'payload_files': count}
 
 
+def released(root=ROOT):
+    """Protect immutable tagged v1.5.1 while current source develops separately."""
+    root = Path(root)
+    tag = 'v' + RELEASE_VERSION
+    if git(root, 'rev-parse', 'refs/tags/' + tag + '^{commit}').decode().strip() != RELEASE_COMMIT:
+        raise ValueError('Published maintenance tag moved')
+    for folder in (root / 'dist', root / 'dist' / tag):
+        if folder.is_symlink() or any((folder / n).is_symlink() for n in (ARCHIVE, CHECKSUM)):
+            raise ValueError('Released artifacts cannot be symlinks')
+    data = (root / 'dist' / ARCHIVE).read_bytes()
+    checksum = (root / 'dist' / CHECKSUM).read_bytes()
+    if digest(data) != RELEASE_SHA256:
+        raise ValueError('Pinned released archive changed')
+    if data != git(root, 'show', RELEASE_COMMIT + ':dist/' + ARCHIVE):
+        raise ValueError('Released archive differs from tagged artifact')
+    count = check_release_bytes(data, checksum, tagged_files(root, RELEASE_COMMIT),
+                                RELEASE_VERSION, root / 'dist' / tag)
+    return {'status': 'passed', 'scope': 'immutable_released_source', 'tag': tag,
+            'commit': RELEASE_COMMIT, 'sha256': RELEASE_SHA256, 'payload_files': count}
+
+
 def candidate(root=ROOT):
     root = Path(root)
     if scan(root)['status'] != 'passed': raise ValueError('Source publication scan failed')
@@ -199,7 +221,7 @@ def published(root=ROOT, tag=STABLE_TAG):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=['stable', 'canonical', 'candidate', 'release', 'published'])
+    parser.add_argument('mode', choices=['stable', 'canonical', 'released', 'candidate', 'release', 'published'])
     parser.add_argument('--root', type=Path, default=ROOT)
     parser.add_argument('--tag', default=STABLE_TAG)
     parser.add_argument('--attachments', type=Path)

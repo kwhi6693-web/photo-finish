@@ -73,12 +73,6 @@ def submit(path,protections,selection,tool_name,arguments,protected_regions,issu
     """Atomic source-bound decision and submission reservation, before the actual tool call."""
     if not isinstance(protections,dict) or not isinstance(selection,dict):raise ValueError('Explicit protection and reference decisions required')
     plan=c.fidelity_plan(protections,protected_regions,fidelity)
-    # The exposed imagegen API has no region-mask argument. Real sky/grass-only
-    # acceptance failed outside the target; a prompt is not a local exclusion.
-    if ((w._load(path).get('revision') or {}).get('local') is True and
-            tool_name in ('image_gen.imagegen', 'image_gen__imagegen')):
-        raise ValueError('Local-only revision requires a verified region-mask editor; '
-                         'this full-frame image tool is blocked. Keep the accepted version.')
     events=[{'action':'protect','arguments':protections},{'action':'select','arguments':selection}]
     for issue in issues or []:events.append({'action':'issue','arguments':issue})
     def apply(temporary):

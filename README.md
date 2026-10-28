@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.0-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0)
+[![Version](https://img.shields.io/badge/Stable-1.5.1-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -15,9 +15,9 @@
 
 <a id="quick-start"></a>
 
-**1.5.0 is the current stable release.** Download from the [v1.5.0 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.0). Dated candidate and approval reports remain historical records.
+**1.5.1 is the current stable release.** Download from the [v1.5.1 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1). Dated candidate and approval reports remain historical records.
 
-**v1.5.1 maintenance preparation is unpublished and pending approval.** Scope: manual presentation response and CI package boundaries only. Stable downloads remain v1.5.0. See [preparation and upgrade/downgrade steps](docs/RELEASE_1_5_1_PREPARATION.md).
+This branch contains unshipped local-edit safety work; the published v1.5.1 installer remains unchanged. See the [quality/capability audit](docs/QUALITY_AUDIT_20261027.md).
 
 ## First use
 
