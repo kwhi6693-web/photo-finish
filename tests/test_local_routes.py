@@ -201,3 +201,76 @@ class LocalRouteTests(unittest.TestCase):
         self.assertEqual(state['render_result']['input_sha256'], w._file(output)['sha256'])
         self.assertEqual(state['render_result']['recipe']['actual_arguments'], args)
         self.assertEqual(state['revision']['parent_output'], parent)
+
+    def test_adobe_full_frame_generators_cannot_claim_preservation(self):
+        # Dropping a known generator alias must not reserve an incompatible call.
+        names = ('image_instruct_edit', 'adobe.image_instruct_edit',
+                 'mcp__codex_apps__adobe_image_instruct_edit',
+                 'tools.mcp__codex_apps__adobe_image_instruct_edit',
+                 'image_generate', 'adobe.image_generate',
+                 'mcp__codex_apps__adobe_image_generate',
+                 'tools.mcp__codex_apps__adobe_image_generate')
+        for i, name in enumerate(names):
+            for strategy in ('native_preserved', 'local_excluded'):
+                with self.subTest(name=name, strategy=strategy):
+                    path = self.base / ('adobe-preserved-' + str(i) + strategy + '.json')
+                    e.prepare(self.root, self.source, path, evaluation_kind='synthetic')
+                    before = path.read_bytes(); source = self.source.read_bytes()
+                    with self.assertRaisesRegex(ValueError, 'Full-frame'):
+                        e.submit(path, {'requirements': [{'target': 'text', 'level': 'semantic_identity',
+                                                         'requirement': 'Keep visible source lettering'}],
+                                        'reason': 'Synthetic'},
+                                 {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic'},
+                                 name, {'imageURI': 'https://example.invalid/source.png',
+                                        'options': {'prompt': 'Synthetic instruction'}},
+                                 {'text': ['glyphs']}, direction=self.direction,
+                                 fidelity={'text': {'strategy': strategy, 'capability_basis': 'Synthetic',
+                                                   'repair_route': 'Keep source'}})
+                    self.assertEqual(path.read_bytes(), before)
+                    self.assertEqual(self.source.read_bytes(), source)
+
+    def test_adobe_generator_exact_content_and_next_step_are_rejected(self):
+        w.set_protections(self.job, [{'target': 'text', 'level': 'exact_content',
+                                     'requirement': 'Synthetic exact lettering'}], 'Synthetic')
+        w.select_references(self.job, 'PROFESSIONAL_FALLBACK', [], 'Synthetic')
+        automation.direction(self.job, **self.direction)
+        names = ('mcp__codex_apps__adobe_image_instruct_edit',
+                 'tools.mcp__codex_apps__adobe_image_generate')
+        for name in names:
+            before = self.job.read_bytes()
+            with self.assertRaisesRegex(ValueError, 'Full-frame'):
+                adapter.begin(self.job, name, {}, protected_regions={'text': ['glyphs']})
+            self.assertEqual(self.job.read_bytes(), before)
+        token = adapter.begin(self.job, 'image_apply_adjustments', {},
+                              protected_regions={'text': ['glyphs']})
+        output = self.base / 'adobe-route-next.png'
+        Image.new('RGB', (32, 48), (80, 100, 110)).save(output)
+        now = time.time_ns()
+        e.returned(self.job, token['submission_id'], 'ready', now, now + 10, output_path=output)
+        w.add_review(self.job, output, w._file(self.source)['sha256'], True, False,
+                     'Synthetic review', color_scope='screen_srgb_assumed',
+                     color_assumption_reason='Synthetic screen fixture')
+        for name in names:
+            with self.subTest(route='next', name=name):
+                before = self.job.read_bytes()
+                with self.assertRaisesRegex(ValueError, 'Full-frame'):
+                    adapter.next_step(self.job, name, {})
+                self.assertEqual(self.job.read_bytes(), before)
+
+    def test_adobe_nonlocal_semantic_or_unprotected_generation_remains_available(self):
+        for i, name in enumerate(('mcp__codex_apps__adobe_image_instruct_edit',
+                                  'tools.mcp__codex_apps__adobe_image_generate')):
+            for protected in (False, True):
+                with self.subTest(name=name, protected=protected):
+                    path = self.base / ('adobe-allowed-' + str(i) + str(protected) + '.json')
+                    e.prepare(self.root, self.source, path, evaluation_kind='synthetic')
+                    requirements = ([{'target': 'text', 'level': 'semantic_identity',
+                                      'requirement': 'Compare source content'}] if protected else [])
+                    fidelity = ({'text': {'strategy': 'generative_compare',
+                                          'capability_basis': 'Generated content needs actual comparison',
+                                          'repair_route': 'Reject mismatches'}} if protected else {})
+                    token = e.submit(path, {'requirements': requirements, 'reason': 'Synthetic'},
+                                     {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic'},
+                                     name, {}, {'text': ['glyphs']} if protected else {},
+                                     direction=self.direction, fidelity=fidelity)
+                    self.assertEqual(w._load(path)['render_result']['submission_id'], token['submission_id'])

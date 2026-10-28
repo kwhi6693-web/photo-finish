@@ -19,7 +19,12 @@ def _edit_route(state, tool_name, arguments):
     and final pixels under the existing quality/protection contract.
     """
     tool_name = w._text(tool_name, 'tool_name')
-    generator = tool_name.removeprefix('tools.') in ('image_gen.imagegen', 'image_gen__imagegen')
+    generator = tool_name.removeprefix('tools.') in (
+        'image_gen.imagegen', 'image_gen__imagegen',
+        'image_instruct_edit', 'adobe.image_instruct_edit',
+        'mcp__codex_apps__adobe_image_instruct_edit',
+        'image_generate', 'adobe.image_generate',
+        'mcp__codex_apps__adobe_image_generate')
     plans = (state.get('fidelity_plan') or {}).values()
     targets = ((state.get('protection_plan') or {}).get('targets') or {}).values()
     if generator and (any(p.get('strategy') in ('native_preserved', 'local_excluded') for p in plans) or

@@ -8,6 +8,8 @@
 
 本页为按需接口，氛围、审美、构图与去AI味沿总规范执行，不预设微调上限。日常submit逐保护目标记录fidelity策略：实际非生成原区域保留用native_preserved，真实局部编辑避开保护区域用local_excluded；均需实际能力依据、修正路线和最终比较，不以工具名称自动通过。普通生成后可见内容比对用generative_compare；exact_content不得选择此路线。
 
+已知全幅生成工具 imagegen、Adobe image_instruct_edit / image_generate（含已核查命名空间形式）在非局部任务中也不得搭配 native_preserved、local_excluded 或 exact_content。此为已知路线拒绝表，不是任意新工具的能力认证；普通 semantic_identity + generative_compare 仍须真实比对，不自动通过。
+
 1. 实际看原片、完成源绑定参考选择与保护契约，先判断当前工具路由与已有明确授权。单图已有明确代做授权时使用获准的服务端路线；仅照片不推断为代做授权，不能用下游检查或保存来制造工具授权。需先开交互卡片且工具明确要求STOP时，调用后结束，不继续服务端或其他工具；未返回正式文件URL只记录预览。组件故障仅按工作流实际收到的信号判断，不将网页提示伪装成工具失败回执。调用前可证实的不可用例外按当次规则处理，不覆盖STOP；不具备条件则说明阻塞及最小明确代做续接指令，不询问工具二选一。Adobe源图用asset_openai_file_upload并使用实际返回URL；每次image_apply_adjustments前须asset_inline_preview并实际看图。
 2. 按本片判断合并曝光、影调与色彩参数为一次image_apply_adjustments，PNG输出。该工具的固定顺序是曝光→高光→亮部→暗部/阴影→亮度/对比→色温→HSL→自然饱和/饱和度→分通道饱和度，不把不同引擎参数当相同滑块。需要改变非交换顺序才分步。未使用的参数不补造。
 3. working只续接真实taskId并记录实际调用起止，不重复提交。按当前工具要求显示实际结果，保存返回的requestId、配方与输出来源。非生成光色工具不等于自动通过保真或色彩验收。
