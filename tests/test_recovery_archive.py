@@ -9,6 +9,8 @@ import sys
 import unittest
 from unittest.mock import patch
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'runtime/10_SYSTEM_CONFIG/scripts'))
 import verify_delivery_automation as fixture
@@ -261,6 +263,32 @@ class RecoveryArchiveTests(unittest.TestCase):
         self.assertEqual(result['version']['label'], 'V1')
         self.assertEqual(result['recovery']['status'], 'archive_blocked')
         self.assertFalse(result['recovery']['write_allowed'])
+
+    def test_concurrent_local_claims_grant_at_most_one_host_create(self):
+        self.ready()
+        self.prepare()
+        barrier = Barrier(2)
+        def claim():
+            barrier.wait(timeout=10)
+            try:
+                return recovery.claim(**self.args)['write_allowed']
+            except FileExistsError:
+                return False  # Contention stops; never retries a host create.
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(lambda _: claim(), range(2)))
+        self.assertEqual(results.count(True), 1)
+        self.assertFalse(recovery.claim(**self.args)['write_allowed'])
+
+    def test_readback_confirmation_flush_loss_reconciles_without_new_upload(self):
+        self.ready()
+        state = self.prepare()
+        recovery.claim(**self.args)
+        result, path = self.readback(state)
+        with patch.object(recovery.checkpoint, '_durable_json', side_effect=OSError('Synthetic confirmation loss')):
+            with self.assertRaises(OSError):
+                recovery.confirm(**self.args, result_path=result, materialized_path=path)
+        self.assertFalse(recovery.claim(**self.args)['write_allowed'])
+        self.assertTrue(recovery.confirm(**self.args, result_path=result, materialized_path=path)['archive_confirmed'])
 
 if __name__ == '__main__':
     unittest.main()

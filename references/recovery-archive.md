@@ -82,10 +82,45 @@ Read-only inspection can run `checkpoint-inspect` after independent retrieval,
 then fetch and hash/decode referenced photographs. `checkpoint-restore` only
 extracts into a new private destination with existing conflict/continuation guards.
 It DOES NOT relocate historical job paths or make task_history.restore usable at
-new paths. Operational version/cursor restoration and revisions at relocated paths
-remain a separate, authorized implementation/acceptance step. Never rebuild old
+new paths. Operational task-ledger migration and revisions at relocated paths
+remain separate. The explicit recovered-view adapter below supports a new private
+target only. Never rebuild old
 history from the new descriptor, overwrite originals, or claim that extraction is
 a completed version-state restore.
+
+## Explicit isolated recovered version view
+
+`photo_edit.py recovery-restore-view` accepts `archive_path`, a separately retained
+`expected_sha256`, `archive_library_file_id`, the actual archive materialization
+`result_path`, `cloud_files:[{path,result_path},...]`, and a NEW private
+`destination`. Every referenced image AND formal record must be independently
+materialized through the authenticated host. No new Library writes are performed.
+
+The adapter validates the full ZIP/checkpoint, operation digest, scoped SQLite
+logical rows, exact saved evidence, photographic contract, cloud IDs, source and
+parent relations, and actual dependency bytes/storage versions. It fully decodes
+images without re-saving them. It preserves the original archive/evidence bytes,
+publishes exact copies under content hashes, and builds an auditable path map and
+`recovered.sqlite3` view with a cursor selecting the archive's terminal version.
+It never creates or replaces `tasks.sqlite3`, rewrites historical paths, registers
+a version, edits a photograph, renders, or grants permission to upload/revise.
+
+The returned `restored_read_only` describes the usable recovered version view,
+not a migrated task ledger. `recovery-restored-status(destination)` verifies its
+cursor, all restored evidence/assets, and retained host readback proofs without
+accessing the old paths or the original materialization directory. Proofs remain
+caller-observed authenticated-host evidence; they are not server signatures.
+
+An existing destination needs the exact immutable ownership record. Unowned or
+conflicting targets, changed bytes, directory symlinks and competing writers stop.
+Handled interruptions retain an incomplete target; only identical archive/ID
+credentials can resume it, including when readback paths change. Abrupt process
+death may leave a lock requiring investigation. Rollback is confined to discarding
+this newly created target; no original data or historical index was modified.
+
+This does not solve loss of BOTH the archive handoff and local operation journal,
+portable re-upload identity, remote exactly-once creation, or global series locks.
+Those remain blockers for broad unattended archival/recovery acceptance.
 
 ## Review gate: loss of local evidence
 
