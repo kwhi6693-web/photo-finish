@@ -15,11 +15,11 @@ class ReleasePreparationTests(unittest.TestCase):
         config = root / 'runtime/10_SYSTEM_CONFIG'
         config.mkdir(parents=True)
         (root / 'SKILL.md').write_text('Synthetic skill\n', encoding='utf-8')
-        (config / 'SESSION_BRIEF.json').write_text('{"runtime_version":"1.5.1"}', encoding='utf-8')
+        (config / 'SESSION_BRIEF.json').write_text('{"runtime_version":"1.5.2"}', encoding='utf-8')
         (config / 'runtime_policy.json').write_text(json.dumps({
-            'runtime_version': '1.5.1', 'distribution': {'version': '1.5.1'},
-            'beautification_defaults': {'versions': {'runtime': '1.5.1'}}}), encoding='utf-8')
-        output = root / 'dist/v1.5.1/photo-finish.zip'
+            'runtime_version': '1.5.2', 'distribution': {'version': '1.5.2'},
+            'beautification_defaults': {'versions': {'runtime': '1.5.2'}}}), encoding='utf-8')
+        output = root / 'dist/v1.5.2/photo-finish.zip'
         builder.build(output, root)
         return output
 
@@ -27,7 +27,7 @@ class ReleasePreparationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output = self.fixture(Path(tmp))
             with zipfile.ZipFile(output) as archive:
-                self.assertEqual(json.loads(archive.read('photo-finish/release-manifest.json'))['version'], '1.5.1')
+                self.assertEqual(json.loads(archive.read('photo-finish/release-manifest.json'))['version'], '1.5.2')
 
     def test_tampered_staged_archive_fails_before_installed_tests(self):
         with tempfile.TemporaryDirectory() as tmp:
