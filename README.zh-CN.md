@@ -5,15 +5,15 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.1-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1)
+[![Version](https://img.shields.io/badge/Stable-1.5.2-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
 
-当前稳定版为 **1.5.1**，从 [v1.5.1 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1)下载。带日期的候选与审批报告保留为真实历史记录。
+当前稳定版为 **1.5.2**，从 [v1.5.2 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)下载。带日期的候选与审批报告保留为真实历史记录。
 
-本分支包含尚未发行的局部编辑安全改进；已发布的 v1.5.1 安装包保持不变。见[质量与能力审计](docs/QUALITY_AUDIT_20261027.md)。
+v1.5.2 已包含局部及保真路由保护。见[当前证据与限制](docs/QUALITY_STATUS_1_5_2.md)；带日期审计保留当时状态。仓库 `dist/photo-finish.zip` 仍是历史 v1.5.1 包，安装 v1.5.2 请仅使用 Release 附件。
 
 ## 第一次使用
 
