@@ -21,6 +21,8 @@ from style_library import location
 
 
 def _json(path):
+    if Path(path).is_symlink():
+        raise ValueError('Recovery evidence cannot be a symlink')
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
@@ -156,6 +158,19 @@ def prepare(path, session_root, directory_id, cloud_files):
                     record['ledger']['delivery_receipt'] != state['delivery_receipt'] or
                     state['record_delivery']['record_sha256'] != state['final_record']['sha256']):
                 raise ValueError('Formal record does not match the saved job')
+            saved_record = delivery._receipt(state['record_delivery']['result']['path'], state['final_record']['path'])
+            if saved_record.get('library_file_id') != state['record_delivery']['file_id']:
+                raise ValueError('Record cloud identity conflicts with original save receipt')
+            if state.get('platform_delivery'):
+                proof = _json(state['delivery_receipt']['result']['path'])
+                if (proof.get('source') != 'platform_save_receipt' or proof.get('status') != 'succeeded' or
+                        proof.get('library_file_id') != state['delivery_receipt']['file_id'] or
+                        proof.get('output_sha256') != state['output']['sha256']):
+                    raise ValueError('Platform photo receipt conflicts with saved identity')
+            else:
+                saved_photo = delivery._receipt(state['delivery_receipt']['result']['path'], state['output']['path'])
+                if saved_photo.get('library_file_id') != state['delivery_receipt']['file_id']:
+                    raise ValueError('Photo cloud identity conflicts with original save receipt')
             # Never leak other tasks from a shared batch receipt into a per-series archive.
             allowed = {json.loads(r[3])['output']['path'] for r in rows}
             allowed.update(workflow._load(r[2])['final_record']['path'] for r in rows)
@@ -205,6 +220,8 @@ def prepare(path, session_root, directory_id, cloud_files):
         if slot.is_symlink():
             raise ValueError('Recovery slot cannot be a symlink')
         slot.mkdir(exist_ok=True, mode=0o700)
+        if (slot / 'identity.json').exists() and not (slot / 'state.json').exists():
+            raise ValueError('Recovery state lost or capture interrupted; host reconciliation required, never recreate pending')
         _publish(slot / 'identity.json', _bytes(descriptor))
         if (slot / 'state.json').exists():
             return _status(slot)
@@ -263,6 +280,8 @@ def _status(slot):
     descriptor = _json(slot / 'identity.json')
     if state['operation_id'] != descriptor['operation_id']:
         raise ValueError('Operation identity conflict')
+    if state['status'] == 'credentials_pending' and (slot / 'claim.json').exists():
+        state['status'] = 'result_unknown'
     action = {'credentials_pending': 'HOST_SAVE_ONCE', 'result_unknown': 'HOST_QUERY_EXISTING',
               'uploaded_unverified': 'HOST_MATERIALIZE_EXISTING', 'archive_confirmed': 'DONE'}[state['status']]
     return dict(state, photo_saved=True, archive_confirmed=state['status'] == 'archive_confirmed',
@@ -283,6 +302,9 @@ def claim(session_root, series, version):
         if current['status'] != 'credentials_pending':
             return dict(current, write_allowed=False)
         state = _json(slot / 'state.json')
+        if (slot / 'claim.json').exists():
+            return dict(current, status='result_unknown', host_action='HOST_QUERY_EXISTING', write_allowed=False)
+        _publish(slot / 'claim.json', _bytes({'operation_id':state['operation_id']}))
         state['status'] = 'result_unknown'
         checkpoint._durable_json(slot / 'state.json', state)
         return dict(_status(slot), write_allowed=True)

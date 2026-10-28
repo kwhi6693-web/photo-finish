@@ -194,9 +194,8 @@ class RecoveryArchiveTests(unittest.TestCase):
         with patch.object(recovery.checkpoint, '_durable_json', side_effect=fail_state):
             with self.assertRaises(OSError):
                 self.prepare()
-        state = self.prepare()
-        self.assertEqual(state['status'], 'credentials_pending')
-        self.assertTrue(recovery.claim(**self.args)['write_allowed'])
+        with self.assertRaisesRegex(ValueError, 'reconciliation'):
+            self.prepare()
 
     def test_stale_lock_and_git_storage_are_rejected(self):
         self.ready()
@@ -223,7 +222,7 @@ class RecoveryArchiveTests(unittest.TestCase):
         with patch.object(recovery.checkpoint, '_durable_json', side_effect=OSError('Synthetic flush loss')):
             with self.assertRaises(OSError):
                 recovery.claim(**self.args)
-        self.assertEqual(recovery.status(**self.args)['status'], 'credentials_pending')
+        self.assertFalse(recovery.claim(**self.args)['write_allowed'])
 
     def test_duplicate_confirmation_is_stable_and_late_failure_does_not_erase_success(self):
         self.ready()
@@ -238,5 +237,31 @@ class RecoveryArchiveTests(unittest.TestCase):
         self.assertTrue(recovery.observe(**self.args, result_path=failed)['archive_confirmed'])
 
 
+    def test_lost_state_after_claim_never_recreates_upload_permission(self):
+        self.ready()
+        self.prepare()
+        recovery.claim(**self.args)
+        slot = recovery._slot(self.session, self.item['series'], 'V1')
+        (slot / 'state.json').unlink()
+        with self.assertRaisesRegex(ValueError, 'reconciliation'):
+            self.prepare()
+
+    def test_wrong_record_cloud_id_is_rejected(self):
+        self.ready()
+        state = workflow._load(self.j)
+        state['record_delivery']['file_id'] = 'WRONG_RECORD_ID'
+        workflow._save(self.j, state)
+        with self.assertRaisesRegex(ValueError, 'Record cloud identity'):
+            self.prepare()
+
+    def test_archive_error_does_not_mask_successful_delivery(self):
+        self.ready()
+        result = history.delivered(self.j, self.session, True, recovery={
+            'directory_id':'SYNTHETIC_PRIVATE_FOLDER', 'cloud_files':[]})
+        self.assertEqual(result['version']['label'], 'V1')
+        self.assertEqual(result['recovery']['status'], 'archive_blocked')
+        self.assertFalse(result['recovery']['write_allowed'])
+
 if __name__ == '__main__':
     unittest.main()
+

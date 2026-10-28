@@ -86,3 +86,20 @@ new paths. Operational version/cursor restoration and revisions at relocated pat
 remain a separate, authorized implementation/acceptance step. Never rebuild old
 history from the new descriptor, overwrite originals, or claim that extraction is
 a completed version-state restore.
+
+## Review gate: loss of local evidence
+
+A missing state.json in an existing operation slot is a reconciliation blocker,
+including interruption before first publication. An immutable claim.json prevents
+re-arming a pending state after a failed state flush. delivered reports archival
+failure separately; the already completed delivery is retained.
+
+Complete local-directory loss is NOT protected by a local marker. Do not recreate
+archival state for a previously delivered task, re-register its version or infer a
+new upload authorization from an empty folder/search result. The host must first
+retrieve the existing stable handoff or other authoritative persistent operation
+evidence, and inspect candidates for the same series/version. If that evidence is
+missing, stop for investigation; no fresh claim/create is authorized. Absolute
+paths participate in this Draft operation digest, so relocation is NOT portable
+idempotency. Durable cross-session operation reconciliation remains a real-host
+acceptance blocker. This protocol does not claim complete-directory-loss recovery.

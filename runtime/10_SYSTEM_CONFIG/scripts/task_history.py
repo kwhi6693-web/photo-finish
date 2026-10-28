@@ -132,7 +132,12 @@ def delivered(path, session_root, presented, recovery=None):
              'host_required':True,'background_automation_installed':False}
     if recovery is not None:
         import recovery_archive
-        archive=recovery_archive.prepare(path,session_root,**recovery)
+        try:
+            archive=recovery_archive.prepare(path,session_root,**recovery)
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            archive={'status':'archive_blocked','archive_confirmed':False,
+                     'host_required':True,'background_automation_installed':False,
+                     'reason':str(error),'write_allowed':False}
     return {'version':item,'hint':experience.hint(state,new_delivery=bool(changed),enabled=enabled),
             'recovery':archive,
             'experience':experience.describe(state,__import__('delivery_automation').plan(path)['action'],manual_presented=presented)}
