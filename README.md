@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.1-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1)
+[![Version](https://img.shields.io/badge/Stable-1.5.2-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -15,9 +15,9 @@
 
 <a id="quick-start"></a>
 
-**1.5.1 is the current stable release.** Download from the [v1.5.1 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.1). Dated candidate and approval reports remain historical records.
+**1.5.2 is the current stable release.** Download from the [v1.5.2 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2). Dated candidate and approval reports remain historical records.
 
-This branch contains unshipped local-edit safety work; the published v1.5.1 installer remains unchanged. See the [quality/capability audit](docs/QUALITY_AUDIT_20261027.md).
+Published v1.5.2 includes the local/fidelity route guards. See the [current evidence and limitations](docs/QUALITY_STATUS_1_5_2.md); dated audits describe their original review state. The repository `dist/photo-finish.zip` intentionally remains the historical v1.5.1 package: install v1.5.2 from Release attachments only.
 
 ## First use
 

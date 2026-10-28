@@ -1,14 +1,21 @@
 # Changelog
 
 
-## 1.5.1 — pending approval (unpublished)
+## 1.5.2 — 2026-10-28 (released)
+
+- Enforce local native-adjustment routes and required maskURI before first/subsequent reservations; reject known generative aliases that contradict native/excluded-region or exact-content protection (PR #21).
+- Separate current-source candidate checks from immutable historical packages; synchronize maintenance version metadata (PR #22).
+- Native global tone/color and delivery evidence is scene-specific. Complex canopy/sky precision remains restricted; dedicated denoise, true deblur and super-resolution remain unverified. No new renderer or performance claim.
+- Install only the [v1.5.2 Release attachments](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2); repository dist retains v1.5.1. See [current evidence](docs/QUALITY_STATUS_1_5_2.md). Published files and installed Skills are not changed by these documentation updates.
+
+## 1.5.1 — released
 
 - Report explicit successful manual presentation in the current delivery response, with `current_manual_confirmation` evidence and `current_delivery_response` scope (PR #17).
 - Keep platform display observation, manual confirmation, actual persistence and SQLite delivered semantics independent; saved files, URLs and version flags never imply display success.
 - Separate frozen v1.5.0 archive protection from isolated deterministic development builds, retaining strict formal source/manifest/installer/attachment checks (PR #18).
 - Align runtime/distribution version metadata and generated manifest for this maintenance package. No performance change, new image call, ledger migration or portrait-editing feature.
 - Final canonical package, protection transition, release notes and approval boundaries: [v1.5.1 finalization](docs/RELEASE_1_5_1_FINALIZATION.md).
-- See [release preparation and upgrade/downgrade instructions](docs/RELEASE_1_5_1_PREPARATION.md). The published/installed stable remains v1.5.0 until separately approved.
+- See [release preparation and upgrade/downgrade instructions](docs/RELEASE_1_5_1_PREPARATION.md). This release is published; installation in any host remains a separate action.
 
 ## 1.5.0 — 2026-10-27 (released)
 
