@@ -121,14 +121,25 @@ def hints(session_root, enabled=None):
     return {'enabled':json.loads(row[0]) if row else True,'scope':'conversation_only'}
 
 
-def delivered(path, session_root, presented):
+def delivered(path, session_root, presented, recovery=None):
     if presented is not True:raise ValueError('Delivery requires an actually observed presentation')
     item=register(path,session_root);state=_verify(item)
     with _index(session_root,True) as db:
         setting=db.execute('SELECT value FROM session WHERE key=?',('hints',)).fetchone()
         enabled=json.loads(setting[0]) if setting else True
         changed=db.execute('UPDATE versions SET delivered=1 WHERE job=? AND delivered=0',(item['job'],)).rowcount
+    archive={'status':'host_configuration_required','archive_confirmed':False,
+             'host_required':True,'background_automation_installed':False}
+    if recovery is not None:
+        import recovery_archive
+        try:
+            archive=recovery_archive.prepare(path,session_root,**recovery)
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            archive={'status':'archive_blocked','archive_confirmed':False,
+                     'host_required':True,'background_automation_installed':False,
+                     'reason':str(error),'write_allowed':False}
     return {'version':item,'hint':experience.hint(state,new_delivery=bool(changed),enabled=enabled),
+            'recovery':archive,
             'experience':experience.describe(state,__import__('delivery_automation').plan(path)['action'],manual_presented=presented)}
 
 

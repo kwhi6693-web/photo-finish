@@ -20,6 +20,8 @@ import experience
 import task_history as history
 import batch_workflow as batches
 import private_checkpoint as checkpoints
+import recovery_archive as recovery
+import version_recovery
 
 
 def _response(path):
@@ -118,7 +120,10 @@ def review(path,events,output_path,record_destination=None,brief=None):
 
 
 def main():
-    routes={'checkpoint-export':checkpoints.export,'checkpoint-inspect':checkpoints.inspect,'checkpoint-restore':checkpoints.restore,
+    routes={'recovery-restore-view':version_recovery.restore,'recovery-restored-status':version_recovery.status,
+            'recovery-prepare':recovery.prepare,'recovery-status':recovery.status,
+            'recovery-claim':recovery.claim,'recovery-observe':recovery.observe,'recovery-confirm':recovery.confirm,
+            'checkpoint-export':checkpoints.export,'checkpoint-inspect':checkpoints.inspect,'checkpoint-restore':checkpoints.restore,
             'batch-create':batches.create,'batch-status':batches.summary,'batch-retry-failed':batches.retry_failed,'batch-completed':batches.completed,
             'version-register':history.register,'versions':history.history,'restore':history.restore,
             'revise':history.revise,'compare':history.compare,'delivered':history.delivered,'hints':history.hints,'current-version':history.current,
