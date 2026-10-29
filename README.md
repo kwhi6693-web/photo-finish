@@ -19,6 +19,8 @@
 
 Published v1.5.2 includes the local/fidelity route guards. See the [current evidence and limitations](docs/QUALITY_STATUS_1_5_2.md); dated audits describe their original review state. The repository `dist/photo-finish.zip` intentionally remains the historical v1.5.1 package: install v1.5.2 from Release attachments only.
 
+**1.5.3 release candidate — not published.** Based on merged PR #24, this candidate adds private archival and full-byte/SHA-256 readback, independent-session read-only recovery and a recovered version view in a NEW private target. It requires known verifiable authenticated-host handoff credentials and ONE writer. Unknown outcomes, missing credentials and conflicting identities stop safely without blind re-upload or historical overwrite. It does not supply authoritative reconciliation after all handoff/local state is lost or cross-session same-series coordination. Unattended/background archival and indefinite retention are not promised; the full Phase 5 long-term objective remains NO-GO. See [candidate scope and release/upgrade gates](docs/RELEASE_1_5_3_PREPARATION.md). The latest-download links below still resolve to published v1.5.2 until a separately approved release.
+
 ## First use
 
 Photo Finish is a professional non-portrait photography Skill for natural landscapes, city nights, architecture, travel, still life, food and products. It does not develop face beautification, skin smoothing, reshaping, facial-feature changes or portrait optimization. Incidental people retain identity, structure and content protections. Priorities are natural texture, light, color, composition protection, consistent style and real detail. See [product scope](references/product-scope.md).

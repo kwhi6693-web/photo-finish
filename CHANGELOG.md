@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.3 — release candidate (unpublished)
+
+- Include merged PR #24: explicit private archival, full archive/member byte and SHA-256 verification, independent-session read-only retrieval and exact-byte recovered version views in new private targets.
+- Require known verifiable authenticated-host handoff credentials and a single writer. Preserve real partial-save receipts; identical re-entry reuses evidence, while unknown outcomes, missing credentials and identity/path conflicts stop without blind upload or historical overwrite.
+- Preserve selected parents (including V3 branched from V1), original source/output identities, audited path mappings and a separate recovered cursor/database; no operational ledger migration, editing or rendering.
+- Exclude authoritative reconciliation after all handoff/local state is lost and cross-session same-series coordination. No unattended background or indefinite-retention promise; full Phase 5 long-term reliability remains NO-GO.
+- Align maintenance version metadata and deterministic candidate manifest. No new photograph algorithm, dependency, service or performance claim. Published v1.5.2 and installed v1.5.1 remain unchanged. See [release preparation](docs/RELEASE_1_5_3_PREPARATION.md).
+
 
 ## 1.5.2 — 2026-10-28 (released)
 
