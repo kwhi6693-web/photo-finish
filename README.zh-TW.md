@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
+[![Latest release](https://img.shields.io/github/v/release/kwhi6693-web/photo-finish?style=flat-square&label=Latest%20release)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 [![Focus: Non-portrait](https://img.shields.io/badge/Focus-Non--portrait-7c3aed?style=flat-square)](references/product-scope.md)
@@ -15,10 +15,8 @@
 
 **快速導覽：**[下載安裝](#下載安裝) · [如何使用](#如何使用) · [能力與限制](#能力與限制) · [宿主相容性](#宿主相容性) · [技術文件](#技術文件)
 
-**最新正式發行：[v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)。** GitHub 發布新版**不代表**已安裝的 Skill 自動升級。
+**最新版下載：前往 [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/latest) 查看最新正式版本並選取安裝附件。** GitHub 發布新版**不代表**已安裝的 Skill 自動升級。
 
-
-**未發布維護候選：v1.5.4。** 僅整合已合併 PR #30 原生圖片交付與 #32 基於原片的攝影終檢；無新攝影演算法或效能最佳化。[候選範圍與發行門檻](docs/RELEASE_1_5_4_PREPARATION.md)。正式發行仍為 v1.5.3，候選準備不改變已安裝 Skill。
 ## 🎯 產品定位
 
 Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原片、確定處理方向、使用**真正可用的影像工具**編輯、對照複核，並在宿主支援時交付經過檔案驗證的正式成片。
@@ -29,11 +27,11 @@ Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原�
 
 ## ⚡ 下載安裝
 
-1. 從[最新正式發布頁](https://github.com/kwhi6693-web/photo-finish/releases/latest)下載[安裝 ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip)和 [SHA-256 校驗檔](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256)。
+1. 前往 [GitHub Releases 最新正式發布頁](https://github.com/kwhi6693-web/photo-finish/releases/latest)，從該版本的附件中下載**完整 Skill 安裝 ZIP**及**對應的 SHA-256 校驗檔**。
 2. 驗證 ZIP 雜湊後，依照宿主**正式支援的安裝流程**安裝完整的 `photo-finish/` 目錄。`SKILL.md`、`runtime/`、`references/`、`scripts/`、`agents/`、`assets/` 必須一併保留。
 3. 確認宿主**實際載入版本**及安裝後全部原始檔案位元組一致。
 
-應下載 GitHub Release **正式附件**，不是 GitHub 自動產生的 Source code ZIP。儲存庫中的 `dist/photo-finish.zip` 是歷史 **v1.5.1** 安裝包，**不是 v1.5.3 安裝包**。隔離解壓成功亦無法證明 ChatGPT 真實宿主升級成功。
+應下載 GitHub Release **正式附件**，不是 GitHub 自動產生的 Source code ZIP。儲存庫中的 `dist/photo-finish.zip` 是歷史 **v1.5.1** 安裝包，**不是最新版安裝包**。隔離解壓成功亦無法證明 ChatGPT 真實宿主升級成功。
 
 ## 📸 如何使用
 
