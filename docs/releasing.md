@@ -1,6 +1,6 @@
 # Publishing a release
 
-Current maintenance candidate: [v1.5.3 scope, byte verification and separate host-upgrade gates](RELEASE_1_5_3_PREPARATION.md). v1.5.2 remains published; the historical finalization procedures below do not authorize a new tag, Release or installation change. The runtime policy is the version authority; the builder derives the manifest version from its synchronized SESSION_BRIEF. Keep frozen dist paths intact and stage v1.5.3 independently.
+Current unpublished maintenance candidate: [v1.5.4 scope and gates](RELEASE_1_5_4_PREPARATION.md). Published stable remains v1.5.3. Preparation authorizes only an independent Draft PR and staged candidate; no merge, tag, Release or installation. Preserve all historical and canonical dist paths; stage v1.5.4 independently.
 
 Current v1.5.1 finalization: [canonical paths and approval checklist](RELEASE_1_5_1_FINALIZATION.md). Historical preparation: [approval boundaries and upgrade/downgrade](RELEASE_1_5_1_PREPARATION.md). Published v1.5.0 is frozen and its exact bytes are retained under `dist/v1.5.0/` and its immutable tag/Release. The independently approved finalization now stages identical v1.5.1 bytes in canonical dist paths; this is not publication. The commands below apply only to a separately approved formal release transition.
 
@@ -13,14 +13,14 @@ The public installation ZIP and a user's private backup ZIP are separate formats
    python tools/doctor.py
    python tools/check_publication.py --history
    python tools/run_tests.py
-   python tools/build_release.py --output dist/v1.5.3/photo-finish.zip
+   python tools/build_release.py --output dist/v1.5.4/photo-finish.zip
    python tools/verify_release_preparation.py
    git diff --check
    ```
 
 3. Commit the generated version-directory ZIP and checksum whenever packaged inputs change. Rebuilding the same source must reproduce the same bytes. Keep frozen historical/canonical dist paths unchanged. Review the source diff and publication findings; never add private photos, settings, backups, jobs or credentials.
 4. Merge the reviewed PR after the current-head matrix passes. Select the exact verified main commit when creating the version tag and GitHub Release; do not move an existing published tag.
-5. Attach the exact verified `dist/v1.5.3/photo-finish.zip` and its `.sha256` file (use the approved version directory for subsequent releases), describe changes, installation/upgrade steps and actual validation scope, and mark a stable release as latest. Keep attachment names `photo-finish.zip` and `photo-finish.zip.sha256` unchanged: README links use `/releases/latest/download/` so the same download entrypoint follows the latest stable release. GitHub's automatic source archives are repository snapshots, not the curated skill ZIP. The formal verifier selects a tagged version directory when present and checks source, manifest and attachments without falling back after a failure.
+5. Attach the exact verified `dist/v1.5.4/photo-finish.zip` and its `.sha256` file (use the approved version directory for subsequent releases), describe changes, installation/upgrade steps and actual validation scope, and mark a stable release as latest. Keep attachment names `photo-finish.zip` and `photo-finish.zip.sha256` unchanged: README links use `/releases/latest/download/` so the same download entrypoint follows the latest stable release. GitHub's automatic source archives are repository snapshots, not the curated skill ZIP. The formal verifier selects a tagged version directory when present and checks source, manifest and attachments without falling back after a failure.
 6. Read back the release/tag target and asset names/sizes, download both attachments, and verify the ZIP against the checksum, committed bytes and manifest. Confirm that `/releases/latest` and both README `/releases/latest/download/` links resolve to the published version, and verify those downloaded bytes. Keep historical version-specific links in release notes and changelogs unchanged.
 
 For 1.4.2 the expected installation ZIP is 463,846 bytes, has 108 entries including its manifest, and has SHA-256 `23ce92b01a3d4c01fb81203f8d943fbd80a5fe912445e65041cd46b714d0139b`. Documentation-only changes outside the package allowlist do not change this archive. Future releases must calculate their own values.

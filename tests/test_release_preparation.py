@@ -18,11 +18,11 @@ class ReleasePreparationTests(unittest.TestCase):
         config = root / 'runtime/10_SYSTEM_CONFIG'
         config.mkdir(parents=True)
         (root / 'SKILL.md').write_text('Synthetic skill\n', encoding='utf-8')
-        (config / 'SESSION_BRIEF.json').write_text('{"runtime_version":"1.5.3"}', encoding='utf-8')
+        (config / 'SESSION_BRIEF.json').write_text('{"runtime_version":"1.5.4"}', encoding='utf-8')
         (config / 'runtime_policy.json').write_text(json.dumps({
-            'runtime_version': '1.5.3', 'distribution': {'version': '1.5.3'},
-            'beautification_defaults': {'versions': {'runtime': '1.5.3'}}}), encoding='utf-8')
-        output = root / 'dist/v1.5.3/photo-finish.zip'
+            'runtime_version': '1.5.4', 'distribution': {'version': '1.5.4'},
+            'beautification_defaults': {'versions': {'runtime': '1.5.4'}}}), encoding='utf-8')
+        output = root / 'dist/v1.5.4/photo-finish.zip'
         builder.build(output, root)
         return output
 
@@ -30,7 +30,7 @@ class ReleasePreparationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output = self.fixture(Path(tmp))
             with zipfile.ZipFile(output) as archive:
-                self.assertEqual(json.loads(archive.read('photo-finish/release-manifest.json'))['version'], '1.5.3')
+                self.assertEqual(json.loads(archive.read('photo-finish/release-manifest.json'))['version'], '1.5.4')
 
     def test_tampered_staged_archive_fails_before_installed_tests(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -65,7 +65,7 @@ class ReleasePreparationTests(unittest.TestCase):
         # Local anonymous Git fixture only; no repository/remote tag is created.
         for args in (('init', '-q'), ('add', '.'),
                      ('-c', 'user.name=Synthetic', '-c', 'user.email=synthetic@example.com',
-                      'commit', '-qm', 'Synthetic package fixture'), ('tag', 'v1.5.3')):
+                      'commit', '-qm', 'Synthetic package fixture'), ('tag', 'v1.5.4')):
             subprocess.run(['git', *args], cwd=root, check=True, capture_output=True)
         assets = root / 'attachments'
         assets.mkdir()
@@ -79,7 +79,7 @@ class ReleasePreparationTests(unittest.TestCase):
             with self.subTest(versioned=versioned), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 assets = self.committed_fixture(root, versioned=versioned)
-                result = packages.release(root, 'v1.5.3', assets)
+                result = packages.release(root, 'v1.5.4', assets)
                 self.assertEqual(result['status'], 'passed')
                 self.assertEqual(result['sha256'], packages.digest((assets / packages.ARCHIVE).read_bytes()))
 
@@ -89,4 +89,4 @@ class ReleasePreparationTests(unittest.TestCase):
             assets = self.committed_fixture(root, versioned=True)
             (assets / packages.ARCHIVE).write_bytes(b'SYNTHETIC replaced attachment')
             with self.assertRaisesRegex(ValueError, 'attachment differs'):
-                packages.release(root, 'v1.5.3', assets)
+                packages.release(root, 'v1.5.4', assets)

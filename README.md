@@ -17,6 +17,8 @@
 
 **Latest published version: [v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3).** Publication does **not** automatically upgrade a Skill already installed in an agent host.
 
+
+**Unpublished maintenance candidate: v1.5.4.** Integrates merged PR #30 (native image delivery) and #32 (source-aware photographic review). No new editing algorithm or performance optimization. [Candidate scope and release gates](docs/RELEASE_1_5_4_PREPARATION.md). Published stable remains v1.5.3; preparation does not change installed Skills.
 ## 🎯 What it is
 
 Photo Finish helps an authorized agent inspect a photograph, choose a photographic direction, edit it using an **available real image tool**, compare the result against its source, and deliver an actual verified file when saving is supported.

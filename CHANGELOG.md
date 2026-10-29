@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.4 — unpublished maintenance candidate
+
+- Integrate merged PR #30 native inline-image delivery without transcoding or changing saved output bytes; native Save-to-Photos remains client-capability dependent.
+- Integrate merged PR #32: source-aware photographic goals and actual visual comparison; route edits by objective, user scope and real tool capability. Permit reasoned no-edit completion; reject unmet expression goals despite technical/fidelity passes.
+- Preserve naturalness, important content, STOP, authorization, exact hashes, save receipts and V1/V2 recovery. No algorithm, dependency or performance change; no added mandatory model/tool round or render count.
+- Stage deterministic v1.5.4 installation bytes separately; v1.5.3 and older artifacts and current installations remain unchanged. No merge, tag, publication or installation authorized by preparation. See [candidate gates](docs/RELEASE_1_5_4_PREPARATION.md).
+
 ## 1.5.3 — released
 
 - Include merged PR #24: explicit private archival, full archive/member byte and SHA-256 verification, independent-session read-only retrieval and exact-byte recovered version views in new private targets.

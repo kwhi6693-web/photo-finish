@@ -19,8 +19,8 @@ def verify(skill, tests):
     capability = doctor.check(skill)
     from session_brief import load
     brief = load(skill / 'runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json', skill / 'runtime')
-    if brief['runtime_version'] != '1.5.3':
-        raise ValueError('Installed runtime is not v1.5.3')
+    if brief['runtime_version'] != '1.5.4':
+        raise ValueError('Installed runtime is not v1.5.4')
     # Reuse existing anonymous tests; give their relative paths the installed root.
     # No repository runtime directory is put on sys.path and no test alters the package.
     names = ('test_manual_display', 'test_versions', 'test_save_resume',
