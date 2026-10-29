@@ -12,7 +12,7 @@ import build_release as builder
 import verify_packages as packages
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.5.3'
+VERSION = '1.5.4'
 
 
 def verify(root=ROOT, *, canonical=False, candidate=False):
