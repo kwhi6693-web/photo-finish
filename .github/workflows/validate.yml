@@ -111,6 +111,8 @@ jobs:
         run: python tools/verify_packages.py candidate
       - name: Verify current-source deterministic candidate and isolated installed protocols
         run: python tools/verify_release_preparation.py --candidate
+      - name: Verify staged unpublished v1.5.5 release candidate
+        run: python tools/verify_release_preparation.py
       - name: Verify frozen v1.5.4 from its tagged source
         shell: python
         run: |
