@@ -111,6 +111,15 @@ jobs:
         run: python tools/verify_packages.py candidate
       - name: Verify current-source deterministic candidate and isolated installed protocols
         run: python tools/verify_release_preparation.py --candidate
-      - name: Verify staged v1.5.4 maintenance candidate
-        run: python tools/verify_release_preparation.py
+      - name: Verify frozen v1.5.4 from its tagged source
+        shell: python
+        run: |
+          import pathlib, subprocess, sys, tempfile
+          with tempfile.TemporaryDirectory(prefix='photo-finish-frozen-') as tmp:
+              checkout = pathlib.Path(tmp) / 'release'
+              subprocess.run(['git', 'worktree', 'add', '--detach', str(checkout), 'v1.5.4'], check=True)
+              try:
+                  subprocess.run([sys.executable, str(checkout / 'tools/verify_release_preparation.py')], cwd=checkout, check=True)
+              finally:
+                  subprocess.run(['git', 'worktree', 'remove', '--force', str(checkout)], check=True)
       - run: git diff --exit-code -- dist
