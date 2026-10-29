@@ -1,13 +1,15 @@
-# Photo Finish
+# 📷 Photo Finish
 
 > 專注**非人像攝影**的自然照片美化：從光影、色彩、真實質感到可核驗的正式交付。
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![穩定版](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
-[![CI](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
-[![MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
+[![Version](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
+[![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
+[![Focus: Non-portrait](https://img.shields.io/badge/Focus-Non--portrait-7c3aed?style=flat-square)](references/product-scope.md)
+[![Look: Natural finish](https://img.shields.io/badge/Look-Natural%20finish-0e7490?style=flat-square)](references/tone-color-foundations.md)
 
 ![Photo Finish — 攝影方向、處理與複核](docs/assets/photo-finish.svg)
 
@@ -15,7 +17,7 @@
 
 **最新正式發行：[v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)。** GitHub 發布新版**不代表**已安裝的 Skill 自動升級。
 
-## 產品定位
+## 🎯 產品定位
 
 Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原片、確定處理方向、使用**真正可用的影像工具**編輯、對照複核，並在宿主支援時交付經過檔案驗證的正式成片。
 
@@ -23,7 +25,7 @@ Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原�
 
 目標是自然可信的光影、色彩、視覺層次與材質，而非統一濾鏡或保證每張照片都能改善。
 
-## 下載安裝
+## ⚡ 下載安裝
 
 1. 從[最新正式發布頁](https://github.com/kwhi6693-web/photo-finish/releases/latest)下載[安裝 ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip)和 [SHA-256 校驗檔](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256)。
 2. 驗證 ZIP 雜湊後，依照宿主**正式支援的安裝流程**安裝完整的 `photo-finish/` 目錄。`SKILL.md`、`runtime/`、`references/`、`scripts/`、`agents/`、`assets/` 必須一併保留。
@@ -31,7 +33,7 @@ Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原�
 
 應下載 GitHub Release **正式附件**，不是 GitHub 自動產生的 Source code ZIP。儲存庫中的 `dist/photo-finish.zip` 是歷史 **v1.5.1** 安裝包，**不是 v1.5.3 安裝包**。隔離解壓成功亦無法證明 ChatGPT 真實宿主升級成功。
 
-## 如何使用
+## 📸 如何使用
 
 ```text
 使用 $photo-finish 美化這張自然風景照片。
@@ -45,7 +47,7 @@ Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原�
 
 **預設交付：**一張最終成片，附簡潔版本與真實儲存狀態。若攝影改善不足、內容保護不合格或無法取得可核驗檔案，應如實拒絕，不得虛構成功的 V1。
 
-## 處理流程
+## 🧭 處理流程
 
 1. **觀察：**檢查原片構圖、光照、色彩、材質與需保護的內容。
 2. **判斷：**結合本次指令、可選長期規則和確實看過的參考照片，制定專業處理方向。
@@ -55,7 +57,7 @@ Photo Finish 是 Agent Skill，協助獲得授權的智慧代理理解攝影原�
 
 內建控制器管理流程及證據，**本身不渲染照片，也不會自動認證審美品質**。[執行指南](docs/runtime.md) · [交付介面](references/delivery-adapter.md)。
 
-## 能力與限制
+## ✨ 能力與限制
 
 | 方向 | 已具備的能力 | 須如實說明的限制 |
 |---|---|---|
@@ -81,7 +83,7 @@ v1.5.3 的歸檔與恢復僅在**真實可驗證的宿主憑據、準確檔案�
 
 先前真實 ChatGPT 宿主升級嘗試中，`assets/icon.svg` 在內容物化時由 **1,210 位元組變成 1,619 位元組**，實際安裝仍為 **v1.5.1**。在上傳、物化、安裝與實際載入全路徑皆能證明**全部原始位元組一致**前，**v1.5.3 真實宿主升級仍為 NO-GO**。不得修改原 SVG 或放寬雜湊規則繞過此問題。
 
-## 個人風格規則與隱私
+## 🎨 個人風格規則與隱私
 
 這些都是**可選功能**。私人風格庫為空或沒有適用參考時，仍可直接根據原片作專業判斷。
 
@@ -91,7 +93,7 @@ v1.5.3 的歸檔與恢復僅在**真實可驗證的宿主憑據、準確檔案�
 
 個人照片、風格、偏好、帳本、憑據及私人 Library ID **不得進入公開儲存庫或 Skill 安裝目錄**。持久儲存須有真實宿主支援與回執；暫存路徑或顯示的附件不代表長期儲存。Skill 不內建雲端同步、遙測或使用者帳號服務。[安全說明](SECURITY.md)。
 
-## 開發者說明
+## 🧰 開發者說明
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
@@ -104,7 +106,7 @@ python tools/doctor.py
 
 開發、測試和發行細節請見[貢獻指南](CONTRIBUTING.md)、[驗證說明](docs/validation.md)和[發布流程](docs/releasing.md)。不得將私人照片或帳本寫入公開測試資料。
 
-## 技術文件
+## 📚 技術文件
 
 | 需要了解 | 資料 |
 |---|---|
@@ -115,6 +117,6 @@ python tools/doctor.py
 | 私人遷移與恢復 | [備份恢復](references/private-backup.md) |
 | 發行、驗證與安全 | [更新記錄](CHANGELOG.md) · [驗證](docs/validation.md) · [安全說明](SECURITY.md) |
 
-## 授權條款
+## 🔒 授權條款
 
 [MIT](LICENSE) © 2026 kwhi。[第三方聲明](THIRD_PARTY_NOTICES.md)。使用者照片及第三方素材各自保留原有權利。

@@ -1,13 +1,15 @@
-# Photo Finish
+# 📷 Photo Finish
 
 > Source-aware, natural photographic finishing for **non-portrait photos**.
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Stable version](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
-[![CI](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
-[![MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
+[![Version](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
+[![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
+[![Focus: Non-portrait](https://img.shields.io/badge/Focus-Non--portrait-7c3aed?style=flat-square)](references/product-scope.md)
+[![Look: Natural finish](https://img.shields.io/badge/Look-Natural%20finish-0e7490?style=flat-square)](references/tone-color-foundations.md)
 
 ![Photo Finish — photographic direction, craft, and review](docs/assets/photo-finish.svg)
 
@@ -15,7 +17,7 @@
 
 **Latest published version: [v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3).** Publication does **not** automatically upgrade a Skill already installed in an agent host.
 
-## What it is
+## 🎯 What it is
 
 Photo Finish helps an authorized agent inspect a photograph, choose a photographic direction, edit it using an **available real image tool**, compare the result against its source, and deliver an actual verified file when saving is supported.
 
@@ -23,7 +25,7 @@ Photo Finish helps an authorized agent inspect a photograph, choose a photograph
 
 The goal is credible light, color, visual hierarchy, and natural texture—not one universal preset or a guarantee that every photograph will improve.
 
-## Install
+## ⚡ Install
 
 1. Download the [installable Skill ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip) and its [SHA-256 checksum](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256) from the [latest release](https://github.com/kwhi6693-web/photo-finish/releases/latest).
 2. Verify the checksum, then extract and install the complete `photo-finish/` folder using your host's **supported** Skill installation flow. Keep `SKILL.md`, `runtime/`, `references/`, `scripts/`, `agents/`, and `assets/` together.
@@ -31,7 +33,7 @@ The goal is credible light, color, visual hierarchy, and natural texture—not o
 
 Use the **Release attachment**, not GitHub's auto-generated source archive. The repo's `dist/photo-finish.zip` is a **historical v1.5.1 package**, not the v1.5.3 installer. A locally verified extraction does not by itself prove a safe ChatGPT-host upgrade.
 
-## Usage
+## 📸 Usage
 
 ```text
 Use $photo-finish to edit this landscape photo.
@@ -45,7 +47,7 @@ Photo-only automatic invocation is *intended* by the Skill but **depends on real
 
 **Default delivery:** one final photograph with concise version and genuine save status. If no meaningful quality improvement, safe content-preserving route, or verified output exists, report the failure instead of registering a false V1.
 
-## The workflow
+## 🧭 The workflow
 
 1. **Inspect** the original's composition, light, color, material, and protected content.
 2. **Decide** using the user's current instructions, optional saved preferences, and any actually reviewed style references.
@@ -55,7 +57,7 @@ Photo-only automatic invocation is *intended* by the Skill but **depends on real
 
 The bundled controller tracks this process; **it does not itself edit images or certify visual quality**. See the [runtime guide](docs/runtime.md) and [delivery adapter](references/delivery-adapter.md) for implementation.
 
-## Capabilities and limits
+## ✨ Capabilities and limits
 
 | Area | Available capability | Boundary |
 |---|---|---|
@@ -81,7 +83,7 @@ A real host must provide image inspection, an authorized image-editing tool, for
 
 A previously examined ChatGPT host remained on **v1.5.1** after an upgrade attempt modified `assets/icon.svg` during content materialization (**1,210 → 1,619 bytes**). **The real-host v1.5.3 upgrade remains NO-GO** until transfer, materialization, installation, and loading preserve **all** source bytes. Do not bypass this by changing the SVG or relaxing checks. Host installation state must be checked independently of the GitHub Release.
 
-## Personal styles, rules, and privacy
+## 🎨 Personal styles, rules, and privacy
 
 These features are **optional**. When the private library is empty or no reference fits, the agent can work from the current photo.
 
@@ -91,7 +93,7 @@ These features are **optional**. When the private library is empty or no referen
 
 Photos, references, personal preferences, session records, credentials, and private Library IDs must remain **outside the installation and public repository**. Host-provided persistence requires real receipts; temporary directories or displayed attachments alone are not durable storage. No bundled cloud-sync, telemetry, or account service is claimed. [Security policy](SECURITY.md).
 
-## Developer notes
+## 🧰 Developer notes
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
@@ -104,7 +106,7 @@ python tools/doctor.py
 
 For development, tests, and publishing, see [contributing](CONTRIBUTING.md), [validation](docs/validation.md), and [releasing](docs/releasing.md). Keep private photos and ledgers out of test fixtures and public artifacts.
 
-## Documentation
+## 📚 Documentation
 
 | Topic | Guide |
 |---|---|
@@ -115,6 +117,6 @@ For development, tests, and publishing, see [contributing](CONTRIBUTING.md), [va
 | Private migration and recovery | [Backup](references/private-backup.md) |
 | Releases, validation, and security | [Changelog](CHANGELOG.md) · [Validation](docs/validation.md) · [Security](SECURITY.md) |
 
-## License
+## 🔒 License
 
 [MIT](LICENSE) © 2026 kwhi. See [third-party notices](THIRD_PARTY_NOTICES.md). User images and third-party materials retain their own rights.
