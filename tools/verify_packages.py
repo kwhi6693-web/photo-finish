@@ -190,8 +190,13 @@ def release(root, tag, attachments):
     ref = 'refs/tags/' + tag
     git(root, 'rev-parse', '--verify', ref + '^{commit}')
     expected = tagged_files(root, ref)
-    data = git(root, 'show', ref + ':dist/' + ARCHIVE)
-    checksum = git(root, 'show', ref + ':dist/' + CHECKSUM)
+    # New releases can retain immutable canonical history and stage by version.
+    # Once a tagged version directory exists, missing/corrupt members must fail;
+    # never fall back to another archive after verification has failed.
+    versioned = 'dist/' + tag
+    directory = versioned + '/' if git(root, 'ls-tree', '--name-only', ref, '--', versioned).strip() else 'dist/'
+    data = git(root, 'show', ref + ':' + directory + ARCHIVE)
+    checksum = git(root, 'show', ref + ':' + directory + CHECKSUM)
     count = check_release_bytes(data, checksum, expected, tag[1:], attachments)
     return {'status': 'passed', 'scope': 'formal_source_manifest_installer_attachments',
             'tag': tag, 'sha256': digest(data), 'payload_files': count}
