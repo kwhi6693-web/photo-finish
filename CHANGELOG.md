@@ -1,6 +1,13 @@
 # Changelog
 
-## 1.5.4 — unpublished maintenance candidate
+## 1.5.5 — unpublished maintenance candidate
+
+- Include merged PR #35: complete source-specific subject, environmental narrative, composition, light, color and material decisions before the first edit. Accept formal V1 only after actual same-source visual comparison shows the full photographic goal is met.
+- Reuse existing direction/review fields; preserve natural materials, important content, STOP, source/output hashes, actual save receipts and version history. No new renderer, dependency, feature, mandatory model turn or image-call minimum.
+- One authorized architecture/garden sample passed live first-output review under the exact PR #35 candidate. This is a single-sample observation, not a general photographic quality guarantee, controlled A/B experiment or end-to-end performance claim.
+- Synchronize v1.5.5 metadata and stage a reproducible, unpublished installer separately from immutable earlier releases. Keep latest downloads in all three READMEs at GitHub Releases/latest. Preparation does not authorize merge, publication or installation; v1.5.4 primary and v1.5.3/v1.5.1 backups remain unchanged. See [candidate gates](docs/RELEASE_1_5_5_PREPARATION.md).
+
+## 1.5.4 — released
 
 - Integrate merged PR #30 native inline-image delivery without transcoding or changing saved output bytes; native Save-to-Photos remains client-capability dependent.
 - Integrate merged PR #32: source-aware photographic goals and actual visual comparison; route edits by objective, user scope and real tool capability. Permit reasoned no-edit completion; reject unmet expression goals despite technical/fidelity passes.
