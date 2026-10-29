@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.2-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)
+[![Version](https://img.shields.io/badge/Stable-1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
@@ -15,11 +15,11 @@
 
 <a id="quick-start"></a>
 
-**1.5.2 is the current stable release.** Download from the [v1.5.2 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2). Dated candidate and approval reports remain historical records.
+**1.5.3 is the current published stable release. Download the [v1.5.3 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3). Dated candidate and approval reports remain historical records.
 
-Published v1.5.2 includes the local/fidelity route guards. See the [current evidence and limitations](docs/QUALITY_STATUS_1_5_2.md); dated audits describe their original review state. The repository `dist/photo-finish.zip` intentionally remains the historical v1.5.1 package: install v1.5.2 from Release attachments only.
+Published v1.5.2 includes the local/fidelity route guards. See the [v1.5.2 evidence and limitations](docs/QUALITY_STATUS_1_5_2.md); dated audits describe their original review state. The repository `dist/photo-finish.zip` intentionally remains the historical v1.5.1 package: install v1.5.3 from its verified Release attachments only.
 
-**1.5.3 release candidate — not published.** Based on merged PR #24, this candidate adds private archival and full-byte/SHA-256 readback, independent-session read-only recovery and a recovered version view in a NEW private target. It requires known verifiable authenticated-host handoff credentials and ONE writer. Unknown outcomes, missing credentials and conflicting identities stop safely without blind re-upload or historical overwrite. It does not supply authoritative reconciliation after all handoff/local state is lost or cross-session same-series coordination. Unattended/background archival and indefinite retention are not promised; the full Phase 5 long-term objective remains NO-GO. See [candidate scope and release/upgrade gates](docs/RELEASE_1_5_3_PREPARATION.md). The latest-download links below still resolve to published v1.5.2 until a separately approved release.
+**Published v1.5.3 (merged PRs #24 and #25).** The scoped recovery release adds private archival and full-byte/SHA-256 readback, independent-session read-only recovery and a recovered version view in a NEW private target. It requires known verifiable authenticated-host handoff credentials and ONE writer. Unknown outcomes, missing credentials and conflicting identities stop safely without blind re-upload or historical overwrite. It does not supply authoritative reconciliation after all handoff/local state is lost or cross-session same-series coordination. Unattended/background archival and indefinite retention are not promised; the full Phase 5 long-term objective remains NO-GO. See the [historical candidate preparation and host-upgrade gates](docs/RELEASE_1_5_3_PREPARATION.md). The latest-download links below now resolve to published v1.5.3; publication alone does NOT upgrade an installed host Skill. Real host upgrades remain NO-GO until all original bytes, including `assets/icon.svg`, are verified across transfer and materialization.
 
 ## First use
 
