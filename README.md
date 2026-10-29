@@ -5,7 +5,7 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
+[![Latest release](https://img.shields.io/github/v/release/kwhi6693-web/photo-finish?style=flat-square&label=Latest%20release)](https://github.com/kwhi6693-web/photo-finish/releases/latest)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 [![Focus: Non-portrait](https://img.shields.io/badge/Focus-Non--portrait-7c3aed?style=flat-square)](references/product-scope.md)
@@ -15,10 +15,8 @@
 
 **Go to:** [Install](#install) · [Usage](#usage) · [Capabilities](#capabilities-and-limits) · [Compatibility](#host-compatibility) · [Docs](#documentation)
 
-**Latest published version: [v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3).** Publication does **not** automatically upgrade a Skill already installed in an agent host.
+**Latest version and download: [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/latest).** Publishing a new release does **not** automatically upgrade a Skill already installed in an agent host.
 
-
-**Unpublished maintenance candidate: v1.5.4.** Integrates merged PR #30 (native image delivery) and #32 (source-aware photographic review). No new editing algorithm or performance optimization. [Candidate scope and release gates](docs/RELEASE_1_5_4_PREPARATION.md). Published stable remains v1.5.3; preparation does not change installed Skills.
 ## 🎯 What it is
 
 Photo Finish helps an authorized agent inspect a photograph, choose a photographic direction, edit it using an **available real image tool**, compare the result against its source, and deliver an actual verified file when saving is supported.
@@ -29,11 +27,11 @@ The goal is credible light, color, visual hierarchy, and natural texture—not o
 
 ## ⚡ Install
 
-1. Download the [installable Skill ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip) and its [SHA-256 checksum](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256) from the [latest release](https://github.com/kwhi6693-web/photo-finish/releases/latest).
+1. Visit the [latest GitHub Release](https://github.com/kwhi6693-web/photo-finish/releases/latest) and download the **installable Skill ZIP** and the **matching SHA-256 checksum** from the attachments on that page.
 2. Verify the checksum, then extract and install the complete `photo-finish/` folder using your host's **supported** Skill installation flow. Keep `SKILL.md`, `runtime/`, `references/`, `scripts/`, `agents/`, and `assets/` together.
 3. Confirm that the host **actually loads** the intended version and preserves every original file byte.
 
-Use the **Release attachment**, not GitHub's auto-generated source archive. The repo's `dist/photo-finish.zip` is a **historical v1.5.1 package**, not the v1.5.3 installer. A locally verified extraction does not by itself prove a safe ChatGPT-host upgrade.
+Use the **Release attachment**, not GitHub's auto-generated source archive. The repo's `dist/photo-finish.zip` is a **historical v1.5.1 package**, not the latest release installer. A locally verified extraction does not by itself prove a safe ChatGPT-host upgrade.
 
 ## 📸 Usage
 
