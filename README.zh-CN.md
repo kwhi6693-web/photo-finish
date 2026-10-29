@@ -1,156 +1,120 @@
-# 📷 Photo Finish
+# Photo Finish
 
-> 从专业摄影与艺术指导出发，让照片的构图、光色和材质表达更充分，同时保留可信的摄影质感。
+> 专注**非人像摄影**的自然照片美化：从光影、色彩、真实质感到可核验的正式交付。
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
-[![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
+[![稳定版](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
+[![CI](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
+[![MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
-![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
+![Photo Finish — 摄影方向、处理与复核](docs/assets/photo-finish.svg)
 
-当前已正式发布的稳定版为 **1.5.3**，从 [v1.5.3 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)下载。带日期的候选与审批报告保留为真实历史记录。
+**快速导航：**[下载安装](#下载安装) · [如何使用](#如何使用) · [能力与限制](#能力与限制) · [宿主兼容性](#宿主兼容性) · [技术文档](#技术文档)
 
-v1.5.2 已包含局部及保真路由保护。见[该版本证据与限制](docs/QUALITY_STATUS_1_5_2.md)；带日期审计保留当时状态。仓库 `dist/photo-finish.zip` 仍是历史 v1.5.1 包，安装 v1.5.3 请仅使用其经验证的 Release 附件。
+**最新正式发行：[v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)。** GitHub 发布新版本**不等于**已安装 Skill 自动更新。
 
-**v1.5.3 已正式发布（合并 PR #24 和 #25）。** 支持可信、可核验的宿主交接凭据及单写入者条件下的私有归档、完整字节/SHA-256 回读、跨独立会话只读恢复，以及全新私有目标中的版本视图恢复。未知结果、凭据缺失或身份冲突时安全停止，不盲目重传、不覆盖历史。全部交接凭据及本地状态丢失后的权威对账、跨会话同系列并发协调仍未解决；不承诺无人值守后台归档或无限期持久保存，完整第五阶段长期可靠性目标仍为 NO-GO。见[历史候选准备与宿主升级门禁](docs/RELEASE_1_5_3_PREPARATION.md)。下方 latest 下载现指向正式 v1.5.3，但发布不等于已安装 Skill 自动升级；真实宿主升级在包括 `assets/icon.svg` 的全部原始字节通过传输与物化校验前仍为 NO-GO。
+## 产品定位
 
-## 第一次使用
+Photo Finish 是 Agent Skill，帮助获得授权的智能体理解摄影原片、确定处理方向、借助**真实可用的图像工具**编辑、对照复核，并在宿主支持时交付经过文件核验的正式成片。
 
-局部修改依赖经核验的工具能力。目前不能保证复杂树冠、建筑边缘与天空区域的精确选区和保护；须实际检查遮罩、边缘过渡及非目标区域。不符合质量或保护要求时必须安全拒绝。全幅生成不承诺像素锁定。
+**适用场景：**自然风光、城市夜景、建筑、旅行、静物、美食和产品摄影。**不处理以人物为主体的人像专门修图**，不开发磨皮、美颜、五官调整或塑形功能。非人像照片中偶然出现的人物须保留身份与重要内容。[完整产品定位](references/product-scope.md)。
 
-Photo Finish 是面向非人像摄影场景的专业照片美化 Skill，主要支持自然风光、城市夜景、建筑、旅行场景、静物、美食和产品摄影。不开发人脸美化、磨皮、塑形、五官调整或针对性肖像优化，不处理以人物为主体的人像照片。偶然入镜人物仍保留身份、结构和内容保护；不削弱哈希绑定、真实复核、历史不可变及保存回执要求。优先优化自然纹理、光影、色彩、构图保护、风格一致性和真实细节。
+目标是自然可信的光影、色彩、主次层次和材质，而不是统一滤镜或保证每张照片都能改善。
 
-发一张非人像照片，我会直接完成构图、光影、色彩和细节优化。
+## 下载安装
 
-部分单图工具要求明确代做授权；需要时可先说“请直接替我完成下一张照片的修图、检查、保存并交付正式文件”，再上传照片。仅传照片不授予所有工具的代操作权限；交互预览不等于正式文件或保存确认，工具要求停止时仍须遵守。
+1. 从[最新正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/latest)下载[安装 ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip)及其 [SHA-256 校验文件](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256)。
+2. 验证 ZIP 哈希后，按照宿主**正式支持的安装流程**放置完整的 `photo-finish/` 目录。`SKILL.md`、`runtime/`、`references/`、`scripts/`、`agents/`、`assets/` 必须一起保留。
+3. 核对宿主**实际加载版本**及安装后全部原文件字节是否一致。
 
-- `直接美化这张照片。`
-- `保留人物和文字，只改善光影和色彩。`
-- `参考我收藏的「柔光木质」，但不要改变构图。`
+应下载 GitHub Release **正式附件**，不是 GitHub 自动生成的 Source code ZIP。仓库内的 `dist/photo-finish.zip` 是历史 **v1.5.1** 安装包，**不是 v1.5.3 安装包**。隔离解压成功也不能证明 ChatGPT 真实宿主升级成功。
 
-成片附简短版本和真实保存状态；可继续说“更自然”“保持构图只调色”或“回到 V1”；“只改天空”仍须满足上述局部保护条件。
-效果依赖宿主真实看图和图像编辑能力。原片保留；人物、文字及指定内容列为保护项，生成式工具不能保证逐像素不变。
-个人照片、风格与任务记录使用私有位置，是否上传取决于实际宿主工具；不承诺云同步。
-
-长期定位见[非人像产品范围](references/product-scope.md)。正式验收不用人像照片；通用人物保护契约测试继续保留。
-
-## ⚡ 快速开始
-
-从[最新正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/latest)下载 [最新技能安装包](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip)与 [SHA-256 校验文件](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256)。上述下载链接始终指向最新正式版。核对哈希后，安装解压得到的 `photo-finish/` 目录。GitHub 自动生成的 Source code 压缩包包含整个仓库；用于安装技能的是 `photo-finish.zip`。版本变化和升级说明见[更新记录](CHANGELOG.md)。
-
-将整个仓库作为 `photo-finish` 技能安装。`SKILL.md`、`references/`、`scripts/`、`agents/`、`assets/` 和 **`runtime/` 必须一起保留**。执行包已经包含，无需个人资料库文件或额外恢复包。
+## 如何使用
 
 ```text
-使用 $photo-finish 处理这张照片。
+使用 $photo-finish 美化这张自然风景照片。
+请直接修图、检查、保存并交付我接下来上传的非人像照片。
+保留建筑结构和可见文字，只改善光影与色彩。
+把已经保存的 V1 稍微处理得更自然，保留原始纹理。
+直接读取之前的 V1 文件恢复，不重新渲染。
 ```
 
-默认逐张交付最终成片，附简短版本/保存状态及新成片首次交付的一行可选返工提示；不附原片、默认对比或参数。内部原片对照、实际看图验收和记录继续执行。当次明确要求优先。
+上传非人像照片**可能**在兼容宿主中触发 Skill，但“只上传照片就自动触发”仍取决于**真实宿主行为**，并未证明所有环境均可触发。某些图像工具需要明确代操作授权；仅上传照片、提供审美偏好或出现交互预览，都不能代替授权和正式保存回执。必须遵守工具的 **STOP** 要求。
+
+**默认交付：**一张最终成片，附简洁的版本与真实保存状态。若摄影改善不足、内容保护不合格或无法取得可核验文件，应如实拒绝，不能虚构成功的 V1。
+
+## 处理流程
+
+1. **观察：**检查原片构图、光照、色彩、材质与需要保护的内容。
+2. **判断：**结合本次指令、可选长期规则及确实查看过的参考照片，制定专业处理方向。
+3. **编辑：**调用真实、已授权的宿主图像工具；要求严格内容保真时优先采用可靠的非生成式路线。
+4. **复核：**与原片比较全幅效果和受影响细节，重点核查文字、人物、结构、纹理及边缘伪影。
+5. **交付：**只在质量与内容保护通过后，按真实文件字节、保存回执和版本关系确认正式交付。
+
+内置控制器负责流程和证据管理，**本身不渲染照片，也不自动认证审美质量**。[运行指南](docs/runtime.md) · [交付接口](references/delivery-adapter.md)。
+
+## 能力与限制
+
+| 方向 | 已具备的能力 | 必须如实说明的边界 |
+|---|---|---|
+| 光影与调色 | 已有真实非生成式全局调整及部分自然、建筑、旅行单样本成功案例 | 单样本通过不等于所有场景质量保证 |
+| 构图与内容保护 | 专业方向判断、原片对照、建筑文字与自然纹理等内容检查 | 生成重建无法保证逐像素保真 |
+| 局部精修 | 宿主实际可用且经过核验时使用选区或 `maskURI` | 复杂天空/树冠交界、羽化及非目标保护仍受限制 |
+| 个人风格库 | 明确授权后收藏、命名、分组、搜索及选取最多三张参考 | 不自动收藏；引用参考不代表质量提升 |
+| 自定义指令 | 可选全局、场景规则、当次覆盖与修改撤销 | 临时要求不会自动写入长期偏好或授予工具权限 |
+| 版本交付 | 真实文件 SHA-256、V1/V2 修订、前后对比、旧文件回退与保存核验 | 预览、质量接受、持久保存和版本登记是不同事实 |
+| 私有归档（v1.5.3） | 限定范围归档、完整哈希回读、独立会话**只读**取回、新私有位置的版本视图恢复 | 需要可验证的宿主交接凭据与**单写入者** |
+
+**尚未证实具有普遍效果：**专业独立降噪、真正去模糊、超分辨率、复杂夜景天空恢复与精密边缘抠图。自动测试与 CI 证明软件契约，不等于真实照片审美保证。[v1.5.2 质量证据](docs/QUALITY_STATUS_1_5_2.md) · [验证范围](docs/validation.md)。
+
+### 恢复的支持边界
+
+v1.5.3 的归档与恢复能力仅在**真实可验证的宿主凭据、准确文件身份和单写入者**条件下成立。上传结果未知、凭据丢失、身份冲突或目标不属于当前任务时必须安全停止，不盲目重传或覆盖历史。
+
+仍明确排除两个宿主级 P0：**全部本地操作状态及交接凭据丢失后的权威对账**，以及**跨会话同系列的多写入者协调**。不承诺无人值守后台归档、无限期存储或第五阶段完整长期稳定性。**第五阶段整体仍为 NO-GO。**[更新记录](CHANGELOG.md) · [历史发行准备证据](docs/RELEASE_1_5_3_PREPARATION.md)。
+
+### 宿主兼容性
+
+真实宿主必须具备看图、调用获授权的图像编辑工具、读取正式输出字节以及可信保存回执的能力。仅安装 Python 依赖不会得到云端图像编辑服务或长期存储。
+
+此前真实 ChatGPT 宿主尝试升级时，`assets/icon.svg` 在内容物化过程中由 **1,210 字节变为 1,619 字节**，实际安装仍为 **v1.5.1**。直到上传、物化、安装和实际加载全链路都能证明**所有原始字节一致**，**v1.5.3 的真实宿主升级仍为 NO-GO**。不得修改原 SVG 或放松哈希规则绕过此问题。
+
+## 个人风格规则与隐私
+
+这些都是**可选功能**。私人风格库为空或没有适用参考时，仍可直接根据原片作专业判断。
+
+- **风格库：**“把这张收藏为「柔光木质」，喜欢它的自然光线。”只有明确授权才能收藏。[风格库说明](references/personal-style-library.md)。
+- **个人规则：**“记住我偏好自然的明暗层次。”一次性调整不会自动成为长期规则。[自定义指令](references/custom-instructions.md)。
+- **私人备份：**按需导出、检查和导入照片、元数据、个人规则与修改历史。[备份与恢复](references/private-backup.md)。
+
+个人照片、风格、偏好、账本、凭据和私人 Library ID **不进入公开仓库或 Skill 安装目录**。持久保存取决于真实宿主能力及回执；临时路径或展示的附件不能单独证明长期保存。Skill 不内置云同步、遥测或用户账号服务。[安全说明](SECURITY.md)。
+
+## 开发者说明
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
 cd photo-finish
 python -m venv .venv
-# 按所用终端激活虚拟环境。
+# 按终端环境正常激活虚拟环境。
 python -m pip install -r requirements.txt
 python tools/doctor.py
 ```
 
-宿主需要提供看图、真实图像编辑和文件访问能力。Python 依赖不包含图像生成服务；技能不收集 API Key，也不隐式安装外部工具。
+开发、测试与发布细节见[贡献指南](CONTRIBUTING.md)、[验证说明](docs/validation.md)及[发布流程](docs/releasing.md)。不得把私人照片或账本写入公开测试资料。
 
-**先检索风格，再确定方向：**观察原片并读取可选全局指令，检索并查看个人风格参考，再结合专业后期摄影美学确定最终方向。无自定义指令时专业自主处理；仅限定部分要求时，其余自主判断。首版的创作自由、内容保护、实际复核和成片交付要求保留。
-
-## ✨ 核心能力
-
-| 专业方向 | 实际处理 | 质量复核 | 交付 |
-|---|---|---|---|
-| 从原片建立意图，按需采用授权参考 | 自由构图、光影、调色、局部精修与材质 | 全幅表达与受影响原生细节 | 逐张仅输出成片，验收与保存分开记账 |
-
-- 表达默认明显更充分，主动处理主次、层次、色彩关系和质感。
-- 保留、优化、重构构图同等可选，不限定轻裁、固定画幅或统一暖金色。
-- 长期保留去 AI 味：检查空间、反射、透视、塑料感、涂抹、假纹理与光晕。
-- 书画题字按原图可见内容保持，模糊处不猜写；严格逐笔或像素保真只在明确要求时启用。
-- **个人照片风格库**：主动收藏喜欢的照片，记录名称、标签与喜欢之处；每次修图自动检索最多三张适用参考，可按关键词或收藏 ID 指定，并支持查看、搜索与删除。
-- 分发参考索引默认空。个人库无适用实例时，直接依据本片作专业判断。
-- 绑定原片与成片哈希、完整真实参数、保护方案、实际复核和计时，不以方案或提示词代替执行。
-
-## 可选全局指令与专业判断
-
-用户可以保存自己的长期修图规则和审美偏好，并查看、修改、删除单条或清空。每次调用先读取个人配置，再结合原片建立处理方向；本次要求优先，临时尝试不会自动改写长期爱好。
-
-```text
-以后按这些规则修图，并记住我喜欢的光影和质感。
-查看我的修图规则和偏好。
-这次按另一种色彩处理，不改变我的长期偏好。
-```
-
-使用主入口 `profile-show / profile-set / profile-reset`，个人配置与图库一样独立私有保存，不进入公开仓库。详见[自定义指令接口](references/custom-instructions.md)。
-
-## 管理、场景适配与备份
-
-- 风格照片支持修改名称/标签/备注、分组、置顶和指定借鉴范围，列表支持筛选及翻页，原始照片保持不变。
-- 规则可按场景生效，支持启停、结构化冲突提示及最近 20 次修改撤销；完整清空会清除撤销历史并保留图库。
-- 私有照片、元数据、个人规则和修改历史可导出、检查、导入。默认合并保留已有内容，空目录可完整恢复；备份不进入公开仓库。
-
-```text
-把这张参考分到“旅行”，只借鉴光影和材质。
-这条规则只用于夜景，先停用雨天那条规则。
-撤销刚才的规则修改；检查备份后合并到我的个人图库。
-```
-
-详见[风格库接口](references/personal-style-library.md)、[场景规则](references/custom-instructions.md)、[备份恢复](references/private-backup.md)。这些管理操作按需执行，不增加日常全库处理。
-
-## 个人照片风格库
-
-```text
-把这张收藏到我的风格库，命名“柔光木质”，我喜欢它的光影与质感。
-使用 $photo-finish 美化这张新照片，参考我的风格库。
-这张按风格库里的“柔光木质”处理。
-```
-
-收藏、查看和删除复用主入口的 `style-add / style-list / style-remove`，修图继续使用原有 `prepare → submit → returned → review`。仅明确收藏才入库，待修图和成片不自动加入。个人库保存在当前用户的私有持久目录，公开仓库不含照片或个人偏好；跨设备同步由宿主提供，临时环境需指定持久位置。详见[风格库接口](references/personal-style-library.md)。
-
-## 🧭 执行与能力边界
-
-`prepare → submit → returned → review` 合并日常记账。控制器负责可追溯性和字段检查；真实修图、实际看图和审美判断由宿主与执行助手完成。
-
-详见[运行指南](docs/runtime.md)、[完整规则](runtime/我的照片美化偏好与修图标准.md)、[接口字段](references/delivery-adapter.md)。核心要求为 Python 3.10+、Pillow 与宿主图像工具；本地验证与各平台 CI 分开记录。
-
-Pillow 范围为 `>=12.3,<14`，pip 会为 Python 3.10 选择兼容的 12.x，并允许 Python 3.11+ 使用 13.x。NumPy、SciPy 保持可选，现有版本范围已允许兼容的新版。
-
-生成重绘不保证逐像素保真。严格文字、身份、打印、RAW、色准任务按实际能力选择路线并验证。附带预设与 XMP 仅为可选设计起点，未声称完成 Adobe 导入、全场景实修或肤色标定验证。展示、质量接受和持久保存分别记录，无真实回执不宣称保存完成。
-
-## 🔒 隐私与发布
-
-公开内容仅含规则、执行代码、可选预设和合成测试。不包含私人参考照片、上传原片、个人生成图、资料库标识、会话记录、Token 或机器专属路径。照片、任务账本、签名 URL 和保存回执放在技能目录之外。
-
-采用独立的新 Git 历史，并提供持续发布检查、确定性打包和哈希校验。安全检查有明确范围，不代表不存在所有潜在漏洞。详见[安全说明](SECURITY.md)与[发布审计](docs/security-audit.md)。
-
-## ✅ 验证
-
-```bash
-python tools/doctor.py
-python tools/check_publication.py
-python tools/run_tests.py
-python tools/build_release.py --output dist/photo-finish.zip
-```
-
-合成测试验证执行契约，不冒充真实照片质量证明。具体范围见[验证记录](docs/validation.md)。贡献前请阅读[贡献指南](CONTRIBUTING.md)。
-
-## 资料导航
+## 技术文档
 
 | 需要了解 | 资料 |
 |---|---|
-| 主要功能、架构与全部管理入口 | [架构与资料地图](docs/architecture.md) |
-| 明暗、色彩、主次与视频理论转化 | [摄影美化判断依据](references/tone-color-foundations.md) |
-| 实际运行和接口字段 | [运行指南](docs/runtime.md) · [主接口](references/delivery-adapter.md) |
-| 个人风格与可选全局指令 | [风格库](references/personal-style-library.md) · [自定义指令](references/custom-instructions.md) |
-| 私人资料备份和迁移 | [备份恢复](references/private-backup.md) |
-| 更新、验证与发布 | [更新记录](CHANGELOG.md) · [验证记录](docs/validation.md) · [发布流程](docs/releasing.md) |
-| 隐私边界与贡献 | [安全说明](SECURITY.md) · [发布审计](docs/security-audit.md) · [贡献指南](CONTRIBUTING.md) |
+| 功能与产品范围 | [架构](docs/architecture.md) · [非人像范围](references/product-scope.md) |
+| 执行与交付接口 | [运行指南](docs/runtime.md) · [交付协议](references/delivery-adapter.md) |
+| 摄影美学与内容保护 | [光影色彩依据](references/tone-color-foundations.md) · [保真精修](references/fidelity-and-retouch.md) |
+| 参考风格与个性规则 | [风格库](references/personal-style-library.md) · [自定义指令](references/custom-instructions.md) |
+| 私人迁移与恢复 | [备份恢复](references/private-backup.md) |
+| 发行、验证和安全 | [更新记录](CHANGELOG.md) · [验证](docs/validation.md) · [安全说明](SECURITY.md) |
 
 ## 许可证
 
-[MIT](LICENSE)，copyright © 2026 kwhi。[方法来源](THIRD_PARTY_NOTICES.md)保留归属说明。用户照片与第三方服务各自遵守相应权利与条款。
+[MIT](LICENSE) © 2026 kwhi。[第三方声明](THIRD_PARTY_NOTICES.md)。用户照片及第三方素材各自保留原有权利。
