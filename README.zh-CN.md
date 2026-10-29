@@ -5,17 +5,17 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.2-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)
+[![Version](https://img.shields.io/badge/Stable-1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、处理、复核](docs/assets/photo-finish.svg)
 
-当前稳定版为 **1.5.2**，从 [v1.5.2 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)下载。带日期的候选与审批报告保留为真实历史记录。
+当前已正式发布的稳定版为 **1.5.3**，从 [v1.5.3 正式发布页](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)下载。带日期的候选与审批报告保留为真实历史记录。
 
-v1.5.2 已包含局部及保真路由保护。见[当前证据与限制](docs/QUALITY_STATUS_1_5_2.md)；带日期审计保留当时状态。仓库 `dist/photo-finish.zip` 仍是历史 v1.5.1 包，安装 v1.5.2 请仅使用 Release 附件。
+v1.5.2 已包含局部及保真路由保护。见[该版本证据与限制](docs/QUALITY_STATUS_1_5_2.md)；带日期审计保留当时状态。仓库 `dist/photo-finish.zip` 仍是历史 v1.5.1 包，安装 v1.5.3 请仅使用其经验证的 Release 附件。
 
-**1.5.3 发行候选，尚未发布。** 基于已合并 PR #24，支持可信、可核验的宿主交接凭据及单写入者条件下的私有归档、完整字节/SHA-256 回读、跨独立会话只读恢复，以及全新私有目标中的版本视图恢复。未知结果、凭据缺失或身份冲突时安全停止，不盲目重传、不覆盖历史。全部交接凭据及本地状态丢失后的权威对账、跨会话同系列并发协调仍未解决；不承诺无人值守后台归档或无限期持久保存，完整第五阶段长期可靠性目标仍为 NO-GO。见[候选范围及发行/升级门禁](docs/RELEASE_1_5_3_PREPARATION.md)。另行批准发布前，下方 latest 下载仍指向正式 v1.5.2。
+**v1.5.3 已正式发布（合并 PR #24 和 #25）。** 支持可信、可核验的宿主交接凭据及单写入者条件下的私有归档、完整字节/SHA-256 回读、跨独立会话只读恢复，以及全新私有目标中的版本视图恢复。未知结果、凭据缺失或身份冲突时安全停止，不盲目重传、不覆盖历史。全部交接凭据及本地状态丢失后的权威对账、跨会话同系列并发协调仍未解决；不承诺无人值守后台归档或无限期持久保存，完整第五阶段长期可靠性目标仍为 NO-GO。见[历史候选准备与宿主升级门禁](docs/RELEASE_1_5_3_PREPARATION.md)。下方 latest 下载现指向正式 v1.5.3，但发布不等于已安装 Skill 自动升级；真实宿主升级在包括 `assets/icon.svg` 的全部原始字节通过传输与物化校验前仍为 NO-GO。
 
 ## 第一次使用
 
