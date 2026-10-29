@@ -11,6 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'runtime/10_SYSTEM_
 from tests import test_recovery_archive as fixtures
 import recovery_archive as archive
 import workflow_session as workflow
+import photo_workflow
+import delivery_automation as delivery
+import task_history as history
+from runtime_io import digest
 
 
 class VersionRecoveryTests(unittest.TestCase):
@@ -48,6 +52,67 @@ class VersionRecoveryTests(unittest.TestCase):
     def module(self):
         import version_recovery
         return version_recovery
+
+    def saved_branch(self, parent, number):
+        from PIL import Image, ImageCms
+        job = self.d / ('branch-' + str(number) + '.json')
+        output = job.with_suffix('.png')
+        record = self.d / ('branch-record-' + str(number) + '.json')
+        Image.new('RGB', (32, 48), (80 + number, 100, 120)).save(output,
+            icc_profile=ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes())
+        photo_workflow.prepare(self.root, parent['output']['path'], job)
+        photo_workflow.candidates(job, self.root, [])
+        workflow.select_references(job, 'PROFESSIONAL_FALLBACK', [], 'Synthetic branch fixture')
+        workflow.set_protections(job, [], 'Synthetic branch fixture')
+        state = workflow._load(job)
+        state['revision'] = {'series': parent['series'], 'session_root': str(self.session),
+            'parent_job': parent['job'], 'parent_version': parent['label'],
+            'parent_output': parent['output'], 'original_source': parent['original_source'],
+            'parent_protection_sha256': digest([]), 'requirements': [], 'protected_regions': {},
+            'request': 'Synthetic branch'}
+        workflow._save(job, state)
+        workflow.add_review(job, output, parent['output']['sha256'], True, True, 'Synthetic branch receipt')
+        workflow.accept_job(job, output)
+        photo_receipt = self.d / ('branch-photo-save-' + str(number) + '.json')
+        workflow.save_intent(job, photo_receipt)
+        self.save_fixture(photo_receipt, output.resolve(), 'SYNTHETIC_BRANCH_OUTPUT_' + str(number))
+        delivery.complete(job, photo_receipt, record)
+        record_receipt = self.d / ('branch-record-save-' + str(number) + '.json')
+        delivery.record_intent(job, record, record_receipt)
+        self.save_fixture(record_receipt, record.resolve(), 'SYNTHETIC_BRANCH_RECORD_' + str(number))
+        delivery.record_saved(job, record_receipt)
+        item = history.delivered(job, self.session, True)['version']
+        result = self.d / ('branch-materialize-' + str(number) + '.json')
+        self.materialization(result, output, 'SYNTHETIC_BRANCH_OUTPUT_' + str(number))
+        self.cloud.append({'path': str(output), 'result_path': str(result)})
+        return job, item
+
+    def test_captured_older_parent_branch_restores_with_its_selected_parent(self):
+        self.ready()
+        second_job, second = self.saved_branch(self.item, 2)
+        third_job, third = self.saved_branch(self.item, 3)
+        self.assertEqual((second['parent_version'], third['parent_version']), ('V1', 'V1'))
+        state = archive.prepare(third_job, self.session, 'SYNTHETIC_PRIVATE_FOLDER', self.cloud)
+        proof = self.d / 'branched-archive-materialization.json'
+        self.materialization(proof, Path(state['archive']['path']), 'SYNTHETIC_BRANCHED_ARCHIVE')
+        cloud = list(self.cloud)
+        for number, job in enumerate((self.j, second_job, third_job), 1):
+            saved = workflow._load(job)
+            result = self.d / ('formal-record-materialize-' + str(number) + '.json')
+            path = Path(saved['final_record']['path'])
+            self.materialization(result, path, saved['record_delivery']['file_id'])
+            cloud.append({'path': str(path), 'result_path': str(result)})
+        protected = [self.session / 'tasks.sqlite3', self.j, second_job, third_job, self.o]
+        before = [p.read_bytes() for p in protected]
+        restored = self.module().restore(state['archive']['path'], state['archive']['sha256'],
+            'SYNTHETIC_BRANCHED_ARCHIVE', str(proof), cloud, self.d.resolve() / 'branched-view')
+        self.assertEqual(restored['label'], 'V3')
+        self.assertEqual(restored['parent_version'], 'V1')
+        self.assertEqual(restored['parent_output']['sha256'], self.item['output']['sha256'])
+        self.assertEqual(restored['source'], restored['parent_output'])
+        self.assertEqual(restored['original_source']['sha256'], self.item['original_source']['sha256'])
+        self.assertEqual(restored['renderer_calls'], 0)
+        self.assertEqual(before, [p.read_bytes() for p in protected])
 
     def test_restore_after_old_state_loss_keeps_identity_and_exact_pixels_without_render(self):
         args = self.inputs()

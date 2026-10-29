@@ -95,3 +95,33 @@ limitations remain release/merge criteria for any broader reliability claim.
 Keep Draft in this task; do not silently change Ready status, merge, install,
 publish, or migrate historical ledgers. These are documentation-only findings;
 the runtime and its existing regression evidence remain unchanged.
+
+## Final frozen scope and review decision
+
+Supported use requires known, verifiable authenticated-host handoff credentials
+and a single writer. It covers explicit private archival, actual full-byte
+readback/SHA-256 verification, independently observed cross-session read-only
+retrieval, and a verified version view in a NEW private target. Identical entry
+is reused; unknown writes, missing proofs, conflicting identities/bytes and
+unowned targets stop without overwriting original history. The host must retain
+the handoff and follow the protocol; this is not a server-enforced global lock.
+
+Excluded promises remain recovery after loss of all credentials, cross-session
+concurrent writers, unattended/background archival and indefinite retention.
+The recovered view is not operational task-ledger migration or revision authority.
+Real acceptance covers the previously authorized V1; no new photographic or
+historical archive experiment is implied by this review.
+
+Final review found one narrow-scope defect: capture permits an older selected
+parent, but restore required the immediately preceding version. The minimal
+fix resolves parents only among already validated versions and compares the
+selected parent's output/source/original-source identities. A new synthetic
+capture-to-restore regression covers V2 -> V1 and V3 -> V1, the V3 cursor and
+unchanged original fixtures, without image service calls.
+
+The narrow feature has independent product value and may enter Ready for Review
+and merge approval once the fix's exact-head checks and final review pass.
+The two host P0s keep the complete Phase 5 objective NO-GO; they are not automatic
+merge blockers for this frozen feature contract. Draft/Ready changes and merging
+are separate workflow actions; this task does not merge, publish, upgrade the
+installed skill or modify PR #16/private history.

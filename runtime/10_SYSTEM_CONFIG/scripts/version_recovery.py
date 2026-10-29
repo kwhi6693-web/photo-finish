@@ -64,6 +64,7 @@ def _bundle(path, expected_sha256):
         raise ValueError('Recovery row fingerprint mismatch')
     required = set()
     previous = None
+    validated = {}
     for number, (row, v) in enumerate(zip(rows, r['versions']), 1):
         item = v['version']
         if (row[0] != r['series'] or row[1] != number or row[2] != item['job'] or
@@ -73,9 +74,11 @@ def _bundle(path, expected_sha256):
         if previous is None:
             if item['parent_version'] is not None or item['parent_output'] is not None:
                 raise ValueError('Recovery first parent conflicts')
-        elif (item['parent_version'] != previous['label'] or item['parent_output'] != previous['output'] or
-              item['source'] != previous['output'] or item['original_source'] != previous['original_source']):
-            raise ValueError('Recovery parent/source conflict')
+        else:
+            parent = validated.get(item['parent_version'])
+            if (parent is None or item['parent_output'] != parent['output'] or
+                    item['source'] != parent['output'] or item['original_source'] != parent['original_source']):
+                raise ValueError('Recovery parent/source conflict')
         prefix = 'evidence/V' + str(number) + '/'
         if v['members'] != {k: prefix + k + '.json' for k in ('job', 'record', 'photo_receipt', 'record_receipt')}:
             raise ValueError('Recovery evidence member identity conflict')
@@ -115,6 +118,7 @@ def _bundle(path, expected_sha256):
         if dependency['library_file_id'] != v['output_library_file_id']:
             raise ValueError('Recovery output cloud identity conflict')
         previous = item
+        validated[item['label']] = item
     if (r['label'] != previous['label'] or set(payload) != expected_members or
             set(r['dependencies']) != required or set(r['evidence_sha256']) != expected_members -
             {'manifest.json', 'recovery.json', 'versions.sqlite3'}):
