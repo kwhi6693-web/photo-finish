@@ -32,6 +32,23 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(state['render_result']['recipe']['actual_arguments'],self.args)
         self.assertEqual(len(state['tools']),1);self.assertEqual(len([x for x in state['stages'] if x['stage']=='render']),1)
         self.assertNotIn('save_completed',state['milestones'])
+    def test_manual_original_png_delivery_plan_preserves_bytes_and_history(self):
+        before=self.output.read_bytes()
+        token=d.begin(self.job,'SYNTHETIC_IMAGE_TOOL',self.args,'manual')['submission_id']
+        now=time.time_ns()
+        d.finish(self.job,token,'ready',now,now+10,output_path=self.output)
+        self.review();w.accept_job(self.job,self.output)
+        ledger=self.job.read_bytes()
+        for _ in range(2):
+            plan=a.plan(self.job)
+            self.assertTrue(plan['display_needed'])
+            self.assertEqual(plan['action'],'PREPARE_PHOTO_SAVE')
+        self.assertEqual(self.job.read_bytes(),ledger)
+        self.assertEqual(self.output.read_bytes(),before)
+        self.assertEqual(w._load(self.job)['output'],w._file(self.output))
+        self.assertNotIn('platform_delivery',w._load(self.job))
+        self.assertEqual(d.status(self.job)['display'],'not_observed')
+
     def test_screen_scope_preserves_profile_false_and_waits_for_real_save(self):
         self.finish(self.begin());self.review();w.accept_job(self.job,self.output)
         state=w._load(self.job);self.assertEqual(state['acceptance_scope'],'screen_srgb_assumed');self.assertFalse(state['reviews'][-1]['profile_passed'])
