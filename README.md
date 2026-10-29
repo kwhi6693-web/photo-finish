@@ -1,57 +1,97 @@
-# 📷 Photo Finish
+# Photo Finish
 
-> Give every photograph a clear direction, expressive light and color, and a believable photographic finish.
+> Source-aware, natural photographic finishing for **non-portrait photos**.
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
-[![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
+[![Stable version](https://img.shields.io/badge/Stable-v1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
+[![CI](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
+[![MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
-![Photo Finish — direction, craft, review](docs/assets/photo-finish.svg)
+![Photo Finish — photographic direction, craft, and review](docs/assets/photo-finish.svg)
 
-**Jump to:** [Quick Start](#quick-start) · [Capabilities](#capabilities) · [Compatibility](#compatibility) · [Privacy](#privacy) · [Validation](#validation)
+**Go to:** [Install](#install) · [Usage](#usage) · [Capabilities](#capabilities-and-limits) · [Compatibility](#host-compatibility) · [Docs](#documentation)
 
-<a id="quick-start"></a>
+**Latest published version: [v1.5.3](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3).** Publication does **not** automatically upgrade a Skill already installed in an agent host.
 
-**1.5.3 is the current published stable release. Download the [v1.5.3 release](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3). Dated candidate and approval reports remain historical records.
+## What it is
 
-Published v1.5.2 includes the local/fidelity route guards. See the [v1.5.2 evidence and limitations](docs/QUALITY_STATUS_1_5_2.md); dated audits describe their original review state. The repository `dist/photo-finish.zip` intentionally remains the historical v1.5.1 package: install v1.5.3 from its verified Release attachments only.
+Photo Finish helps an authorized agent inspect a photograph, choose a photographic direction, edit it using an **available real image tool**, compare the result against its source, and deliver an actual verified file when saving is supported.
 
-**Published v1.5.3 (merged PRs #24 and #25).** The scoped recovery release adds private archival and full-byte/SHA-256 readback, independent-session read-only recovery and a recovered version view in a NEW private target. It requires known verifiable authenticated-host handoff credentials and ONE writer. Unknown outcomes, missing credentials and conflicting identities stop safely without blind re-upload or historical overwrite. It does not supply authoritative reconciliation after all handoff/local state is lost or cross-session same-series coordination. Unattended/background archival and indefinite retention are not promised; the full Phase 5 long-term objective remains NO-GO. See the [historical candidate preparation and host-upgrade gates](docs/RELEASE_1_5_3_PREPARATION.md). The latest-download links below now resolve to published v1.5.3; publication alone does NOT upgrade an installed host Skill. Real host upgrades remain NO-GO until all original bytes, including `assets/icon.svg`, are verified across transfer and materialization.
+**Intended scenes:** nature and landscapes, architecture, city nights, travel, still life, food, and product photography. It is **not a portrait-retouching Skill**: no face beautification, skin smoothing, facial reshaping, or dedicated portrait optimization. Incidental people in non-portrait scenes remain protected. [Full product scope](references/product-scope.md).
 
-## First use
+The goal is credible light, color, visual hierarchy, and natural texture—not one universal preset or a guarantee that every photograph will improve.
 
-Photo Finish is a professional non-portrait photography Skill for natural landscapes, city nights, architecture, travel, still life, food and products. It does not develop face beautification, skin smoothing, reshaping, facial-feature changes or portrait optimization. Incidental people retain identity, structure and content protections. Priorities are natural texture, light, color, composition protection, consistent style and real detail. See [product scope](references/product-scope.md).
+## Install
 
-Send a non-portrait photograph to start editing composition, light, color and detail.
+1. Download the [installable Skill ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip) and its [SHA-256 checksum](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256) from the [latest release](https://github.com/kwhi6693-web/photo-finish/releases/latest).
+2. Verify the checksum, then extract and install the complete `photo-finish/` folder using your host's **supported** Skill installation flow. Keep `SKILL.md`, `runtime/`, `references/`, `scripts/`, `agents/`, and `assets/` together.
+3. Confirm that the host **actually loads** the intended version and preserves every original file byte.
 
-Some single-photo tools require explicit permission to edit for you. Where needed, first say “Please directly edit, check, save and deliver the photo I am about to upload.” Then send the photo. A photo-only upload does not grant blanket tool authority. An interactive preview is not a formal file or save confirmation; tool instructions to stop remain binding.
+Use the **Release attachment**, not GitHub's auto-generated source archive. The repo's `dist/photo-finish.zip` is a **historical v1.5.1 package**, not the v1.5.3 installer. A locally verified extraction does not by itself prove a safe ChatGPT-host upgrade.
 
-Local edits require verified tool capabilities. Precise sky selection and protection around complex tree canopies and building edges are not guaranteed. Check actual masks, edge transitions and non-target regions; safely refuse edits that fail quality or protection requirements. Whole-image generation is not a pixel-lock guarantee.
-
-- `Beautify this photo.`
-- `Keep the people and lettering; improve only light and color.`
-- `Use my saved soft-light wood reference without changing the composition.`
-
-The result carries a compact version and truthful save status. Ask for a local change or “back to V1” to reuse an earlier file.
-Actual viewing and editing depend on host tools. Originals are retained; generative editing cannot guarantee pixel-identical people or lettering.
-Photos, styles and task records use private storage. Upload behavior depends on the actual host; cloud sync is not promised.
-
-## ⚡ Quick Start
-
-Download the [latest skill ZIP](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip) and [SHA-256 checksum](https://github.com/kwhi6693-web/photo-finish/releases/latest/download/photo-finish.zip.sha256) from the [latest stable release](https://github.com/kwhi6693-web/photo-finish/releases/latest). These download links always follow the latest stable release. Verify the checksum, then install the extracted `photo-finish/` directory. GitHub's automatically generated source archives contain the whole repository; `photo-finish.zip` is the installable skill package. See the [changelog](CHANGELOG.md) for changes and upgrade notes.
-
-Install this repository as the `photo-finish` skill in your agent's skill directory. Keep `SKILL.md`, `references/`, `scripts/`, `agents/`, `assets/` and **`runtime/` together**; the runtime is included, so no private Library or recovery ZIP is required.
+## Usage
 
 ```text
-Use $photo-finish to edit this photograph.
+Use $photo-finish to edit this landscape photo.
+Please edit, inspect, save, and deliver the non-portrait photo I am about to upload.
+Keep the lettering and buildings unchanged; improve light and color.
+Make the saved V1 more natural without losing its detail.
+Restore V1 from the existing file without editing it again.
 ```
 
-The agent examines the actual source, develops photographic direction, edits through an available image tool, inspects the result, and makes targeted corrections when needed. **Default delivery: one final photograph at a time, compact version/save status and one optional first-delivery hint.** Originals, comparisons, parameters and reports stay internal unless requested.
+Photo-only automatic invocation is *intended* by the Skill but **depends on real host behavior**; it is not universally verified. Some editing tools require explicit permission to act on your behalf. A photo upload, an interactive preview, or a style preference alone is not proof of that permission or of confirmed saving. Follow any tool-required **STOP** condition.
 
-For a local checkout:
+**Default delivery:** one final photograph with concise version and genuine save status. If no meaningful quality improvement, safe content-preserving route, or verified output exists, report the failure instead of registering a false V1.
+
+## The workflow
+
+1. **Inspect** the original's composition, light, color, material, and protected content.
+2. **Decide** using the user's current instructions, optional saved preferences, and any actually reviewed style references.
+3. **Edit** through a real, authorized host image tool; favor a non-generative route when exact content matters.
+4. **Review** the full image and affected native details against the original; check lettering, people, geometry, natural texture, and edge artifacts.
+5. **Deliver** only after visual acceptance, real file-byte verification, and truthful saving/version evidence.
+
+The bundled controller tracks this process; **it does not itself edit images or certify visual quality**. See the [runtime guide](docs/runtime.md) and [delivery adapter](references/delivery-adapter.md) for implementation.
+
+## Capabilities and limits
+
+| Area | Available capability | Boundary |
+|---|---|---|
+| Light and color | Real non-generative global adjustments, demonstrated on specific nature, architecture, and travel photos | Scene-specific success is not universal quality assurance |
+| Composition and content | Independent photographic judgment, comparison, and protection of meaningful structures, lettering, textures, and incidental people | Generation cannot promise pixel-identical reconstruction |
+| Local retouching | Host selection/mask interfaces when supported and actually verified | Complex canopy/sky boundaries, feathering, and reliable non-target protection remain restricted |
+| Personal style library | Explicit save, search, labels/groups, preferred uses, and up to three suggested references | No automatic collecting; an adopted reference is not proof of quality gain |
+| Editing preferences | Optional long-term rules, scene-specific settings, temporary overrides, undo | One-time requests do not silently change saved rules or grant editing permission |
+| Versioned delivery | Existing-file V1/V2 revisions, source/output SHA-256, comparison, safe rollback, and explicit save receipts | Preview, visual approval, persistence, and registration are separate facts |
+| Scoped private recovery (v1.5.3) | Archive/member verification, independent-session **read-only** retrieval, and recovery views in a new private target | Requires verifiable host handoff credentials and **one writer** |
+
+**Not proven as general-purpose results:** dedicated professional denoising, real deblurring, super-resolution, complex night-sky restoration, or precision edge matting. Synthetic tests and CI verify software behavior, not photographic quality. [Quality evidence](docs/QUALITY_STATUS_1_5_2.md) · [Validation scope](docs/validation.md).
+
+### Recovery status
+
+v1.5.3's private archival/recovery contract is **limited**. Unknown outcomes, absent credentials, conflicting file identities, and unowned destinations must stop safely; identical re-entry reuses actual evidence instead of blindly re-uploading or overwriting history.
+
+Two host-level P0 cases are **excluded**: authoritative reconciliation after **all** local state and handoff credentials are lost, and cross-session **same-series multi-writer coordination**. No unattended/background archival, indefinite retention, or complete Phase 5 reliability promise. **Full Phase 5: NO-GO.** See the [changelog](CHANGELOG.md) and [historical release preparation](docs/RELEASE_1_5_3_PREPARATION.md).
+
+### Host compatibility
+
+A real host must provide image inspection, an authorized image-editing tool, formal output bytes, and trustworthy save receipts. Python dependencies do not provide hosted image processing or durable cloud storage.
+
+A previously examined ChatGPT host remained on **v1.5.1** after an upgrade attempt modified `assets/icon.svg` during content materialization (**1,210 → 1,619 bytes**). **The real-host v1.5.3 upgrade remains NO-GO** until transfer, materialization, installation, and loading preserve **all** source bytes. Do not bypass this by changing the SVG or relaxing checks. Host installation state must be checked independently of the GitHub Release.
+
+## Personal styles, rules, and privacy
+
+These features are **optional**. When the private library is empty or no reference fits, the agent can work from the current photo.
+
+- **Style collection:** “Save this as *Soft wood interiors*; I like its light.” Collect only with explicit user intent. [Style library](references/personal-style-library.md).
+- **Saved rules:** “Remember that I like natural tonal separation.” One-off overrides remain one-off. [Custom instructions](references/custom-instructions.md).
+- **Private backup:** export, inspect, or import photos, metadata, rules, and undo history when requested. [Backup guide](references/private-backup.md).
+
+Photos, references, personal preferences, session records, credentials, and private Library IDs must remain **outside the installation and public repository**. Host-provided persistence requires real receipts; temporary directories or displayed attachments alone are not durable storage. No bundled cloud-sync, telemetry, or account service is claimed. [Security policy](SECURITY.md).
+
+## Developer notes
 
 ```bash
 git clone https://github.com/kwhi6693-web/photo-finish.git
@@ -62,128 +102,19 @@ python -m pip install -r requirements.txt
 python tools/doctor.py
 ```
 
-Python dependencies do not provide an image generator. The host agent must supply visual understanding, an authorized image-editing tool, and file access. The skill does not collect API keys or silently install tools.
-
-<a id="capabilities"></a>
-
-**Reference-first workflow:** observe the source and read optional global instructions, retrieve and view suitable personal references, then lock the final direction before editing. With no custom instructions, use professional photographic judgment; with partial instructions, decide the remaining choices professionally. The original creative, fidelity, real-review and final-photo delivery requirements remain.
-
-## ✨ Capabilities
-
-| Direction | Craft | Review | Delivery |
-|---|---|---|---|
-| Source-aware intent and reference decisions | Composition, light, color, local retouching and material treatment | Full-frame expression plus affected native-detail checks | One final photograph; separate quality and save evidence |
-
-- **Expressive by default.** Make the visual intention evident through hierarchy, tonal separation, palette and texture. A tiny exposure adjustment is not the default finish line.
-- **Composition freedom.** Preserve, optimize or reframe; crop, aspect ratio and visual center follow the photograph rather than a fixed preset.
-- **Believable photography.** Check spatial logic, reflections, perspective, material detail, halos, smearing and repeated synthetic texture. This does not require low contrast or muted color.
-- **Protect meaningful content.** Preserve recognizable identity, artwork, inscriptions, stamps and key facts according to the locked task requirements. Ordinary lettering follows the visible source; ambiguous strokes are not invented.
-- **Your personal style library.** Explicitly collect favorite photographs with names, labels and notes. Future edits automatically retrieve up to three relevant references; search by keyword or choose saved IDs. Private files live outside the installation and Git checkout.
-- **References when useful.** Use authorized references as evidence, not an aesthetic ceiling. An empty or unsuitable reference library goes directly to professional source-based judgment.
-- **Real execution records.** Bind source/output hashes, actual tool arguments, protection strategy, observed review, corrections and timing. Do not call a plan a photograph.
-
-## Optional global instructions and professional judgment
-
-Save your own editing rules and aesthetic preferences, then reuse them automatically on future edits. View, replace, remove or clear them through `profile-show / profile-set / profile-reset` in the same controller. Current instructions take priority, so a one-time experiment does not change your long-term profile.
-
-```text
-Remember these editing rules and the visual qualities I like for future photographs.
-Show my saved editing rules and preferences.
-For this photo only, use a different color direction.
-```
-
-The agent reads the private profile before retrieving references and choosing final direction; each job binds the actual profile hash and a stable snapshot. User data stays outside the skill/Git checkout. See the [custom-instructions guide](references/custom-instructions.md). These are photographic instructions, not executable scripts or automatic quality certification.
-
-## Manage and move your personal collection
-
-Edit saved names, labels and notes; organize groups, pin useful examples and specify which light/color/material/composition/atmosphere components may be borrowed. Filter and page through collections without changing image bytes.
-
-Add scene-specific rules/preferences, enable or disable them, and undo up to twenty changes. Actual scene labels determine applicable instructions. Structured setting conflicts are surfaced before preparation; free-text interpretation still belongs to the agent.
-
-Export, inspect and merge a private backup of photographs, metadata, settings and undo history. Existing values are preserved by default; empty-target recovery restores the original collection. Backups stay outside the public repository. See the [backup guide](references/private-backup.md).
-
-## Personal style library
-
-```text
-Save this photograph to my style library as “Soft wood interiors”; I like its light and texture.
-Use $photo-finish to edit this new photo using suitable references from my style library.
-Use the “Soft wood interiors” style from my collection for this photograph.
-```
-
-The agent uses `photo_edit.py style-add`, `style-list`, and `style-remove`. Collection requires explicit user intent; edit targets and final images are never collected automatically. The same `prepare` call retrieves the current user's collection before the existing visual selection step. The [field guide](references/personal-style-library.md) documents JSON commands, keyword/ID selection and private storage. The collection is local and persistent when the host provides a persistent location; it has no built-in cloud sync or hosted account service.
-
-## 🧭 How It Works
-
-The bundled controller groups routine work into four calls. It records the agent's actual work; it neither renders photographs nor certifies visual judgment automatically.
-
-| Stage | Controller | Required real work |
-|---|---|---|
-| Understand | `photo_edit.py prepare` | Inspect the source; observe subject, scene, light and material; retrieve references |
-| Commit direction | `photo_edit.py submit` | Select viewed references, lock final direction and protected content, record the complete tool request |
-| Acquire | `photo_edit.py returned` | Execute the actual editing tool once; inspect formal returned bytes |
-| Review | `photo_edit.py review` | Compare source and output, inspect affected details, resolve visible issues |
-
-Read the [runtime guide](docs/runtime.md) for executable examples, [the complete policy](runtime/我的照片美化偏好与修图标准.md) for behavior, and [the adapter contract](references/delivery-adapter.md) only when its fields are needed.
-
-<a id="compatibility"></a>
-
-## 🧩 Compatibility
-
-| Capability | Requirement / boundary |
-|---|---|
-| Agent | Visual source/output inspection and instruction-following |
-| Image editing | A real host-provided editor or reference-aware image-generation tool |
-| Controller | Python 3.10+ and Pillow; local Linux/Python 3.12 evidence is reported separately from CI |
-| Color | Interpret supported declarations; an explicit bounded screen-sRGB assumption is not calibrated color or print certification |
-| Exact text or identity | Use a route that can preserve the protected content; generated reconstruction cannot pass an exact-content requirement |
-| Saving | Host-specific; presentation, scoped quality acceptance and confirmed durable saving are different facts |
-| Optional tools | Lightroom, RAW decoding, numerical analysis, grids and captions only when applicable and available |
-
-Pillow is bounded to `>=12.3,<14`. pip selects a compatible 12.x release on Python 3.10 and permits 13.x on Python 3.11+. NumPy and SciPy remain optional; their version ranges already permit newer compatible releases.
-
-The public reference index starts empty. The optional numerical baselines and XMP files are designed starting settings, not measured author settings, an obligatory look, or proof of Adobe import/render compatibility. RAW and print results need task-specific verification. Portrait photographs are outside the product scope.
-
-<a id="privacy"></a>
-
-## 🔒 Privacy
-
-The repository contains workflow code, policies, optional presets and synthetic tests. **No private reference photographs, user uploads, generated personal images, Library IDs, session records, credentials or machine-specific paths are distributed.**
-
-Keep images, ledgers, signed result URLs and save receipts outside the installation directory. Image providers receive photographs only through the host tools you authorize; the skill itself installs no daemon, telemetry or upload service. A fresh public Git history prevents accidental publication of the private workspace's earlier commits.
-
-See [SECURITY.md](SECURITY.md) for the disclosure route and [the publication audit](docs/security-audit.md) for check scope and limitations.
-
-<a id="validation"></a>
-
-## ✅ Validation
-
-```bash
-python tools/doctor.py
-python tools/check_publication.py
-python tools/run_tests.py
-python tools/build_release.py --output dist/photo-finish.zip
-```
-
-The package builder uses an allowlist, rejects unsafe entries, writes deterministic archives and includes MIT license/attribution. Checks cover policy/hash consistency, empty-library fallback, source/output identity, protection contracts, atomic failure behavior, color scope, save-state separation and reproducible extraction. Synthetic tests exercise contracts; they are not real-photo quality evidence. See [validation scope](docs/validation.md).
-
-## 🤝 Contributing
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md). Keep the ordinary edit path light, preserve actual visual review, and never add private photographs or credentials to tests or examples. A ⭐ helps others discover the project if it is useful to you.
+For development, tests, and publishing, see [contributing](CONTRIBUTING.md), [validation](docs/validation.md), and [releasing](docs/releasing.md). Keep private photos and ledgers out of test fixtures and public artifacts.
 
 ## Documentation
 
-| Need | Guide |
+| Topic | Guide |
 |---|---|
-| Main features, architecture and all controller operations | [Architecture and document map](docs/architecture.md) |
-| Tone, color and visual hierarchy | [Practical photographic foundations](references/tone-color-foundations.md) |
-| Executable workflow and API fields | [Runtime guide](docs/runtime.md) · [Adapter contract](references/delivery-adapter.md) |
-| Personal references and optional global instructions | [Style library](references/personal-style-library.md) · [Custom instructions](references/custom-instructions.md) |
-| Private migration and recovery | [Backup guide](references/private-backup.md) |
-| Updates, evidence and publication | [Changelog](CHANGELOG.md) · [Validation](docs/validation.md) · [Release procedure](docs/releasing.md) |
-| Privacy boundaries and contributions | [Security](SECURITY.md) · [Audit](docs/security-audit.md) · [Contributing](CONTRIBUTING.md) |
+| Feature map and design | [Architecture](docs/architecture.md) · [Product scope](references/product-scope.md) |
+| Workflow and controller interfaces | [Runtime](docs/runtime.md) · [Delivery adapter](references/delivery-adapter.md) |
+| Realistic photo treatment and protection | [Tone/color](references/tone-color-foundations.md) · [Fidelity](references/fidelity-and-retouch.md) |
+| Personal reference and instructions | [Style library](references/personal-style-library.md) · [Preferences](references/custom-instructions.md) |
+| Private migration and recovery | [Backup](references/private-backup.md) |
+| Releases, validation, and security | [Changelog](CHANGELOG.md) · [Validation](docs/validation.md) · [Security](SECURITY.md) |
 
 ## License
 
-[MIT](LICENSE), copyright © 2026 kwhi. Method references and dependency boundaries are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). User photographs remain subject to their own rights; this license does not grant rights to third-party images or services.
-
-Instruction priority: safety and content protection, current task instructions, saved rules/preferences, suitable style, professional defaults. A single feedback turn never silently becomes a saved preference.
+[MIT](LICENSE) © 2026 kwhi. See [third-party notices](THIRD_PARTY_NOTICES.md). User images and third-party materials retain their own rights.
