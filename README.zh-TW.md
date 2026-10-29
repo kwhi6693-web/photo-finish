@@ -5,17 +5,17 @@
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 [![Agent Skill](https://img.shields.io/badge/Type-Agent%20Skill-3f4856?style=flat-square)](SKILL.md)
-[![Version](https://img.shields.io/badge/Stable-1.5.2-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)
+[![Version](https://img.shields.io/badge/Stable-1.5.3-2f855a?style=flat-square)](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)
 [![Validation](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml/badge.svg)](https://github.com/kwhi6693-web/photo-finish/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a?style=flat-square)](LICENSE)
 
 ![Photo Finish — 方向、處理、複核](docs/assets/photo-finish.svg)
 
-目前穩定版為 **1.5.2**，從 [v1.5.2 正式發布頁](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.2)下載。附日期的候選與審批報告保留為真實歷史記錄。
+目前已正式發布的穩定版為 **1.5.3**，從 [v1.5.3 正式發布頁](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.3)下載。附日期的候選與審批報告保留為真實歷史記錄。
 
-v1.5.2 已包含局部與保真路由保護。見[目前證據與限制](docs/QUALITY_STATUS_1_5_2.md)；附日期審計保留當時狀態。儲存庫 `dist/photo-finish.zip` 仍是歷史 v1.5.1 套件，安裝 v1.5.2 請僅使用 Release 附件。
+v1.5.2 已包含局部與保真路由保護。見[該版本證據與限制](docs/QUALITY_STATUS_1_5_2.md)；附日期審計保留當時狀態。儲存庫 `dist/photo-finish.zip` 仍是歷史 v1.5.1 套件，安裝 v1.5.3 請僅使用其經驗證的 Release 附件。
 
-**1.5.3 發行候選，尚未發布。** 基於已合併 PR #24，支援可信、可核驗的宿主交接憑據及單一寫入者條件下的私有歸檔、完整位元組/SHA-256 回讀、跨獨立會話唯讀恢復，以及全新私有目標中的版本檢視恢復。未知結果、憑據缺失或身分衝突時安全停止，不盲目重傳、不覆寫歷史。全部交接憑據及本機狀態遺失後的權威對帳、跨會話同系列並行協調仍未解決；不承諾無人值守背景歸檔或無限期持久保存，完整第五階段長期可靠性目標仍為 NO-GO。見[候選範圍與發行/升級門檻](docs/RELEASE_1_5_3_PREPARATION.md)。另行批准發布前，下方 latest 下載仍指向正式 v1.5.2。
+**v1.5.3 已正式發布（合併 PR #24 和 #25）。** 支援可信、可核驗的宿主交接憑據及單一寫入者條件下的私有歸檔、完整位元組/SHA-256 回讀、跨獨立會話唯讀恢復，以及全新私有目標中的版本檢視恢復。未知結果、憑據缺失或身分衝突時安全停止，不盲目重傳、不覆寫歷史。全部交接憑據及本機狀態遺失後的權威對帳、跨會話同系列並行協調仍未解決；不承諾無人值守背景歸檔或無限期持久保存，完整第五階段長期可靠性目標仍為 NO-GO。見[歷史候選準備與宿主升級門檻](docs/RELEASE_1_5_3_PREPARATION.md)。下方 latest 下載現指向正式 v1.5.3，但發行不等於已安裝 Skill 自動升級；真實宿主升級在包括 `assets/icon.svg` 的全部原始位元組通過傳輸與物化校驗前仍為 NO-GO。
 
 ## 第一次使用
 
