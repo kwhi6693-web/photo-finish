@@ -8,7 +8,7 @@ The public installation ZIP and a user's private backup ZIP are separate formats
 
 ## Safe output rules
 
-`--output` is required. The builder never replaces an existing ZIP or checksum, including a dangling output symlink. Repository outputs must use `dist/vX.Y.Z/` matching the source's runtime version; the historical canonical `dist/` path is read-only. Choose a fresh external directory for each development build:
+`--output` is required. The builder never replaces an existing ZIP or checksum, including a dangling output symlink. Outputs under the repository's `dist/` must use `dist/vX.Y.Z/` matching the source's runtime version; the historical canonical `dist/` path is read-only. Choose a fresh external directory for each development build:
 
 ```bash
 python tools/build_release.py --candidate --output ../photo-finish-candidate-new/photo-finish.zip
