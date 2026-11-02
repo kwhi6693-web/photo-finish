@@ -46,7 +46,11 @@ class PackagePolicyTests(unittest.TestCase):
         import verify_packages as v
         with self.project() as root, tempfile.TemporaryDirectory() as tmp:
             dest = root / 'dist/photo-finish.zip'
-            b.build(dest, root)
+            # Model an already released canonical archive, not a new build there.
+            staged = Path(tmp) / 'stable.zip'
+            b.build(staged, root)
+            dest.parent.mkdir()
+            shutil.copyfile(staged, dest)
             before = dest.read_bytes()
             (root / 'runtime/fixture.py').write_text('value = 2\n', encoding='utf-8')
             result = v.candidate(root)
