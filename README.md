@@ -17,7 +17,9 @@
 
 **Latest version and download: [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/latest).** Publishing a new release does **not** automatically upgrade a Skill already installed in an agent host.
 
-**Published stable: v1.5.6.** Python 3.11+ and Pillow 13.0.0+ are required for this release. The prior published v1.5.5 remains available and unchanged. Four functional layers retain autonomous photographic direction; successful replies display the final photo directly. The [25-style reference catalog](references/style-catalog.md) is interpretive guidance, not Apple presets or universally verified effects.
+**Maintenance version: v1.5.7.** See [latest Release](https://github.com/kwhi6693-web/photo-finish/releases/latest) for publication status. Python 3.11+ and Pillow 13.0.0+ are required for this release. The prior published v1.5.5 remains available and unchanged. Four functional layers retain autonomous photographic direction; successful replies display the final photo directly. The [25-style reference catalog](references/style-catalog.md) is interpretive guidance, not Apple presets or universally verified effects.
+
+**v1.5.7 compatibility:** use `python scripts/run_photo_finish.py --setup doctor` once to configure the private Pillow 13 runtime explicitly. Run controllers through this launcher. Proxy-only hosts may explicitly add `--host-proxy` for a trusted numeric loopback gateway; verified HTTPS DNS and pinned TLS retain all download guards, with bounded pre-request address failover. Source preparation is distinct from a published Release and actual personal installation.
 
 ## 🎯 What it is
 

@@ -17,7 +17,9 @@
 
 **最新版下载：前往 [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/latest) 查看最新正式版本并选择安装附件。** GitHub 发布新版本**不等于**已安装 Skill 自动更新。
 
-**当前正式版本：v1.5.6，已发布。** 本版本要求 Python 3.11+、Pillow 13.0.0+；历史正式版 v1.5.5 保持不变。四大功能层保留自主摄影判断，成功交付默认直接显示成片。[25项风格参考](references/style-catalog.md)不是苹果原生预设，也未经全目录实图验收。
+**当前维护版本：v1.5.7。** 发行状态以 [最新 Release](https://github.com/kwhi6693-web/photo-finish/releases/latest) 为准。 本版本要求 Python 3.11+、Pillow 13.0.0+；历史正式版 v1.5.5 保持不变。四大功能层保留自主摄影判断，成功交付默认直接显示成片。[25项风格参考](references/style-catalog.md)不是苹果原生预设，也未经全目录实图验收。
+
+**v1.5.7 兼容维护：**首次明确配置专用 Pillow 13 环境可运行 `python scripts/run_photo_finish.py --setup doctor`，控制器统一经此入口执行。仅代理宿主可显式加 `--host-proxy` 使用可信数字回环网关；HTTPS DNS、固定公网 IP 和原域名 TLS 保留下载检查，并在请求发送前有限切换地址。源码准备、正式发行和个人安装分别核验。
 
 ## 🎯 产品定位
 

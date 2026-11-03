@@ -79,6 +79,117 @@ class SocketProxy:
 
 
 class ProxyOptInTests(unittest.TestCase):
+    def test_real_tls_handshake_stall_retries_with_remaining_total_budget(self):
+        # Use the real SSL client: watchdog shutdown raises SSLEOFError here,
+        # rather than the TimeoutError used by connection-level doubles.
+        client, server = socket.socketpair()
+        server.settimeout(3)
+        hello_received = threading.Event()
+        peer_closed = threading.Event()
+        proxy_errors = []
+
+        def stall_tls():
+            try:
+                headers = b''
+                while not headers.endswith(b'\r\n\r\n'):
+                    block = server.recv(1)
+                    if not block:
+                        raise OSError('client closed before CONNECT')
+                    headers += block
+                server.sendall(b'HTTP/1.1 200 Connection established\r\n\r\n')
+                if server.recv(65536):
+                    hello_received.set()
+                # Never send a TLS ServerHello. The attempt watchdog must end
+                # this real handshake and release the first tunnel.
+                while server.recv(65536):
+                    pass
+                peer_closed.set()
+            except OSError as error:
+                proxy_errors.append(error)
+
+        worker = threading.Thread(target=stall_tls, daemon=True)
+        worker.start()
+        transport = v.VerifiedProxy('http://127.0.0.1:8080')
+        conn = None
+        try:
+            with patch.object(transport, '_query', side_effect=[['1.1.1.1', '8.8.8.8'], []]), \
+                    patch.object(v.socket, 'create_connection', side_effect=[
+                        client, ConnectionRefusedError('second address reached')]) as dial:
+                conn = transport.connection('example.com', timeout=0.8)
+                with self.assertRaisesRegex(ConnectionRefusedError, 'second address reached'):
+                    conn.connect()
+                self.assertEqual(dial.call_count, 2)
+                self.assertTrue(hello_received.is_set())
+                self.assertGreater(conn._download_deadline - time.monotonic(), 0)
+                self.assertTrue(peer_closed.wait(1), 'expired TLS tunnel remained open')
+                self.assertEqual(proxy_errors, [])
+                self.assertIsNone(conn.sock)
+        finally:
+            if conn is not None:
+                conn._cancel_download_deadline()
+                conn.close()
+            for sock in (client, server):
+                try:
+                    sock.shutdown(socket.SHUT_RDWR)
+                except OSError:
+                    pass
+                sock.close()
+            worker.join(timeout=1)
+
+    def test_first_unreachable_address_uses_fresh_connection_without_replaying_request(self):
+        body=png(); proxy=SocketProxy(b'HTTP/1.1 200 OK\r\nContent-Length: '+str(len(body)).encode()+b'\r\n\r\n'+body)
+        self.addCleanup(proxy.close)
+        transport=v.VerifiedProxy('http://127.0.0.1:8080')
+        with patch.object(transport,'_query',side_effect=[['93.184.216.34','1.1.1.1'],[]]), patch.object(v.socket,'create_connection',side_effect=[ConnectionRefusedError('unreachable'),proxy.client]) as dial:
+            conn=transport.connection('example.com',timeout=2,context=Context())
+            try:
+                conn.request('GET','/image?signature=fixture',headers={'Host':'example.com','Connection':'close'})
+                with conn.getresponse() as response:self.assertEqual(response.read(),body)
+                self.assertEqual(dial.call_count,2)
+                self.assertTrue(proxy.requests[0].startswith(b'CONNECT 1.1.1.1:443 '))
+                self.assertEqual(len(proxy.requests),2)
+            finally:conn._cancel_download_deadline();conn.close()
+
+    def test_certificate_failure_does_not_try_another_address(self):
+        transport=v.VerifiedProxy('http://127.0.0.1:8080')
+        with patch.object(transport,'_query',side_effect=[['93.184.216.34','1.1.1.1'],[]]), patch.object(v._ProxyTLSConnection,'connect',side_effect=ssl.SSLCertVerificationError('bad certificate')) as connect:
+            conn=transport.connection('example.com',timeout=2,context=Context())
+            with self.assertRaises(ssl.SSLCertVerificationError):conn.connect()
+            self.assertEqual(connect.call_count,1)
+
+    def test_proxy_policy_rejection_does_not_try_another_address(self):
+        transport=v.VerifiedProxy('http://127.0.0.1:8080')
+        with patch.object(transport,'_query',side_effect=[['93.184.216.34','1.1.1.1'],[]]), patch.object(v._ProxyTLSConnection,'connect',side_effect=OSError('Tunnel connection failed: 403 Forbidden')) as connect:
+            conn=transport.connection('example.com',timeout=2,context=Context())
+            with self.assertRaisesRegex(OSError,'403'):conn.connect()
+            self.assertEqual(connect.call_count,1)
+
+    def test_failover_reserves_budget_and_limits_attempts(self):
+        transport=v.VerifiedProxy('http://127.0.0.1:8080');deadlines=[]
+        def fail(conn):
+            deadlines.append(conn._download_deadline)
+            raise ConnectionRefusedError('unreachable')
+        with patch.object(transport,'_query',side_effect=[['1.1.1.1','1.0.0.1','8.8.8.8','8.8.4.4','9.9.9.9'],[]]), patch.object(v._ProxyTLSConnection,'connect',fail):
+            conn=transport.connection('example.com',timeout=4,context=Context())
+            with self.assertRaises(ConnectionRefusedError):conn.connect()
+            self.assertEqual(len(deadlines),4)
+            self.assertLess(deadlines[0],conn._download_deadline-2)
+            self.assertLessEqual(deadlines[-1],conn._download_deadline+0.01)
+
+    def test_failover_watchdog_remains_active_after_connection_handoff(self):
+        proxy=SocketProxy(b'HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 100\r\n\r\nx')
+        self.addCleanup(proxy.close);transport=v.VerifiedProxy('http://127.0.0.1:8080')
+        with patch.object(transport,'_query',side_effect=[['93.184.216.34','1.1.1.1'],[]]),patch.object(v.socket,'create_connection',side_effect=[ConnectionRefusedError(),proxy.client]):
+            conn=transport.connection('example.com',timeout=0.2,context=Context())
+            try:
+                conn.request('GET','/image',headers={'Connection':'close'})
+                response=conn.getresponse()
+                self.assertIsNone(conn.sock)
+                self.assertTrue(conn._active._download_timer.is_alive())
+                with self.assertRaises((OSError,v.http.client.IncompleteRead)):response.read()
+                response.close()
+            finally:conn._cancel_download_deadline();conn.close()
+
     def test_explicit_remote_proxy_is_rejected_before_transport(self):
         with patch.dict(os.environ, {'PHOTO_FINISH_DOWNLOAD_PROXY': 'http://192.168.1.5:8080'}):
             with patch.object(w, 'build_opener') as opener:

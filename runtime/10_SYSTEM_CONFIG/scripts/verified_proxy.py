@@ -4,6 +4,7 @@ Never discovers ambient proxies. The operator must opt in to a trusted local
 gateway; signed paths/queries are sent only to their intended HTTPS origin.
 """
 import http.client
+import errno
 import ipaddress
 import json
 import re
@@ -60,11 +61,13 @@ class _ProxyTLSConnection(http.client.HTTPSConnection):
         self.set_tunnel(address, 443, headers={'Host': authority})
 
     def connect(self):
+        self._download_expired = False
         self.sock = socket.create_connection(self._proxy_endpoint, _remaining(self._download_deadline))
         # Keep the socket object alive after HTTPConnection passes it to the
         # response. Retarget after SSL takes ownership; never retain a raw fd.
         holder = {'socket': self.sock}
         def expire():
+            self._download_expired = True
             try: holder['socket'].shutdown(socket.SHUT_RDWR)
             except OSError: pass
         try:
@@ -87,6 +90,58 @@ class _ProxyTLSConnection(http.client.HTTPSConnection):
         if timer is not None:
             timer.cancel()
 
+
+class _FallbackTLSConnection(http.client.HTTPSConnection):
+    """Try bounded fresh tunnels before sending any origin request bytes."""
+    def __init__(self, host, addresses, proxy, deadline, context=None):
+        super().__init__(host, port=443, timeout=_remaining(deadline),
+                         context=context or ssl.create_default_context())
+        self._addresses = list(dict.fromkeys(addresses))[:4]
+        self._proxy_endpoint = proxy
+        self._download_deadline = deadline
+        self._active = None
+
+    def connect(self):
+        for index, address in enumerate(self._addresses):
+            remaining = _remaining(self._download_deadline)
+            # Reserve time for later addresses, including CONNECT/TLS slow drips.
+            attempt_deadline = time.monotonic() + remaining / (len(self._addresses) - index)
+            candidate = _ProxyTLSConnection(self.host, address, self._proxy_endpoint,
+                                            attempt_deadline, self._context)
+            try:
+                candidate.connect()
+                candidate._cancel_download_deadline()
+                sock = candidate.sock
+                sock.settimeout(_remaining(self._download_deadline))
+                def expire(sock=sock):
+                    try: sock.shutdown(socket.SHUT_RDWR)
+                    except OSError: pass
+                candidate._download_timer = threading.Timer(_remaining(self._download_deadline), expire)
+                candidate._download_timer.daemon = True
+                candidate._download_timer.start()
+                self._active = candidate
+                self.sock = sock
+                return
+            except BaseException as error:
+                candidate._cancel_download_deadline()
+                candidate.close()
+                # Certificate/protocol failures and proxy policy rejections are
+                # terminal. No HTTP request is retried after TLS establishment.
+                expired = (getattr(candidate, '_download_expired', False) and
+                           isinstance(error, (OSError, http.client.HTTPException)))
+                retryable = (not isinstance(error, ssl.SSLCertVerificationError) and
+                             (expired or not isinstance(error, ssl.SSLError) and
+                             (isinstance(error, (ConnectionError, TimeoutError)) or
+                              isinstance(error, OSError) and error.errno in
+                              {errno.ENETUNREACH, errno.EHOSTUNREACH, errno.ETIMEDOUT} or
+                              isinstance(error, OSError) and
+                              re.match(r'^Tunnel connection failed: (502|503|504)(?: |$)', str(error)))))
+                if not retryable or index == len(self._addresses) - 1:
+                    raise
+
+    def _cancel_download_deadline(self):
+        if self._active is not None:
+            self._active._cancel_download_deadline()
 
 class VerifiedProxy:
     def __init__(self, url):
@@ -190,4 +245,6 @@ class VerifiedProxy:
         if not addresses:
             raise ValueError('Download host has no public address')
         addresses = [_public(address) for address in addresses]
-        return _ProxyTLSConnection(name, addresses[0], self.endpoint, deadline, context)
+        if len(set(addresses)) == 1:
+            return _ProxyTLSConnection(name, addresses[0], self.endpoint, deadline, context)
+        return _FallbackTLSConnection(name, addresses, self.endpoint, deadline, context)
