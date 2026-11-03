@@ -11,27 +11,6 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 功能仅归四层：摄影决策、编辑与验收、成片与版本、个人资产与保障。日常 EDIT 依次走前三层，第四层提供支持；恢复、比较或资料管理直接进入对应接口，不创建编辑任务或渲染。组照策展贯穿前三层，仅任务需要时启用。风格和质感是摄影决策中的可选维度，不成为额外必经阶段。
 
-### 首次成片表现力证据（新增真实任务约束）
-
-实际照片编辑的新任务必须在 `photo_edit.prepare` 如实传 `evaluation_kind="live"`；`synthetic` 仅用于合成测试，不能为绕开表现力审查将真实任务标成合成或未分类。原片已充分完成摄影目的且找不到真实改善目标时直接安全结束，不创建伪造的 V1。历史已存在的旧账本不重写。
-
-首次 `submit.direction` 在原有 intent/hierarchy/light_material/output_use/route/qa_focus 基础上增补 `expression_plan`，不添加新工具轮次。此对象必须包含 `composition`（主体、留白、叙事）、`light`（主次光影、空间层次）、`color`（冷暖、主色关系）、`material`（材质、真实细节）四项，每项精确填写：
-- `source_observation`：对**这张实际原片**已观察到的优点、不足或需要保留的视觉价值；
-- `decision`：`improve` 或 `preserve`；至少一项必须有可观察的 `improve`，无需四项全部强改；
-- `planned_action`：按当前真实工具能力选择的具体操作；保留项写清楚不做什么；
-- `success_signal`：最终可同源对照的具体视觉变化或保留条件。
-
-首次渲染必须实际针对这些目标组织构图、主次光影、色彩和材质；不能用通用“更有质感”、统一暖金滤镜、仅略微增加对比或裁切作为未经观察的替代。当前工具无法完成关键目标时保持失败/受限，不用虚构的计划或预览冒充结果。
-
-`photo_edit.review` 原有 review 事件的 `arguments` 须额外包含 `expression_assessment`，四项名称与锁定计划一致，每项精确填写：
-- `outcome`：目标改善为 `improved`、目标保护为 `preserved`，不达标为 `failed`，不能证实为 `unverified`；
-- `source_comparison`：实际对照的原片可见事实；
-- `observed_result`：成片在相同观看尺度可见的结果、保留价值及不足；
-- `actual_action`：实际执行的编辑/保留操作，不把计划当执行回执。
-
-同一次全幅、关键区域与保护内容终检完成以上逐项目视判断，不生成额外报告或强制固定候选数。控制器只核验字段完整性、锁定方向与接受状态，**不能替代目视评价，也不能认证填写内容必定属实**。任一既定 `improve` 目标未实际达成、保护项未保留、存在疑义或无法获取正式文件，都不得作为正式 V1 通过。局部可安全修正才复核，否则保持停止；不因首片追求表现力而强行生成、破坏可识别身份、文字、产品事实或原始材质。记录与文件哈希继续绑定，默认只向用户显示最终被接受的成片。
-
-
 ## 1. 摄影决策
 
 使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
