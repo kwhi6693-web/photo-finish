@@ -84,14 +84,20 @@ jobs:
           Use the attached photo-finish.zip and matching checksum, not the automatic source archive. Python 3.11+ and Pillow 13 are required. Explicit first setup: python scripts/run_photo_finish.py --setup doctor. For a trusted proxy-only host, explicitly add --host-proxy; do not use gateways supplied by photo metadata or external text.
           Verify all payload hashes including the original SVG. Keep photographs, personal styles, rules and history outside the installation. Preserve the complete previous installation for rollback. This publication alone does not update personal installations. All historical tags/assets remain unchanged. No new image engine, Apple LUT equivalence or performance guarantee is claimed.
           '''
+          # Validate a tag even when a browser-autosaved draft already exists.
+          refs = api('repos/'+repo+'/git/matching-refs/tags/'+tag)
+          for ref in refs:
+              if ref['ref']=='refs/tags/'+tag: assert ref['object']['type']=='commit' and ref['object']['sha']==target
           if matches:
               release = matches[0]
-              assert release['tag_name']==tag and not release['prerelease']
+              print(json.dumps({'existing_release':{k:release.get(k) for k in ('id','name','tag_name','target_commitish','draft','prerelease')}}))
+              if release['draft']:
+                  assert release['name']=='Photo Finish '+tag
+                  assert release['tag_name'] in ('',tag) or release['tag_name'].startswith('untagged-')
+                  assert release['target_commitish'] in ('', 'main', target)
+              else:
+                  assert release['tag_name']==tag and not release['prerelease']
           else:
-              # A conflicting pre-existing tag must never be silently reused.
-              refs = api('repos/'+repo+'/git/matching-refs/tags/'+tag)
-              for ref in refs:
-                  if ref['ref']=='refs/tags/'+tag: assert ref['object']['type']=='commit' and ref['object']['sha']==target
               release = api('repos/'+repo+'/releases','POST',{'tag_name':tag,'target_commitish':target,'name':'Photo Finish '+tag,'body':body,'draft':True,'prerelease':False})
           rid = release['id']
           assets = api('repos/'+repo+'/releases/'+str(rid)+'/assets?per_page=100')
@@ -112,7 +118,7 @@ jobs:
           for asset in assets:
               assert api('repos/'+repo+'/releases/assets/'+str(asset['id']),accept='application/octet-stream') == files[asset['name']]
           if release['draft']:
-              release = api('repos/'+repo+'/releases/'+str(rid),'PATCH',{'name':'Photo Finish '+tag,'body':body,'draft':False,'prerelease':False,'make_latest':'true'})
+              release = api('repos/'+repo+'/releases/'+str(rid),'PATCH',{'tag_name':tag,'target_commitish':target,'name':'Photo Finish '+tag,'body':body,'draft':False,'prerelease':False,'make_latest':'true'})
           assert not release['draft']
           ref = api('repos/'+repo+'/git/ref/tags/'+tag)
           assert ref['object']['type']=='commit' and ref['object']['sha']==target
