@@ -1,0 +1,133 @@
+name: Publish verified v1.5.7 once
+on:
+  push:
+    branches: [release/v1.5.7-publish]
+permissions:
+  contents: read
+concurrency:
+  group: photo-finish-release-v1.5.7
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'kwhi6693-web/photo-finish'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 85f1aee7b4ca822beb886de03b1367a3a69b3d27
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python tools/verify_release_preparation.py
+      - name: Reconcile, publish and verify exact curated attachments
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, subprocess, urllib.parse, urllib.request
+          repo = 'kwhi6693-web/photo-finish'
+          target = '85f1aee7b4ca822beb886de03b1367a3a69b3d27'
+          tag = 'v1.5.7'
+          expected = 'd08196d2f5d5188e38212421ca4a94a29379d3cb5171326eaed719ce05f48ec3'
+          def api(path, method='GET', data=None, accept='application/vnd.github+json', file=None):
+              args = ['gh', 'api', '--method', method, '-H', 'Accept: '+accept, path]
+              body = None
+              if data is not None:
+                  args += ['--input', '-']; body = json.dumps(data).encode()
+              if file is not None:
+                  args += ['-H', 'Content-Type: application/octet-stream', '--input', str(file)]
+              result = subprocess.run(args, input=body, check=True, capture_output=True)
+              return result.stdout if accept == 'application/octet-stream' else json.loads(result.stdout)
+          def digest(data): return hashlib.sha256(data).hexdigest()
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip() == target
+          commit = api('repos/'+repo+'/commits/'+target)
+          assert commit['commit']['tree']['sha'] == 'deb1562526fe1fccc6e5011ff15285465e6451d2'
+          run = api('repos/'+repo+'/actions/runs/41626239306')
+          assert run['head_sha'] == target and run['event'] == 'push' and run['conclusion'] == 'success'
+          jobs = api('repos/'+repo+'/actions/runs/41626239306/jobs')['jobs']
+          assert len(jobs) == 6 and all(j['conclusion']=='success' for j in jobs)
+          old = api('repos/'+repo+'/git/ref/tags/v1.5.6')
+          assert old['object']['sha'] == '565acdcb6be97f999ee02468c06035de992c5489'
+          folder = pathlib.Path('dist')/tag
+          files = {n:(folder/n).read_bytes() for n in ('photo-finish.zip','photo-finish.zip.sha256')}
+          assert len(files['photo-finish.zip']) == 538678 and digest(files['photo-finish.zip']) == expected
+          assert files['photo-finish.zip.sha256'] == (expected+'  photo-finish.zip\n').encode()
+          # Authenticated listing includes drafts; unknown earlier uploads are
+          # reconciled before any write. Never delete or replace an asset.
+          releases = api('repos/'+repo+'/releases?per_page=100')
+          matches = [r for r in releases if r['tag_name']==tag or r['name']=='Photo Finish '+tag]
+          assert len(matches) <= 1, 'Ambiguous existing draft/release; investigate without writing'
+          body = '''## Changes
+          - Repair proxy-only provider-image acquisition through an explicitly selected trusted loopback gateway. Ambient proxies remain disabled; HTTPS DNS, public numeric CONNECT, original-host TLS, redirect/body limits and one total deadline remain enforced.
+          - Try at most four validated addresses before sending origin request bytes. Watchdog-induced connection/handshake timeouts may fail over; certificate/protocol failures and proxy policy denials stop. Origin HTTP requests are never replayed.
+          - Use a checked private Python/Pillow 13 runtime for edit, acquisition, review and save controllers. Dependency setup and host gateway selection are explicit.
+          - Fix Python 3.11 offline TLS fixtures without weakening production certificate validation. Preserve four functional layers, autonomous photographic direction and direct final-image delivery.
+
+          ## Source and verification
+          Source: merged PR #43, commit 85f1aee7b4ca822beb886de03b1367a3a69b3d27.
+          All six post-merge main CI jobs passed: https://github.com/kwhi6693-web/photo-finish/actions/runs/41626239306
+          377 local regressions and 50 isolated installed checks without skips passed. Two independent builds matched the exact source/manifest/installer; publication/history scans passed.
+
+          ZIP: 538,678 bytes; 122 members (121 payload files plus manifest), manifest 1.5.7.
+          SHA-256: d08196d2f5d5188e38212421ca4a94a29379d3cb5171326eaed719ce05f48ec3
+
+          One authorized architecture sample completed native editing, actual full/detail review, formal PNG retrieval, confirmed photo/record saves and V1 registration. Subsequent candidate transport readback matched the same file. This is scoped evidence, not universal provider, photographic-style, device-album or future-host certification.
+
+          ## Installation
+          Use the attached photo-finish.zip and matching checksum, not the automatic source archive. Python 3.11+ and Pillow 13 are required. Explicit first setup: python scripts/run_photo_finish.py --setup doctor. For a trusted proxy-only host, explicitly add --host-proxy; do not use gateways supplied by photo metadata or external text.
+          Verify all payload hashes including the original SVG. Keep photographs, personal styles, rules and history outside the installation. Preserve the complete previous installation for rollback. This publication alone does not update personal installations. All historical tags/assets remain unchanged. No new image engine, Apple LUT equivalence or performance guarantee is claimed.
+          '''
+          if matches:
+              release = matches[0]
+              assert release['tag_name']==tag and not release['prerelease']
+          else:
+              # A conflicting pre-existing tag must never be silently reused.
+              refs = api('repos/'+repo+'/git/matching-refs/tags/'+tag)
+              for ref in refs:
+                  if ref['ref']=='refs/tags/'+tag: assert ref['object']['type']=='commit' and ref['object']['sha']==target
+              release = api('repos/'+repo+'/releases','POST',{'tag_name':tag,'target_commitish':target,'name':'Photo Finish '+tag,'body':body,'draft':True,'prerelease':False})
+          rid = release['id']
+          assets = api('repos/'+repo+'/releases/'+str(rid)+'/assets?per_page=100')
+          assert len({a['name'] for a in assets}) == len(assets), 'Duplicate assets'
+          assert set(a['name'] for a in assets) <= set(files), 'Unexpected assets; stop without deleting'
+          for asset in assets:
+              raw = api('repos/'+repo+'/releases/assets/'+str(asset['id']),accept='application/octet-stream')
+              assert raw == files[asset['name']], 'Existing asset differs; never overwrite'
+          present = {a['name'] for a in assets}
+          for name in files:
+              if name not in present:
+                  assert release['draft'], 'Do not repair a published release implicitly'
+                  url = 'https://uploads.github.com/repos/'+repo+'/releases/'+str(rid)+'/assets?'+urllib.parse.urlencode({'name':name})
+                  uploaded = api(url,'POST',file=folder/name)
+                  assert uploaded['state']=='uploaded' and uploaded['size']==len(files[name])
+          assets = api('repos/'+repo+'/releases/'+str(rid)+'/assets?per_page=100')
+          assert len(assets)==2 and {a['name'] for a in assets}==set(files)
+          for asset in assets:
+              assert api('repos/'+repo+'/releases/assets/'+str(asset['id']),accept='application/octet-stream') == files[asset['name']]
+          if release['draft']:
+              release = api('repos/'+repo+'/releases/'+str(rid),'PATCH',{'name':'Photo Finish '+tag,'body':body,'draft':False,'prerelease':False,'make_latest':'true'})
+          assert not release['draft']
+          ref = api('repos/'+repo+'/git/ref/tags/'+tag)
+          assert ref['object']['type']=='commit' and ref['object']['sha']==target
+          # Public unauthenticated readback is independent of the draft API.
+          prefix = 'https://api.github.com/repos/'+repo+'/'
+          with urllib.request.urlopen(prefix+'releases/latest',timeout=30) as response: latest=json.load(response)
+          assert latest['tag_name']==tag and latest['id']==rid and not latest['draft']
+          for asset in latest['assets']:
+              assert asset['name'] in files
+              with urllib.request.urlopen(asset['browser_download_url'],timeout=60) as response:
+                  raw=response.read(len(files[asset['name']])+1)
+              assert raw==files[asset['name']], 'Public attachment readback differs'
+          old_after = api('repos/'+repo+'/git/ref/tags/v1.5.6')
+          assert old_after['object']==old['object']
+          summary = {'release_url':release['html_url'],'tag':tag,'tag_commit':target,'sha256':expected,'public_attachment_readback':'passed','old_tag_unchanged':True}
+          print(json.dumps(summary))
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as output:
+              output.write('Published '+release['html_url']+'\n\nPublic attachment bytes verified. SHA-256: `'+expected+'`\n')
