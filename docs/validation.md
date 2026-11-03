@@ -1,8 +1,8 @@
 # Validation scope
 
-Published stable maintenance package: **1.5.1**, derived from workflow revision **2026-10-26.3** with a self-contained runtime and no private reference corpus.
+Published stable: **v1.5.5**. Current development: **v1.5.6 (unreleased)**, Python 3.11+ / Pillow 13.0.0+. The current security/download and four-layer presentation changes require their own local and cross-platform results; historical counts below describe their dated versions, not current acceptance.
 
-Current finalization evidence: [v1.5.1](RELEASE_1_5_1_FINALIZATION.md). Historical preparation evidence: [v1.5.1](RELEASE_1_5_1_PREPARATION.md). Published v1.5.0 and v1.5.1 artifacts remain frozen. Current unshipped branch evidence: [quality engineering](QUALITY_ENGINEERING_EVIDENCE_20261027.md) and [capability audit](QUALITY_AUDIT_20261027.md).
+See the [v1.5.6 local evidence and remaining gates](RELEASE_1_5_6_PREPARATION.md). The existing v1.5.0–v1.5.5 artifacts remain frozen. The 25-style catalog is a set of project-authored reference definitions, not an Apple implementation or all-style visual certification. A prior private architecture sample is only one scoped observation; no private sample or IDs are included.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 
@@ -82,11 +82,11 @@ Tests use locally generated geometric images and synthetic review statements to 
 
 Quality on a new photograph depends on the host image tool and the agent's actual inspection. Unavailable capabilities stay unavailable; a field validator cannot certify an aesthetic result or recover detail lost in the source.
 
-## Dependency maintenance — 2026-10-23
+## Historical dependency maintenance — 2026-10-23 (superseded by v1.5.6 security floor)
 
-The main branch permits Pillow `>=12.3,<14`; pip respects package `Requires-Python` metadata instead of forcing Pillow 13 onto Python 3.10. Clean resolution selected Pillow 12.3.0 for Python 3.10 and 13.0.0 for Python 3.12. The existing 138-test suite also passed locally with Pillow 12.3.0 after the dependency change. A new isolated Python 3.12.14 environment installed Pillow 13.0.0, NumPy 2.5.4 and SciPy 1.18.1; `pip check`, doctor, all 138 tests and the numerical smoke check passed.
+At that historical revision, the main branch permitted Pillow `>=12.3,<14`; pip respects package `Requires-Python` metadata instead of forcing Pillow 13 onto Python 3.10. Clean resolution selected Pillow 12.3.0 for Python 3.10 and 13.0.0 for Python 3.12. The existing 138-test suite also passed locally with Pillow 12.3.0 after the dependency change. A new isolated Python 3.12.14 environment installed Pillow 13.0.0, NumPy 2.5.4 and SciPy 1.18.1; `pip check`, doctor, all 138 tests and the numerical smoke check passed.
 
-CI retains the four core platform/interpreter jobs and adds optional-analysis jobs on Linux/Python 3.10 and 3.12. These install `requirements-analysis.txt`, run `pip check`, exercise the actual color measurement, palette and perceptual-hash functions on a synthetic fixture, and run the full suite and archive checks. The linked workflow records the actual outcomes; configuration is not a claim that a pending run has passed.
+At that historical revision, CI retained the four core platform/interpreter jobs and adds optional-analysis jobs on Linux/Python 3.10 and 3.12. These install `requirements-analysis.txt`, run `pip check`, exercise the actual color measurement, palette and perceptual-hash functions on a synthetic fixture, and run the full suite and archive checks. The linked workflow records the actual outcomes; configuration is not a claim that a pending run has passed.
 
 NumPy and SciPy remain optional with broad compatible ranges. Dependabot uses `increase-if-necessary` to avoid raising a minimum solely because the current range already admits a newer release. Dependency PRs must include rebuilt archives and checksums when packaged inputs change. The tagged v1.0.0 release remains immutable; main-branch maintenance is separate from that published snapshot.
 

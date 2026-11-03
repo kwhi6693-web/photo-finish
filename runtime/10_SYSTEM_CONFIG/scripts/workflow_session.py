@@ -36,8 +36,12 @@ import tempfile
 import time
 import functools
 import inspect
-from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.parse import urlparse, urljoin
+from urllib.request import Request, build_opener, ProxyHandler, HTTPSHandler, HTTPRedirectHandler
+import http.client
+import ipaddress
+import socket
+import ssl
 
 from runtime_io import atomic_json
 import session_brief
@@ -846,10 +850,148 @@ def timing_summary(path):
     }
 
 
+MAX_DOWNLOAD_BYTES = 64 * 1024 * 1024
+MAX_DOWNLOAD_REDIRECTS = 5
+
+
+class _DeadlineHTTPSConnection(http.client.HTTPSConnection):
+    """Interrupt TLS, header and chunk-framing drips, not only idle reads."""
+    def connect(self):
+        if self._tunnel_host:
+            raise ValueError('Download proxies are not supported')
+        self.sock = self._create_connection((self.host, self.port), self.timeout,
+                                            self.source_address)
+        try:
+            self.sock = self._context.wrap_socket(self.sock, server_hostname=self.host,
+                                                  do_handshake_on_connect=False)
+            remaining = self._download_deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError('Download total deadline exceeded')
+            self.sock.settimeout(remaining)
+            # Capture the socket object, never a descriptor that could be reused.
+            sock = self.sock
+            def expire():
+                try: sock.shutdown(socket.SHUT_RDWR)
+                except OSError: pass
+            import threading
+            self._download_timer = threading.Timer(remaining, expire)
+            self._download_timer.daemon = True
+            self._download_timer.start()
+            self.sock.do_handshake()
+        except BaseException:
+            self._cancel_download_deadline()
+            self.close()
+            raise
+
+    def _cancel_download_deadline(self):
+        timer = getattr(self, '_download_timer', None)
+        if timer is not None:
+            timer.cancel()
+
+
+def _validate_download_url(url):
+    """Never include signed URLs or credentials in error messages."""
+    try:
+        parsed = urlparse(url)
+        if (parsed.scheme != 'https' or not parsed.hostname or parsed.username is not None
+                or parsed.password is not None or parsed.port not in (None, 443)
+                or any(ord(c) < 33 or ord(c) == 127 for c in url)):
+            raise ValueError('Download requires HTTPS, no credentials, and port 443')
+    except (ValueError, TypeError) as error:
+        raise ValueError('Invalid or unsafe download URL') from error
+    return parsed
+
+
+def _download_connection(host, timeout=30, context=None, deadline=None, **kwargs):
+    deadline = time.monotonic() + timeout if deadline is None else deadline
+    parsed = _validate_download_url('https://' + host)
+    answers = socket.getaddrinfo(parsed.hostname, 443, type=socket.SOCK_STREAM)
+    addresses = list(dict.fromkeys(answer[4][0] for answer in answers))
+    if not addresses:
+        raise ValueError('Download host has no public address')
+    for address in addresses:
+        ip = ipaddress.ip_address(address)
+        mapped = getattr(ip, 'ipv4_mapped', None)
+        translated = (isinstance(ip, ipaddress.IPv6Address) and
+                      (ip in ipaddress.ip_network('64:ff9b::/96') or
+                       ip in ipaddress.ip_network('64:ff9b:1::/48') or ip.sixtofour or ip.teredo))
+        if not ip.is_global or (mapped is not None and not mapped.is_global) or translated:
+            raise ValueError('Download target must resolve only to public addresses')
+    connection = _DeadlineHTTPSConnection(parsed.hostname, port=443, timeout=timeout,
+                                          context=context or ssl.create_default_context(), **kwargs)
+    connection._download_deadline = deadline
+    # Pin the checked IP while keeping the original hostname for TLS SNI and
+    # certificate verification. No second hostname lookup can rebind the target.
+    def dial(address, timeout=timeout, source_address=None):
+        for index, selected in enumerate(addresses):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0: raise TimeoutError('Download total deadline exceeded')
+            try:
+                return socket.create_connection((selected, 443), min(timeout, remaining), source_address)
+            except OSError:
+                if index == len(addresses) - 1: raise
+    connection._create_connection = dial
+    return connection
+
+
+class _DownloadHTTPS(HTTPSHandler):
+    def https_open(self, request):
+        connections = []
+        def create(host, **kwargs):
+            connection = _download_connection(host, deadline=getattr(request, '_download_deadline', None), **kwargs)
+            connections.append(connection)
+            return connection
+        try:
+            response = self.do_open(create, request, context=self._context)
+        except BaseException:
+            for connection in connections: connection._cancel_download_deadline()
+            raise
+        close = response.close
+        def close_response():
+            try: close()
+            finally:
+                for connection in connections: connection._cancel_download_deadline()
+        response.close = close_response
+        return response
+
+
+class _DownloadRedirect(HTTPRedirectHandler):
+    def http_error_302(self, request, response, code, message, headers):
+        try:
+            target = urljoin(request.full_url, headers.get('Location', ''))
+            _validate_download_url(target)
+            count = getattr(request, '_download_redirects', 0) + 1
+            if count > MAX_DOWNLOAD_REDIRECTS:
+                raise ValueError('Download redirect limit exceeded')
+        finally:
+            # Close rejected destinations too, without consuming their bodies.
+            response.close()
+        # Close without reading an unbounded redirect body. Do not forward
+        # credentials/cookies; the new HTTPS connection validates every DNS answer.
+        redirected = Request(target, headers={'User-Agent': 'PCS-workflow-session/1'})
+        redirected._download_redirects = count
+        remaining = getattr(request, '_download_deadline', None)
+        if remaining is not None:
+            timeout = remaining - time.monotonic()
+            if timeout <= 0: raise TimeoutError('Download total deadline exceeded')
+            redirected._download_deadline = remaining
+        else:
+            timeout = request.timeout
+        return self.parent.open(redirected, timeout=timeout)
+    http_error_301 = http_error_303 = http_error_307 = http_error_308 = http_error_302
+
+
+def urlopen(request, timeout=30):
+    _validate_download_url(request.full_url)
+    request._download_deadline = time.monotonic() + timeout
+    # Explicitly ignore proxy settings: a proxy would bypass checked-IP dialing.
+    return build_opener(ProxyHandler({}), _DownloadHTTPS(context=ssl.create_default_context()),
+                        _DownloadRedirect()).open(request, timeout=timeout)
+
+
 def download_image(url, destination, expected_sha256=None, timeout=30):
     """Validate provider bytes and publish exclusively; never replace an existing target."""
-    if urlparse(url).scheme not in ('http', 'https'):
-        raise ValueError('Image URL must use HTTP or HTTPS')
+    _validate_download_url(url)
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError('Download timeout must be finite and positive')
     expected = _sha(expected_sha256, 'expected_sha256') if expected_sha256 is not None else None
@@ -858,12 +1000,27 @@ def download_image(url, destination, expected_sha256=None, timeout=30):
     if os.path.lexists(destination):
         raise FileExistsError('Download destination already exists; choose a new path')
     temporary = None
+    deadline = time.monotonic() + timeout
     try:
         with urlopen(Request(url, headers={'User-Agent': 'PCS-workflow-session/1'}), timeout=timeout) as response:
+            headers = getattr(response, 'headers', {})
+            length = headers.get('Content-Length')
+            if length is not None and (not str(length).isdigit() or int(length) > MAX_DOWNLOAD_BYTES):
+                raise ValueError('Download advertised size exceeds limit or is invalid')
+            if time.monotonic() >= deadline: raise TimeoutError('Download total deadline exceeded')
             with tempfile.NamedTemporaryFile('wb', dir=destination.parent, delete=False) as stream:
                 temporary = stream.name
                 digest, signature, size = hashlib.sha256(), b'', 0
-                for block in iter(lambda: response.read(1024 * 1024), b''):
+                while True:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0: raise TimeoutError('Download total deadline exceeded')
+                    sock = getattr(getattr(getattr(response, 'fp', None), 'raw', None), '_sock', None)
+                    if sock is not None: sock.settimeout(remaining)
+                    read = getattr(response, 'read1', response.read)
+                    block = read(min(1024 * 1024, MAX_DOWNLOAD_BYTES - size + 1))
+                    if time.monotonic() >= deadline: raise TimeoutError('Download total deadline exceeded')
+                    if not block: break
+                    if size + len(block) > MAX_DOWNLOAD_BYTES: raise ValueError('Download size exceeds limit')
                     if len(signature) < 8:
                         signature = (signature + block)[:8]
                     digest.update(block)

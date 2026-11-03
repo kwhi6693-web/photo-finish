@@ -25,3 +25,11 @@ Full profile reset clears active settings and undo history, while photographs an
 - GitHub Actions requests read-only permissions, uses immutable action references and does not reference repository secrets. Pull-request validation does not run in `pull_request_target` context.
 
 The scanner is defense in depth. It detects known credential/path patterns and private-media classes; it cannot prove that every possible secret or personal detail is absent. Review new files and unknown formats before publishing. Runtime work files can contain complete prompts, local paths and signed URLs: keep them private.
+
+## Current dependency and download policy (v1.5.6 candidate)
+
+Python 3.11+ / Pillow 13.0.0+ is the security floor; see the upstream Pillow 13 release security notes. Dependency resolution is not a guarantee against undiscovered vulnerabilities.
+
+Downloads require HTTPS on port 443 without embedded credentials. Every connection rejects non-public or mixed DNS answers and pins a checked address while validating TLS against the original hostname. Redirects are rechecked (maximum five); no proxy or credential forwarding is allowed. Maximum body size is 64 MiB. The timeout is shared across redirects; a socket shutdown watchdog bounds TLS, headers, body and chunk framing against slow-drip responses. The operating system DNS resolver can still delay return beyond this budget. Environments requiring a proxy or lacking public DNS fail safely rather than bypass network checks. This CLI is not a process sandbox or a general-purpose web fetch service.
+
+Provider compatibility under the new constraints and real-host installation must be verified separately. Do not disable these guards simply to pass a blocked environment; document the concrete host/network limitation.
