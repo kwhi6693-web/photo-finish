@@ -12,7 +12,6 @@ import build_release as builder
 import verify_packages as packages
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.5.5'
 
 
 def verify(root=ROOT, *, canonical=False, candidate=False):
@@ -23,6 +22,10 @@ def verify(root=ROOT, *, canonical=False, candidate=False):
     expected = packages.source_files(root)
     brief = json.loads(expected['runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json'])
     policy = json.loads(expected['runtime/10_SYSTEM_CONFIG/runtime_policy.json'])
+    VERSION = brief['runtime_version']
+    import re
+    if not isinstance(VERSION, str) or re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', VERSION) is None:
+        raise ValueError('Invalid maintenance version')
     if not (brief['runtime_version'] == policy['runtime_version'] ==
             policy['distribution']['version'] ==
             policy['beautification_defaults']['versions']['runtime'] == VERSION):

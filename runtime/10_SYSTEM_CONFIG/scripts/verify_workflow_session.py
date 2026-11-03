@@ -392,13 +392,22 @@ class DownloadTests(unittest.TestCase):
         self.dir = Path(temp.name)
         self.destination = self.dir / 'image.png'
         self.destination.write_bytes(b'previous destination')
+        # Inject only the transport for this local fixture. Public entry URLs
+        # remain HTTPS; dedicated hardening tests cover DNS/TLS/redirect policy.
+        from unittest.mock import patch
+        from urllib.request import urlopen as local_open
+        from urllib.parse import urlparse
+        def local_transport(request, timeout=30):
+            return local_open(self.url + urlparse(request.full_url).path, timeout=timeout)
+        transport = patch.object(self.w, 'urlopen', side_effect=local_transport)
+        transport.start(); self.addCleanup(transport.stop)
 
     def test_download_accepts_png_and_jpeg_with_expected_integrity(self):
         for endpoint, body in (('/png', PNG), ('/jpeg', JPEG)):
             with self.subTest(endpoint=endpoint):
                 destination=self.dir/('fresh.png' if endpoint=='/png' else 'fresh.jpg')
                 expected = hashlib.sha256(body).hexdigest()
-                result = self.w.download_image(self.url + endpoint, destination, expected_sha256=expected)
+                result = self.w.download_image('https://example.com' + endpoint, destination, expected_sha256=expected)
                 self.assertEqual(destination.read_bytes(), body)
                 self.assertEqual(result['sha256'], expected)
 
@@ -406,7 +415,7 @@ class DownloadTests(unittest.TestCase):
         self.destination.unlink()
         for endpoint, expected in (('/missing', None), ('/html', None), ('/png', '0' * 64)):
             with self.subTest(endpoint=endpoint), self.assertRaises(Exception):
-                self.w.download_image(self.url + endpoint, self.destination, expected_sha256=expected)
+                self.w.download_image('https://example.com' + endpoint, self.destination, expected_sha256=expected)
             self.assertFalse(self.destination.exists())
             self.assertEqual(list(self.dir.iterdir()), [])
 

@@ -6,7 +6,9 @@ def check(root=ROOT):
     root=Path(root);runtime=root/'runtime';scripts=runtime/'10_SYSTEM_CONFIG/scripts';sys.path.insert(0,str(scripts))
     from PIL import Image,ImageCms
     from workflow_integrity import validate
-    if sys.version_info<(3,10):raise ValueError('Python 3.10+ required')
+    if sys.version_info<(3,11):raise ValueError('Python 3.11+ required')
+    import PIL
+    if tuple(int(x) for x in PIL.__version__.split('.')[:2]) < (13,0):raise ValueError('Pillow 13.0.0+ required for security fixes')
     data=io.BytesIO();Image.new('RGB',(8,6),(70,90,110)).save(data,format='PNG');data.seek(0)
     with Image.open(data) as image:image.load();assert image.size==(8,6)
     assert (root/'LICENSE').read_text(encoding='utf-8').startswith('MIT License')

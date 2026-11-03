@@ -1,3 +1,2 @@
-# Core workflow, color inspection and optional grid tools.
-# pip uses Requires-Python to select 12.x on Python 3.10 and 13.x on 3.11+.
-Pillow>=12.3,<14
+# Security floor: Pillow 13 fixes October 2026 advisories; Python 3.11+ required.
+Pillow>=13.0.0,<14

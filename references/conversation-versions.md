@@ -2,7 +2,7 @@
 
 所有动作经 photo_edit.py，stdin 一个 JSON。session_root 是宿主为当前用户当前会话选定的私有持久目录，必须在技能与 Git 之外；不同会话不能共享游标。索引只是定位器，每次选择均核验已接受账本与完整文件哈希。旧版任务可显式 version-register，不伪造历史编号。
 
-- `delivered`: `{path, session_root, presented:true}`。只有实际已接受并实际展示才调用；返回版本、来源、中文保存状态及一次性 hint。工具自动展示无需另行展示。重复调用不再返回提示；不要先调用再等待展示。平台展示和这里的提示领取不等于保存回执。
+- `delivered`: `{path, session_root, presented:true}`。只有实际已接受并实际展示才调用；返回版本、来源、中文保存状态及一次性 hint，均属内部状态；成功交付默认仅显示成片，用户询问时才提供这些文字。工具自动展示无需另行展示。重复调用不再返回提示；不要先调用再等待展示。平台展示和这里的提示领取不等于保存回执。
 - `hints`: `{session_root, enabled:false}`。关闭当前会话提示；不写长期偏好。省略 enabled 查看设置。
 - `versions`: `{session_root, series}`。有序轻量元数据；未逐项检查照片，选择时才校验。
 - `current-version`: `{session_root}`。读取跨回合当前选定版本，核验正式文件。

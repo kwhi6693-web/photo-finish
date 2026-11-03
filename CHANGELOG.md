@@ -1,6 +1,16 @@
 # Changelog
 
-## 1.5.5 — unpublished maintenance candidate
+## 1.5.6 — unreleased candidate
+
+- Consolidate four functional layers, autonomous source-specific style selection and direct final-image presentation; preserve private references, actual review, save evidence and versions.
+- Add 16 photographic-style and 9 traditional-filter reference definitions; no Apple engine, LUT or all-style quality claim.
+- Require Python 3.11+ and Pillow 13.0.0+ for October 2026 dependency security fixes.
+- Restrict downloads to HTTPS/public resolved addresses, pin checked IPs while retaining TLS hostname verification, check each redirect, bound redirects to five and bodies to 64 MiB, enforce a read deadline, and retain exclusive publication/cleanup. Environment proxies are deliberately not used; restricted/proxy-only hosts may fail safely.
+- Stage a new version-specific installer; all published tags and old installation artifacts remain frozen. Local tests are distinct from new-head cross-platform CI and live host/provider validation.
+
+See the [v1.5.6 candidate evidence](docs/RELEASE_1_5_6_PREPARATION.md).
+
+## 1.5.5 — released (historical preparation text below)
 
 - Include merged PR #35: complete source-specific subject, environmental narrative, composition, light, color and material decisions before the first edit. Accept formal V1 only after actual same-source visual comparison shows the full photographic goal is met.
 - Reuse existing direction/review fields; preserve natural materials, important content, STOP, source/output hashes, actual save receipts and version history. No new renderer, dependency, feature, mandatory model turn or image-call minimum.

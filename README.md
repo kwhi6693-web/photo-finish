@@ -17,6 +17,8 @@
 
 **Latest version and download: [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/latest).** Publishing a new release does **not** automatically upgrade a Skill already installed in an agent host.
 
+**Development candidate: v1.5.6 (unreleased).** Python 3.11+ and Pillow 13.0.0+ are required for this candidate. Published v1.5.5 remains unchanged. Four functional layers retain autonomous photographic direction; successful replies display the final photo directly. The [25-style reference catalog](references/style-catalog.md) is interpretive guidance, not Apple presets or universally verified effects.
+
 ## 🎯 What it is
 
 Photo Finish helps an authorized agent inspect a photograph, choose a photographic direction, edit it using an **available real image tool**, compare the result against its source, and deliver an actual verified file when saving is supported.
@@ -45,7 +47,7 @@ Restore V1 from the existing file without editing it again.
 
 Photo-only automatic invocation is *intended* by the Skill but **depends on real host behavior**; it is not universally verified. Some editing tools require explicit permission to act on your behalf. A photo upload, an interactive preview, or a style preference alone is not proof of that permission or of confirmed saving. Follow any tool-required **STOP** condition.
 
-**Default delivery:** one final photograph with concise version and genuine save status. If no meaningful quality improvement, safe content-preserving route, or verified output exists, report the failure instead of registering a false V1.
+**Default delivery:** one final photograph displayed directly; version/save evidence remains internal, with text only when requested or needed for failures/pending states. If no meaningful quality improvement, safe content-preserving route, or verified output exists, report the failure instead of registering a false V1.
 
 ## 🧭 The workflow
 
@@ -81,7 +83,7 @@ Two host-level P0 cases are **excluded**: authoritative reconciliation after **a
 
 A real host must provide image inspection, an authorized image-editing tool, formal output bytes, and trustworthy save receipts. Python dependencies do not provide hosted image processing or durable cloud storage.
 
-A previously examined ChatGPT host remained on **v1.5.1** after an upgrade attempt modified `assets/icon.svg` during content materialization (**1,210 → 1,619 bytes**). **The real-host v1.5.3 upgrade remains NO-GO** until transfer, materialization, installation, and loading preserve **all** source bytes. Do not bypass this by changing the SVG or relaxing checks. Host installation state must be checked independently of the GitHub Release.
+Historical installation note: an earlier host upgrade modified the SVG and was blocked. Subsequent private installation records document byte-preserving upgrades through v1.5.5; neither those records nor isolated Python loading certify installation of this new v1.5.6 candidate. Verify every original file byte in each actual host installation. Historical failure reports remain dated evidence.
 
 ## 🎨 Personal styles, rules, and privacy
 
