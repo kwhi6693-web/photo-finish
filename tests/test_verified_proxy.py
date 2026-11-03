@@ -3,6 +3,7 @@ import io
 import json
 import os
 import socket
+import ssl
 import tempfile
 import threading
 import time
@@ -23,6 +24,8 @@ class PlainTLS:
 
 
 class Context:
+    verify_mode = ssl.CERT_REQUIRED
+    check_hostname = True
     def __init__(self): self.server_names = []
     def wrap_socket(self, sock, *, server_hostname, do_handshake_on_connect):
         assert do_handshake_on_connect is False
