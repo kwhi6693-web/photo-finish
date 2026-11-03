@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.6 — unreleased candidate
+## 1.5.6 — released (2026-11-03)
 
 - Consolidate four functional layers, autonomous source-specific style selection and direct final-image presentation; preserve private references, actual review, save evidence and versions.
 - Add 16 photographic-style and 9 traditional-filter reference definitions; no Apple engine, LUT or all-style quality claim.
