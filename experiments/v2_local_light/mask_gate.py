@@ -63,6 +63,8 @@ def allow_local_edit(receipt, *, current_geometry_id, region, intensity="moderat
         return EditDecision(False, "mask region differs from editing target")
     if intensity not in ("subtle", "moderate", "strong"):
         return EditDecision(False, "unsupported edit intensity")
+    if intensity == "strong":
+        return EditDecision(False, "strong local edits need separately verified feathering and halo-free boundaries, unavailable in this prototype")
     if not fixed_content_protected:
         return EditDecision(False, "fixed objects or exact content are unprotected")
     if not image_preview_inspected:
