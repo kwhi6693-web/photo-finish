@@ -31,6 +31,7 @@ Photo Finish 2.0 should first inspect the photograph, select one clear creative 
 - requires an approved actual mask URL, concrete visual note and positive normalized bbox;
 - binds region and source geometry identity; blocks reuse across geometry changes;
 - refuses unknown, partial, leaking or misdirected masks;
+- **blocks strong localized changes** until the adapter can verify feathering and absence of halos at object edges; the present prototype has no such verified capability;
 - requires known edit strength, explicit fixed-object protection and actual image preview;
 - independently gates final visual-acceptance claims.
 
