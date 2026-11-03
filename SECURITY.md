@@ -26,7 +26,7 @@ Full profile reset clears active settings and undo history, while photographs an
 
 The scanner is defense in depth. It detects known credential/path patterns and private-media classes; it cannot prove that every possible secret or personal detail is absent. Review new files and unknown formats before publishing. Runtime work files can contain complete prompts, local paths and signed URLs: keep them private.
 
-## Current dependency and download policy (v1.5.6 candidate)
+## Current dependency and download policy (v1.5.6 released)
 
 Python 3.11+ / Pillow 13.0.0+ is the security floor; see the upstream Pillow 13 release security notes. Dependency resolution is not a guarantee against undiscovered vulnerabilities.
 
