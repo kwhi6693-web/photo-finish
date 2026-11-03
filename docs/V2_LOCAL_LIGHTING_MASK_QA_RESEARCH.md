@@ -35,7 +35,18 @@ Photo Finish 2.0 should first inspect the photograph, select one clear creative 
 - requires known edit strength, explicit fixed-object protection and actual image preview;
 - independently gates final visual-acceptance claims.
 
-**Limitations:** It does not inspect any mask pixels itself, compute segmentation IoU, feather boundaries, call Adobe, edit photos, compare photographic aesthetics, store user media, or modify the existing Skill. The calling editor/reviewer must provide real evidence and will still need integration. A dishonest reviewer could still mark a mask verified; this module cannot detect that. No claim of better real photos is justified by passing these protocol tests.
+### Pixel-audited feathering spike (separate from the existing gate)
+
+`experiments/v2_local_light/pixel_mask_qa.py` adds an **isolated**, non-network Pillow prototype. It does not automatically run in Photo Finish v1.x or the current V2 editor. It requires four *same-geometry* 8-bit grayscale masks: returned selection, a separately inspected unmistakable target **core**, a separately inspected broader **allowed region**, and a **protected detail** mask. The latter three are supplied by an actual reviewer and **are not machine-inferred from the image**.
+
+- Pixel check rejects empty/full-frame selection, missed target core, out-of-region selection, and any mask overlap with protected content; records mask, core, allowed and protected digests.
+- Deterministic bounded Gaussian feathering (radius 1–10 px) contracts the binary edge before blur, checks the dilated blur support fits the allowed region, and excludes protected details with a safety margin.
+- Tonal-only compositing supports unchanged image geometry and checks actual protected source pixels remain **bit-exact**. The output cannot silently mix different sizes, color modes or modified alpha receipts. No source/photo material is committed to Git.
+- `tests/test_v2_mask_feather.py` has **14 synthetic cases**, including wrong sky-vs-facade, incomplete road mask, protected sign leakage, wrong geometry and single-level color corruption. They were executed locally under Python 3 / Pillow 12.3.0; CI must re-run under this repository's required Pillow 13 before claiming full compatibility.
+
+**Two separate limits:** (1) the existing `mask_gate.py` does not inspect pixels itself, call a pixel-mask adapter, or allow strong edits; (2) the new standalone pixel prototype does not determine semantic subject identities, ensure that source and candidate share real scene geometry, manage Display P3 to sRGB/ICC/metadata, call an image provider, or establish halo-free/portfolio-grade photographic results. A separately observed **real photo and same-source V3/V4/V5 comparison** remains mandatory. Neither test success nor numeric mask overlap authorizes `visual_status="verified"` without actual human/assistant inspection.
+
+**Limitations:** The existing selection gate does not inspect actual mask pixels, compute segmentation IoU, feather boundaries, call Adobe, edit photos, compare photographic aesthetics, store user media, or modify the existing Skill. The calling editor/reviewer must provide real evidence and will still need integration. A dishonest reviewer could still mark a mask verified; this module cannot detect that. No claim of better real photos is justified by passing these protocol tests.
 
 ## Promotion gates
 
