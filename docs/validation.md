@@ -1,8 +1,8 @@
 # Validation scope
 
-Published stable: **v1.5.5**. Current development: **v1.5.6 (unreleased)**, Python 3.11+ / Pillow 13.0.0+. The current security/download and four-layer presentation changes require their own local and cross-platform results; historical counts below describe their dated versions, not current acceptance.
+Published stable: **v1.5.6** (2026-11-03), Python 3.11+ / Pillow 13.0.0+. The final-main six-job Linux/Windows/macOS matrix [passed at commit `565acdcb`](https://github.com/kwhi6693-web/photo-finish/actions/runs/41606559987); the v1.5.6 release metadata and artifacts are recorded in [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.6). These are engineering checks, not universal photographic or real-host acceptance. Historical counts below describe their dated versions.
 
-See the [v1.5.6 local evidence and remaining gates](RELEASE_1_5_6_PREPARATION.md). The existing v1.5.0–v1.5.5 artifacts remain frozen. The 25-style catalog is a set of project-authored reference definitions, not an Apple implementation or all-style visual certification. A prior private architecture sample is only one scoped observation; no private sample or IDs are included.
+See the [historical v1.5.6 preparation evidence and remaining host gates](RELEASE_1_5_6_PREPARATION.md). Existing v1.5.0–v1.5.5 artifacts remain frozen. The 25-style catalog is a set of project-authored reference definitions, not an Apple implementation or all-style visual certification. A prior private architecture sample is only one scoped observation; no private sample or IDs are included.
 
 The release gates are a read-only doctor, publication scan, synthetic regression suite, deterministic ZIP comparison and clean extraction. Local command results and GitHub Actions results are distinct evidence. CI configuration alone does not mean another operating system has passed.
 

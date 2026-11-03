@@ -1,4 +1,6 @@
-# v1.5.6 candidate — not published
+# v1.5.6 candidate — historical preparation record
+
+> **Publication update (2026-11-03):** This candidate was later merged through [PR #39](https://github.com/kwhi6693-web/photo-finish/pull/39), with a test-only follow-up [PR #40](https://github.com/kwhi6693-web/photo-finish/pull/40), and [released as v1.5.6](https://github.com/kwhi6693-web/photo-finish/releases/tag/v1.5.6). Final main commit: `565acdcb6be97f999ee02468c06035de992c5489`; [all six main CI jobs passed](https://github.com/kwhi6693-web/photo-finish/actions/runs/41606559987). The pre-release instructions and remaining-gate statements below are preserved as dated evidence, not current publication status. Personal Skill installation and live-provider/photographic acceptance are separate and are not certified by publication.
 
 Base: main `027c8e6d8c25fa117454edd4294b29185f30c707`. This candidate consolidates the four-layer photographic workflow, optional style catalog and photo-only successful delivery, and addresses the prepublication security review. It does not install or publish the candidate.
 
