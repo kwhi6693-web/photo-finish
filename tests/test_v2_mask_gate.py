@@ -61,6 +61,11 @@ class MaskRoutingTests(unittest.TestCase):
     def test_wrong_region_fails(self):
         self.assertFalse(gate(region="road").allowed)
 
+    def test_strong_mask_change_rejected_without_verified_feathering(self):
+        result = gate(intensity="strong")
+        self.assertFalse(result.allowed)
+        self.assertIn("feathering", result.reason)
+
     def test_invalid_or_untrusted_mask_output_fails(self):
         self.assertFalse(gate(replace(approved(), normalized_bbox=(0.8,0.1,0.5,0.6))).allowed)
         self.assertFalse(gate(replace(approved(), mask_url="file:///tmp/claimed-mask")).allowed)
