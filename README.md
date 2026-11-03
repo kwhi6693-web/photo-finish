@@ -33,12 +33,12 @@ The goal is credible light, color, visual hierarchy, and natural texture—not o
 2. Verify the checksum, then extract and install the complete `photo-finish/` folder using your host's **supported** Skill installation flow. Keep `SKILL.md`, `runtime/`, `references/`, `scripts/`, `agents/`, and `assets/` together.
 3. Confirm that the host **actually loads** the intended version and preserves every original file byte.
 
-Use the **Release attachment**, not GitHub's auto-generated source archive. The repo's `dist/photo-finish.zip` is a **historical v1.5.1 package**, not the latest release installer. A locally verified extraction does not by itself prove a safe ChatGPT-host upgrade.
+Use the **Release attachment**, not GitHub's auto-generated source archive. The repo's `dist/photo-finish.zip` is a **historical v1.5.1 package**, not the latest release installer. A locally verified extraction does not by itself prove a safe ChatGPT-host upgrade. **v1.5.6 acquisition safeguards:** HTTPS/443 and public-address checks with pinned connections, up to five validated redirects, a 64 MiB body limit and a total deadline; ambient proxies are not used. Live provider compatibility is not universally verified.
 
 ## 📸 Usage
 
 ```text
-Use $photo-finish to edit this landscape photo.
+Use $photo-finish to edit this landscape photo. Choose its best style and composition automatically.
 Please edit, inspect, save, and deliver the non-portrait photo I am about to upload.
 Keep the lettering and buildings unchanged; improve light and color.
 Make the saved V1 more natural without losing its detail.
@@ -49,15 +49,36 @@ Photo-only automatic invocation is *intended* by the Skill but **depends on real
 
 **Default delivery:** one final photograph displayed directly; version/save evidence remains internal, with text only when requested or needed for failures/pending states. If no meaningful quality improvement, safe content-preserving route, or verified output exists, report the failure instead of registering a false V1.
 
-## 🧭 The workflow
+## 🧭 Four functional layers
 
-1. **Inspect** the original's composition, light, color, material, and protected content.
-2. **Decide** using the user's current instructions, optional saved preferences, and any actually reviewed style references.
-3. **Edit** through a real, authorized host image tool; favor a non-generative route when exact content matters.
-4. **Review** the full image and affected native details against the original; check lettering, people, geometry, natural texture, and edge artifacts.
-5. **Deliver** only after visual acceptance, real file-byte verification, and truthful saving/version evidence.
+The v1.5.6 workflow groups existing capabilities into **four functional layers**, not four new mandatory tool calls. Everyday edits run through the first three; the fourth supplies only the relevant personal context and safeguards.
 
-The bundled controller tracks this process; **it does not itself edit images or certify visual quality**. See the [runtime guide](docs/runtime.md) and [delivery adapter](references/delivery-adapter.md) for implementation.
+| Layer | What it does | Default behavior |
+|---|---|---|
+| **1. Photographic direction** | Inspect subject, spatial story, light, color and materials; choose the strongest suitable style and composition; check optional personal references | Select one professional direction without asking the user to pick a preset or rendering several candidates |
+| **2. Editing and review** | Choose an actually available, authorized native or creative editing route; compare the result against the original and protected details | No accepted V1 until the expressive goal and content checks pass |
+| **3. Final photo and versions** | Validate actual output bytes, deliver the final image, record verified saving and revisions, and restore an existing version without re-rendering | **Show one accepted final photo directly**; keep status, parameters and comparison internal unless requested or needed to explain a problem |
+| **4. Personal assets and safeguards** | Optional style collection, preferences, backups, scoped recovery and safe failure handling | Read only relevant saved references; never auto-collect new photos or run the full asset-management workflow |
+
+**Normal path:** inspect photo → retrieve only relevant preferences/references → choose expression and framing → edit using a real tool → compare with the source → verify and deliver the accepted final photo. The controller records evidence but **does not itself render, visually judge, or save through a host without real tool support**.
+
+### Autonomous style and composition
+
+Photo Finish aims to **choose the look that best expresses each uploaded image**, rather than impose a fixed color grade. Photographic direction can retain, refine or substantially reframe an existing composition, and can consider aspect ratio, light hierarchy, white balance, selective color, black-and-white and texture. A strong original composition may also be left untouched. Neither a preset name nor the amount of editing proves improvement.
+
+The personal style library is an **optional source of evidence**: when relevant, retrieve and actually inspect up to three suitable references, adopt them in whole or in part, or reject them with reasons. An empty library never blocks editing. Explicitly requested references that cannot be accessed are reported rather than silently substituted.
+
+### Optional style and texture catalog
+
+The [v1.5.6 catalog](references/style-catalog.md) defines **16 photographic-style references** and **9 traditional-filter references**, with separate IDs where names overlap:
+
+- **Photographic styles (16):** Standard, Cool Rose, Neutral, Rose Gold, Gold, Amber, Bright, Vibrant, Natural, Luminous, Dramatic, Quiet, Cozy, Ethereal, Muted Black & White, Stark Black & White.
+- **Traditional filters (9):** Vivid, Vivid Warm, Vivid Cool, Dramatic, Dramatic Warm, Dramatic Cool, Mono, Silvertone, Noir.
+- **Independent texture choices:** original texture, glow, film-like treatment and optional grain—**only where the real image tool can actually produce and verify the requested result**.
+
+These are **Photo Finish's own visual reference definitions**, informed by publicly described concepts—not Apple preset files, LUTs, the native iPhone engine, verified slider equivalents, or proof of a complete iPhone 18 Pro effects inventory. The catalog is not an automatic checklist: ordinary editing need not load every style or render variants. The best result may combine a reference with a custom direction or use no named style.
+
+Creative reconstruction, removal of minor distractions, or atmosphere changes are considered only when appropriate to the user's scope and supported by a real tool. Protect recognizable identity, critical lettering/seals, product information and event facts; record creative changes rather than presenting them as untouched documentary reality. Host authorization, tool-required **STOP**, protected-content checks and truthful delivery remain binding.
 
 ## ✨ Capabilities and limits
 
