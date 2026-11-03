@@ -938,7 +938,9 @@ class _DownloadHTTPS(HTTPSHandler):
     def https_open(self, request):
         connections = []
         def create(host, **kwargs):
-            connection = _download_connection(host, deadline=getattr(request, '_download_deadline', None), **kwargs)
+            transport = getattr(self, 'verified_proxy', None)
+            factory = _download_connection if transport is None else transport.connection
+            connection = factory(host, deadline=getattr(request, '_download_deadline', None), **kwargs)
             connections.append(connection)
             return connection
         try:
@@ -984,8 +986,13 @@ class _DownloadRedirect(HTTPRedirectHandler):
 def urlopen(request, timeout=30):
     _validate_download_url(request.full_url)
     request._download_deadline = time.monotonic() + timeout
-    # Explicitly ignore proxy settings: a proxy would bypass checked-IP dialing.
-    return build_opener(ProxyHandler({}), _DownloadHTTPS(context=ssl.create_default_context()),
+    https = _DownloadHTTPS(context=ssl.create_default_context())
+    configured_proxy = os.environ.get('PHOTO_FINISH_DOWNLOAD_PROXY')
+    if configured_proxy is not None:
+        from verified_proxy import VerifiedProxy
+        https.verified_proxy = VerifiedProxy(configured_proxy)
+    # Ambient proxies remain disabled; opt-in transport uses numeric CONNECT.
+    return build_opener(ProxyHandler({}), https,
                         _DownloadRedirect()).open(request, timeout=timeout)
 
 

@@ -26,10 +26,16 @@ Full profile reset clears active settings and undo history, while photographs an
 
 The scanner is defense in depth. It detects known credential/path patterns and private-media classes; it cannot prove that every possible secret or personal detail is absent. Review new files and unknown formats before publishing. Runtime work files can contain complete prompts, local paths and signed URLs: keep them private.
 
-## Current dependency and download policy (v1.5.6 released)
+## Current dependency and download policy (v1.5.7)
 
 Python 3.11+ / Pillow 13.0.0+ is the security floor; see the upstream Pillow 13 release security notes. Dependency resolution is not a guarantee against undiscovered vulnerabilities.
 
 Downloads require HTTPS on port 443 without embedded credentials. Every connection rejects non-public or mixed DNS answers and pins a checked address while validating TLS against the original hostname. Redirects are rechecked (maximum five); no proxy or credential forwarding is allowed. Maximum body size is 64 MiB. The timeout is shared across redirects; a socket shutdown watchdog bounds TLS, headers, body and chunk framing against slow-drip responses. The operating system DNS resolver can still delay return beyond this budget. Environments requiring a proxy or lacking public DNS fail safely rather than bypass network checks. This CLI is not a process sandbox or a general-purpose web fetch service.
 
 Provider compatibility under the new constraints and real-host installation must be verified separately. Do not disable these guards simply to pass a blocked environment; document the concrete host/network limitation.
+
+## Explicit loopback transport
+
+The compatibility patch keeps ambient proxies disabled. Explicit PHOTO_FINISH_DOWNLOAD_PROXY accepts only a numeric HTTP loopback gateway without credentials. It trusts that operator-selected local gateway, queries Cloudflare HTTPS DNS through numeric CONNECT to 1.1.1.1 with resolver TLS verification, validates A and AAAA answers, then tunnels to a checked numeric public target with original-origin TLS verification. No signed path/query is sent to the resolver. Every redirect repeats destination validation; DNS replies are bounded to 64 KiB and share the download deadline. Before origin request bytes are sent, at most four distinct validated addresses are attempted with fresh tunnels and partitioned connection budgets. A successful tunnel restores the remaining total body deadline. Connection failures, transient CONNECT 502/503/504 and watchdog-induced handshake timeouts may fail over; certificate/protocol failures, proxy policy denials and origin HTTP responses are not retried. Operator-selected gateway trust and resolver availability are required. Offline tests use a TLS boundary double; scoped real TLS/readback trials do not certify all hosts.
+
+The controller launcher selects a private interpreter outside the installation and rejects a Pillow version outside 13.x. Setup is an explicit operation; installed code alone does not guarantee that a later host preserves the interpreter or network gateway.

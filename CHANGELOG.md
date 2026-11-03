@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.7 — maintenance release preparation (2026-11-03)
+
+- Add explicit trusted loopback transport for proxy-only hosts: verified HTTPS DNS, public numeric CONNECT, original-host TLS, bounded redirects/body and one shared deadline; ambient proxies stay disabled.
+- Try at most four validated addresses before sending origin request bytes; preserve terminal certificate and proxy policy failures and never replay an origin request.
+- Use a checked private Python runtime with explicit dependency setup for edit, acquisition, review and save controllers.
+- Fix the offline TLS double for Python 3.11 without weakening production TLS. Preserve four functional layers, direct final-image delivery and every historical release.
+- One authorized architecture sample completed native editing, exact-byte acquisition, actual visual review and confirmed photo/record saving. This does not certify every provider, device album action, photographic style or future host.
+
 ## 1.5.6 — released (2026-11-03)
 
 - Consolidate four functional layers, autonomous source-specific style selection and direct final-image presentation; preserve private references, actual review, save evidence and versions.

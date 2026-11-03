@@ -5,7 +5,7 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 # 个人摄影美化与调色
 
-调用：`$photo-finish`。待发布维护候选：v1.5.6，继承个人修订2026-11-03.5与正式v1.5.5；四层入口、可选风格与直接出图统一规则，不新增图像引擎或性能承诺。当前编排2026-10-26.3。
+调用：`$photo-finish`。维护版本：v1.5.7，继承正式v1.5.6；四层入口、可选风格与直接出图统一规则，不新增图像引擎或性能承诺。当前编排2026-10-26.3。
 
 面向自然风光、城市夜景、建筑、旅行、静物、美食与产品。以人物为主体的人像、磨皮、塑形、五官调整和肤色标定不在范围内；偶然入镜人物仍保护身份与结构。新上传适用照片无其他说明即 EDIT_TARGET；明确 ANALYSIS 只分析，STYLE_REFERENCE 按收藏授权处理。不批处理历史，不自动收藏待修图或成片。默认直接显示每张的一张已核验正式成片，不附版本说明、成功状态、参数、过程报告、下载链接或返工提示；用户主动询问才展开。版本与保存凭据仍内部登记。无法原生显示时才提供同一正式文件入口；未通过、保存失败/待确认或工具强制STOP时须简短说明真实状态，不用静默图片暗示已完成。
 
@@ -13,7 +13,7 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 1. 摄影决策
 
-使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。需已有 Pillow，不隐式安装。
+使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
 
 先实际看原片，判断主体与环境叙事、前中后景、留白、真实光线、色彩、材质、保护内容及不足。原片已实现目标且无创作转译需求，可说明依据后不编辑结束，不登记虚构 V1、不声称新增保存。
 
