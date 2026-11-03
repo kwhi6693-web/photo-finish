@@ -34,24 +34,30 @@ def _fresh(path, editable=False):
     return state
 
 
-def direction_details(intent,hierarchy,light_material,output_use,route,qa_focus):
+def direction_details(intent,hierarchy,light_material,output_use,route,qa_focus,expression_plan=None):
     """Validate observed photographic choices without locking a task."""
     if output_use not in ('screen','print_proof_requested') or route not in ('native','creative','hybrid'):
         raise ValueError('Explicit supported output scope and route required')
     if not isinstance(qa_focus,list) or not qa_focus:raise ValueError('Actual affected detail areas required')
-    return {'intent':w._text(intent,'intent'),
-           'hierarchy':w._text(hierarchy,'hierarchy'),'light_material':w._text(light_material,'light_material'),
-           'output_use':output_use,'route':route,'qa_focus':[w._text(x,'qa_focus') for x in qa_focus]}
+    result = {'intent':w._text(intent,'intent'),
+              'hierarchy':w._text(hierarchy,'hierarchy'),'light_material':w._text(light_material,'light_material'),
+              'output_use':output_use,'route':route,'qa_focus':[w._text(x,'qa_focus') for x in qa_focus]}
+    if expression_plan is not None:
+        result['expression_plan'] = w.validate_expression_plan(expression_plan)
+    return result
 
 
-def direction(path,intent,hierarchy,light_material,output_use,route,qa_focus):
+def direction(path,intent,hierarchy,light_material,output_use,route,qa_focus,expression_plan=None):
     """Lock after reference decisions; never certify aesthetics or print color."""
     state=_fresh(path,editable=True)
     if state.get('direction_workflow')=='reference_first_v1' and state.get('reference_selection') is None:
         raise ValueError('Record actual reference selection before final photographic direction')
     if state['reviews'] or state.get('render_result') or state.get('professional_direction'):
         raise ValueError('Direction is locked before the first submission')
-    value=dict(direction_details(intent,hierarchy,light_material,output_use,route,qa_focus),
+    if state.get('expression_protocol') and expression_plan is None:
+        raise ValueError('Live edit requires a source-specific expression_plan before submission')
+    value=dict(direction_details(intent,hierarchy,light_material,output_use,route,qa_focus,
+                                 expression_plan=expression_plan),
                source_sha256=state['source']['sha256'],quality_certified=False,print_calibrated=False)
     if state.get('direction_workflow')=='reference_first_v1':
         value['reference_branch']=state['reference_selection']['branch']

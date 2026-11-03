@@ -56,6 +56,8 @@ def prepare(project_root,source_path,path,direction=None,tags=None,intent=None,s
         state=w._load(temporary);state['evaluation']={'kind':evaluation_kind,'scenario':scenario or ('/'.join(tags) if tags else 'unclassified')}
         state['user_customization']=customization
         state['direction_workflow']='reference_first_v1'
+        if evaluation_kind == 'live':
+            state['expression_protocol']='source_result_v1'
         if draft is not None:state['direction_proposal']=draft
         w._save(temporary,state)
         # Atomic no-overwrite publication after every preparation step succeeds.
@@ -67,7 +69,8 @@ def prepare(project_root,source_path,path,direction=None,tags=None,intent=None,s
     value['reference_limits']=candidates['limitations']
     value['customization']=customization
     value['direction_status']={'final_locked':False,'draft_available':draft is not None,
-                               'next':'View suitable candidates, then supply final direction with submit'}
+                                'expression_plan_required':evaluation_kind == 'live',
+                                'next':'View suitable candidates, then supply final direction with submit'}
     return value
 
 
