@@ -17,7 +17,7 @@
 
 **Latest version and download: [GitHub Releases](https://github.com/kwhi6693-web/photo-finish/releases/latest).** Publishing a new release does **not** automatically upgrade a Skill already installed in an agent host.
 
-**Development candidate: v1.5.6 (unreleased).** Python 3.11+ and Pillow 13.0.0+ are required for this candidate. Published v1.5.5 remains unchanged. Four functional layers retain autonomous photographic direction; successful replies display the final photo directly. The [25-style reference catalog](references/style-catalog.md) is interpretive guidance, not Apple presets or universally verified effects.
+**Published stable: v1.5.6.** Python 3.11+ and Pillow 13.0.0+ are required for this release. The prior published v1.5.5 remains available and unchanged. Four functional layers retain autonomous photographic direction; successful replies display the final photo directly. The [25-style reference catalog](references/style-catalog.md) is interpretive guidance, not Apple presets or universally verified effects.
 
 ## 🎯 What it is
 
@@ -83,7 +83,7 @@ Two host-level P0 cases are **excluded**: authoritative reconciliation after **a
 
 A real host must provide image inspection, an authorized image-editing tool, formal output bytes, and trustworthy save receipts. Python dependencies do not provide hosted image processing or durable cloud storage.
 
-Historical installation note: an earlier host upgrade modified the SVG and was blocked. Subsequent private installation records document byte-preserving upgrades through v1.5.5; neither those records nor isolated Python loading certify installation of this new v1.5.6 candidate. Verify every original file byte in each actual host installation. Historical failure reports remain dated evidence.
+Historical installation note: an earlier host upgrade modified the SVG and was blocked. Subsequent private installation records document byte-preserving upgrades through v1.5.5; neither those records nor isolated Python loading certify installation of the published v1.5.6 release. Verify every original file byte in each actual host installation. Historical failure reports remain dated evidence.
 
 ## 🎨 Personal styles, rules, and privacy
 
