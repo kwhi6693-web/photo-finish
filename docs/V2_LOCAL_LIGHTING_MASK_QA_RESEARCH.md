@@ -68,3 +68,17 @@ This is research evidence and an integration starting point, not a release miles
 
 **Next real-photo gate:** use an approved asset bridge that preserves exact bytes and ICC; record actual editor-tonal-only provenance and geometry, inspect source-aligned target/allowed/protected masks, produce V5 for these same three authorized originals and compare real V4/V5 images for stronger composition/light/color, absence of halos, stable architecture/words/people and photo-like naturalness. If the bridge or any fidelity check remains unavailable, STOP rather than substitute a generated look or counterfeit provenance. Keep PR Draft.
 
+## V6 real-scene art direction (two independent same-source photo trials; 2026-11-03)
+
+Following earlier V5 original-based trials, two private same-source **non-generative** editorial variations were produced in the local working container (no Adobe V4 bytes were used and this PR's experimental \`editor_adapter.py\` was **not** called to create V6). These are research results, not a claim that the repository integration is finished.
+
+- **Macau night street:** stronger warm hotel/black street hierarchy through spatially smooth luminance and chromaticity changes; no new or removed objects. The selected V6 full-frame result retains 1152×1536 geometry and sRGB ICC. Relative to same-size V5, SSIM is 0.9296 and 1-pixel-tolerant edge recall is 0.8737. Some sign subregion SSIM values fell to approximately 0.89–0.95; preserved lettering remains a required human QA item.
+- **Courtyard through dark wooden frame:** focused daylight/fountain and patio shadow corrections plus a true 4:5 photographic crop of existing pixels to 1080×1350. No replacement or redrawing of branches, jets, window, or background. SSIM 0.9733 and edge recall 0.9368 **against the equivalently cropped V5 region**, not the uncropped frame.
+
+The photo sources, preview thumbnails, output bytes, exact asset hashes, actual crop coordinates and expanded assessment remain **private**, outside this public repository. The numbers above describe signal similarity/structure retention, not aesthetic preference or photo-identity proof; the user's own V5/V6 choice remains pending. The night street appears more intentionally cinematic, while the courtyard's largest gain is compositional and its tonal improvement is limited. This is insufficient for 2/3 strong-quality pass; **still NO-GO for promotion**.
+
+### CI status nuance
+
+At the previous PR head \`5b60007b38b1e686f5bbf7fc729ccd0312b0f675\`, GitHub workflow run \`41665134413\` completed 6/6 successful validation jobs. Concurrent run \`41665141486\` had 5 successful jobs and a **cancelled** macOS job; it is not a second 6/6 success and not established as a source test failure. The source change in this section is documentation only and requires its own current-head CI.
+
+**Next acceptance hinge:** secure an actual full-resolution source/mask bridge for the adapter; enforce mask/source/ICC lineage, compare true locally integrated photo renders, and get an explicit user preference result before broad 9-photo tests. Keep PR Draft and keep the released Skill unchanged.
