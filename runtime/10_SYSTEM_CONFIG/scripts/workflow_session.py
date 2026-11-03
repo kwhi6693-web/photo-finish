@@ -337,10 +337,80 @@ def _color_scope(inspection, requested=None, profile_passed=False, assumption_re
     return scope
 
 
+EXPRESSION_AXES = ('composition', 'light', 'color', 'material')
+
+
+def validate_expression_plan(plan):
+    """Explicit human-authored visual goals; this is not automatic aesthetic assessment."""
+    if not isinstance(plan, dict) or set(plan) != set(EXPRESSION_AXES):
+        raise ValueError('Expression plan must cover composition, light, color and material')
+    result = {}
+    for axis in EXPRESSION_AXES:
+        goal = plan[axis]
+        if not isinstance(goal, dict) or set(goal) != {
+                'source_observation', 'decision', 'planned_action', 'success_signal'}:
+            raise ValueError('Expression goal needs source_observation/decision/planned_action/success_signal: ' + axis)
+        if goal['decision'] not in ('improve', 'preserve'):
+            raise ValueError('Expression decision must be improve or preserve: ' + axis)
+        result[axis] = {
+            'source_observation': _text(goal['source_observation'], axis + '.source_observation'),
+            'decision': goal['decision'],
+            'planned_action': _text(goal['planned_action'], axis + '.planned_action'),
+            'success_signal': _text(goal['success_signal'], axis + '.success_signal')}
+    if not any(goal['decision'] == 'improve' for goal in result.values()):
+        raise ValueError('An edited V1 needs an observable improvement goal; otherwise keep the original')
+    return result
+
+
+def validate_expression_assessment(plan, assessment):
+    """Require concrete same-source comparisons, not just a visual_passed boolean."""
+    validated = validate_expression_plan(plan)
+    if not isinstance(assessment, dict) or set(assessment) != set(EXPRESSION_AXES):
+        raise ValueError('Expression assessment must cover every locked dimension')
+    result = {}
+    for axis in EXPRESSION_AXES:
+        finding = assessment[axis]
+        if not isinstance(finding, dict) or set(finding) != {
+                'outcome', 'source_comparison', 'observed_result', 'actual_action'}:
+            raise ValueError('Expression finding needs outcome/source_comparison/observed_result/actual_action: ' + axis)
+        outcome = finding['outcome']
+        if outcome not in ('improved', 'preserved', 'failed', 'unverified'):
+            raise ValueError('Unsupported expressive outcome: ' + axis)
+        if outcome == 'improved' and validated[axis]['decision'] != 'improve':
+            raise ValueError('Unplanned improvement cannot replace a preservation commitment: ' + axis)
+        if outcome == 'preserved' and validated[axis]['decision'] != 'preserve':
+            raise ValueError('Unachieved improvement cannot be called preservation: ' + axis)
+        result[axis] = {
+            'outcome': outcome,
+            'source_comparison': _text(finding['source_comparison'], axis + '.source_comparison'),
+            'observed_result': _text(finding['observed_result'], axis + '.observed_result'),
+            'actual_action': _text(finding['actual_action'], axis + '.actual_action')}
+    return result
+
+
+def expression_review_passed(plan, assessment):
+    if not plan or not assessment:
+        return False
+    try:
+        checked = validate_expression_assessment(plan, assessment)
+    except ValueError:
+        return False
+    return all(checked[axis]['outcome'] ==
+               ('improved' if plan[axis]['decision'] == 'improve' else 'preserved')
+               for axis in EXPRESSION_AXES)
+
+
 @measured('review_receipt')
 def add_review(path, output_path, input_sha256, visual_passed, profile_passed, note,
-               color_scope=None, color_assumption_reason=None):
+               color_scope=None, color_assumption_reason=None, expression_assessment=None):
     state = _load(path, editable=True)
+    plan = (state.get('professional_direction') or {}).get('expression_plan')
+    if state.get('expression_protocol') and not plan:
+        raise ValueError('Live edit requires an expression plan locked before the tool call')
+    if plan is not None:
+        expression_assessment = validate_expression_assessment(plan, expression_assessment)
+    elif expression_assessment is not None:
+        raise ValueError('Expression findings require a locked expression plan')
     inspection = _inspect_output(output_path,(state.get('render_result') or {}).get('inspection'))
     receipt = {
         'output': {'path':inspection['path'], 'sha256':inspection['sha256']},
@@ -353,6 +423,8 @@ def add_review(path, output_path, input_sha256, visual_passed, profile_passed, n
         'color_assumption_reason':color_assumption_reason,
         'note': _text(note, 'note'),
     }
+    if expression_assessment is not None:
+        receipt['expression_assessment'] = expression_assessment
     state['reviews'].append(receipt)
     return _save(path, state)
 
@@ -569,6 +641,10 @@ def accept_job(path, output_path):
         raise ValueError('Latest review hash differs from final output hash')
     if review.get('visual_passed') is not True or not review_color_ready(state,review):
         raise ValueError('Final visual and profile review must both pass')
+    expression_plan = (state.get('professional_direction') or {}).get('expression_plan')
+    if state.get('expression_protocol') or expression_plan is not None:
+        if not expression_review_passed(expression_plan, review.get('expression_assessment')):
+            raise ValueError('Final expression has failed, unverified or missing source-to-result evidence')
     _text(review.get('note'), 'Review note')
     # The actual inspection was made by add_review. Equal SHA binds pixels AND
     # color metadata; re-hash the file rather than decoding unchanged bytes again.
