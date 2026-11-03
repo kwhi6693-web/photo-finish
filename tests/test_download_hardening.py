@@ -109,11 +109,16 @@ class DownloadHardeningTests(unittest.TestCase):
                 server.sendall(b'\r\n')
             except OSError:pass
         worker=threading.Thread(target=drip,daemon=True);worker.start()
-        started=time.monotonic();conn=None;response=None
+        started=None;conn=None;response=None
         try:
             with patch.object(w.socket,'getaddrinfo',return_value=answers),patch.object(w.socket,'create_connection',return_value=PlainTLS(client)):
-                conn=w._download_connection('example.com',timeout=0.15)
+                # Root-certificate initialization can exceed 150 ms on a busy
+                # Windows runner. This fixture measures parser drips, so finish
+                # connection setup before starting that deliberately tiny budget.
+                conn=w._download_connection('example.com',timeout=5)
                 conn._context=Context()
+                started=time.monotonic()
+                conn._download_deadline=started+0.15
                 conn.request('GET','/')
                 try:
                     response=conn.getresponse()
