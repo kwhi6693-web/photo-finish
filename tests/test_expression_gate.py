@@ -44,7 +44,7 @@ class ExpressionAcceptanceTests(unittest.TestCase):
         self.assertTrue(response['direction_status']['expression_plan_required'])
         return path
 
-    def direction(self, plan):
+    def directed(self, plan):
         return dict(self.direction, expression_plan=plan)
 
     def submit_live(self, path, plan):
@@ -53,7 +53,7 @@ class ExpressionAcceptanceTests(unittest.TestCase):
             {'requirements': [], 'reason': 'No protected targets in synthetic fixture'},
             {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [], 'reason': 'Synthetic no reference'},
             'SYNTHETIC_TOOL', {'prompt': 'No actual photograph editing was performed'}, {},
-            direction=self.direction(plan))
+            direction=self.directed(plan))
 
     def ready_live(self, path, plan):
         ticket = self.submit_live(path, plan)
