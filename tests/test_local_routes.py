@@ -71,10 +71,23 @@ class LocalRouteTests(unittest.TestCase):
                           protected_regions=result['protected_regions'])
         self.assertEqual(path.read_bytes(), before)
 
+    def test_current_adobe_local_requires_real_top_level_mask_argument(self):
+        for i, name in enumerate(('mcp__Adobe__image_apply_adjustments',
+                                  'tools.mcp__Adobe__image_apply_adjustments')):
+            path, result, direction, fidelity = self.child('adobe-current-no-mask-' + str(i))
+            before = path.read_bytes()
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, 'region-mask'):
+                self.send(path, result, direction, fidelity, name,
+                          {'imageURIs': ['https://example.invalid/source.png'],
+                           'options': {'highlights': -10}})
+            self.assertEqual(path.read_bytes(), before)
+
     def test_documented_namespaced_native_route_binds_mask_argument(self):
         for i, name in enumerate(('image_apply_adjustments', 'adobe.image_apply_adjustments',
                                   'mcp__codex_apps__adobe_image_apply_adjustments',
-                                  'tools.mcp__codex_apps__adobe_image_apply_adjustments')):
+                                  'tools.mcp__codex_apps__adobe_image_apply_adjustments',
+                                  'mcp__Adobe__image_apply_adjustments',
+                                  'tools.mcp__Adobe__image_apply_adjustments')):
             with self.subTest(name=name):
                 path, result, direction, fidelity = self.child('valid-' + str(i))
                 args = {'imageURIs': ['https://example.invalid/source.png'],
