@@ -67,6 +67,18 @@ class EditorialProtocolTests(unittest.TestCase):
         self.assertEqual(preflight(plan(), observed_source_sha256=H, source_visually_inspected=True,
             capabilities=replace(capabilities(), verified_local_masks=False)).action, 'STOP')
 
+    def test_truthy_strings_cannot_impersonate_verified_capabilities(self):
+        cap = replace(capabilities(), verified_local_masks='yes')
+        self.assertEqual(preflight(plan(), observed_source_sha256=H,
+            source_visually_inspected=True, capabilities=cap).action, 'STOP')
+        cap = replace(capabilities(), non_generative_tonal_editor='yes')
+        self.assertEqual(preflight(plan(), observed_source_sha256=H,
+            source_visually_inspected=True, capabilities=cap).action, 'STOP')
+
+    def test_nonstrict_plan_boolean_is_rejected(self):
+        with self.assertRaises(ValueError):
+            controller_direction(replace(plan(), requires_local_selection='false'))
+
     def test_no_silent_downgrade_on_unverified_strong_edges(self):
         p = replace(plan(), intensity='strong')
         self.assertEqual(preflight(p, observed_source_sha256=H, source_visually_inspected=True,
