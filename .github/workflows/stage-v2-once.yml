@@ -1,0 +1,88 @@
+# Temporary, branch-scoped v2.0.0 candidate staging. Delete after use.
+name: Stage Photo Finish v2.0.0 isolated candidate once
+on:
+  push:
+    branches:
+      - integration/photo-finish-v2-20261104
+    paths:
+      - .github/workflows/stage-v2-once.yml
+permissions:
+  contents: read
+jobs:
+  stage:
+    if: ${{ github.repository == 'kwhi6693-web/photo-finish' && github.ref == 'refs/heads/integration/photo-finish-v2-20261104' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout branch including immutable tags
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Install declared requirements
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+      - name: Bump only isolated candidate policy to v2.0.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('runtime/10_SYSTEM_CONFIG/runtime_policy.json')
+          data=json.loads(path.read_text(encoding='utf-8'))
+          assert data['runtime_version']=='1.5.8'
+          assert data['distribution']['version']=='1.5.8'
+          assert data['beautification_defaults']['versions']['runtime']=='1.5.8'
+          assert 'v2.0.0' in Path('SKILL.md').read_text(encoding='utf-8')
+          data['runtime_version']='2.0.0'
+          data['distribution']['version']='2.0.0'
+          data['beautification_defaults']['versions']['runtime']='2.0.0'
+          path.write_text(json.dumps(data,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+          PY
+      - name: Recompute source and Skill entrypoint hashes
+        run: python tools/sync_public.py
+      - name: Source integrity, old releases and full synthetic cross-module tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/doctor.py
+          python tools/verify_packages.py stable
+          python tools/verify_packages.py released
+          python tools/run_tests.py
+      - name: Verify deterministic v2.0.0 candidate and isolated install
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/verify_packages.py candidate
+          python tools/verify_release_preparation.py --candidate
+          mkdir -p dist/v2.0.0
+          test ! -e dist/v2.0.0/photo-finish.zip
+          python tools/build_release.py --output dist/v2.0.0/photo-finish.zip
+          python tools/verify_release_preparation.py
+      - name: Commit only isolated staged source and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/integration/photo-finish-v2-20261104"
+          git add -- SKILL.md runtime/10_SYSTEM_CONFIG references scripts/run_photo_finish.py dist/v2.0.0
+          python - <<'PY'
+          import subprocess
+          files=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          allowed=('SKILL.md','runtime/10_SYSTEM_CONFIG/','references/','scripts/run_photo_finish.py','dist/v2.0.0/')
+          assert files and all(any(x==entry if not entry.endswith('/') else x.startswith(entry) for entry in allowed) for x in files),files
+          assert 'dist/v2.0.0/photo-finish.zip' in files
+          assert 'dist/v2.0.0/photo-finish.zip.sha256' in files
+          print('v2_candidate_staged_files',len(files))
+          PY
+          git config user.name "photo-finish-maintenance-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build(v2): stage reproducible unapproved v2.0.0 candidate and verified source mapping"
+          git push origin "HEAD:refs/heads/integration/photo-finish-v2-20261104"
