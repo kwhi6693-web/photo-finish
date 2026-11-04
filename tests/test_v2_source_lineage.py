@@ -1,4 +1,5 @@
 """Synthetic source-to-managed-working-PNG lineage tests, without real user photos."""
+from io import BytesIO
 from pathlib import Path
 import sys
 import tempfile
@@ -8,7 +9,7 @@ from PIL import Image, ImageCms
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'experiments' / 'v2_local_light'))
 from editorial_pipeline import hash_file
-from source_lineage import prepare_working_source, verify_source_lineage
+from source_lineage import prepare_working_source, verify_source_lineage, _canonical_srgb_bytes
 
 
 class ColorManagedLineageTests(unittest.TestCase):
@@ -22,6 +23,28 @@ class ColorManagedLineageTests(unittest.TestCase):
         self.icc = profile
         original = Image.new('RGB', (88, 96), (119, 140, 165))
         original.save(self.source, format='JPEG', quality=96, icc_profile=profile)
+
+    def test_icc_creation_time_is_stable_without_changing_color_tags(self):
+        generated = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
+        earlier, later = bytearray(generated), bytearray(generated)
+        earlier[24:36] = bytes.fromhex('07e500010001000000000000')
+        later[24:36] = bytes.fromhex('07ea000b000400130011000f')
+        normalized_a = _canonical_srgb_bytes(bytes(earlier))
+        normalized_b = _canonical_srgb_bytes(bytes(later))
+        self.assertEqual(normalized_a, normalized_b)
+        self.assertEqual(normalized_a[:24], generated[:24])
+        self.assertEqual(normalized_a[36:], generated[36:])
+        # Profile stays parseable: color primaries, TRCs and gamut untouched.
+        self.assertEqual(ImageCms.getProfileDescription(
+            ImageCms.ImageCmsProfile(BytesIO(normalized_a))).strip(),
+            ImageCms.getProfileDescription(
+                ImageCms.ImageCmsProfile(BytesIO(generated))).strip())
+
+    def test_icc_stability_repeated_prepare_and_verify(self):
+        proof = prepare_working_source(self.source, self.output)
+        for _ in range(3):
+            self.assertTrue(verify_source_lineage(self.source, proof))
+        self.assertEqual(hash_file(self.output), proof.working_sha256)
 
     def test_srgb_source_roundtrip_is_independently_verifiable(self):
         original_sha = hash_file(self.source)
