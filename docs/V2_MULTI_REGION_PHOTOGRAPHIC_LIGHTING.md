@@ -40,6 +40,17 @@ The same original church was rerendered locally with a blue-sky selection that f
 
 The two negative tests (sharp-boundary fidelity and reject unreviewed hard-edge editing) raised local synthetic coverage from **12 to 14 tests**. Only current-head CI using the project's pinned Pillow-13 compatible environment can confirm repository test compatibility.
 
+
+## V12 independent real-photo review: a STOP is a valid outcome (2026-11-04)
+
+**Church:** independent inspection of the real revised V11 render at full and detail size still found visible sky/stone edge artifacts (particularly around the upper pinnacles). The V11 engineering mask pass is not a photographic-quality pass. A single controlled V12 trial used only the *original* 1152×1536 sRGB pixels: the sky and stone each had a deliberately retained unchanged narrow boundary corridor and inward-only tonal fade. Despite source identity, ICC, geometry and 0 changed pixels within the designated seven-pixel boundary guard, the **real V12 still visibly produced scalloped tonal contours outside the spires**. The visual sample is rejected: even an unchanged immediate pixel border does not ensure natural optical transition. Do **not** use this V12 as an accepted final image or treat the engineering proof as evidence that halo control has been solved. This shows the current coarse semantic boundary and fade topology are inadequate.
+
+**Courtyard:** a single alternate, source-pixel-only V12 creative hypothesis tested the dark aged wooden frame as a stable vantage point while reducing competing courtyard/patio/background luminance and leaving the original fountain arcs, leaves, stones and structures unchanged. The window-interior mean weighted RGB luminance went from approximately **123.5** to **102.5** within the inspected region; the wood/frame exclusion mask changed **0 pixels**, ICC stayed the same, dimensions remained 1152×1536 and there were **0 newly clipped RGB 255 channel pixels**. However, in the actual normal-size side-by-side image, lowering overall outdoor brightness did **not** create a convincing new first/second viewing path or a material magazine-level photographic improvement. **NO-GO for expression**. Do not reinterpret this 21-level brightness shift as an artistic pass.
+
+**Engineering response:** the experimental `editorial_contract.review_editorial` now requires two separate explicit observations for source-aligned local edits: `edge_detail_reviewed is True` and `halo_or_seam_absent is True`. Synthetic negative tests reject absent/false/truthy-string claims. This is a fail-closed **review contract**, not automated halo detection, and a dishonest reviewer or imprecise segmentation is still possible. Current-head CI and human inspection remain required.
+
+**Decision:** do not run V13 merely by further adjusting gamma or blur radii. Preserve the **user-approved Macau street V6** as a positive reference; mark both church and courtyard *not quality-accepted* under the present local editing capability. Continue only if the editor can demonstrably obtain high-fidelity semantic scene boundaries and a non-haloing natural transition, or if an independently justified change to the photograph's real spatial storytelling becomes possible. No new user photos required until that prerequisite is met. All real media/asset hashes remain private; only qualitative observations and aggregate ROI statistics are documented in Git.
+
 ## Promotion decision
 
 - [x] Quantify the specific photo the user preferred, without making that its universal color recipe.
