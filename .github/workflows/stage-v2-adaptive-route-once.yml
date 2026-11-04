@@ -1,0 +1,77 @@
+# Temporary branch-scoped restaging; delete after verified execution.
+name: Restage Photo Finish v2.0.0 after adaptive route tests once
+on:
+  push:
+    branches:
+      - integration/photo-finish-v2-20261104
+    paths:
+      - .github/workflows/stage-v2-adaptive-route-once.yml
+permissions:
+  contents: read
+jobs:
+  restage:
+    if: ${{ github.repository == 'kwhi6693-web/photo-finish' && github.ref == 'refs/heads/integration/photo-finish-v2-20261104' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout exact protected branch and historical immutable tags
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Install declared requirements
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+      - name: Confirm isolated candidate and regenerate hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('runtime/10_SYSTEM_CONFIG/runtime_policy.json').read_text(encoding='utf-8'))
+          b=json.loads(Path('runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json').read_text(encoding='utf-8'))
+          assert p['runtime_version']==p['distribution']['version']==p['beautification_defaults']['versions']['runtime']==b['runtime_version']=='2.0.0'
+          assert Path('dist/v2.0.0/photo-finish.zip').is_file()
+          assert Path('dist/v2.0.0/photo-finish.zip.sha256').is_file()
+          PY
+          python tools/sync_public.py
+          python tools/doctor.py
+          python tools/verify_packages.py stable
+          python tools/verify_packages.py released
+      - name: Run complete tests, no bypass
+        run: python tools/run_tests.py
+      - name: Rebuild deterministic v2 only, preserve all old releases
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -- dist/v2.0.0/photo-finish.zip dist/v2.0.0/photo-finish.zip.sha256
+          python tools/verify_packages.py candidate
+          python tools/verify_release_preparation.py --candidate
+          python tools/build_release.py --output dist/v2.0.0/photo-finish.zip
+          python tools/verify_release_preparation.py
+      - name: Commit verified candidate sources and manifest, never main
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/integration/photo-finish-v2-20261104"
+          git add -- SKILL.md runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json runtime/10_SYSTEM_CONFIG/runtime_policy.json runtime/10_SYSTEM_CONFIG/BEAUTIFICATION_POLICY.json runtime/10_SYSTEM_CONFIG/DEVELOPMENT_WORKFLOW.json runtime/10_SYSTEM_CONFIG/FAST_EDIT_WORKFLOW.json dist/v2.0.0/photo-finish.zip dist/v2.0.0/photo-finish.zip.sha256
+          python - <<'PY'
+          import subprocess
+          files=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          allowed={'SKILL.md','runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json','runtime/10_SYSTEM_CONFIG/runtime_policy.json','runtime/10_SYSTEM_CONFIG/BEAUTIFICATION_POLICY.json','runtime/10_SYSTEM_CONFIG/DEVELOPMENT_WORKFLOW.json','runtime/10_SYSTEM_CONFIG/FAST_EDIT_WORKFLOW.json','dist/v2.0.0/photo-finish.zip','dist/v2.0.0/photo-finish.zip.sha256'}
+          assert set(files)<=allowed,files
+          assert 'dist/v2.0.0/photo-finish.zip' in files and 'dist/v2.0.0/photo-finish.zip.sha256' in files
+          print('restaged',len(files),'files')
+          PY
+          git config user.name "photo-finish-maintenance-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build(v2): restage verified adaptive-route 2.0 candidate"
+          git push origin "HEAD:refs/heads/integration/photo-finish-v2-20261104"
