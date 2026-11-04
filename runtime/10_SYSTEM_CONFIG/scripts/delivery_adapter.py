@@ -38,7 +38,10 @@ def _edit_route(state, tool_name, arguments):
         return
     names = {'image_apply_adjustments', 'adobe.image_apply_adjustments',
              'mcp__codex_apps__adobe_image_apply_adjustments',
-             'tools.mcp__codex_apps__adobe_image_apply_adjustments'}
+             'tools.mcp__codex_apps__adobe_image_apply_adjustments',
+             # The installed Adobe connector's current masked tonal editor.
+             'mcp__Adobe__image_apply_adjustments',
+             'tools.mcp__Adobe__image_apply_adjustments'}
     if tool_name not in names or not isinstance(arguments.get('maskURI'), str) or not arguments['maskURI'].strip():
         raise ValueError('Local-only revision requires a verified region-mask editor '
                          'and its actual top-level maskURI. Keep the accepted version.')
