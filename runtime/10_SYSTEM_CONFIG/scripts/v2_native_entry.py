@@ -24,8 +24,9 @@ if _RUNTIME_DIR not in sys.path:
 
 from PIL import Image
 
-from source_lineage import SourceLineage, prepare_working_source
+from source_lineage import SourceLineage, prepare_working_source, verify_source_lineage
 from editorial_contract import EditorialPlan, ProvenCapabilities
+from adaptive_route import choose_adaptive_route
 from multizone_editor import ToneZone
 from native_workflow import run_native_photo_trial
 from editorial_pipeline import hash_file
@@ -167,21 +168,46 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     mask_plan=_load_data(zones_json)
     if mask_plan.get('source_sha256')!=lineage.working_sha256:
         raise ValueError('mask plan belongs to another working source')
-    if mask_plan.get('geometry_id')!=str(mask_plan.get('geometry_id','')):
+    # The route must be tied to actual camera and color-managed working bytes,
+    # before it can write even a retain-original or STOP audit receipt.
+    if not verify_source_lineage(original,lineage):
+        raise ValueError('real camera/working image identity missing')
+    route=choose_adaptive_route(
+        plan,observed_source_sha256=lineage.working_sha256,
+        source_visually_inspected=mask_plan.get('source_visually_inspected') is True,
+        evidence=mask_plan)
+    if route.action!='ELIGIBLE_MULTIZONE':
+        # Explicit retain-original is not an edited file, nor a formal V1.
+        # STOP is a documented refusal, never silently relabeled as retention.
+        record={'status':route.action,'route':asdict(route),
+                'camera_original_sha256':lineage.original_sha256,
+                'working_source_sha256':lineage.working_sha256,
+                'candidate_sha256':None,'candidate_path':None,
+                'formal_V1_registered':False,'photographic_quality_accepted':False}
+        _exclusive_json(receipt_json,record)
+        return {'stage':route.action,'reason':route.reason,
+                'native_png_path':None,'pending_output_sha256':None,
+                'source_sha256':lineage.original_sha256,
+                'formal_V1_registered':False,'photographic_quality_accepted':False}
+    geometry_id=mask_plan.get('geometry_id')
+    if not isinstance(geometry_id,str) or not geometry_id.strip():
         raise ValueError('invalid geometry ID')
+    # File SHA, dimensions, and actual mask pixels are audited separately.
+    # A supplied reviewer flag alone NEVER certifies an eligible mask.
+    zones=_zones(mask_plan)
     with Image.open(lineage.working_path) as image:
         image.load()
         profile=image.info.get('icc_profile')
     pending=run_native_photo_trial(
-        original,lineage,plan,_zones(mask_plan),
-        source_visually_inspected=mask_plan.get('source_visually_inspected') is True,
-        masks_visually_inspected=True,
+        original,lineage,plan,zones,
+        source_visually_inspected=True,masks_visually_inspected=True,
         capabilities=ProvenCapabilities(True,True,True,True,
                                          verified_local_masks=True,
                                          edge_transition_verified=mask_plan.get('edge_transition_verified') is True),
-        geometry_id=mask_plan['geometry_id'],expected_icc_bytes=profile,
+        geometry_id=geometry_id,expected_icc_bytes=profile,
         destination=output)
-    record={'status':pending.status,'camera_original_sha256':pending.camera_original_sha256,
+    record={'status':pending.status,'route':asdict(route),
+            'camera_original_sha256':pending.camera_original_sha256,
             'working_source_sha256':pending.working_source_sha256,
             'candidate_sha256':pending.candidate_sha256,'candidate_path':pending.candidate_path,
             'spatial_direction':pending.spatial_direction,
@@ -192,7 +218,8 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     except BaseException:
         _rollback_unreceipted_png(pending.candidate_path,pending.candidate_sha256,receipt_json)
         raise
-    return {'stage':pending.status,'native_png_path':pending.candidate_path,
+    return {'stage':pending.status,'route':asdict(route),
+            'native_png_path':pending.candidate_path,
             'source_sha256':pending.camera_original_sha256,
             'pending_output_sha256':pending.candidate_sha256,
             'formal_V1_registered':False,'photographic_quality_accepted':False}
