@@ -89,6 +89,19 @@ class MultiZoneTests(unittest.TestCase):
         output, _ = self.trial()
         self.assertEqual(output.getpixel((95, 95)), self.source.getpixel((95, 95)))
 
+    def test_pixel_locked_architecture_boundary_never_changes_outside_mask(self):
+        locked = replace(self.zoneA, edge_mode='pixel_locked',
+                         boundary_visually_inspected=True)
+        output, _ = self.trial([locked, self.zoneB])
+        self.assertEqual(output.getpixel((15, 40)), self.source.getpixel((15, 40)))
+        self.assertLess(output.getpixel((20, 40))[0], self.source.getpixel((20, 40))[0])
+
+    def test_unreviewed_hard_edge_is_rejected(self):
+        locked = replace(self.zoneA, edge_mode='pixel_locked',
+                         boundary_visually_inspected=False)
+        with self.assertRaisesRegex(ValueError, 'mask-boundary inspection'):
+            self.trial([locked, self.zoneB])
+
     def test_unbounded_gamma_fails(self):
         with self.assertRaisesRegex(ValueError, 'grade strength'):
             self.trial([replace(self.zoneA, gamma=9.0), self.zoneB])
