@@ -51,6 +51,20 @@ The two negative tests (sharp-boundary fidelity and reject unreviewed hard-edge 
 
 **Decision:** do not run V13 merely by further adjusting gamma or blur radii. Preserve the **user-approved Macau street V6** as a positive reference; mark both church and courtyard *not quality-accepted* under the present local editing capability. Continue only if the editor can demonstrably obtain high-fidelity semantic scene boundaries and a non-haloing natural transition, or if an independently justified change to the photograph's real spatial storytelling becomes possible. No new user photos required until that prerequisite is met. All real media/asset hashes remain private; only qualitative observations and aggregate ROI statistics are documented in Git.
 
+## A/B editing capability comparison (2026-11-04; private same-source trial)
+
+**Decision being tested:** whether a genuinely more scene-aware *non-generative* tonal operation beats a traditional full-frame color grade, before more Skill safety code is written. The same authorized church and Macau night street originals were compared under two actual pixel-edit techniques. Images were decoded from privately verified full-resolution 1152x1536 sRGB working sources, and only real source pixels were processed. No new source, object or geometry was generated, no personal photos or hashes are committed.
+
+**A — global grade:** smooth full-frame film-like tonal curve + restrained color contrast. **B — scene-adaptive:** (church) original-pixel color distinction between stone and blue sky, bounded bilateral texture-local enhancement, and continuous source-color tonal weighting without coarse binary sky/stone masks; (night street) broad position-aware context/road darkening, with original warm-light colors used to retain hotel illumination.
+
+**Night-street descriptive ROI mean weighted brightness, 0–255:** near road **93.1 original / 86.1 A / 71.7 B / 66.9 user-approved V6**; warm hotel region **58.0 / 52.0 / 52.8 / 56.8**, respectively. Side buildings **39.3 / 32.4 / 31.5 / 33.9**, close signs **92.0 / 84.5 / 80.3 / 72.1**. The hotel ROI includes dark architecture; these are not supposed to be absolute spot-luminance readings. B more closely reproduces the *relative context recession* of V6 than A; no user approval of B or causal proof of excellence.
+
+**Church outcome:** B makes some stone relief more distinct and mildly reduces sky competition, but does **not** produce a compelling magazine-level editorial improvement over the source. A is less directional still. The earlier scalloped sky-boundary failure from coarse masking was not seen in the inspected detail crop of B, but this is not a full independent edge acceptance.
+
+**Technical evidence:** output sizes and pixel coordinates match the originals; original sRGB working ICC bytes remain in outputs. An initial sRGB conversion introduced new channel-255 pixels, which were **rejected and subsequently reduced to zero** by a source-conditional highlight guard in all four A/B experimental outputs. This is local trial logic, not a commit to the current production editor. Lighting and color operations were purely source-pixel transformations, so readable signs and building shapes were not text-generated, but detailed final visual identity must still be reviewed independently.
+
+**Actual verdict:** both approaches are **research candidates, not accepted final photos**. B is a more promising tonal *component* than A for establishing scene priority, but B has not surpassed the real user-preferred V6, and the church does not have a verified expressive step-change. These outcomes directly discourage continued small gamma/brightness iteration or adding more acceptance checkboxes without a higher-capability editor. The next meaningful comparison must use a demonstrably different, authentic editing capability with high-quality region/edge awareness, traceable full-resolution output and original-scene identity. Keep PR Draft and don't start the nine-photo extension.
+
 ## Promotion decision
 
 - [x] Quantify the specific photo the user preferred, without making that its universal color recipe.
