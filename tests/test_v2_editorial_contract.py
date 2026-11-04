@@ -35,7 +35,8 @@ def capabilities():
 def feedback():
     return EditorialReview(H, 'b' * 64, True, True, True, True, True, True, True,
         'Viewer enters from nearby figures into receding road and lit structure',
-        'Warm hotel has stronger presence while neon labels remain legible and realistic')
+        'Warm hotel has stronger presence while neon labels remain legible and realistic',
+        edge_detail_reviewed=True, halo_or_seam_absent=True)
 
 
 def reviewed(p=None, f=None):
@@ -130,6 +131,11 @@ class EditorialProtocolTests(unittest.TestCase):
     def test_courtyard_negative_feedback_blocks_even_technical_pass(self):
         r = reviewed(f=replace(feedback(), user_feedback='negative'))
         self.assertFalse(r.accepted)
+
+    def test_uninspected_boundary_or_halo_blocks_even_when_other_axes_pass(self):
+        self.assertFalse(reviewed(f=replace(feedback(), edge_detail_reviewed=False)).accepted)
+        self.assertFalse(reviewed(f=replace(feedback(), halo_or_seam_absent=False)).accepted)
+        self.assertFalse(reviewed(f=replace(feedback(), halo_or_seam_absent='yes')).accepted)
 
     def test_unseen_real_output_never_passes(self):
         self.assertFalse(reviewed(f=replace(feedback(), real_output_verified=False)).accepted)
