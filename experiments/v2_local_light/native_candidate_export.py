@@ -51,9 +51,12 @@ def export_pending_png(trial, *, working_source_path, destination):
             or technical.get('new_clip_check') is not True
             or technical.get('output_pixel_sha256') != trial.output_pixel_sha256):
         raise ValueError('technical mask and original-scene protection receipt missing')
-    src_path = Path(working_source_path).resolve(strict=True)
-    if not src_path.is_file() or src_path.is_symlink():
+    src_raw = Path(working_source_path)
+    if src_raw.is_symlink():
         raise ValueError('working source must be a regular non-symlink file')
+    src_path = src_raw.resolve(strict=True)
+    if not src_path.is_file():
+        raise ValueError('working source must be an existing regular file')
     src_hash = hash_file(src_path)
     if src_hash != trial.source_file_sha256:
         raise ValueError('pending edit source identity does not match working original')
