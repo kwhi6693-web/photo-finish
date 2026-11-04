@@ -13,7 +13,7 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 1. 摄影决策
 
-使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
+使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/v2_native_entry/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
 
 先实际看原片，判断主体与环境叙事、前中后景、留白、真实光线、色彩、材质、保护内容及不足。原片已实现目标且无创作转译需求，可说明依据后不编辑结束，不登记虚构 V1、不声称新增保存。
 
@@ -32,7 +32,7 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 组照按真实光线与表达分群，统一适用关系而非固定参数，逐张检查曝光、白平衡、裁切、降噪、配置与蒙版；筛选、发布顺序、[布局](references/grid-layout.md)与[文案](references/caption-writing.md)按需，不增加单张默认步骤。“发布”指策展与交付，未经明确授权不代发社交平台。
 
 ## 2. 编辑与验收
-2.0 同源本地路线（候选，未通过正式摄影验收）：先在明确授权和实看原片后执行 `python scripts/run_photo_finish.py v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json`；在实际查看两个至四个区域的 mask/core/allowed/protected 与独立摄影计划后才执行 `python scripts/run_photo_finish.py v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json`。此路线仅输出待审的非生成式 PNG，不自行选区、审核审美、登记 V1 或保存云端。必须同源全幅与 1:1 细节复核后接续既有正式验收、保存和版本登记，任何来源/ICC/选区不一致均 STOP。
+2.0 同源本地路线（候选，未通过正式摄影验收）：明确授权后先实看非人像原片，再运行 `python scripts/run_photo_finish.py v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json`。根据实际可见内容（不能由文件名、虚构工具能力或固定预设推断已看图）在私有工作目录形成来源 SHA 对应的 OBSERVATION.json，按[真实视觉观察与摄影方向证据契约](docs/V2_VISUAL_OBSERVATION_CONTRACT.md)运行 `python scripts/run_photo_finish.py v2_native_entry decide ORIGINAL LINEAGE.json OBSERVATION.json PLAN.json DECISION.json`。它只将实际观察编译为来源绑定摄影方案，可能返回 EDIT_PLAN_READY_MASKS_UNVERIFIED、RETAIN_ORIGINAL 或 STOP；不自动看图、不代表已经做任何编辑。仅在真实选区原始字节/同源几何与实际人工/助手审查后，按[蒙版交接门禁](docs/V2_PROVIDER_MASK_HANDOFF.md)取回可信原始蒙版，或使用独立已审查的本地蒙版；确认两个至四个区域的 mask/core/allowed/protected、风险与边缘后，才执行 `python scripts/run_photo_finish.py v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json`。此路线只输出待审的非生成式 PNG，不自行分割、审核审美、登记 V1 或保存云端。必须原片同源、全幅与 1:1 细节复核后接续既有正式验收、保存和版本登记；任何来源/ICC/选区不一致、视觉证据不足或工具能力不可证实均 STOP，不以预览缩略图冒充原始蒙版。
 
 
 日常复用 `runtime/10_SYSTEM_CONFIG/scripts/photo_edit.py`：prepare 合并接入与 candidates；实际参考取舍后 submit 合并 protect/select/最终 direction/问题/begin；真实工具返回后 returned 合并结果与正式文件检查；实际全幅及受影响细节对照后 review 合并证据/验收/可选 snapshot。这些是控制器入口，不代替真实编辑或看图；只读紧凑回执。字段首次需要时查[工具与交付接口](references/delivery-adapter.md)，同任务复用，不回显整份 job/政策/直方图。
