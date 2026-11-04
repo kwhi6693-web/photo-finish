@@ -128,6 +128,23 @@ class EditorialProtocolTests(unittest.TestCase):
         self.assertTrue(r.accepted)
         self.assertFalse(r.certified_portfolio_grade)
 
+    def test_high_scene_similarity_can_pass_without_pixel_identity(self):
+        review = replace(feedback(),
+            scene_continuity_level='highly_similar',
+            scene_continuity_observation='The same buildings, exact signs and street perspective remain recognizable; minor water and light texture varies')
+        outcome = reviewed(f=review)
+        self.assertTrue(outcome.accepted)
+        self.assertFalse(outcome.certified_portfolio_grade)
+
+    def test_high_similarity_without_real_detail_observations_fails(self):
+        review = replace(feedback(), scene_continuity_level='highly_similar',
+                         scene_continuity_observation='looks close')
+        self.assertFalse(reviewed(f=review).accepted)
+
+    def test_reconstructed_or_unrecognized_scene_is_rejected(self):
+        self.assertFalse(reviewed(f=replace(feedback(), scene_continuity_level='unacceptable')).accepted)
+        self.assertFalse(reviewed(f=replace(feedback(), scene_continuity_level='unknown')).accepted)
+
     def test_courtyard_negative_feedback_blocks_even_technical_pass(self):
         r = reviewed(f=replace(feedback(), user_feedback='negative'))
         self.assertFalse(r.accepted)
