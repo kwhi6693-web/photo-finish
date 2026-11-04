@@ -147,6 +147,8 @@ class EditorialReview:
     viewing_path_observation: str
     reviewer_observation: str
     user_feedback: str = 'not_collected'  # positive | negative | not_collected
+    edge_detail_reviewed: bool = False
+    halo_or_seam_absent: bool = False
 
 
 @dataclass(frozen=True)
@@ -178,6 +180,8 @@ def review_editorial(plan, review, *, observed_source_sha256, observed_output_sh
                 review.same_source_comparison is True,
                 review.normal_and_detail_viewed is True)):
         return ReviewDecision(False, 'real same-source full/detail photographic comparison incomplete')
+    if plan.requires_local_selection and not (review.edge_detail_reviewed is True and review.halo_or_seam_absent is True):
+        return ReviewDecision(False, 'actual output mask edges need 1:1 inspection and explicit halo/seam-free review')
     if not isinstance(review.viewing_path_observation, str) or len(review.viewing_path_observation.strip()) < 16:
         return ReviewDecision(False, 'spatial viewing path lacks concrete observations')
     if not isinstance(review.reviewer_observation, str) or len(review.reviewer_observation.strip()) < 20:
