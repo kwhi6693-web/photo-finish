@@ -1,0 +1,92 @@
+# Temporary guarded maintenance staging workflow; remove before any merge.
+# Runs only on the named isolated repair branch and only when this file is first added.
+name: Stage Photo Finish v1.5.8 maintenance candidate once
+on:
+  push:
+    branches:
+      - fix/photo-finish-generator-route-20261104
+    paths:
+      - .github/workflows/stage-v158-once.yml
+permissions:
+  contents: read
+jobs:
+  stage:
+    if: ${{ github.repository == 'kwhi6693-web/photo-finish' && github.ref == 'refs/heads/fix/photo-finish-generator-route-20261104' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout exact isolated source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Install exact declared candidate dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+      - name: Bump maintenance version only on isolated candidate branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          policy_path = Path('runtime/10_SYSTEM_CONFIG/runtime_policy.json')
+          policy = json.loads(policy_path.read_text(encoding='utf-8'))
+          assert policy['runtime_version'] == '1.5.7', 'unexpected source version'
+          assert policy['distribution']['version'] == '1.5.7'
+          assert policy['beautification_defaults']['versions']['runtime'] == '1.5.7'
+          policy['runtime_version'] = '1.5.8'
+          policy['distribution']['version'] = '1.5.8'
+          policy['beautification_defaults']['versions']['runtime'] = '1.5.8'
+          policy_path.write_text(json.dumps(policy, ensure_ascii=False, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          skill_path = Path('SKILL.md')
+          skill = skill_path.read_text(encoding='utf-8')
+          old = '维护版本：v1.5.7'
+          assert skill.count(old) == 1, 'unexpected Skill version marker'
+          skill_path.write_text(skill.replace(old, '维护版本：v1.5.8'), encoding='utf-8')
+          PY
+      - name: Synchronize current entrypoint and source hash mapping
+        run: python tools/sync_public.py
+      - name: Verify doctor and immutable historical releases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/doctor.py
+          python tools/verify_packages.py stable
+          python tools/verify_packages.py released
+      - name: Build independently verifiable new-version archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/verify_packages.py candidate
+          python tools/verify_release_preparation.py --candidate
+          mkdir -p dist/v1.5.8
+          test ! -e dist/v1.5.8/photo-finish.zip
+          python tools/build_release.py --output dist/v1.5.8/photo-finish.zip
+          python tools/verify_release_preparation.py
+      - name: Commit isolated staging and checksum, never touch main
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/fix/photo-finish-generator-route-20261104"
+          git add -- SKILL.md runtime/10_SYSTEM_CONFIG references dist/v1.5.8
+          python - <<'PY'
+          import subprocess
+          allowed = ('SKILL.md', 'runtime/10_SYSTEM_CONFIG/', 'references/', 'dist/v1.5.8/')
+          changed = subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines()
+          assert changed and all(any(p == a if not a.endswith('/') else p.startswith(a) for a in allowed) for p in changed), changed
+          assert 'dist/v1.5.8/photo-finish.zip' in changed, changed
+          assert 'dist/v1.5.8/photo-finish.zip.sha256' in changed, changed
+          print('staged_source_and_artifact_files', len(changed))
+          PY
+          git config user.name "photo-finish-maintenance-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: stage verified v1.5.8 maintenance candidate in isolated branch"
+          git push origin "HEAD:refs/heads/fix/photo-finish-generator-route-20261104"
