@@ -1,13 +1,13 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, professional non-portrait edits for natural landscapes, city nights, architecture, travel, still life, food and product photography (no face beautification, skin smoothing, reshaping or portrait optimization), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Use the saved photo workflow only after explicit current-task or valid standing editing authorization; otherwise request permission before editing or calling any external service. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, professional non-portrait edits for natural landscapes, city nights, architecture, travel, still life, food and product photography (no face beautification, skin smoothing, reshaping or portrait optimization), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
 
-调用：`$photo-finish`。维护版本：v1.5.8，继承正式v1.5.6；四层入口、可选风格与直接出图统一规则，不新增图像引擎或性能承诺。当前编排2026-10-26.3。
+调用：`$photo-finish`。整合候选版本：v2.0.0（Draft，未发布或安装）；保留四层入口，新增同源本地编辑候选能力；不将候选当成摄影质量或宿主交付已通过。当前编排2026-10-26.3。
 
-面向自然风光、城市夜景、建筑、旅行、静物、美食与产品。以人物为主体的人像、磨皮、塑形、五官调整和肤色标定不在范围内；偶然入镜人物仍保护身份与结构。新上传适用照片无其他说明即 EDIT_TARGET；明确 ANALYSIS 只分析，STYLE_REFERENCE 按收藏授权处理。不批处理历史，不自动收藏待修图或成片。默认直接显示每张的一张已核验正式成片，不附版本说明、成功状态、参数、过程报告、下载链接或返工提示；用户主动询问才展开。版本与保存凭据仍内部登记。无法原生显示时才提供同一正式文件入口；未通过、保存失败/待确认或工具强制STOP时须简短说明真实状态，不用静默图片暗示已完成。
+面向自然风光、城市夜景、建筑、旅行、静物、美食与产品。以人物为主体的人像、磨皮、塑形、五官调整和肤色标定不在范围内；偶然入镜人物仍保护身份与结构。新上传非人像照片可分类为 EDIT_TARGET，但此分类不代表编辑授权；无明确的当次或有效既有授权时不得实际编辑或外发。明确 ANALYSIS 只分析，STYLE_REFERENCE 按收藏授权处理。不批处理历史，不自动收藏待修图或成片。默认直接显示每张的一张已核验正式成片，不附版本说明、成功状态、参数、过程报告、下载链接或返工提示；用户主动询问才展开。版本与保存凭据仍内部登记。无法原生显示时才提供同一正式文件入口；未通过、保存失败/待确认或工具强制STOP时须简短说明真实状态，不用静默图片暗示已完成。
 
 功能仅归四层：摄影决策、编辑与验收、成片与版本、个人资产与保障。日常 EDIT 依次走前三层，第四层提供支持；恢复、比较或资料管理直接进入对应接口，不创建编辑任务或渲染。组照策展贯穿前三层，仅任务需要时启用。风格和质感是摄影决策中的可选维度，不成为额外必经阶段。
 
