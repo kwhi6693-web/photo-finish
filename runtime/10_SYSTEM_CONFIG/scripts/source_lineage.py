@@ -19,6 +19,16 @@ from multizone_editor import _sha_pixels
 MAX_PIXELS = 60_000_000
 
 
+def _canonical_srgb_bytes(raw):
+    """Freeze volatile ICC header creation timestamp; never change color tags."""
+    if not isinstance(raw, bytes) or len(raw) < 128 or raw[36:40] != b'acsp':
+        raise ValueError('invalid built-in sRGB ICC profile')
+    stable = bytearray(raw)
+    # ICC v2/v4 header UTC date: 2000-01-01 00:00:00 (six big-endian u16).
+    stable[24:36] = bytes.fromhex('07d000010001000000000000')
+    return bytes(stable)
+
+
 @dataclass(frozen=True)
 class SourceLineage:
     original_sha256: str
@@ -42,7 +52,13 @@ def _working_srgb(source):
         raise ValueError('source requires a real embedded ICC profile; no silent P3/sRGB guess')
     try:
         input_profile = ImageCms.ImageCmsProfile(BytesIO(embedded))
-        output_profile = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB'))
+        # LittleCMS embeds wall-clock creation time (ICC header bytes 24..35).
+        # Recreating a semantically identical sRGB profile during independent
+        # lineage verification otherwise changes its bytes across seconds.
+        # Canonicalize ONLY the ICC creation date; preserve all color tags.
+        srgb_icc = _canonical_srgb_bytes(
+            ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes())
+        output_profile = ImageCms.ImageCmsProfile(BytesIO(srgb_icc))
     except (OSError, ValueError, SyntaxError) as error:
         raise ValueError('source ICC profile is invalid or unsupported') from error
     upright = ImageOps.exif_transpose(source)
@@ -51,7 +67,6 @@ def _working_srgb(source):
         managed = ImageCms.profileToProfile(rgb, input_profile, output_profile, outputMode='RGB')
     except (OSError, ValueError, SyntaxError) as error:
         raise ValueError('ICC color conversion could not be verified') from error
-    srgb_icc = output_profile.tobytes()
     managed.info['icc_profile'] = srgb_icc
     if managed.getexif().get(274, 1) != 1:
         raise ValueError('working PNG still has unnormalized EXIF orientation')
