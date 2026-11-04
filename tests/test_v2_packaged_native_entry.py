@@ -83,6 +83,9 @@ class PackagedNativeEntryTests(unittest.TestCase):
         self.zones.write_text(json.dumps({
             'source_sha256':lineage['working_sha256'],
             'geometry_id':'source96-fully-reviewed-synthetic',
+            'scene_complexity':'simple','risk_flags':['none'],
+            'reviewer_mode':'human',
+            'review_observation':'Synthetic masks inspected over exact source geometry; not photographic approval.',
             'source_visually_inspected':True,'masks_visually_inspected':True,
             'zones':defs}),encoding='utf-8')
         return lineage
@@ -99,12 +102,97 @@ class PackagedNativeEntryTests(unittest.TestCase):
         self.assertEqual(payload['working_source_sha256'],lineage['working_sha256'])
         self.assertFalse(payload['formal_V1_registered'])
         self.assertFalse(payload['photographic_quality_accepted'])
+        self.assertEqual(payload['route']['action'],'ELIGIBLE_MULTIZONE')
+        self.assertTrue(payload['route']['technical_only'])
         self.assertEqual(digest(self.original),original_hash)
         with Image.open(self.result) as image:
             image.load()
             self.assertEqual(image.format,'PNG')
             self.assertEqual(image.size,(96,96))
             self.assertTrue(image.info.get('icc_profile'))
+
+    def test_explicit_retain_original_writes_only_decision_receipt(self):
+        original_hash=digest(self.original)
+        self.fixture()
+        data=json.loads(self.plan.read_text(encoding='utf-8'))
+        data['decision']='retain_original'
+        data['retain_reason']='Already an effective documentary photograph; preserve its original light.'
+        self.plan.write_text(json.dumps(data),encoding='utf-8')
+        # A retain decision must work without even requesting a semantic mask.
+        z=json.loads(self.zones.read_text(encoding='utf-8'))
+        z.pop('zones')
+        self.zones.write_text(json.dumps(z),encoding='utf-8')
+        response=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                             self.result,self.receipt)
+        self.assertEqual(response.returncode,0,response.stderr)
+        output=json.loads(response.stdout)
+        self.assertEqual(output['stage'],'RETAIN_ORIGINAL')
+        self.assertIsNone(output['native_png_path'])
+        self.assertIsNone(output['pending_output_sha256'])
+        self.assertFalse(self.result.exists())
+        self.assertEqual(digest(self.original),original_hash)
+        record=json.loads(self.receipt.read_text(encoding='utf-8'))
+        self.assertFalse(record['formal_V1_registered'])
+
+    def test_unclassified_scene_stops_with_no_png_and_audit_receipt(self):
+        original_hash=digest(self.original)
+        self.fixture()
+        z=json.loads(self.zones.read_text(encoding='utf-8'))
+        z.pop('scene_complexity')
+        self.zones.write_text(json.dumps(z),encoding='utf-8')
+        response=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                             self.result,self.receipt)
+        self.assertEqual(response.returncode,0,response.stderr)
+        self.assertEqual(json.loads(response.stdout)['stage'],'STOP')
+        self.assertFalse(self.result.exists())
+        record=json.loads(self.receipt.read_text(encoding='utf-8'))
+        self.assertTrue(record['route']['technical_only'])
+        self.assertFalse(record['photographic_quality_accepted'])
+        self.assertEqual(digest(self.original),original_hash)
+
+    def test_risk_flag_elevates_simple_to_complex_and_blocks_unreviewed_edge(self):
+        self.fixture()
+        z=json.loads(self.zones.read_text(encoding='utf-8'))
+        z['scene_complexity']='simple'
+        z['risk_flags']=['architecture_sky_edge']
+        self.zones.write_text(json.dumps(z),encoding='utf-8')
+        response=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                             self.result,self.receipt)
+        self.assertEqual(response.returncode,0,response.stderr)
+        decision=json.loads(self.receipt.read_text(encoding='utf-8'))['route']
+        self.assertEqual(decision['action'],'STOP')
+        self.assertEqual(decision['complexity'],'complex')
+        self.assertTrue(decision['needs_boundary_review'])
+        self.assertFalse(self.result.exists())
+
+    def test_complex_scene_with_actual_reviewed_masks_can_render_pending_png(self):
+        self.fixture()
+        z=json.loads(self.zones.read_text(encoding='utf-8'))
+        z['scene_complexity']='complex'
+        z['risk_flags']=['architecture_sky_edge']
+        z['edge_transition_verified']=True
+        for zone in z['zones']:
+            zone['boundary_visually_inspected']=True
+        self.zones.write_text(json.dumps(z),encoding='utf-8')
+        response=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                             self.result,self.receipt)
+        self.assertEqual(response.returncode,0,response.stderr)
+        record=json.loads(self.receipt.read_text(encoding='utf-8'))
+        self.assertEqual(record['route']['action'],'ELIGIBLE_MULTIZONE')
+        self.assertEqual(record['route']['complexity'],'complex')
+        self.assertFalse(record['photographic_quality_accepted'])
+        self.assertEqual(digest(self.result),record['candidate_sha256'])
+
+    def test_unimplemented_global_route_fails_closed(self):
+        self.fixture()
+        plan=json.loads(self.plan.read_text(encoding='utf-8'))
+        plan['requires_local_selection']=False
+        self.plan.write_text(json.dumps(plan),encoding='utf-8')
+        r=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                      self.result,self.receipt)
+        self.assertEqual(r.returncode,0,r.stderr)
+        self.assertEqual(json.loads(self.receipt.read_text())['status'],'STOP')
+        self.assertFalse(self.result.exists())
 
     def test_existing_prepare_receipt_prevents_orphan_working_image(self):
         original_hash=digest(self.original)
