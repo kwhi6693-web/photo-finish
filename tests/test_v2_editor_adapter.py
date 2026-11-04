@@ -84,6 +84,21 @@ class AdapterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'tonal-only'):
             integrate_verified_tonal_edit(**p)
 
+    def test_excess_new_highlight_clipping_is_rejected(self):
+        p = params()
+        p['source'] = Image.new('RGB', (96, 96), (235, 240, 242))
+        p['source'].info['icc_profile'] = p['candidate'].info['icc_profile']
+        p['candidate'] = Image.new('RGB', (96, 96), (255, 255, 255))
+        p['candidate'].info['icc_profile'] = p['source'].info['icc_profile']
+        p['source_pixels_hash'] = _digest_pixels(p['source'])
+        with self.assertRaisesRegex(ValueError, 'clipped highlights'):
+            integrate_verified_tonal_edit(**p)
+
+    def test_highlight_tolerance_requires_bounded_number(self):
+        p = params()
+        with self.assertRaisesRegex(ValueError, 'highlight clipping tolerance'):
+            integrate_verified_tonal_edit(**p, max_newly_clipped_fraction='yes')
+
     def test_unreviewed_mask_fails(self):
         p = params(); p['masked_region_reviewed'] = False
         with self.assertRaisesRegex(ValueError, 'visually reviewed'):
