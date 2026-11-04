@@ -61,7 +61,24 @@ def _load_data(path):
     return result
 
 
+def _require_unused_output(path, extension):
+    """Fail before editing if the required output or its receipt already exists."""
+    destination=Path(path)
+    if destination.suffix.lower()!=extension:
+        raise ValueError('invalid destination extension: '+extension)
+    parent=destination.parent.resolve(strict=True)
+    if not parent.is_dir():
+        raise ValueError('output parent must be an existing directory')
+    destination=parent/destination.name
+    if os.path.lexists(destination):
+        raise FileExistsError('destination already exists: '+str(destination))
+
+
 def prepare(original, working, manifest):
+    # Do not leave a managed image without a lineage receipt on ordinary
+    # pre-existing-receipt errors. This is a preflight, not a race-proof commit.
+    _require_unused_output(working,'.png')
+    _require_unused_output(manifest,'.json')
     proof=prepare_working_source(original,working)
     record=asdict(proof)
     record['original_size']=list(proof.original_size)
@@ -121,6 +138,10 @@ def _zones(record):
 
 
 def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
+    # Avoid producing an untracked candidate when its receipt path is already
+    # occupied. The exporter independently enforces no-overwrite on PNG bytes.
+    _require_unused_output(output,'.png')
+    _require_unused_output(receipt_json,'.json')
     lineage=_lineage(_load_data(lineage_json))
     plan=EditorialPlan(**_load_data(plan_json))
     mask_plan=_load_data(zones_json)
