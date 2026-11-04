@@ -30,6 +30,16 @@ Original source bytes were preserved. Both local linked two-zone test outputs ha
 
 **Known limits:** The algorithm does not autonomously discover accurate zone boundaries, infer professional art direction, authenticate all masks or service operations, calculate scene/texture fidelity in a full semantic sense, certify no perceived halo from a mathematical support test, or decide magazine-grade taste. Gamma-based tonality is only one small tool. Repeated courtyard micro-editing is not warranted merely because the mask checks pass.
 
+## Real-photo negative test: bright architectural-edge halo
+
+The first local two-zone church render visibly showed a **light fringe along stone spires and the sky boundary**: soft blurring of a sky selection made the surrounding pixels appear too bright. The result was **rejected for naturalness** despite passing region-support and protected-pixel checks. This is decisive evidence that numeric feather checks are NOT sufficient to guarantee a natural photo.
+
+A targeted experimental `pixel_locked` edge policy now exists for **independently visually inspected, source-color-derived sharp boundaries**. It restricts sky tonal changes to actually selected sky pixels rather than Gaussian-blending across the stone outline; use it ONLY where the real boundary has been inspected. Strong local edits without a verified boundary must STOP. Other, nonhard masks retain narrow soft feathering.
+
+The same original church was rerendered locally with a blue-sky selection that follows the observed un-eroded sky pixels and the audited pixel-locked policy. The formerly prominent tower fringe was substantially reduced in the real visual inspection, while sky/stone contrast and actual building structure were preserved. **This is not a final user-rated photo and does not prove all halo artifacts are absent.** The courtyard still showed weak overall improvement. The source files, masks, and local output bytes remain private.
+
+The two negative tests (sharp-boundary fidelity and reject unreviewed hard-edge editing) raised local synthetic coverage from **12 to 14 tests**. Only current-head CI using the project's pinned Pillow-13 compatible environment can confirm repository test compatibility.
+
 ## Promotion decision
 
 - [x] Quantify the specific photo the user preferred, without making that its universal color recipe.
