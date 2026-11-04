@@ -10,11 +10,34 @@ Two **independent, equally necessary** decisions are required:
 1. **Photographic fidelity and naturalness:** fixed buildings, scene objects, tree/branch geometry, real fountain/reflective patterns, readable text, important people and physical relationships are not reconstructed, erased or replaced. Tonal/color edits, a legitimate crop and controlled editing of the photo's recorded details are permitted. No conspicuous halos, painted textures, plastic smoothness, imaginary lights, impossible water lines or CG-like material.
 2. **Editorial expressiveness:** the actual edited result establishes an intentional hierarchy, light direction, color design, spatial depth and story. Where meaningful improvement exists in the source, a minimally different or merely cleaned-up edit is **insufficient**. Aim for restrained but strong, independent-magazine / photographer-portfolio visual impact from the **first output**; do not force a universal blue/gold LUT, night exposure or specific contrast amount.
 
-**Acceptance is a two-axis AND gate:** fixed-scene integrity/natural look PASS **and** observable editorial impact PASS. A technical editor/ICC/geometry pass alone does not authorize visual quality claims. Numeric SSIM, changed-pixel count, or model-led image similarity are supporting diagnostics, not photographic proof.
+**Acceptance is a three-axis AND gate:** (1) fixed-scene integrity/natural look PASS, **and** (2) a perceptible and fitting spatial narrative PASS, **and** (3) observable editorial impact PASS. A technical editor/ICC/geometry pass alone does not authorize visual quality claims. Numeric SSIM, changed-pixel count, or model-led image similarity are supporting diagnostics, not photographic proof.
+
+## Universal spatial-storytelling rule (explicit user requirement, 2026-11-04)
+
+> **Every photo must deliberately convey spatial storytelling while retaining meaningful photographic expression, aiming for independent photography-magazine / professional portfolio quality.** This is a required photographic decision and review dimension, not an instruction to impose the same foreground/background formula, crop, lighting preset or high-contrast look on all photos.
+
+**What "spatial storytelling" means:** The image makes the viewer understand *where the subject is*, its relationship to the surroundings, *what to notice first and next*, and how light, shadow, scale, layers and negative space direct attention. A minimalist or close-up scene may achieve this through subject/background distance, texture, shadow, scale or negative space; it does **not** need artificially added physical depth or three mandatory layers.
+
+For every photo, the photographic direction must explicitly document, before any editing:
+1. **Spatial premise** — subject + environmental context + the visual relationship or scene being narrated (not merely an object category).
+2. **Viewing route** — attention entry, principal point of interest, secondary discovery, and the relevant foreground/middle/background or simpler spatial structure; retain useful negative space.
+3. **Narrative leverage** — the real, source-supported light gradients, color separation, framing edges, perspective, scale, reflections, texture or ambient motion that can strengthen that relationship.
+4. **Visual intervention** — the specific intended change visible at normal viewing size and its protected structure, e.g., local dodge/burn, restrained highlight emphasis, color distribution or justified crop, with enough strength to be perceptible but without inventing scene features.
+5. **Failure criteria** — reject if the result feels flat/undirected, overwhelms its environmental context, relies on generic filters, only looks subtly "cleaned up", or distorts fixed content/creates halos/CG-like lighting.
+
+**Real-photo check, not self-scoring:** Compare the exact source and output at the same viewing crop. Answer: "What is the scene telling? Where does the eye go first and second? Is that route visibly more coherent and expressive? Does the image still look naturally photographed?" Record a reasoned human/user assessment instead of claiming an unsupported objective magazine-quality score. If no credible stronger edit is possible, retain the source and report the limit rather than fake improvement.
+
+**Scene-specific examples from actual tests:**
+- Historic stone facade: the shadowed near-side passage becomes a spatial threshold leading to the sunlit stone architecture and the open sky; do not merely saturate the blue sky or distort carvings.
+- Macau night street: foreground people/signage supply lived city scale, receding road creates depth, warm hotel lights provide the main visual destination; preserve literal sign text and real people.
+- Window courtyard: dark aged window frame is the observer's position, the existing lateral fountain arcs and tree shadows lead into the sunlit courtyard beyond; do **not** invent a tiered fountain or sacrifice the authentic frame simply to enlarge leaves.
+- Macau tower night reference: tower–river reflection establishes vertical depth/axis while dark water and opposing riversides give quiet context; reference the *principle*, not universal color values.
+
+**Release gate:** A photo with technical fidelity but without a readable spatial narrative and substantial artistic gain is still NO-GO for *improved editorial output*. Conversely a visually dramatic image that reconstructs buildings, trees, water structures or text is NO-GO for fidelity. Strong is not synonymous with oversaturated, and natural is not synonymous with weak.
 
 ## Real operating rules
 
-- **Inspect:** Identify true subject and existing aesthetic potential (light, material, geometry, narrative); confirm the source contains the data needed.
+- **Inspect:** Identify true subject, spatial premise, actual environmental relationships and existing aesthetic potential (light, material, geometry, narrative); confirm the source contains the data needed.
 - **Direction before execution:** State an intended *visible* improvement (e.g., "night street: the lit hotel stands out against an appropriately dark road and authentic signage"; "courtyard: existing water arcs and dappled daylight become the story within a dark architectural frame"). Avoid instructions that only say "+5 contrast" or "soften".
 - **Implement with justified amplitude:** Use scene-aware local dodge-and-burn, color relationships, tone/contrast distribution and purposeful crop with safe masks/edge transition; choose strength from observed image and quality gate, **not** a blanket "gentle only" constraint. Keep text, fixed scene structures and edges protected.
 - **Compare actual images:** Compare the untouched source, previous real candidate, new real candidate at the same matched framing and a normal viewer size. Flag exaggerated/flat/AI-like results and defects. Explicit user preference is evidence but does not override discovered content deformation.
