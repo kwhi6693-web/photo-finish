@@ -74,9 +74,25 @@ def _require_unused_output(path, extension):
         raise FileExistsError('destination already exists: '+str(destination))
 
 
+def _rollback_unreceipted_png(path, expected_sha256, receipt_path):
+    """Remove only our verified pending PNG when final receipt never appeared.
+
+    This is crash/error cleanup, not a transactional promise across process
+    termination or external actors. Never unlink an occupied receipt or a
+    symlink, and never remove a changed output owned by another actor.
+    """
+    if os.path.lexists(receipt_path):
+        return
+    target=Path(path)
+    if target.is_symlink() or not target.is_file():
+        return
+    if hash_file(target)==expected_sha256:
+        target.unlink()
+
+
 def prepare(original, working, manifest):
-    # Do not leave a managed image without a lineage receipt on ordinary
-    # pre-existing-receipt errors. This is a preflight, not a race-proof commit.
+    # Fail before file work if the paths are occupied, then recover safely
+    # from a late receipt-write failure without touching any source file.
     _require_unused_output(working,'.png')
     _require_unused_output(manifest,'.json')
     proof=prepare_working_source(original,working)
@@ -85,7 +101,11 @@ def prepare(original, working, manifest):
     record['working_size']=list(proof.working_size)
     record['formal_V1_registered']=False
     record['photographic_quality_accepted']=False
-    _exclusive_json(manifest,record)
+    try:
+        _exclusive_json(manifest,record)
+    except BaseException:
+        _rollback_unreceipted_png(proof.working_path,proof.working_sha256,manifest)
+        raise
     return {'stage':'working_source_ready_for_actual_mask_review',
             'working_source_sha256':proof.working_sha256,
             'original_sha256':proof.original_sha256,
@@ -167,7 +187,11 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
             'spatial_direction':pending.spatial_direction,
             'technical_receipt':pending.technical_receipt,
             'formal_V1_registered':False,'photographic_quality_accepted':False}
-    _exclusive_json(receipt_json,record)
+    try:
+        _exclusive_json(receipt_json,record)
+    except BaseException:
+        _rollback_unreceipted_png(pending.candidate_path,pending.candidate_sha256,receipt_json)
+        raise
     return {'stage':pending.status,'native_png_path':pending.candidate_path,
             'source_sha256':pending.camera_original_sha256,
             'pending_output_sha256':pending.candidate_sha256,
