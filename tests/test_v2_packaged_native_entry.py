@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from PIL import Image, ImageCms, ImageDraw
 
@@ -128,6 +129,45 @@ class PackagedNativeEntryTests(unittest.TestCase):
         self.assertFalse(self.result.exists())
         self.assertEqual(digest(self.receipt),prior)
         self.assertEqual(digest(self.original),original_hash)
+
+    def test_prepare_late_receipt_failure_removes_only_new_working_png(self):
+        sys.path.insert(0,str(ENTRY.parent))
+        import v2_native_entry as entry
+        original_hash=digest(self.original)
+        with patch.object(entry,'_exclusive_json',side_effect=OSError('simulated receipt I/O failure')):
+            with self.assertRaisesRegex(OSError,'simulated receipt'):
+                entry.prepare(self.original,self.working,self.lineage)
+        self.assertFalse(self.working.exists())
+        self.assertFalse(self.lineage.exists())
+        self.assertEqual(digest(self.original),original_hash)
+
+    def test_render_late_receipt_failure_removes_pending_png(self):
+        sys.path.insert(0,str(ENTRY.parent))
+        import v2_native_entry as entry
+        self.fixture()
+        original_hash=digest(self.original)
+        working_hash=digest(self.working)
+        with patch.object(entry,'_exclusive_json',side_effect=OSError('simulated receipt I/O failure')):
+            with self.assertRaisesRegex(OSError,'simulated receipt'):
+                entry.render(self.original,self.lineage,self.plan,self.zones,
+                             self.result,self.receipt)
+        self.assertFalse(self.result.exists())
+        self.assertFalse(self.receipt.exists())
+        self.assertEqual(digest(self.original),original_hash)
+        self.assertEqual(digest(self.working),working_hash)
+
+    def test_verified_rollback_never_removes_changed_or_receipted_file(self):
+        sys.path.insert(0,str(ENTRY.parent))
+        import v2_native_entry as entry
+        self.result.write_bytes(b'pending candidate')
+        original=digest(self.result)
+        self.receipt.write_text('existing user receipt',encoding='utf-8')
+        entry._rollback_unreceipted_png(self.result,original,self.receipt)
+        self.assertTrue(self.result.exists())
+        self.receipt.unlink()
+        self.result.write_bytes(b'changed by another actor')
+        entry._rollback_unreceipted_png(self.result,original,self.receipt)
+        self.assertEqual(self.result.read_bytes(),b'changed by another actor')
 
     def test_wrong_mask_hash_stops_without_output(self):
         self.fixture()
