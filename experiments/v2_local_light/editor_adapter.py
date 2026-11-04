@@ -27,6 +27,7 @@ class AdapterReceipt:
     off_target_fraction: float
     protected_unchanged: bool
     max_channel_delta: int
+    newly_clipped_pixels: int
     status: str = "technical_candidate_only_not_visual_acceptance"
 
 
@@ -44,7 +45,7 @@ def integrate_verified_tonal_edit(source, candidate, mask, *, target_core, allow
                                   protected, source_geometry_id, candidate_geometry_id,
                                   approved_operation, masked_region_reviewed,
                                   source_pixels_hash, radius_px=3, max_channel_delta=60,
-                                  require_icc=True):
+                                  require_icc=True, max_newly_clipped_fraction=0.002):
     """Return (image, receipt) or fail-closed; never mark a V5 accepted automatically.
 
     'candidate' must be an output from an externally authenticated, strictly
@@ -74,6 +75,9 @@ def integrate_verified_tonal_edit(source, candidate, mask, *, target_core, allow
         raise ValueError('ICC profiles differ: normalize color space before compositing')
     if type(max_channel_delta) is not int or not 1 <= max_channel_delta <= 100:
         raise ValueError('invalid local tone-change ceiling')
+    if (type(max_newly_clipped_fraction) not in (int, float) or
+            not 0 <= max_newly_clipped_fraction <= 0.05):
+        raise ValueError('invalid new highlight clipping tolerance')
     observed_max = _max_channel_delta(source, candidate)
     if observed_max > max_channel_delta:
         raise ValueError('candidate brightness/color change exceeds controlled tonal limit')
@@ -92,6 +96,18 @@ def integrate_verified_tonal_edit(source, candidate, mask, *, target_core, allow
     approved_pixels = allowed_zone.point(lambda v: 255 if v >= 128 else 0)
     if ImageChops.multiply(any_changed, ImageChops.invert(approved_pixels)).getbbox():
         raise ValueError('changed pixels escaped the inspected allowed region')
+    # Experimental highlight protection: a technically valid mask may still
+    # create unpleasant, unrecoverable white patches. The 0.2% allowance is
+    # an explicit research threshold, NOT an aesthetic standard or a source
+    # for automatic photographic acceptance.
+    def clipped_any(image):
+        channels = image.split()[:3]
+        flagged = [ch.point(lambda p: 255 if p == 255 else 0) for ch in channels]
+        return ImageChops.lighter(ImageChops.lighter(flagged[0], flagged[1]), flagged[2])
+    new_clips = ImageChops.subtract(clipped_any(output), clipped_any(source))
+    clipped_count = new_clips.histogram()[255]
+    if clipped_count > max_newly_clipped_fraction * source.width * source.height:
+        raise ValueError('new clipped highlights exceed experimental tolerance')
     output.info['icc_profile'] = src_profile
     return output, AdapterReceipt(
         source_pixel_hash=source_pixels_hash,
@@ -101,4 +117,5 @@ def integrate_verified_tonal_edit(source, candidate, mask, *, target_core, allow
         mask_sha256=audit.mask_sha256, alpha_sha256=feather.alpha_sha256,
         target_core_recall=audit.target_core_recall,
         off_target_fraction=audit.off_target_fraction,
-        protected_unchanged=True, max_channel_delta=observed_max)
+        protected_unchanged=True, max_channel_delta=observed_max,
+        newly_clipped_pixels=clipped_count)
