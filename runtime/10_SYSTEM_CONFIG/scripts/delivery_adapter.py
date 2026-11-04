@@ -21,6 +21,9 @@ def _edit_route(state, tool_name, arguments):
     tool_name = w._text(tool_name, 'tool_name')
     generator = tool_name.removeprefix('tools.') in (
         'image_gen.imagegen', 'image_gen__imagegen',
+        # Current native host name and legacy/function aliases (2026-11).
+        'image_gen.text2im', 'image_gen__text2im',
+        'mcp__Adobe__image_generate', 'mcp__Adobe__image_instruct_edit',
         'image_instruct_edit', 'adobe.image_instruct_edit',
         'mcp__codex_apps__adobe_image_instruct_edit',
         'image_generate', 'adobe.image_generate',
