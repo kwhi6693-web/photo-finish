@@ -75,6 +75,8 @@ def controller_direction(plan):
         raise ValueError('invalid editorial decision')
     if plan.intensity not in ('subtle', 'moderate', 'strong'):
         raise ValueError('invalid requested intensity')
+    if type(plan.requires_local_selection) is not bool or type(plan.requests_geometry_change) is not bool:
+        raise ValueError('editing capability requirements must be actual booleans')
     fields = ('scene', 'spatial_premise', 'attention_entry', 'principal_subject',
               'secondary_discovery', 'spatial_relationship', 'source_light_evidence',
               'lighting_direction', 'color_direction', 'visible_improvement_goal',
@@ -110,6 +112,11 @@ def preflight(plan, *, observed_source_sha256, source_visually_inspected,
         return Preflight('RETAIN_ORIGINAL', plan.retain_reason)
     if not isinstance(capabilities, ProvenCapabilities):
         return Preflight('STOP', 'real editor capabilities have not been verified')
+    if any(type(getattr(capabilities, key)) is not bool for key in
+           ('non_generative_tonal_editor', 'actual_output_file',
+            'source_geometry_lineage', 'icc_managed', 'verified_local_masks',
+            'edge_transition_verified', 'supports_crop')):
+        return Preflight('STOP', 'editor capabilities require actual boolean evidence')
     if not all((capabilities.non_generative_tonal_editor,
                 capabilities.actual_output_file,
                 capabilities.source_geometry_lineage,
