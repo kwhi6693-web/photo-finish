@@ -9,7 +9,7 @@ from hashlib import sha256
 from math import isfinite
 from PIL import Image, ImageChops, ImageEnhance
 
-from pixel_mask_qa import inspect_mask, feather_mask, compose_only_tonal_output, verify_protected_pixels
+from pixel_mask_qa import inspect_mask, feather_mask, verify_protected_pixels
 
 
 @dataclass(frozen=True)
@@ -22,6 +22,8 @@ class ToneZone:
     gamma: float
     saturation: float = 1.0
     purpose: str = ''
+    edge_mode: str = 'soft'  # soft | pixel_locked
+    boundary_visually_inspected: bool = False
 
 
 def _sha_pixels(im):
@@ -96,16 +98,27 @@ def composite_zones(source, zones, *, observed_source_pixel_sha256,
         audit = inspect_mask(z.mask, target_core=z.core, allowed_zone=z.allowed, protected=protected)
         if not audit.passed:
             raise ValueError('rejected mask ' + z.name + ': ' + audit.reason)
-        feather = feather_mask(z.mask, audit=audit, allowed_zone=z.allowed,
-                               protected=protected, radius_px=radius_px)
+        if z.edge_mode not in ('soft', 'pixel_locked'):
+            raise ValueError('unsupported edge policy')
+        if z.edge_mode == 'pixel_locked' and z.boundary_visually_inspected is not True:
+            raise ValueError('sharp content edge requires real mask-boundary inspection')
+        if z.edge_mode == 'soft':
+            feather = feather_mask(z.mask, audit=audit, allowed_zone=z.allowed,
+                                   protected=protected, radius_px=radius_px)
+            alpha = feather.alpha
+        else:
+            # An inspected hard architectural/sky boundary must not be blended
+            # into masonry. A blurred sky alpha can manufacture a visible halo.
+            alpha = ImageChops.subtract(z.mask.point(lambda x: 255 if x >= 128 else 0), protected)
         candidate = _grade(current, z.gamma, z.saturation)
         candidate.info['icc_profile'] = expected_icc_bytes
-        raw = compose_only_tonal_output(current, candidate, receipt=feather)
+        raw = Image.composite(candidate, current, alpha)
         current = _remove_newly_clipped(raw, source)
         current.info['icc_profile'] = expected_icc_bytes
         all_allowed = ImageChops.lighter(all_allowed, z.allowed.point(lambda i: 255 if i >= 128 else 0))
         receipts.append({'name': z.name, 'purpose': z.purpose,
-                         'coverage': audit.coverage, 'mask_sha256': audit.mask_sha256})
+                         'coverage': audit.coverage, 'mask_sha256': audit.mask_sha256,
+                         'edge_mode': z.edge_mode})
     if not verify_protected_pixels(source, current, protected=protected):
         raise ValueError('protected fixed scene pixel changed')
     red, green, blue = ImageChops.difference(source, current).split()
