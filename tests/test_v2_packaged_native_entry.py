@@ -105,6 +105,30 @@ class PackagedNativeEntryTests(unittest.TestCase):
             self.assertEqual(image.size,(96,96))
             self.assertTrue(image.info.get('icc_profile'))
 
+    def test_existing_prepare_receipt_prevents_orphan_working_image(self):
+        original_hash=digest(self.original)
+        self.lineage.write_text('reserved receipt',encoding='utf-8')
+        prior=digest(self.lineage)
+        r=self.invoke('prepare',self.original,self.working,self.lineage)
+        self.assertNotEqual(r.returncode,0)
+        self.assertIn('destination already exists',r.stderr)
+        self.assertFalse(self.working.exists())
+        self.assertEqual(digest(self.lineage),prior)
+        self.assertEqual(digest(self.original),original_hash)
+
+    def test_existing_render_receipt_prevents_orphan_candidate(self):
+        original_hash=digest(self.original)
+        self.fixture()
+        self.receipt.write_text('reserved receipt',encoding='utf-8')
+        prior=digest(self.receipt)
+        r=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                      self.result,self.receipt)
+        self.assertNotEqual(r.returncode,0)
+        self.assertIn('destination already exists',r.stderr)
+        self.assertFalse(self.result.exists())
+        self.assertEqual(digest(self.receipt),prior)
+        self.assertEqual(digest(self.original),original_hash)
+
     def test_wrong_mask_hash_stops_without_output(self):
         self.fixture()
         data=json.loads(self.zones.read_text(encoding='utf-8'))
