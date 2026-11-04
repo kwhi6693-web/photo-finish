@@ -32,6 +32,9 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 组照按真实光线与表达分群，统一适用关系而非固定参数，逐张检查曝光、白平衡、裁切、降噪、配置与蒙版；筛选、发布顺序、[布局](references/grid-layout.md)与[文案](references/caption-writing.md)按需，不增加单张默认步骤。“发布”指策展与交付，未经明确授权不代发社交平台。
 
 ## 2. 编辑与验收
+
+2.0 同源构图裁切（候选，默认非必需）：如果真实观察证明减少多余留白或重新组织原有视觉重心比单纯加强影调更有价值，可在现有 \`render\` 待审输出之后，根据[同源构图裁切门禁](references/v2-source-faithful-framing.md)运行 \`python scripts/run_photo_finish.py v2_native_entry reframe ORIGINAL LINEAGE.json PENDING.png PENDING_RECEIPT.json FRAME_PLAN.json CROPPED.png FRAME_RECEIPT.json\`。必须由实际看图形成具体源坐标裁切目标，保留完整原片与已审原生候选；裁切只从真实父图取像素，不插值或生成，核对来源、ICC、精确坐标、输出尺寸和全部像素。裁切结果仍为 \`photographic_quality_accepted=false\` 和 \`formal_V1_registered=false\`，必须继续独立审美和原生交付验收；不能把裁切技术成功当作摄影成功，也不能因已有入口强制所有原片裁切。
+
 2.0 同源本地路线（候选，未通过正式摄影验收）：明确授权后先实看非人像原片，再运行 `python scripts/run_photo_finish.py v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json`。根据实际可见内容（不能由文件名、虚构工具能力或固定预设推断已看图）在私有工作目录形成来源 SHA 对应的 OBSERVATION.json，按[真实视觉观察与摄影方向证据契约](references/v2-visual-observation.md)运行 `python scripts/run_photo_finish.py v2_native_entry decide ORIGINAL LINEAGE.json OBSERVATION.json PLAN.json DECISION.json`。它只将实际观察编译为来源绑定摄影方案，可能返回 EDIT_PLAN_READY_MASKS_UNVERIFIED、RETAIN_ORIGINAL 或 STOP；不自动看图、不代表已经做任何编辑。仅在真实选区原始字节/同源几何与实际人工/助手审查后，按[蒙版交接门禁](references/v2-provider-mask-handoff.md)取回可信原始蒙版，或使用独立已审查的本地蒙版；确认两个至四个区域的 mask/core/allowed/protected、风险与边缘后，才执行 `python scripts/run_photo_finish.py v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json`。此路线只输出待审的非生成式 PNG，不自行分割、审核审美、登记 V1 或保存云端。必须原片同源、全幅与 1:1 细节复核后接续既有正式验收、保存和版本登记；任何来源/ICC/选区不一致、视觉证据不足或工具能力不可证实均 STOP，不以预览缩略图冒充原始蒙版。
 
 
