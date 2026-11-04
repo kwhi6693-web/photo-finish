@@ -202,6 +202,38 @@ class LocalRouteTests(unittest.TestCase):
         self.assertEqual(state['render_result']['recipe']['actual_arguments'], args)
         self.assertEqual(state['revision']['parent_output'], parent)
 
+    def test_current_host_generators_cannot_bypass_protected_source(self):
+        # Regression: the current host is named image_gen.text2im, not
+        # image_gen.imagegen. Both qualified and unqualified names are checked.
+        names = ('image_gen.text2im', 'tools.image_gen.text2im',
+                 'image_gen__text2im', 'tools.image_gen__text2im',
+                 'mcp__Adobe__image_generate', 'tools.mcp__Adobe__image_generate',
+                 'mcp__Adobe__image_instruct_edit',
+                 'tools.mcp__Adobe__image_instruct_edit')
+        for i, name in enumerate(names):
+            with self.subTest(name=name):
+                path = self.base / ('current-gen-' + str(i) + '.json')
+                e.prepare(self.root, self.source, path, evaluation_kind='synthetic')
+                initial = path.read_bytes()
+                before = self.source.read_bytes()
+                with self.assertRaisesRegex(ValueError, 'Full-frame generation'):
+                    e.submit(path, {
+                        'requirements': [{'target': 'fixed_building',
+                                          'level': 'semantic_identity',
+                                          'requirement': 'Keep the actual building recognizably identical'}],
+                        'reason': 'Synthetic protected-source experiment'},
+                        {'branch': 'PROFESSIONAL_FALLBACK', 'decisions': [],
+                         'reason': 'Synthetic'},
+                        name, {'prompt': 'Completely different composition'},
+                        {'fixed_building': ['building geometry']},
+                        direction=self.direction,
+                        fidelity={'fixed_building': {
+                            'strategy': 'native_preserved',
+                            'capability_basis': 'Synthetic current original-image source',
+                            'repair_route': 'Use a non-generative editor'}})
+                self.assertEqual(path.read_bytes(), initial)
+                self.assertEqual(self.source.read_bytes(), before)
+
     def test_adobe_full_frame_generators_cannot_claim_preservation(self):
         # Dropping a known generator alias must not reserve an incompatible call.
         names = ('image_instruct_edit', 'adobe.image_instruct_edit',
