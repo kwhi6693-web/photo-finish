@@ -27,6 +27,7 @@ from PIL import Image
 from source_lineage import SourceLineage, prepare_working_source, verify_source_lineage
 from editorial_contract import EditorialPlan, ProvenCapabilities
 from adaptive_route import choose_adaptive_route
+from provider_mask_handoff import import_exact_provider_mask
 from multizone_editor import ToneZone
 from native_workflow import run_native_photo_trial
 from editorial_pipeline import hash_file
@@ -158,6 +159,36 @@ def _zones(record):
     return result
 
 
+def ingest_mask(original, lineage_json, provider_source, raw_mask,
+                provider_response_json, output, receipt_json):
+    """Materialize one authentic, unapproved provider mask in private storage.
+
+    Never fetch a URL, infer semantic reliability, or declare an accepted V1.
+    The caller must supply independently acquired full original provider bytes.
+    """
+    _require_unused_output(output,'.png')
+    _require_unused_output(receipt_json,'.json')
+    lineage=_lineage(_load_data(lineage_json))
+    result=import_exact_provider_mask(
+        original,lineage,provider_source,raw_mask,
+        _load_data(provider_response_json),output)
+    record=asdict(result)
+    record['mask_visually_inspected']=False
+    record['semantic_mask_accepted']=False
+    record['photographic_quality_accepted']=False
+    record['formal_V1_registered']=False
+    try:
+        _exclusive_json(receipt_json,record)
+    except BaseException:
+        _rollback_unreceipted_png(result.canonical_mask_path,
+                                  result.canonical_mask_sha256,receipt_json)
+        raise
+    return {'stage':result.status,'canonical_mask_path':result.canonical_mask_path,
+            'canonical_mask_sha256':result.canonical_mask_sha256,
+            'camera_original_sha256':result.camera_original_sha256,
+            'semantic_mask_accepted':False,'formal_V1_registered':False}
+
+
 def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     # Avoid producing an untracked candidate when its receipt path is already
     # occupied. The exporter independently enforces no-overwrite on PNG bytes.
@@ -231,12 +262,20 @@ def main(argv=None):
     p=sub.add_parser('prepare')
     for name in ('original','working','manifest'):
         p.add_argument(name)
+    m=sub.add_parser('ingest-mask')
+    for name in ('original','lineage_json','provider_source','raw_mask',
+                 'provider_response_json','output','receipt_json'):
+        m.add_argument(name)
     r=sub.add_parser('render')
     for name in ('original','lineage_json','plan_json','zones_json','output','receipt_json'):
         r.add_argument(name)
     args=parser.parse_args(argv)
     if args.stage=='prepare':
         result=prepare(args.original,args.working,args.manifest)
+    elif args.stage=='ingest-mask':
+        result=ingest_mask(args.original,args.lineage_json,args.provider_source,
+                           args.raw_mask,args.provider_response_json,
+                           args.output,args.receipt_json)
     else:
         result=render(args.original,args.lineage_json,args.plan_json,
                       args.zones_json,args.output,args.receipt_json)
