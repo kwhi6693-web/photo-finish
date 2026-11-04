@@ -2,7 +2,7 @@
 
 Usage via the packaged scripts/run_photo_finish.py wrapper:
   v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json
-  v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json
+  v2_native_entry decide ORIGINAL LINEAGE.json OBSERVATION.json PLAN.json DECISION.json\n  v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json
 
 JSON plans and masks must be made AFTER actual source/mask inspection. They
 are not automatically inferred, an edit authorization, a real visual approval
@@ -27,6 +27,7 @@ from PIL import Image
 from source_lineage import SourceLineage, prepare_working_source, verify_source_lineage
 from editorial_contract import EditorialPlan, ProvenCapabilities
 from adaptive_route import choose_adaptive_route
+from v2_photo_direction import compile_observed_direction
 from provider_mask_handoff import import_exact_provider_mask
 from multizone_editor import ToneZone
 from native_workflow import run_native_photo_trial
@@ -159,6 +160,56 @@ def _zones(record):
     return result
 
 
+def decide(original, lineage_json, observation_json, plan_json, decision_json):
+    """Compile a real-photo observation, never fabricate a mask or an edit.
+
+    Source-specific observations must already have been made by an actual
+    observer. This adapter only verifies byte lineage and compiles plan logic.
+    """
+    _require_unused_output(plan_json,'.json')
+    _require_unused_output(decision_json,'.json')
+    if Path(plan_json).resolve()==Path(decision_json).resolve():
+        raise ValueError('plan and decision receipt destinations must differ')
+    lineage=_lineage(_load_data(lineage_json))
+    if not verify_source_lineage(original,lineage):
+        raise ValueError('real source lineage verification required')
+    observation_before=hash_file(observation_json)
+    observation=_load_data(observation_json)
+    result=compile_observed_direction(
+        observation,camera_original_sha256=lineage.original_sha256,
+        working_source_sha256=lineage.working_sha256)
+    if hash_file(observation_json)!=observation_before:
+        raise ValueError('visual observation changed during decision')
+    plan_path=None
+    plan_hash=None
+    if result.plan is not None:
+        plan_path=_exclusive_json(plan_json,asdict(result.plan))
+        plan_hash=hash_file(plan_path)
+    record={'status':result.action,'reason':result.reason,
+            'camera_original_sha256':lineage.original_sha256,
+            'working_source_sha256':lineage.working_sha256,
+            'visual_observation_sha256':observation_before,
+            'observation_origin':observation.get('observation_origin'),
+            'risk_flags':list(result.risk_flags),
+            'scene_complexity':result.scene_complexity,
+            'source_visually_inspected':result.source_visually_inspected,
+            'masks_visually_inspected':False,
+            'pending_plan_path':plan_path,'pending_plan_sha256':plan_hash,
+            'candidate_sha256':None,'photographic_quality_accepted':False,
+            'formal_V1_registered':False}
+    try:
+        _exclusive_json(decision_json,record)
+    except BaseException:
+        if plan_path is not None:
+            _rollback_unreceipted_png(plan_path,plan_hash,decision_json)
+        raise
+    return {'stage':result.action,'reason':result.reason,
+            'pending_plan_path':plan_path,
+            'camera_original_sha256':lineage.original_sha256,
+            'masks_visually_inspected':False,
+            'photographic_quality_accepted':False,'formal_V1_registered':False}
+
+
 def ingest_mask(original, lineage_json, provider_source, raw_mask,
                 provider_response_json, output, receipt_json):
     """Materialize one authentic, unapproved provider mask in private storage.
@@ -262,6 +313,10 @@ def main(argv=None):
     p=sub.add_parser('prepare')
     for name in ('original','working','manifest'):
         p.add_argument(name)
+    d=sub.add_parser('decide')
+    for name in ('original','lineage_json','observation_json',
+                 'plan_json','decision_json'):
+        d.add_argument(name)
     m=sub.add_parser('ingest-mask')
     for name in ('original','lineage_json','provider_source','raw_mask',
                  'provider_response_json','output','receipt_json'):
@@ -272,6 +327,9 @@ def main(argv=None):
     args=parser.parse_args(argv)
     if args.stage=='prepare':
         result=prepare(args.original,args.working,args.manifest)
+    elif args.stage=='decide':
+        result=decide(args.original,args.lineage_json,args.observation_json,
+                      args.plan_json,args.decision_json)
     elif args.stage=='ingest-mask':
         result=ingest_mask(args.original,args.lineage_json,args.provider_source,
                            args.raw_mask,args.provider_response_json,
