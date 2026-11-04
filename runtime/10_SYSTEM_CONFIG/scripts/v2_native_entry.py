@@ -13,7 +13,14 @@ from dataclasses import asdict
 from pathlib import Path
 import json
 import os
+import sys
 import tempfile
+
+# -I removes the script directory from sys.path; restore only the verified
+# installed location rather than using cwd, PYTHONPATH or user site-packages.
+_RUNTIME_DIR = str(Path(__file__).resolve().parent)
+if _RUNTIME_DIR not in sys.path:
+    sys.path.insert(0, _RUNTIME_DIR)
 
 from PIL import Image
 
