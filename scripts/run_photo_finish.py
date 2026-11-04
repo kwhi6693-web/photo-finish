@@ -24,7 +24,8 @@ def main(argv=None):
     parser.add_argument('--setup', action='store_true', help='Explicitly create runtime and install declared Pillow dependency')
     parser.add_argument('--host-proxy', action='store_true', help='Explicitly opt in to validated loopback HTTPS_PROXY gateway')
     parser.add_argument('entry', choices=['doctor', 'photo_edit', 'workflow_session',
-                                        'photo_workflow', 'delivery_adapter', 'delivery_automation'])
+                                        'photo_workflow', 'delivery_adapter', 'delivery_automation',
+                                        'v2_native_entry'])
     args, remaining = parser.parse_known_args(argv)
     folder = runtime_path()
     python = folder / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')
