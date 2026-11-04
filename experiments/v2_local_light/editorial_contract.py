@@ -149,6 +149,8 @@ class EditorialReview:
     user_feedback: str = 'not_collected'  # positive | negative | not_collected
     edge_detail_reviewed: bool = False
     halo_or_seam_absent: bool = False
+    scene_continuity_level: str = 'exact_source'  # exact_source | highly_similar | unacceptable
+    scene_continuity_observation: str = ''
 
 
 @dataclass(frozen=True)
@@ -176,6 +178,14 @@ def review_editorial(plan, review, *, observed_source_sha256, observed_output_sh
         return ReviewDecision(False, 'unknown user feedback')
     if review.user_feedback == 'negative':
         return ReviewDecision(False, 'user explicitly rejects expressive gain')
+    if review.scene_continuity_level not in ('exact_source', 'highly_similar', 'unacceptable'):
+        return ReviewDecision(False, 'scene continuity must have an explicit supported review level')
+    if review.scene_continuity_level == 'unacceptable':
+        return ReviewDecision(False, 'output no longer convincingly depicts the photographed scene')
+    if review.scene_continuity_level == 'highly_similar':
+        if (not isinstance(review.scene_continuity_observation, str) or
+                len(review.scene_continuity_observation.strip()) < 25):
+            return ReviewDecision(False, 'describe minor differences and critical-scene continuity before accepting highly similar output')
     if not all((review.real_output_verified is True,
                 review.same_source_comparison is True,
                 review.normal_and_detail_viewed is True)):
