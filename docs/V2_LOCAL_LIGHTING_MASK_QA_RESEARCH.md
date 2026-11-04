@@ -82,3 +82,16 @@ The photo sources, preview thumbnails, output bytes, exact asset hashes, actual 
 At the previous PR head \`5b60007b38b1e686f5bbf7fc729ccd0312b0f675\`, GitHub workflow run \`41665134413\` completed 6/6 successful validation jobs. Concurrent run \`41665141486\` had 5 successful jobs and a **cancelled** macOS job; it is not a second 6/6 success and not established as a source test failure. The source change in this section is documentation only and requires its own current-head CI.
 
 **Next acceptance hinge:** secure an actual full-resolution source/mask bridge for the adapter; enforce mask/source/ICC lineage, compare true locally integrated photo renders, and get an explicit user preference result before broad 9-photo tests. Keep PR Draft and keep the released Skill unchanged.
+
+## Actual user review of V6 (2026-11-04)
+
+The user reviewed the actual two V6 renders against the earlier results:
+
+- **Macau night street:** "明显改善" (clear / noticeable improvement). Mark as a **positive subjective improvement signal** for this *one* scene. Do not extrapolate to all night scenes, do not assert a magazine-level pass, and keep the separately identified protected-sign detail risk open.
+- **Courtyard through window:** "并未有显著区别" (no significant difference). Mark as **NO-GO for expressive-improvement criterion**, despite correct protected geometry and a 4:5 crop. The crop alone did not produce the intended step-change in photographic expression.
+
+**Updated experiment decision:** One positive sample and one negative sample; the required 2/3 real-scene improvement criterion has NOT been met. Do not proceed to the nine-photo extension or promote the prototype. Preserve existing V5/V6 source assets for private comparison.
+
+**Next controlled experiment:** Re-examine the courtyard's value proposition before changing parameters. Set a concrete visual hypothesis for the viewer's attention: the dark frame acts as a quiet near-field boundary, while outdoor dappled light, water arcs and sunlit patio carry the narrative. Compare a single constrained intervention with the V5/V6 baseline, without hallucinating fountain jets, moving branches, reconstructing background buildings or destroying natural timber texture. Confirm that the edit route can actually act on those regions; reject failed or leaking masks. Consider the scene **unsuited for forced dramatic editing** if actual source data and masks cannot support a material aesthetic gain. Record the user's comparative preference independently from technical gate checks.
+
+This feedback is about visual preference only. It does not authorize publishing the photo, collecting it in a permanent style library, or merging/releasing the experimental PR.
