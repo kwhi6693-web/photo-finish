@@ -32,6 +32,8 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 组照按真实光线与表达分群，统一适用关系而非固定参数，逐张检查曝光、白平衡、裁切、降噪、配置与蒙版；筛选、发布顺序、[布局](references/grid-layout.md)与[文案](references/caption-writing.md)按需，不增加单张默认步骤。“发布”指策展与交付，未经明确授权不代发社交平台。
 
 ## 2. 编辑与验收
+2.0 同源本地路线（候选，未通过正式摄影验收）：先在明确授权和实看原片后执行 `python scripts/run_photo_finish.py v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json`；在实际查看两个至四个区域的 mask/core/allowed/protected 与独立摄影计划后才执行 `python scripts/run_photo_finish.py v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json`。此路线仅输出待审的非生成式 PNG，不自行选区、审核审美、登记 V1 或保存云端。必须同源全幅与 1:1 细节复核后接续既有正式验收、保存和版本登记，任何来源/ICC/选区不一致均 STOP。
+
 
 日常复用 `runtime/10_SYSTEM_CONFIG/scripts/photo_edit.py`：prepare 合并接入与 candidates；实际参考取舍后 submit 合并 protect/select/最终 direction/问题/begin；真实工具返回后 returned 合并结果与正式文件检查；实际全幅及受影响细节对照后 review 合并证据/验收/可选 snapshot。这些是控制器入口，不代替真实编辑或看图；只读紧凑回执。字段首次需要时查[工具与交付接口](references/delivery-adapter.md)，同任务复用，不回显整份 job/政策/直方图。
 
