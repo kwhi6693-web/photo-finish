@@ -1,4 +1,5 @@
 # Temporary, branch-scoped v2.0.0 candidate staging. Delete after use.
+# Retried after safe -I sibling-module import fix; no release action here.
 name: Stage Photo Finish v2.0.0 isolated candidate once
 on:
   push:
