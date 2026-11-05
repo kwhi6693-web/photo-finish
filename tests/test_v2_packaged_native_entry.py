@@ -73,6 +73,7 @@ class PackagedNativeEntryTests(unittest.TestCase):
             ('near-ground',(18,18,42,76),1.24,(8,8,52,86),(21,23,39,69)),
             ('lit-masonry',(54,18,78,76),.84,(44,8,88,86),(57,23,74,69))]:
             spec=dict(name=name,gamma=gamma,saturation=1.0,reviewed=True,
+                      target_effect='darken' if name=='near-ground' else 'brighten',
                       purpose='Bounded same-source light shape with no reconstructed pixels')
             for key,rectangle in [('mask',coords),('core',core),('allowed',allowed),
                                    ('protected',(84,32,92,60))]:
@@ -104,12 +105,78 @@ class PackagedNativeEntryTests(unittest.TestCase):
         self.assertFalse(payload['photographic_quality_accepted'])
         self.assertEqual(payload['route']['action'],'ELIGIBLE_MULTIZONE')
         self.assertTrue(payload['route']['technical_only'])
+        self.assertTrue(payload['operation_intents_verified'])
+        self.assertEqual(payload['mask_plan_sha256'],digest(self.zones))
+        self.assertEqual([v['target_effect'] for v in payload['zone_intents']],
+                         ['darken','brighten'])
         self.assertEqual(digest(self.original),original_hash)
         with Image.open(self.result) as image:
             image.load()
             self.assertEqual(image.format,'PNG')
             self.assertEqual(image.size,(96,96))
             self.assertTrue(image.info.get('icc_profile'))
+            with Image.open(self.working) as source:
+                self.assertEqual(image.crop((84,32,93,61)).tobytes(),
+                                 source.crop((84,32,93,61)).tobytes())
+
+    def test_opposite_declared_direction_is_explicit_stop_without_png(self):
+        original_sha=digest(self.original)
+        self.fixture()
+        z=json.loads(self.zones.read_text(encoding='utf-8'))
+        z['zones'][0]['target_effect']='brighten'  # Gamma 1.24 DARKENS.
+        self.zones.write_text(json.dumps(z),encoding='utf-8')
+        result=self.invoke('render',self.original,self.lineage,self.plan,self.zones,
+                           self.result,self.receipt)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(json.loads(result.stdout)['stage'],'STOP')
+        self.assertFalse(self.result.exists())
+        record=json.loads(self.receipt.read_text(encoding='utf-8'))
+        self.assertIn('Gamma direction disagree',record['reason'])
+        self.assertIsNone(record['candidate_sha256'])
+        self.assertEqual(record['mask_plan_sha256'],digest(self.zones))
+        self.assertFalse(record['formal_V1_registered'])
+        self.assertEqual(original_sha,digest(self.original))
+
+    def test_missing_or_invalid_literal_intent_stops_before_render(self):
+        self.fixture()
+        initial=json.loads(self.zones.read_text(encoding='utf-8'))
+        for label,value in [('absent',None),('neutral','hold'),('nonsense','lift')]:
+            with self.subTest(label=label):
+                z=json.loads(json.dumps(initial))
+                if value is None:
+                    z['zones'][0].pop('target_effect')
+                else:
+                    z['zones'][0]['target_effect']=value
+                self.zones.write_text(json.dumps(z),encoding='utf-8')
+                result=self.invoke('render',self.original,self.lineage,self.plan,
+                                   self.zones,self.result,self.receipt)
+                self.assertEqual(result.returncode,0,result.stderr)
+                self.assertEqual(json.loads(result.stdout)['stage'],'STOP')
+                self.assertFalse(self.result.exists())
+                self.assertFalse(json.loads(self.receipt.read_text())['photographic_quality_accepted'])
+                self.receipt.unlink()
+
+    def test_numeric_or_duplicate_intent_bypass_is_rejected(self):
+        self.fixture()
+        initial=json.loads(self.zones.read_text(encoding='utf-8'))
+        for label in ('string_gamma','boolean_gamma','neutral_gamma','duplicate_zone'):
+            with self.subTest(label=label):
+                z=json.loads(json.dumps(initial))
+                if label=='string_gamma':
+                    z['zones'][0]['gamma']='1.24'
+                elif label=='boolean_gamma':
+                    z['zones'][0]['gamma']=True
+                elif label=='neutral_gamma':
+                    z['zones'][0]['gamma']=1.0
+                else:
+                    z['zones'][1]['name']=z['zones'][0]['name']
+                self.zones.write_text(json.dumps(z),encoding='utf-8')
+                result=self.invoke('render',self.original,self.lineage,self.plan,
+                                   self.zones,self.result,self.receipt)
+                self.assertEqual(result.returncode,0,result.stderr)
+                self.assertEqual(json.loads(result.stdout)['stage'],'STOP')
+                self.assertFalse(self.result.exists())
+                self.receipt.unlink()
 
     def test_explicit_retain_original_writes_only_decision_receipt(self):
         original_hash=digest(self.original)

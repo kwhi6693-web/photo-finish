@@ -12,6 +12,7 @@ or formal V1/Library persistence. Never pass untrusted external JSON as code.
 import argparse
 from dataclasses import asdict
 from pathlib import Path
+from math import isfinite
 import json
 import os
 import sys
@@ -143,6 +144,39 @@ def _load_mask(spec,name):
             raise ValueError('actual mask component must be L mode: '+name)
         return image.copy()
 
+
+
+def _verify_zone_intents(record):
+    """Literal operation intent. Does not infer photographic goals from prose.
+
+    Every selected zone must explicitly request brighten/darken. A neutral area
+    belongs outside the mask or in RETAIN_ORIGINAL, not a YCbCr round-trip.
+    """
+    zones=record.get('zones')
+    if not isinstance(zones,list) or not 2<=len(zones)<=4:
+        return 'two to four zones with explicit target_effect required'
+    names=set()
+    for spec in zones:
+        if not isinstance(spec,dict):
+            return 'operation intent zone must be an object'
+        name=spec.get('name')
+        if not isinstance(name,str) or not name.strip() or name in names:
+            return 'each operation intent zone needs a unique nonempty name'
+        names.add(name)
+        gamma=spec.get('gamma')
+        saturation=spec.get('saturation',1.0)
+        if (type(gamma) not in (float,int) or not isfinite(gamma) or
+                not .65<=gamma<=1.6 or
+                type(saturation) not in (float,int) or not isfinite(saturation) or
+                not .65<=saturation<=1.35):
+            return 'invalid bounded numeric operation for '+name
+        effect=spec.get('target_effect')
+        if type(effect) is not str or effect not in ('brighten','darken'):
+            return 'missing or unsupported brighten/darken target_effect for '+name
+        if ((effect=='brighten' and not gamma<1) or
+                (effect=='darken' and not gamma>1)):
+            return 'target_effect and actual Gamma direction disagree for '+name
+    return None
 
 def _zones(record):
     if not isinstance(record,dict) or record.get('masks_visually_inspected') is not True:
@@ -364,6 +398,21 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
                 'native_png_path':None,'pending_output_sha256':None,
                 'source_sha256':lineage.original_sha256,
                 'formal_V1_registered':False,'photographic_quality_accepted':False}
+    # Validate source-bound structured directions BEFORE loading masks/rendering.
+    # Failure is an explicit non-V1 STOP receipt, never a pending image.
+    intent_refusal=_verify_zone_intents(mask_plan)
+    if intent_refusal is not None:
+        record={'status':'STOP','reason':intent_refusal,
+                'camera_original_sha256':lineage.original_sha256,
+                'working_source_sha256':lineage.working_sha256,
+                'mask_plan_sha256':hash_file(zones_json),
+                'candidate_sha256':None,'candidate_path':None,
+                'formal_V1_registered':False,'photographic_quality_accepted':False}
+        _exclusive_json(receipt_json,record)
+        return {'stage':'STOP','reason':intent_refusal,
+                'native_png_path':None,'pending_output_sha256':None,
+                'source_sha256':lineage.original_sha256,
+                'formal_V1_registered':False,'photographic_quality_accepted':False}
     geometry_id=mask_plan.get('geometry_id')
     if not isinstance(geometry_id,str) or not geometry_id.strip():
         raise ValueError('invalid geometry ID')
@@ -386,6 +435,11 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
             'working_source_sha256':pending.working_source_sha256,
             'candidate_sha256':pending.candidate_sha256,'candidate_path':pending.candidate_path,
             'spatial_direction':pending.spatial_direction,
+            'operation_intents_verified':True,
+            'zone_intents':[{'name':z['name'],'target_effect':z['target_effect'],
+                             'gamma':z['gamma'],'saturation':z.get('saturation',1.0)}
+                            for z in mask_plan['zones']],
+            'mask_plan_sha256':hash_file(zones_json),
             'technical_receipt':pending.technical_receipt,
             'formal_V1_registered':False,'photographic_quality_accepted':False}
     try:

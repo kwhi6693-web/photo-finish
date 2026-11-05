@@ -50,6 +50,7 @@ perform iPhone native display, register formal V1, or restore a version.
   nonempty `geometry_id`, `masks_visually_inspected: true`, and 2–4
   `zones` with individual `reviewed: true` and existing source-bound
   mask/core/allowed/protected PNG file paths and SHA-256 values;
+- for every edited zone, a source-reviewed **literal** `target_effect: "brighten"|"darken"`; Gamma below 1 brightens, Gamma above 1 darkens. Missing, neutral, contradictory, nonfinite, or out-of-bounds effect values produce an explicit STOP receipt **before** actual mask loading and pixel rendering. RETAIN_ORIGINAL needs no zone effects. The controller cannot infer the *correct* artistic direction from prose or certify that a declared intent reflects independently reviewed pixels.
 - for any high-risk flag, explicit complexity `complex`, or a zone with
   `edge_mode: "pixel_locked"`: `edge_transition_verified: true` and
   `boundary_visually_inspected: true` for **each** zone. Missing any
