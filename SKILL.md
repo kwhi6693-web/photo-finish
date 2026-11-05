@@ -11,6 +11,8 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 功能仅归四层：摄影决策、编辑与验收、成片与版本、个人资产与保障。日常 EDIT 依次走前三层，第四层提供支持；恢复、比较或资料管理直接进入对应接口，不创建编辑任务或渲染。组照策展贯穿前三层，仅任务需要时启用。风格和质感是摄影决策中的可选维度，不成为额外必经阶段。
 
+**2026-11-05 已采纳的边界：**普通摄影默认保护人物身份、真实文字、建筑结构、产品信息及场景事实，允许在确实保真的前提下调整其明暗与色彩，不把语义保护自动升级为全区 RGB 零差异。逐像素锁定仅限当次明确范围；既有 WP4 的受保护蒙版原样保持严格零差异、历史 NO-GO 不追溯改写。摄影构图和调色强度不预设保守上限；现有 Gamma/LUT 能力不足时仅可在隔离研发中验证不同且真实可执行的编辑能力，不可绕过授权、人物保护、去 AI 味或来源门禁。当前 WP4—WP5 保持非生成式试验；日常规则详见总规范。本段是规则采纳，不表示新引擎已完成或摄影 GO。
+
 ## 1. 摄影决策
 
 使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/v2_native_entry/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
