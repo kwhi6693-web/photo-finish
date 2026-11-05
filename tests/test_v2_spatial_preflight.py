@@ -61,11 +61,20 @@ class SpatialPreflightTests(unittest.TestCase):
         self.record['source_bbox_px']=[130,70,760,990]
         with self.assertRaisesRegex(ValueError,'severe|content'):
             self.decide()
-    def test_severe_or_trivial_crop_rejected(self):
-        for rect in ([240,200,750,800],[0,0,800,1000],[0,0,700,0]):
+    def test_below_existing_technical_geometry_and_empty_crop_rejected(self):
+        for rect in ([0,0,45,990],[0,0,800,0]):
             with self.subTest(rect=rect):
                 self.record['source_bbox_px']=rect
                 with self.assertRaises(ValueError):self.decide()
+    def test_full_frame_crop_is_keep_not_fake_edit(self):
+        self.record['source_bbox_px']=[0,0,800,1000]
+        self.assertEqual(self.decide().action,'KEEP_FRAME')
+    def test_tight_real_scene_crop_has_no_global_percent_cap(self):
+        self.record['source_bbox_px']=[45,100,550,800]
+        self.record['reviewed_must_keep_boxes'][1]['bbox_px']=[48,180,82,780]
+        result=self.decide()
+        self.assertEqual(result.action,'CROP_PROPOSED')
+        self.assertLess(result.retained_source_fraction,0.60)
     def test_requires_real_crop_boundary_review(self):
         self.record['crop_visually_inspected']=False
         with self.assertRaisesRegex(ValueError,'visually'):

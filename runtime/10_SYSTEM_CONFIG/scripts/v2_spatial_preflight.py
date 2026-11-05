@@ -78,8 +78,14 @@ def compile_composition(original, lineage, observation, *, observation_bytes=Non
     box=_rect(observation.get('source_bbox_px'),size)
     l,t,r,b=box
     fraction=(r-l)*(b-t)/(size[0]*size[1])
-    if fraction<0.70 or fraction>0.96 or min(r-l,b-t)<640:
-        raise ValueError('unsupported severe, trivial or undersized crop; no invented resolution')
+    # Do not impose one composition or retained-pixel percentage on every photo.
+    # The existing pixel-exact reframe engine requires only >=64 px geometry.
+    # Actual artistic cropping, detail retention and output use remain review gates.
+    if min(r-l,b-t)<64:
+        raise ValueError('below existing 64-pixel technical reframe geometry')
+    if (l,t,r,b)==(0,0,size[0],size[1]):
+        return CompositionDecision('KEEP_FRAME','identical full-frame crop is no change',
+            lineage.original_sha256,lineage.working_sha256,digest,None,1.0,note.strip(),intent.strip())
     anchors=observation.get('reviewed_must_keep_boxes')
     if not isinstance(anchors,list) or not 2<=len(anchors)<=12:
         raise ValueError('two or more independently visually checked content anchors required')
