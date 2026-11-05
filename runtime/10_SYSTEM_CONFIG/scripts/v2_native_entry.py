@@ -306,8 +306,6 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     _require_unused_output(receipt_json,'.json')
     lineage=_lineage(_load_data(lineage_json))
     plan=EditorialPlan(**_load_data(plan_json))
-    if plan.decision=='edit' and not plan.requires_local_selection:
-        raise ValueError('global photo operations must use render-global with decision evidence')
     mask_plan=_load_data(zones_json)
     if mask_plan.get('source_sha256')!=lineage.working_sha256:
         raise ValueError('mask plan belongs to another working source')
