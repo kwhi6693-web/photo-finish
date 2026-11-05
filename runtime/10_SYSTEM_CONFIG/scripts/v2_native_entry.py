@@ -2,7 +2,7 @@
 
 Usage via the packaged scripts/run_photo_finish.py wrapper:
   v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json
-  v2_native_entry decide ORIGINAL LINEAGE.json OBSERVATION.json PLAN.json DECISION.json\n  v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json
+  v2_native_entry decide ORIGINAL LINEAGE.json OBSERVATION.json PLAN.json DECISION.json\n  v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json\n  v2_native_entry render-global ORIGINAL LINEAGE.json PLAN.json DECISION.json OPERATION.json OUTPUT.png RECEIPT.json
   v2_native_entry reframe ORIGINAL LINEAGE.json PENDING.png PENDING_RECEIPT.json FRAME_PLAN.json CROPPED.png RECEIPT.json
 
 JSON plans and masks must be made AFTER actual source/mask inspection. They
@@ -30,6 +30,7 @@ from editorial_contract import EditorialPlan, ProvenCapabilities
 from adaptive_route import choose_adaptive_route
 from v2_photo_direction import compile_observed_direction
 from provider_mask_handoff import import_exact_provider_mask
+from v2_global_operation import compile_global_operation, export_pending_global
 from native_framing import reframe_pending_native
 from multizone_editor import ToneZone
 from native_workflow import run_native_photo_trial
@@ -262,6 +263,42 @@ def reframe(original, lineage_json, native_png, native_receipt_json,
             'photographic_quality_accepted':False,'formal_V1_registered':False}
 
 
+def render_global(original, lineage_json, plan_json, decision_json,
+                  operation_json, output, receipt_json):
+    """Actual bounded global edit, tied to a real previous decided photo."""
+    _require_unused_output(output,'.png')
+    _require_unused_output(receipt_json,'.json')
+    lineage=_lineage(_load_data(lineage_json))
+    if not verify_source_lineage(original,lineage):
+        raise ValueError('real original/working color lineage required')
+    plan=EditorialPlan(**_load_data(plan_json))
+    decision=_load_data(decision_json)
+    if (decision.get('status')!='EDIT_PLAN_READY_GLOBAL_UNVERIFIED' or
+            decision.get('camera_original_sha256')!=lineage.original_sha256 or
+            decision.get('working_source_sha256')!=lineage.working_sha256 or
+            decision.get('pending_plan_sha256')!=hash_file(plan_json) or
+            decision.get('photographic_quality_accepted') is not False or
+            decision.get('formal_V1_registered') is not False):
+        raise ValueError('source-matched pending global photographic decision required')
+    operation=compile_global_operation(
+        plan,_load_data(operation_json),lineage,
+        observation_sha256=decision.get('visual_observation_sha256'))
+    if hash_file(plan_json)!=decision['pending_plan_sha256']:
+        raise ValueError('actual plan changed during global preparation')
+    pending=export_pending_global(original,lineage,plan,operation,output)
+    try:
+        _exclusive_json(receipt_json,pending)
+    except BaseException:
+        _rollback_unreceipted_png(pending['candidate_path'],pending['candidate_sha256'],receipt_json)
+        raise
+    return {'stage':pending['status'],
+            'source_sha256':pending['camera_original_sha256'],
+            'native_png_path':pending['candidate_path'],
+            'pending_output_sha256':pending['candidate_sha256'],
+            'photographic_quality_accepted':False,
+            'formal_V1_registered':False}
+
+
 def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     # Avoid producing an untracked candidate when its receipt path is already
     # occupied. The exporter independently enforces no-overwrite on PNG bytes.
@@ -269,6 +306,8 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     _require_unused_output(receipt_json,'.json')
     lineage=_lineage(_load_data(lineage_json))
     plan=EditorialPlan(**_load_data(plan_json))
+    if plan.decision=='edit' and not plan.requires_local_selection:
+        raise ValueError('global photo operations must use render-global with decision evidence')
     mask_plan=_load_data(zones_json)
     if mask_plan.get('source_sha256')!=lineage.working_sha256:
         raise ValueError('mask plan belongs to another working source')
@@ -347,6 +386,10 @@ def main(argv=None):
     for name in ('original','lineage_json','native_png','native_receipt_json',
                  'frame_plan_json','output','receipt_json'):
         f.add_argument(name)
+    g=sub.add_parser('render-global')
+    for name in ('original','lineage_json','plan_json','decision_json',
+                 'operation_json','output','receipt_json'):
+        g.add_argument(name)
     r=sub.add_parser('render')
     for name in ('original','lineage_json','plan_json','zones_json','output','receipt_json'):
         r.add_argument(name)
@@ -364,6 +407,10 @@ def main(argv=None):
         result=reframe(args.original,args.lineage_json,args.native_png,
                        args.native_receipt_json,args.frame_plan_json,
                        args.output,args.receipt_json)
+    elif args.stage=='render-global':
+        result=render_global(args.original,args.lineage_json,args.plan_json,
+                             args.decision_json,args.operation_json,
+                             args.output,args.receipt_json)
     else:
         result=render(args.original,args.lineage_json,args.plan_json,
                       args.zones_json,args.output,args.receipt_json)

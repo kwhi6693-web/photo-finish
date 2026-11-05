@@ -86,6 +86,15 @@ def compile_observed_direction(observation, *, camera_original_sha256,
     if (complexity == 'complex' and
             observation.get('critical_edges_visually_inspected') is not True):
         return stop('complex photographed boundaries lack direct visual review')
+    preference = observation.get('route_preference', 'multizone')
+    if preference not in ('multizone', 'global'):
+        return stop('unimplemented visual route requested')
+    if need == 'edit_needed' and preference == 'global':
+        if (observation.get('pixel_exact_lock') is not False or
+                observation.get('global_appearance_authorized') is not True or
+                not isinstance(observation.get('global_scope_reason'), str) or
+                len(observation['global_scope_reason'].strip()) < 35):
+            return stop('global route requires specific photo review and no pixel-exact locks')
     strategy = observation.get('tonal_strategy')
     if need == 'edit_needed' and strategy not in _STRATEGIES:
         return stop('unsupported or absent source-faithful tonal strategy')
@@ -112,7 +121,7 @@ def compile_observed_direction(observation, *, camera_original_sha256,
         fixed_content_to_preserve=fields['fixed_content_to_preserve'],
         failure_conditions='STOP on false selection, changed text, edge halos, lost source identity or invented light',
         edit_route='native',
-        requires_local_selection=(need=='edit_needed'),
+        requires_local_selection=(need=='edit_needed' and preference!='global'),
         requests_geometry_change=False,
         intensity='subtle' if complexity=='complex' else 'moderate',
         decision='edit' if need=='edit_needed' else 'retain_original',
@@ -122,6 +131,6 @@ def compile_observed_direction(observation, *, camera_original_sha256,
         return ObservedDirection('RETAIN_ORIGINAL', retain, plan,
                                  tuple(risks),complexity,True)
     return ObservedDirection(
-        'EDIT_PLAN_READY_MASKS_UNVERIFIED',
-        'source-bound photographic plan compiled; actual reviewed masks, pixel audit and tool ability still required',
+        'EDIT_PLAN_READY_GLOBAL_UNVERIFIED' if preference=='global' else 'EDIT_PLAN_READY_MASKS_UNVERIFIED',
+        'source-bound photographic plan compiled; actual operation, source and output checks still required',
         plan,tuple(risks),complexity,True)
