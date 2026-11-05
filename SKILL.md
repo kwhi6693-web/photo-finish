@@ -32,6 +32,8 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 组照按真实光线与表达分群，统一适用关系而非固定参数，逐张检查曝光、白平衡、裁切、降噪、配置与蒙版；筛选、发布顺序、[布局](references/grid-layout.md)与[文案](references/caption-writing.md)按需，不增加单张默认步骤。“发布”指策展与交付，未经明确授权不代发社交平台。
 
 ## 2. 编辑与验收
+WP3 experimental pre-edit framing gate: after real visual inspection of the authorized non-portrait original, run native-entry plan-frame with original/lineage/private source-bound frame observation before any tone operation. It records KEEP_FRAME or CROP_PROPOSED and requires protected content anchors for any crop; see references/v2-preedit-composition.md. After an actually verified pending native tone PNG, use bind-frame to create the parent-bound framing plan and then the existing reframe gate. Never force crops or confuse these pending receipts with formal V1, independent photographic approval or actual autonomous visual perception.
+
 
 2.0 安全有界全局路线（开发候选）：真实看图后，只有无像素完全锁定要求且本次允许调整整体外观时，才能在 `OBSERVATION.json` 指定 `route_preference: global`、`pixel_exact_lock: false`、`global_appearance_authorized: true` 和具体现实画面的 `global_scope_reason`；执行 `decide` 后必须获得 `EDIT_PLAN_READY_GLOBAL_UNVERIFIED` 及来源绑定的 PLAN/DECISION 回执，按[全球影调执行门禁](references/v2-bounded-global-tone.md)提供具体 `OPERATION.json`，再使用 `python scripts/run_photo_finish.py v2_native_entry render-global ORIGINAL LINEAGE.json PLAN.json DECISION.json OPERATION.json OUTPUT.png RECEIPT.json`。仅支持真实源码实现的有限 Gamma/LUT 影调路线，输出永远是待审候选；全局影调会改变招牌和偶然入镜人物的像素颜色，不具备精确像素排除，任何绝对像素锁定要求须 STOP。实际工具与哈希校验不等于文字语义和摄影质量通过；必须独立查看全幅与 1:1，异常不发布、不保存 V1。
 

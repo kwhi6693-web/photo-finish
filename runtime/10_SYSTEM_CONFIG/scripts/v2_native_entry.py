@@ -32,6 +32,7 @@ from v2_photo_direction import compile_observed_direction
 from provider_mask_handoff import import_exact_provider_mask
 from v2_global_operation import compile_global_operation, export_pending_global
 from native_framing import reframe_pending_native
+from v2_spatial_preflight import CompositionDecision, compile_composition, bind_to_real_pending
 from multizone_editor import ToneZone
 from native_workflow import run_native_photo_trial
 from editorial_pipeline import hash_file
@@ -243,6 +244,39 @@ def ingest_mask(original, lineage_json, provider_source, raw_mask,
             'semantic_mask_accepted':False,'formal_V1_registered':False}
 
 
+def plan_frame(original, lineage_json, frame_observation_json, output_json):
+    """Propose framing before editing; does not approve image quality."""
+    _require_unused_output(output_json,'.json')
+    lineage=_lineage(_load_data(lineage_json))
+    evidence=Path(frame_observation_json).read_bytes()
+    direction=compile_composition(original,lineage,_load_data(frame_observation_json),
+                                  observation_bytes=evidence)
+    _exclusive_json(output_json,asdict(direction))
+    return {'stage':direction.action,'source_sha256':direction.camera_original_sha256,
+            'photographic_quality_accepted':False,'formal_V1_registered':False}
+
+
+def bind_frame(original, lineage_json, preedit_frame_json, native_receipt_json, output_json):
+    """Bind a real pending output to the pre-edited framing intent."""
+    _require_unused_output(output_json,'.json')
+    lineage=_lineage(_load_data(lineage_json))
+    if not verify_source_lineage(original,lineage):
+        raise ValueError('verified original/working lineage required')
+    record=_load_data(preedit_frame_json)
+    if isinstance(record.get('source_bbox_px'),list):
+        record['source_bbox_px']=tuple(record['source_bbox_px'])
+    prior=CompositionDecision(**record)
+    pending=_load_data(native_receipt_json)
+    parent=Path(pending.get('candidate_path',''))
+    if parent.is_symlink() or not parent.is_file() or hash_file(parent)!=pending.get('candidate_sha256'):
+        raise ValueError('real pending source PNG bytes must match its receipt')
+    frame_plan=bind_to_real_pending(prior,pending)
+    _exclusive_json(output_json,frame_plan)
+    return {'stage':'PENDING_FRAME_PLAN_BOUND',
+            'parent_sha256':pending['candidate_sha256'],
+            'photographic_quality_accepted':False,'formal_V1_registered':False}
+
+
 def reframe(original, lineage_json, native_png, native_receipt_json,
             frame_plan_json, output, receipt_json):
     """Pending native-source pixel crop, never a formal V1 or photo acceptance."""
@@ -380,6 +414,12 @@ def main(argv=None):
     for name in ('original','lineage_json','provider_source','raw_mask',
                  'provider_response_json','output','receipt_json'):
         m.add_argument(name)
+    pf=sub.add_parser('plan-frame')
+    for name in ('original','lineage_json','frame_observation_json','output_json'):
+        pf.add_argument(name)
+    bf=sub.add_parser('bind-frame')
+    for name in ('original','lineage_json','preedit_frame_json','native_receipt_json','output_json'):
+        bf.add_argument(name)
     f=sub.add_parser('reframe')
     for name in ('original','lineage_json','native_png','native_receipt_json',
                  'frame_plan_json','output','receipt_json'):
@@ -401,6 +441,12 @@ def main(argv=None):
         result=ingest_mask(args.original,args.lineage_json,args.provider_source,
                            args.raw_mask,args.provider_response_json,
                            args.output,args.receipt_json)
+    elif args.stage=='plan-frame':
+        result=plan_frame(args.original,args.lineage_json,
+                          args.frame_observation_json,args.output_json)
+    elif args.stage=='bind-frame':
+        result=bind_frame(args.original,args.lineage_json,
+                          args.preedit_frame_json,args.native_receipt_json,args.output_json)
     elif args.stage=='reframe':
         result=reframe(args.original,args.lineage_json,args.native_png,
                        args.native_receipt_json,args.frame_plan_json,
