@@ -1,0 +1,191 @@
+{
+  "scope": "historical recorded wall/monotonic observations; not upload-to-delivery latency",
+  "new_external_calls": 0,
+  "cases": [
+    {
+      "case": "travel-1",
+      "ledger_member": "job-1.json",
+      "ledger_sha256": "42963afac287c50a20f228c7150c41877575365785f0f07a347cf3de8c814724",
+      "context_seconds": 0.001996562,
+      "reference_seconds": 0.005319493,
+      "external_call_seconds": 83.657,
+      "external_call_intervals": [
+        {
+          "start_unix_ns": 1793014869282000000,
+          "end_unix_ns": 1793014926129000000
+        },
+        {
+          "start_unix_ns": 1793014938325000000,
+          "end_unix_ns": 1793014965135000000
+        }
+      ],
+      "download_seconds": 11.201960073,
+      "local_controller_union_seconds": 0.190871236,
+      "review_recording_seconds": 0.082760495,
+      "visual_review_seconds": null,
+      "professional_decision_seconds": null,
+      "trigger_seconds": null,
+      "version_registration_seconds": null,
+      "host_overhead_seconds": null,
+      "intake_to_photo_ack_wall_seconds": 448.518049447,
+      "photo_save_seconds": null,
+      "record_save_seconds": null,
+      "upload_to_delivery_seconds": null,
+      "observed_interval_union_seconds": 95.049831248,
+      "unattributed_wall_seconds": 353.46821819900003
+    },
+    {
+      "case": "travel-2",
+      "ledger_member": "job-2.json",
+      "ledger_sha256": "622ddd6bd2c491bde78bb72be07f0090bc6c2f5dc30c7a9df3e12cb1830abce9",
+      "context_seconds": 0.001592853,
+      "reference_seconds": 0.002683718,
+      "external_call_seconds": 5.69,
+      "external_call_intervals": [
+        {
+          "start_unix_ns": 1793015001415000000,
+          "end_unix_ns": 1793015007105000000
+        }
+      ],
+      "download_seconds": 8.779063556,
+      "local_controller_union_seconds": 0.175648193,
+      "review_recording_seconds": 0.079701379,
+      "visual_review_seconds": null,
+      "professional_decision_seconds": null,
+      "trigger_seconds": null,
+      "version_registration_seconds": null,
+      "host_overhead_seconds": null,
+      "intake_to_photo_ack_wall_seconds": 448.495531885,
+      "photo_save_seconds": null,
+      "record_save_seconds": null,
+      "upload_to_delivery_seconds": null,
+      "observed_interval_union_seconds": 14.644711358,
+      "unattributed_wall_seconds": 433.850820527
+    },
+    {
+      "case": "travel-3",
+      "ledger_member": "job-3.json",
+      "ledger_sha256": "9234bcbeab8b3db922fafa1a05daa1bdf68d22ff59f367ea3f88f2cebcccba94",
+      "context_seconds": 0.001964753,
+      "reference_seconds": 0.018984545,
+      "external_call_seconds": 7.235,
+      "external_call_intervals": [
+        {
+          "start_unix_ns": 1793015020894000000,
+          "end_unix_ns": 1793015028129000000
+        }
+      ],
+      "download_seconds": 7.685471756,
+      "local_controller_union_seconds": 0.180232481,
+      "review_recording_seconds": 0.071474887,
+      "visual_review_seconds": null,
+      "professional_decision_seconds": null,
+      "trigger_seconds": null,
+      "version_registration_seconds": null,
+      "host_overhead_seconds": null,
+      "intake_to_photo_ack_wall_seconds": 526.726809733,
+      "photo_save_seconds": null,
+      "record_save_seconds": null,
+      "upload_to_delivery_seconds": null,
+      "observed_interval_union_seconds": 15.100704187,
+      "unattributed_wall_seconds": 511.62610554599996
+    },
+    {
+      "case": "independent-1",
+      "ledger_member": "job-V1.json",
+      "ledger_sha256": "c4cd2cb734f40f099eab714b109a9f6d683b2bc53822eab811b2f3b2ae694675",
+      "context_seconds": 0.002158626,
+      "reference_seconds": 0.018312426,
+      "external_call_seconds": 7.955,
+      "external_call_intervals": [
+        {
+          "start_unix_ns": 1793018218321000000,
+          "end_unix_ns": 1793018226276000000
+        }
+      ],
+      "download_seconds": 8.372869453,
+      "local_controller_union_seconds": 1.048950255,
+      "review_recording_seconds": 0.401890596,
+      "visual_review_seconds": null,
+      "professional_decision_seconds": null,
+      "trigger_seconds": null,
+      "version_registration_seconds": null,
+      "host_overhead_seconds": null,
+      "intake_to_photo_ack_wall_seconds": 104.991301164,
+      "photo_save_seconds": 11.372511084,
+      "record_save_seconds": 7.433393103,
+      "upload_to_delivery_seconds": null,
+      "intake_to_record_save_response_wall_seconds": 112.468842196,
+      "observed_interval_union_seconds": 36.182723625,
+      "unattributed_wall_seconds": 76.286118571
+    },
+    {
+      "case": "independent-2",
+      "ledger_member": "job-V2.json",
+      "ledger_sha256": "3207775bcb17081e7a411801f074150f7c51ec7f55ace285d2e84d209c9107ca",
+      "context_seconds": 0.002422855,
+      "reference_seconds": 0.026200321,
+      "external_call_seconds": 8.748,
+      "external_call_intervals": [
+        {
+          "start_unix_ns": 1793018418010000000,
+          "end_unix_ns": 1793018426758000000
+        }
+      ],
+      "download_seconds": 8.511144094,
+      "local_controller_union_seconds": 1.342038714,
+      "review_recording_seconds": 0.555415168,
+      "visual_review_seconds": null,
+      "professional_decision_seconds": null,
+      "trigger_seconds": null,
+      "version_registration_seconds": null,
+      "host_overhead_seconds": null,
+      "intake_to_photo_ack_wall_seconds": 117.257755128,
+      "photo_save_seconds": 7.12762688,
+      "record_save_seconds": 5.623414757,
+      "upload_to_delivery_seconds": null,
+      "intake_to_record_save_response_wall_seconds": 123.018258236,
+      "observed_interval_union_seconds": 31.352224284,
+      "unattributed_wall_seconds": 91.66603395199999
+    }
+  ],
+  "archives": {
+    "travel": "46c25b8fb8e3cd1ec4e1d9b43e167e7e9c6a892412d047dad6f373c8457adc03",
+    "independent": "5a959fa6e4ee91b0717e2f21bb4eda5b6dc02954029c97a6369b8814efe32e1f"
+  },
+  "observed_totals": {
+    "external_call_seconds": {
+      "samples": 5,
+      "sum_seconds": 113.285,
+      "median_seconds": 7.955
+    },
+    "download_seconds": {
+      "samples": 5,
+      "sum_seconds": 44.550508932,
+      "median_seconds": 8.511144094
+    },
+    "photo_save_seconds": {
+      "samples": 2,
+      "sum_seconds": 18.500137964,
+      "median_seconds": 9.250068982
+    },
+    "record_save_seconds": {
+      "samples": 2,
+      "sum_seconds": 13.05680786,
+      "median_seconds": 6.52840393
+    },
+    "local_controller_union_seconds": {
+      "samples": 5,
+      "sum_seconds": 2.937740879,
+      "median_seconds": 0.190871236
+    }
+  },
+  "limitations": [
+    "Case sums are workload totals, not batch elapsed time; revisions are not independent scenes.",
+    "External call intervals include transport, queue, server and host tool handling; backend compute not isolated.",
+    "download spans include network wait; local-monotonic measurement does not mean CPU time.",
+    "Controller review receipts record supplied judgement, not model visual-inspection duration.",
+    "Intake starts after photo upload; save acknowledgement is not presentation or version registration.",
+    "Missing boundaries are null; gaps are not attributed to model/host/quality."
+  ]
+}
