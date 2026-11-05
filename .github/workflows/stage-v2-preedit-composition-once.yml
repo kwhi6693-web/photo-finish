@@ -1,4 +1,4 @@
-# Temporary branch-scoped restaging; run only after independent source-bound composition tests; delete after verified execution.
+# Temporary branch-scoped restaging re-verification after removing arbitrary fixed crop percentages; run only after independent source-bound composition tests; delete after verified execution.
 name: Restage Photo Finish v2.0.0 after pre-edit composition gate tests once
 on:
   push:
