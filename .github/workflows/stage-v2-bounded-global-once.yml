@@ -1,4 +1,4 @@
-# Temporary branch-scoped restaging; delete after verified execution.
+# Temporary branch-scoped restaging; retry after restoring legacy STOP compatibility; delete after verified execution.
 name: Restage Photo Finish v2.0.0 after bounded global route tests once
 on:
   push:
