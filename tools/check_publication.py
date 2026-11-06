@@ -5,11 +5,6 @@ from pathlib import Path, PurePosixPath
 import argparse, hashlib, io, json, re, subprocess, sys, zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
-# One audited historic 90,060-byte malformed PR47 candidate; Git OID, path and
-# exact size are all required. No malformed current-tree ZIP can use this waiver.
-KNOWN_MALFORMED_HISTORY_ZIPS={
-    ('9a957a58986ad5599801b0b71fdf6eb160336769','dist/v2.0.0/photo-finish.zip',90060),
-}
 SKIP={'.git','.venv','__pycache__','.pytest_cache'}
 MEDIA={'.jpg','.jpeg','.png','.webp','.gif','.heic','.tif','.tiff','.dng','.cr2','.nef','.psd','.pdf'}
 FORBIDDEN_PARTS={'uploads','generated_images','records','outputs','runtime_cache','09_VERSION_HISTORY','01_STYLE_REFERENCES','02_EDIT_TARGETS','07_ANALYSIS_REPORTS','08_EDIT_OUTPUTS'}
@@ -62,21 +57,6 @@ def inspect_archive(data):
             for f in findings_for(name,z.read(info)):findings.append(dict(file=name,**f))
     return findings
 
-def _historical_zip_findings(oid,name,data):
-    """Return (findings, waived). Unknown corrupt ZIPs still raise BadZipFile."""
-    try:
-        return inspect_archive(data),False
-    except zipfile.BadZipFile as error:
-        if (oid,name,len(data)) not in KNOWN_MALFORMED_HISTORY_ZIPS:
-            raise zipfile.BadZipFile(
-                'unknown invalid historical ZIP blob %s path %s size %d' %
-                (oid,name,len(data))
-            ) from error
-        # Still search raw archive bytes for public-data leaks. Compressed
-        # entries of this malformed historic artifact cannot be certified.
-        return findings_for('known-legacy-archive.raw',data),True
-
-
 def scan(root=ROOT,history=False):
     root=Path(root);found=[];count=0
     for p in sorted(root.rglob('*')):
@@ -92,7 +72,7 @@ def scan(root=ROOT,history=False):
         if p.suffix=='.zip':found.extend(inspect_archive(data))
         else:
             for f in findings_for(name,data):found.append(dict(file=name,**f))
-    blobs=0;legacy_zip_exceptions=[]
+    blobs=0
     if history:
         output=subprocess.run(['git','rev-list','--objects','--all'],cwd=root,check=True,capture_output=True,text=True, encoding='utf-8').stdout
         for line in output.splitlines():
@@ -100,24 +80,9 @@ def scan(root=ROOT,history=False):
             kind=subprocess.run(['git','cat-file','-t',oid],cwd=root,check=True,capture_output=True,text=True, encoding='utf-8').stdout.strip()
             if kind!='blob':continue
             blobs+=1;data=subprocess.run(['git','cat-file','blob',oid],cwd=root,check=True,capture_output=True).stdout
-            if name.endswith('.zip'):
-                archive_findings,waived=_historical_zip_findings(oid,name,data)
-                if waived:
-                    # Git --find-object identifies commits adding/removing this exact blob.
-                    changes=subprocess.run(
-                        ['git','log','--all','--format=%H','--find-object='+oid,'--',name],
-                        cwd=root,check=True,capture_output=True,text=True,encoding='utf-8'
-                    ).stdout.splitlines()
-                    legacy_zip_exceptions.append({
-                        'blob_sha':oid,'path':name,'size_bytes':len(data),
-                        'commits_changing_blob_occurrences':changes,
-                        'limitation':'malformed ZIP compressed members cannot be fully audited',
-                    })
-            else:
-                archive_findings=findings_for(name,data)
-            for f in archive_findings:
+            for f in (inspect_archive(data) if name.endswith('.zip') else findings_for(name,data)):
                 found.append(dict(f,file='git-blob:'+oid[:12]))
-    return {'status':'passed' if not found else 'failed','files_scanned':count,'historical_blobs_scanned':blobs,'known_malformed_historical_zip_exceptions':legacy_zip_exceptions,'findings':found,
+    return {'status':'passed' if not found else 'failed','files_scanned':count,'historical_blobs_scanned':blobs,'findings':found,
        'scope':'Known patterns, private media/work classes, paths and ZIP safety; no universal absence guarantee'}
 
 def main():
