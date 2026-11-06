@@ -2,6 +2,27 @@
 from PIL import Image, ImageChops, ImageStat
 
 
+def tonal_distribution(image, region=None):
+    """Encoded tonal placement; not RAW exposure, detail recovery or aesthetics."""
+    luma=image.convert('L')
+    if region is not None and (region.mode!='L' or region.size!=image.size):
+        raise ValueError('source-aligned region required for tonal distribution')
+    hist=luma.histogram(mask=region);count=sum(hist)
+    if not count:raise ValueError('nonempty distribution required')
+    def percentile(fraction):
+        total=0
+        for value,n in enumerate(hist):
+            total+=n
+            if total>=fraction*count:return value
+        return 255
+    stats=ImageStat.Stat(luma,mask=region)
+    result={name:percentile(q) for name,q in (('P05',.05),('P25',.25),('P50',.5),('P75',.75),('P95',.95))}
+    return {**result,'P95_minus_P05':result['P95']-result['P05'],
+            'P75_minus_P25':result['P75']-result['P25'],
+            'mean':stats.mean[0],'stddev':stats.stddev[0],'pixels':count,
+            'definition':'encoded RGB-to-L; descriptive, not calibrated photographic quality'}
+
+
 def measure_pixel_change(before, after, region):
     if before.mode!='RGB' or after.mode!='RGB' or before.size!=after.size:
         raise ValueError('same-geometry RGB pixels required for change monitoring')

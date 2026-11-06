@@ -7,6 +7,7 @@ The caller must supply source-aligned real masks and review observations.
 from dataclasses import dataclass
 from pathlib import Path
 
+from editorial_pipeline import hash_file
 from editorial_contract import EditorialPlan, ProvenCapabilities
 from multizone_workflow import run_multizone_trial
 from native_candidate_export import export_pending_png
@@ -28,7 +29,7 @@ class PendingNativePhoto:
 def run_native_photo_trial(original_photo_path, lineage, plan, zones, *,
                            source_visually_inspected, masks_visually_inspected,
                            capabilities, geometry_id, expected_icc_bytes,
-                           destination):
+                           destination, artifact_sink=None):
     """Use actual source-bound masks, never a model-inferred success assertion.
 
     The working source must already exist. The caller must have reviewed the
@@ -51,13 +52,20 @@ def run_native_photo_trial(original_photo_path, lineage, plan, zones, *,
         masks_visually_inspected=masks_visually_inspected,
         capabilities=capabilities, geometry_id=geometry_id,
         expected_source_pixel_sha256=lineage.working_pixel_sha256,
-        expected_icc_bytes=expected_icc_bytes)
+        expected_icc_bytes=expected_icc_bytes, artifact_sink=artifact_sink)
     exported = export_pending_png(pending, working_source_path=lineage.working_path,
                                   destination=destination)
-    if not verify_source_lineage(original_photo_path, lineage):
-        raise ValueError('original or working file was modified during editing')
-    if exported.source_sha256 != lineage.working_sha256:
-        raise ValueError('native candidate does not match managed source')
+    try:
+        if not verify_source_lineage(original_photo_path, lineage):
+            raise ValueError('original or working file was modified during editing')
+        if exported.source_sha256 != lineage.working_sha256:
+            raise ValueError('native candidate does not match managed source')
+    except BaseException:
+        # Only remove this call's exclusive, still-identical pending export.
+        target=Path(exported.path)
+        if target.is_file() and not target.is_symlink() and hash_file(target)==exported.sha256:
+            target.unlink()
+        raise
     return PendingNativePhoto(
         camera_original_sha256=lineage.original_sha256,
         working_source_sha256=lineage.working_sha256,

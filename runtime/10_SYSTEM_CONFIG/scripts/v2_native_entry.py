@@ -35,6 +35,8 @@ from v2_global_operation import compile_global_operation, export_pending_global
 from native_framing import reframe_pending_native
 from v2_spatial_preflight import CompositionDecision, compile_composition, bind_to_real_pending
 from multizone_editor import ToneZone, validate_chroma_shift
+from pixel_mask_qa import validate_reach
+from execution_artifacts import ExecutionArtifacts
 from native_workflow import run_native_photo_trial
 from editorial_pipeline import hash_file
 
@@ -149,6 +151,7 @@ def _load_mask(spec,name):
 _ZONE_FIELDS = frozenset({
     'name', 'purpose', 'target_effect', 'gamma', 'saturation', 'reviewed',
     'edge_mode', 'sigma_px', 'chroma_shift', 'boundary_visually_inspected',
+    'luma_range', 'linear_gradient',
     *(component+suffix for component in ('mask','core','allowed','protected')
       for suffix in ('_path','_sha256')),
 })
@@ -212,6 +215,9 @@ def _verify_zone_intents(record):
             return 'sigma_px is only valid with graded edge_mode for '+name
         try:
             validate_chroma_shift(spec.get('chroma_shift',(0.0,0.0)))
+            validate_reach(spec.get('luma_range'),spec.get('linear_gradient'))
+            if (spec.get('luma_range') is not None or spec.get('linear_gradient') is not None) and mode!='graded':
+                return 'source-guided reach requires graded edge mode for '+name
         except ValueError as error:
             return str(error)+' for '+name
     return None
@@ -234,7 +240,8 @@ def _zones(record):
             edge_mode=spec.get('edge_mode','soft'),
             boundary_visually_inspected=spec.get('boundary_visually_inspected',False),
             sigma_px=spec.get('sigma_px',0) or 0,
-            chroma_shift=validate_chroma_shift(spec.get('chroma_shift',(0.0,0.0)))))
+            chroma_shift=validate_chroma_shift(spec.get('chroma_shift',(0.0,0.0))),
+            luma_range=spec.get('luma_range'),linear_gradient=spec.get('linear_gradient')))
     return result
 
 
@@ -407,7 +414,7 @@ def render_global(original, lineage_json, plan_json, decision_json,
             'formal_V1_registered':False}
 
 
-def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
+def render(original, lineage_json, plan_json, zones_json, output, receipt_json, artifacts_directory=None):
     # Avoid producing an untracked candidate when its receipt path is already
     # occupied. The exporter independently enforces no-overwrite on PNG bytes.
     _require_unused_output(output,'.png')
@@ -462,44 +469,57 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
     with Image.open(lineage.working_path) as image:
         image.load()
         profile=image.info.get('icc_profile')
-    pending=run_native_photo_trial(
-        original,lineage,plan,zones,
-        source_visually_inspected=True,masks_visually_inspected=True,
-        capabilities=ProvenCapabilities(True,True,True,True,
-                                         verified_local_masks=True,
-                                         edge_transition_verified=mask_plan.get('edge_transition_verified') is True),
-        geometry_id=geometry_id,expected_icc_bytes=profile,
-        destination=output)
-    record={'status':pending.status,'route':asdict(route),
-            'camera_original_sha256':pending.camera_original_sha256,
-            'working_source_sha256':pending.working_source_sha256,
-            'candidate_sha256':pending.candidate_sha256,'candidate_path':pending.candidate_path,
-            'spatial_direction':pending.spatial_direction,
-            'operation_intents_verified':True,
-            'zone_intents':[{'name':z['name'],'target_effect':z['target_effect'],
-                             'gamma':z['gamma'],'saturation':z.get('saturation',1.0),
-                             'edge_mode':z.get('edge_mode','soft'),
-                             'sigma_px':z.get('sigma_px',0),
-                             'chroma_shift':list(z.get('chroma_shift',(0.0,0.0)))}
-                            for z in mask_plan['zones']],
-            'mask_plan_sha256':hash_file(zones_json),
-            'technical_receipt':pending.technical_receipt,
-            'formal_V1_registered':False,'photographic_quality_accepted':False}
-    try:
-        _exclusive_json(receipt_json,record)
-    except BaseException:
-        _rollback_unreceipted_png(pending.candidate_path,pending.candidate_sha256,receipt_json)
-        raise
-    return {'stage':pending.status,'route':asdict(route),
-            'native_png_path':pending.candidate_path,
-            'source_sha256':pending.camera_original_sha256,
-            'pending_output_sha256':pending.candidate_sha256,
-            'formal_V1_registered':False,'photographic_quality_accepted':False}
+    with ExecutionArtifacts(artifacts_directory) as capture:
+        pending=run_native_photo_trial(
+            original,lineage,plan,zones,
+            source_visually_inspected=True,masks_visually_inspected=True,
+            capabilities=ProvenCapabilities(True,True,True,True,
+                                             verified_local_masks=True,
+                                             edge_transition_verified=mask_plan.get('edge_transition_verified') is True),
+            geometry_id=geometry_id,expected_icc_bytes=profile,
+            destination=output, artifact_sink=capture.capture)
+        try:
+            artifacts=capture.publish()
+        except BaseException:
+            _rollback_unreceipted_png(pending.candidate_path,pending.candidate_sha256,receipt_json)
+            raise
+        record={'execution_artifacts':artifacts,'status':pending.status,'route':asdict(route),
+                'camera_original_sha256':pending.camera_original_sha256,
+                'working_source_sha256':pending.working_source_sha256,
+                'candidate_sha256':pending.candidate_sha256,'candidate_path':pending.candidate_path,
+                'spatial_direction':pending.spatial_direction,
+                'operation_intents_verified':True,
+                'zone_intents':[{'name':z['name'],'target_effect':z['target_effect'],
+                                 'gamma':z['gamma'],'saturation':z.get('saturation',1.0),
+                                 'edge_mode':z.get('edge_mode','soft'),
+                                 'sigma_px':z.get('sigma_px',0),
+                                 'chroma_shift':list(z.get('chroma_shift',(0.0,0.0))),
+                                 'luma_range':z.get('luma_range'),'linear_gradient':z.get('linear_gradient')}
+                                for z in mask_plan['zones']],
+                'mask_plan_sha256':hash_file(zones_json),
+                'technical_receipt':pending.technical_receipt,
+                'formal_V1_registered':False,'photographic_quality_accepted':False}
+        try:
+            _exclusive_json(receipt_json,record)
+        except BaseException:
+            _rollback_unreceipted_png(pending.candidate_path,pending.candidate_sha256,receipt_json)
+            raise
+        capture.commit()
+        return {'stage':pending.status,'route':asdict(route),
+                'native_png_path':pending.candidate_path,
+                'source_sha256':pending.camera_original_sha256,
+                'pending_output_sha256':pending.candidate_sha256,
+                'formal_V1_registered':False,'photographic_quality_accepted':False}
+
 
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     sub=parser.add_subparsers(dest='stage',required=True)
+    sub.add_parser('capabilities')
+    quality=sub.add_parser('quality-report')
+    for name in ('original','lineage_json','candidate','receipt_json','destination'):
+        quality.add_argument(name)
     p=sub.add_parser('prepare')
     for name in ('original','working','manifest'):
         p.add_argument(name)
@@ -528,22 +548,37 @@ def main(argv=None):
     r=sub.add_parser('render')
     for name in ('original','lineage_json','plan_json','zones_json','output','receipt_json'):
         r.add_argument(name)
+    r.add_argument('--artifacts-dir',dest='artifacts_directory')
     import v2_delivery
     for command, names in {
         'accept-photo': ('original','candidate','provenance_json','review_json','destination'),
         'register-v1': ('accepted_json','save_json','readback_json','readback_image','library_file_id','destination'),
         'restore-v1': ('version_json','expected_version_sha256','readback_json','readback_image'),
+        'audit-pending-delivery': ('original','candidate','receipt_json','save_json','readback_json','readback_image','library_file_id','destination'),
     }.items():
         entry=sub.add_parser(command)
         for name in names:entry.add_argument(name)
+    bridge=sub.add_parser('register-history')
+    for name in ('original','candidate','accepted_json','version_json','session_root'):bridge.add_argument(name)
+    bridge.add_argument('--parent-series');bridge.add_argument('--parent-version')
     args=parser.parse_args(argv)
     delivery={'accept-photo':v2_delivery.accept,'register-v1':v2_delivery.register,
-              'restore-v1':v2_delivery.restore}
+              'restore-v1':v2_delivery.restore,'audit-pending-delivery':v2_delivery.audit_pending}
+    if args.stage=='register-history':
+        from task_history import register_v2
+        values=vars(args).copy();values.pop('stage')
+        print(json.dumps(register_v2(**values),ensure_ascii=False,sort_keys=True));return 0
     if args.stage in delivery:
         values=vars(args).copy();values.pop('stage')
         print(json.dumps(delivery[args.stage](**values),ensure_ascii=False,sort_keys=True))
         return 0
-    if args.stage=='prepare':
+    if args.stage=='capabilities':
+        from v2_diagnostics import native_capabilities
+        result=native_capabilities()
+    elif args.stage=='quality-report':
+        from v2_diagnostics import quality_report
+        result=quality_report(args.original,args.lineage_json,args.candidate,args.receipt_json,args.destination)
+    elif args.stage=='prepare':
         result=prepare(args.original,args.working,args.manifest)
     elif args.stage=='decide':
         result=decide(args.original,args.lineage_json,args.observation_json,
@@ -568,7 +603,7 @@ def main(argv=None):
                              args.output,args.receipt_json)
     else:
         result=render(args.original,args.lineage_json,args.plan_json,
-                      args.zones_json,args.output,args.receipt_json)
+                      args.zones_json,args.output,args.receipt_json,args.artifacts_directory)
     print(json.dumps(result,ensure_ascii=False,sort_keys=True))
     return 0
 

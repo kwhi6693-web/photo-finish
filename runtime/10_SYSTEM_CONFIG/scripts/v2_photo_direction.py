@@ -98,6 +98,12 @@ def compile_observed_direction(observation, *, camera_original_sha256,
     strategy = observation.get('tonal_strategy')
     if need == 'edit_needed' and strategy not in _STRATEGIES:
         return stop('unsupported or absent source-faithful tonal strategy')
+    intensity=observation.get('intensity','subtle' if complexity=='complex' else 'moderate')
+    if type(intensity) is not str or intensity not in ('subtle','moderate'):
+        return stop('supported explicit native intensity required')
+    for name in ('lighting_direction','color_direction'):
+        if name in observation and (not isinstance(observation[name],str) or len(observation[name].strip())<20):
+            return stop('explicit photographed direction is incomplete: '+name)
     if need == 'retain_original':
         retain = observation.get('retain_reason')
         if not isinstance(retain,str) or len(retain.strip())<25:
@@ -115,15 +121,15 @@ def compile_observed_direction(observation, *, camera_original_sha256,
         secondary_discovery=fields['secondary_discovery'],
         spatial_relationship=fields['spatial_relationship'],
         source_light_evidence=fields['source_light_evidence'],
-        lighting_direction=light_direction,
-        color_direction='Preserve source-recorded color, material identity and real illumination',
+        lighting_direction=observation.get('lighting_direction',light_direction),
+        color_direction=observation.get('color_direction','Preserve source-recorded color, material identity and real illumination'),
         visible_improvement_goal=fields['visible_improvement_goal'],
         fixed_content_to_preserve=fields['fixed_content_to_preserve'],
         failure_conditions='STOP on false selection, changed text, edge halos, lost source identity or invented light',
         edit_route='native',
         requires_local_selection=(need=='edit_needed' and preference!='global'),
         requests_geometry_change=False,
-        intensity='subtle' if complexity=='complex' else 'moderate',
+        intensity=intensity,
         decision='edit' if need=='edit_needed' else 'retain_original',
         retain_reason=retain)
     controller_direction(plan)

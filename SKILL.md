@@ -35,6 +35,8 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 2. 编辑与验收
 
+原生本地路线先用 `v2_native_entry capabilities` 实测当前 Pillow/ICC/PNG 能力，不把发现外部程序当作引擎已验证。保留观察者明确的光线、色彩与强度方向；按[集中吸收接口](references/v2-focused-operations.md)选已实现操作。graded 可用源亮度范围和方向渐变收窄作用域，不扩大语义选区。需要检查真实蒙版时在同次 render 使用 `--artifacts-dir` 保存实际 Alpha/阶段输出，不为诊断额外重渲染；数值分布只作诊断，不替用户审美 GO。
+
 V2 本地候选的 graded 连续 Alpha、区域 Cb/Cr 与全局色调曲线，按[能力契约](references/v2-local-capabilities.json)及[局部边缘规范](references/v2-graded-local-edge.md)执行。严格拒绝未知参数；以实际回执 stage 判断 STOP。渲染前蒙版预检与渲染后数值边缘检查分别核验，数值通过仍须实际全幅和 1:1 视觉检查；强度待多类别校准时不编造 UNDER_POWERED 阈值。用户未针对准确 PNG 明确 GO，不登记正式 V1。
 WP3 experimental pre-edit framing gate: after real visual inspection of the authorized non-portrait original, run native-entry plan-frame with original/lineage/private source-bound frame observation before any tone operation. It records KEEP_FRAME or CROP_PROPOSED and requires protected content anchors for any crop; see references/v2-preedit-composition.md. After an actually verified pending native tone PNG, use bind-frame to create the parent-bound framing plan and then the existing reframe gate. Never force crops or confuse these pending receipts with formal V1, independent photographic approval or actual autonomous visual perception.
 

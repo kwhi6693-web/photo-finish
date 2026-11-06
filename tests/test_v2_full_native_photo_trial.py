@@ -82,6 +82,19 @@ class FullNativePhotoTrialTests(unittest.TestCase):
             run_native_photo_trial(self.original,self.lineage,self.plan,self.zones,**self.kwargs)
         self.assertFalse(self.output.exists())
 
+    def test_source_change_after_export_removes_own_unreceipted_candidate(self):
+        from unittest.mock import patch
+        import native_workflow as workflow
+        export=workflow.export_pending_png
+        def change_after_export(*args,**kwargs):
+            result=export(*args,**kwargs)
+            self.original.write_bytes(self.original.read_bytes()+b'changed-after-export')
+            return result
+        with patch.object(workflow,'export_pending_png',side_effect=change_after_export):
+            with self.assertRaisesRegex(ValueError,'changed'):
+                workflow.run_native_photo_trial(self.original,self.lineage,self.plan,self.zones,**self.kwargs)
+        self.assertFalse(self.output.exists())
+
     def test_plan_for_another_photo_fails_before_output(self):
         plan=replace(self.plan,source_sha256='0'*64)
         with self.assertRaisesRegex(ValueError,'not bound'):

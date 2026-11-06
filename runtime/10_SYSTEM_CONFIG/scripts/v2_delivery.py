@@ -191,8 +191,7 @@ def register(accepted_json, save_json, readback_json, readback_image,
     accepted_sha=hash_file(accepted_json)
     save_sha=hash_file(save_json);readback_sha=hash_file(readback_json)
     accepted=load(accepted_json)
-    if accepted.get('schema')!='photo-finish-v2-accepted/1':
-        raise ValueError('v2 acceptance record required')
+    validate_accepted(accepted)
     output=saved_identity(save_json,readback_json,readback_image,library_file_id)
     if output!=accepted['output']:raise ValueError('saved image differs from accepted output')
     if (hash_file(accepted_json)!=accepted_sha or hash_file(save_json)!=save_sha or
@@ -206,6 +205,45 @@ def register(accepted_json, save_json, readback_json, readback_image,
         'library_file_id':library_file_id,'save_receipt_sha256':save_sha,
         'readback_receipt_sha256':readback_sha,'formal_V1_registered':True,
         'iphone_save_confirmed':False,'cross_conversation_restore_verified':False})
+
+
+def validate_accepted(accepted):
+    """Recheck an embedded accepted record before any later version/index write.
+
+    Trusted caller supplies the actual user's decision reference. This is an
+    evidence consistency gate, not cryptographic proof of who authored JSON.
+    """
+    if not isinstance(accepted,dict) or accepted.get('schema')!='photo-finish-v2-accepted/1':
+        raise ValueError('v2 acceptance record required')
+    source=accepted.get('source',{});output=accepted.get('output',{})
+    review=accepted.get('user_review',{});proof=accepted.get('provenance',{})
+    if (not source.get('sha256') or not output.get('sha256') or
+            review.get('reviewer_role')!='end_user_final_editorial_authority' or
+            review.get('user_final_photographic_quality')!='GO' or
+            review.get('candidate_sha256')!=output['sha256'] or
+            review.get('camera_original_sha256')!=source['sha256'] or
+            not isinstance(review.get('decision_reference'),str) or not review['decision_reference'].strip() or
+            proof.get('candidate_sha256')!=output['sha256'] or proof.get('camera_original_sha256')!=source['sha256'] or
+            accepted.get('renderer_origin') not in ('pr47_native_controller','external_non_generative') or
+            accepted.get('renderer_origin')!=proof.get('renderer_origin') or
+            accepted.get('native_controller_e2e')!=(accepted.get('renderer_origin')=='pr47_native_controller')):
+        raise ValueError('explicit source-bound end-user GO and consistent provenance required')
+    return accepted
+
+
+def audit_pending(original,candidate,receipt_json,save_json,readback_json,readback_image,library_file_id,destination):
+    """Audit genuine saved pending bytes, without accepting or registering V1."""
+    source=inspect(original);output=inspect(candidate,png=True);receipt=load(receipt_json)
+    if (receipt.get('camera_original_sha256')!=source['sha256'] or
+            receipt.get('candidate_sha256')!=output['sha256'] or
+            not str(receipt.get('status','')).startswith('PENDING') or receipt.get('formal_V1_registered') is not False):
+        raise ValueError('actual pending source/output receipt mismatch')
+    saved=saved_identity(save_json,readback_json,readback_image,library_file_id)
+    if saved!=output:raise ValueError('saved pending file differs from actual candidate')
+    return exclusive(destination,{'status':'PENDING_BYTES_AND_LIBRARY_ID_VERIFIED','source':source,'output':output,
+        'library_file_id':library_file_id,'user_photographic_GO':'PENDING','formal_V1_registered':False,
+        'render_calls':0,'ledger_writes':0,'iphone_save_confirmed':False,
+        'cross_conversation_restore_verified':False})
 
 
 def restore(version_json, expected_version_sha256, readback_json, readback_image):

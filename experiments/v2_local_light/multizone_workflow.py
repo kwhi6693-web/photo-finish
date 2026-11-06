@@ -27,7 +27,7 @@ class PendingMultizoneTrial:
 
 def run_multizone_trial(plan, *, source_path, zones, source_visually_inspected,
                         masks_visually_inspected, capabilities, geometry_id,
-                        expected_source_pixel_sha256, expected_icc_bytes):
+                        expected_source_pixel_sha256, expected_icc_bytes, artifact_sink=None):
     """Validate source-bound multi-region work; never finalize or export here.
 
     The source is a *prevalidated working image* with embedded ICC. For photos
@@ -82,7 +82,8 @@ def run_multizone_trial(plan, *, source_path, zones, source_visually_inspected,
         source_visually_inspected=source_visually_inspected,
         masks_visually_inspected=masks_visually_inspected,
         spatial_intent=checked.direction['hierarchy'],
-        expected_icc_bytes=expected_icc_bytes, geometry_id=geometry_id)
+        expected_icc_bytes=expected_icc_bytes, geometry_id=geometry_id,
+        artifact_sink=artifact_sink)
     if hash_file(path) != actual_hash:
         raise ValueError('source file mutated during processing')
     if technical.get('photographic_quality_accepted') is not False:

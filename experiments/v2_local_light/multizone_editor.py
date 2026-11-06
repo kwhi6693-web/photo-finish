@@ -12,7 +12,7 @@ from PIL import Image, ImageChops, ImageEnhance
 from local_edit_qa import inspect_output_edges, measure_pixel_change
 
 from pixel_mask_qa import (inspect_mask, feather_mask, graded_alpha,
-                           verify_protected_pixels)
+                           verify_protected_pixels, validate_reach, refine_graded_alpha)
 
 
 @dataclass(frozen=True)
@@ -32,6 +32,8 @@ class ToneZone:
     # Bounded Cb/Cr shift in 8-bit levels, applied inside the zone only.
     # Warm = (negative Cb, positive Cr); cool = (positive Cb, negative Cr).
     chroma_shift: tuple = (0.0, 0.0)
+    luma_range: tuple | None = None
+    linear_gradient: tuple | None = None
 
 
 MAX_CHROMA_SHIFT = 12.0
@@ -88,7 +90,7 @@ def _remove_newly_clipped(image, prior_source):
 def composite_zones(source, zones, *, observed_source_pixel_sha256,
                     source_visually_inspected, masks_visually_inspected,
                     spatial_intent, expected_icc_bytes, geometry_id,
-                    radius_px=3):
+                    radius_px=3, artifact_sink=None):
     if not isinstance(source, Image.Image) or source.mode != 'RGB':
         raise ValueError('same-geometry decoded RGB source required')
     if not isinstance(geometry_id, str) or not geometry_id.strip():
@@ -132,6 +134,9 @@ def composite_zones(source, zones, *, observed_source_pixel_sha256,
         if z.edge_mode == 'graded' and z.boundary_visually_inspected is not True:
             raise ValueError('graded edge requires real mask-boundary inspection')
         validate_chroma_shift(z.chroma_shift)
+        validate_reach(z.luma_range,z.linear_gradient)
+        if (z.luma_range is not None or z.linear_gradient is not None) and z.edge_mode!='graded':
+            raise ValueError('source-guided reach requires graded edge mode')
         graded_receipt = None
         if z.edge_mode != 'graded' and z.sigma_px != 0:
             raise ValueError('sigma_px is only valid for graded edge mode')
@@ -148,8 +153,12 @@ def composite_zones(source, zones, *, observed_source_pixel_sha256,
             # An inspected hard architectural/sky boundary must not be blended
             # into masonry. A blurred sky alpha can manufacture a visible halo.
             alpha = ImageChops.subtract(z.mask.point(lambda x: 255 if x >= 128 else 0), protected)
-        prepared.append((z, audit, alpha, graded_receipt))
-    for z, audit, alpha, graded_receipt in prepared:
+        reach_receipt=None
+        if z.luma_range is not None or z.linear_gradient is not None:
+            alpha,reach_receipt=refine_graded_alpha(source,alpha,z.core,
+                luma_range=z.luma_range,linear_gradient=z.linear_gradient)
+        prepared.append((z, audit, alpha, graded_receipt,reach_receipt))
+    for z, audit, alpha, graded_receipt,reach_receipt in prepared:
         before = current
         candidate = _grade(current, z.gamma, z.saturation, z.chroma_shift)
         candidate.info['icc_profile'] = expected_icc_bytes
@@ -172,6 +181,16 @@ def composite_zones(source, zones, *, observed_source_pixel_sha256,
                             'max_neighbor_step': graded_receipt.max_neighbor_step})
         if z.chroma_shift != (0.0, 0.0) and tuple(z.chroma_shift) != (0, 0):
             receipt['chroma_shift'] = list(validate_chroma_shift(z.chroma_shift))
+        if reach_receipt is not None:
+            receipt['reach']=reach_receipt
+            receipt['alpha_sha256']=reach_receipt['alpha_sha256']
+            receipt['spatial_base_edge_qa']={'max_neighbor_step':receipt['max_neighbor_step'],
+                                           'neighbor_step_budget':receipt['neighbor_step_budget']}
+            receipt['max_neighbor_step']=reach_receipt['max_neighbor_step']
+            receipt['neighbor_step_budget']=None
+            receipt['edge_budget_scope']='source-tonal reach: actual output product-rule QA; Gaussian budget applies to spatial base only'
+        if artifact_sink is not None:
+            artifact_sink(z.name,alpha,current)
         receipts.append(receipt)
     if not verify_protected_pixels(source, current, protected=protected):
         raise ValueError('protected fixed scene pixel changed')

@@ -1,5 +1,7 @@
 # Changelog
 
+Unreleased Draft 2.0.0: preserve explicit observed light/color/intensity; optional graded luma/gradient reach; capture actual Alpha/output without rerender; local capability and quality diagnostics; strict GO revalidation and existing-history evidence bridge. No new external engine or photographic GO.
+
 Unreleased 2.0.0 Draft: strict local/global operation fields; graded Alpha and bounded Cb/Cr; separate pre-render and actual-output numerical QA, measured regional changes with uncalibrated advisory status. Legacy binary/soft behavior retained. No release, installation or photographic acceptance implied.
 
 ## 1.5.7 — maintenance release preparation (2026-11-03)

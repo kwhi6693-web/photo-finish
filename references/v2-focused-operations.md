@@ -1,0 +1,19 @@
+# Focused native operations — Draft v2.0.0
+
+Use existing `python scripts/run_photo_finish.py v2_native_entry ...`. No darktable/RawTherapee/Photoshop/GIMP install or provider/model capability is implied.
+
+- `capabilities`: execute local Pillow13 tonal/ICC/PNG self-test. External binary detection remains operationally unverified. No semantic segmentation or denoise verified.
+- `decide`: optional observed `lighting_direction` and `color_direction` (specific strings >=20 characters) and `intensity` (`subtle`/`moderate`) survive compilation. Complex scene risk still requires actual edge/mask review; explicit moderate does not imply a new engine or unbounded parameters. Existing omitted-field behavior remains.
+- `render ... --artifacts-dir NEW_DIRECTORY`: capture actual per-zone Alpha/output during one render. Never overwrite; fail if directory exists. The receipt records exact artifact hashes and encoding durations. Artifacts are technical evidence, not a user quality GO. Do not run profiling/replay just to recreate an intermediate.
+- Graded zone optional `luma_range: [outer_low, inner_low, inner_high, outer_high]`: integer encoded RGB-to-L values 0..255 with `outer_low <= inner_low < inner_high <= outer_high`. Smooth ramps attenuate the already audited spatial Alpha. Equal low/low or high/high means an endpoint plateau. This is not RAW exposure, Kelvin or semantic segmentation.
+- Graded zone optional `linear_gradient: [start_x,start_y,end_x,end_y]`: distinct normalized coordinates in 0..1. Weight is smoothstep from zero at start to one at end. It only intersects the audited spatial Alpha, never expands support.
+
+Both refinements are rejected on soft/hard modes. Reviewed core average weight must remain >=0.6; the union of protected maps remains exactly unchanged. Semantic mask geometry is still independently inspected. Source-luma refinement can create legitimate texture-aligned mask steps: the Gaussian step budget applies to the spatial base only; final Alpha hash/neighbor step and actual RGB product-rule output QA are recorded separately. Neither check certifies visual edges. Check the full edited surface, relevant 1:1 boundaries and true shadow/highlight materials.
+
+`quality-report ORIGINAL LINEAGE CANDIDATE CONTROLLER_RECEIPT NEW_REPORT`: read-only exact-source/ICC/geometry validation plus descriptive P05/P25/P50/P75/P95, spans, mean and standard deviation. No universal quality score, recovered detail claim or photographic GO. Compare only aligned same-source files; never resize a cropped old output to fabricate a baseline. Keep old failures and user GO as historical scope.
+
+`audit-pending-delivery ORIGINAL CANDIDATE RECEIPT SAVE_JSON READBACK_JSON READBACK_IMAGE LIBRARY_ID NEW_REPORT`: reuse genuine host save/readback evidence binding. This may audit pending bytes but cannot accept or register them, confirm iPhone Photos or claim an independent conversation.
+
+After actual end-user GO only, use existing `accept-photo` and `register-v1`. Registration revalidates embedded GO and identities. `register-history ORIGINAL CANDIDATE ACCEPTED_JSON VERSION_JSON SESSION_ROOT [--parent-series SERIES --parent-version Vn]` adds the verified record to the existing task_history index. Both parent flags are required together; a revision starts from exact parent PNG. `task_history.history/current/compare/restore` verify files and records; restore changes the cursor without rendering. Legacy job revision/export/archive migration is not implemented for bridge entries: use native controller on the retained parent, preserve original records and do not reconstruct old ledgers.
+
+Actual new-photo V1/V2 writes and independent cross-conversation recovery remain separately gated. Synthetic GO fixtures exercise the interface, never establish user approval. Read upstream design provenance in `docs/V2_UPSTREAM_DESIGN_ADOPTION.md` in the source repository; no restricted implementation is copied.

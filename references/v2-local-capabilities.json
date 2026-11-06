@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "candidate_revision": "2026-11-06.graded.1",
+  "candidate_revision": "2026-11-06.absorb.1",
   "schema_version": 1,
   "status": "DRAFT_NOT_RELEASED_NOT_INSTALLED",
   "local_operations": {
@@ -52,5 +52,13 @@
     "threshold": null,
     "calibration": "PENDING_REAL_MULTI_CATEGORY_CALIBRATION"
   },
-  "formal_v1": "explicit user GO on exact PNG plus existing technical/save gates required"
+  "formal_v1": "explicit user GO on exact PNG plus existing technical/save gates required",
+  "graded_refinements": [
+    "encoded_luma_range",
+    "normalized_linear_gradient"
+  ],
+  "actual_artifact_capture": "optional single render --artifacts-dir",
+  "capability_discovery": "actual local self-test; external detection never verification",
+  "quality_diagnostics": "read-only same-source distributions, no aesthetic score",
+  "history_bridge": "existing task_history index; explicit accepted/save/readback required; no old-ledger migration"
 }

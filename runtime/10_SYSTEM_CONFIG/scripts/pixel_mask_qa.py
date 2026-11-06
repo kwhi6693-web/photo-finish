@@ -295,6 +295,61 @@ def compose_only_tonal_output(source, processed_same_geometry, *, receipt):
     return Image.composite(processed_same_geometry, source, receipt.alpha)
 
 
+def validate_reach(luma_range=None, linear_gradient=None):
+    if luma_range is not None:
+        if (not isinstance(luma_range,(list,tuple)) or len(luma_range)!=4 or
+                any(type(v) is not int or not 0<=v<=255 for v in luma_range)):
+            raise ValueError('luma_range needs four integer encoded-L levels 0..255')
+        a,b,c,d=luma_range
+        if not a<=b<c<=d:
+            raise ValueError('luma_range requires outer-low <= inner-low < inner-high <= outer-high')
+    if linear_gradient is not None:
+        if (not isinstance(linear_gradient,(list,tuple)) or len(linear_gradient)!=4 or
+                any(type(v) not in (int,float) or not isfinite(v) or not 0<=v<=1 for v in linear_gradient)):
+            raise ValueError('linear_gradient needs finite normalized start/end coordinates')
+        x0,y0,x1,y1=linear_gradient
+        if (x1-x0)**2+(y1-y0)**2<1e-8:
+            raise ValueError('linear_gradient endpoints must differ')
+
+
+def refine_graded_alpha(source, alpha, core, *, luma_range=None, linear_gradient=None):
+    """Intersect existing audited Alpha with source-L and spatial reach.
+
+    Never select another object, enlarge coverage, fill semantic holes or certify
+    aesthetics. Continuous weights are retained, not thresholded after refinement.
+    """
+    validate_reach(luma_range,linear_gradient)
+    if source.mode!='RGB' or source.size!=alpha.size:
+        raise ValueError('source-aligned RGB required for mask reach')
+    _same_size(alpha,core)
+    def smooth(t):
+        t=max(0.0,min(1.0,t));return t*t*(3-2*t)
+    out=alpha.copy()
+    if luma_range is not None:
+        a,b,c,d=luma_range
+        table=[]
+        for value in range(256):
+            if b<=value<=c:weight=1.0
+            elif value<b:weight=smooth((value-a)/(b-a)) if b>a else 0.0
+            else:weight=1-smooth((value-c)/(d-c)) if d>c else 0.0
+            table.append(round(255*weight))
+        out=ImageChops.multiply(out,source.convert('L').point(table))
+    if linear_gradient is not None:
+        x0,y0,x1,y1=linear_gradient;dx=x1-x0;dy=y1-y0;den=dx*dx+dy*dy
+        w,h=source.size;field=Image.new('L',source.size)
+        field.putdata([round(255*smooth(((x/max(1,w-1)-x0)*dx+(y/max(1,h-1)-y0)*dy)/den))
+                       for y in range(h) for x in range(w)])
+        out=ImageChops.multiply(out,field)
+    if ImageChops.subtract(out,alpha).getbbox():
+        raise ValueError('refinement expanded audited alpha support')
+    if not core.getbbox() or ImageStat.Stat(out,mask=_binary(core)).mean[0]/255<.6:
+        raise ValueError('source-guided reach leaves reviewed target core under-covered')
+    return out,{'luma_range':luma_range,'linear_gradient':linear_gradient,
+                'alpha_sha256':_digest(out),'support_not_expanded':True,
+                'max_neighbor_step':_max_neighbor_step(out),
+                'edge_policy':'spatial base checked before refinement; source-tonal edges need actual-output QA and visual review'}
+
+
 def verify_protected_pixels(source, output, *, protected):
     """Bit-exact verification of protected pixels, including 1-level differences."""
     if source.size != output.size or source.mode != output.mode:
