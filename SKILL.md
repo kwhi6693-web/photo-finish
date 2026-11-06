@@ -51,6 +51,8 @@ WP3 experimental pre-edit framing gate: after real visual inspection of the auth
 
 日常复用 `runtime/10_SYSTEM_CONFIG/scripts/photo_edit.py`：prepare 合并接入与 candidates；实际参考取舍后 submit 合并 protect/select/最终 direction/问题/begin；真实工具返回后 returned 合并结果与正式文件检查；实际全幅及受影响细节对照后 review 合并证据/验收/可选 snapshot。这些是控制器入口，不代替真实编辑或看图；只读紧凑回执。字段首次需要时查[工具与交付接口](references/delivery-adapter.md)，同任务复用，不回显整份 job/政策/直方图。
 
+
+**单任务收口与防循环：** 同源本地候选可由现有 `photo_edit native-status` 只读读取原片、准确候选 PNG、原生 PENDING 回执及按需提供的正式 accepted/save/readback/V1 证据，返回唯一下一动作及 `terminal_for_turn`。这不是新增引擎或任务数据库，不以技术 PENDING 覆盖用户针对准确 SHA-256 的 GO。已接受图片但缺权威宿主回执时返回 `WAITING_EXTERNAL` 并结束当前回合；重复查询同一证据不得再次渲染、询问 GO、上传、保存或登记 V1。取得新的真实保存与同 ID 同字节回读后仅执行既有 `register-v1`；通过只读 V1 校验也不能自动宣称 iPhone 保存或跨对话恢复。旧 `delivery_automation.plan` 的 `terminal_for_turn=true` 或 `resume_requires_new_evidence=true` 同样是本轮停机条件；只有相关新证据到达才能从当前步骤继续。正式用户展示仍由真实宿主完成，不以这份状态投影替代。
 submit 逐保护目标记录比较区域与 fidelity.strategy、实际能力依据、修正路线，无目标也写理由；保留真实完整参数与提示词。native_preserved / local_excluded 依赖真实非生成保留/局部排除能力；普通 semantic_identity 可 generative_compare 并实看对照，exact_content 禁止生成重建。普通题字与原图可见内容一致，不猜写模糊处，不自行升级逐笔/像素认证；不能放宽锁定保护或以提示词保证。
 
 光色、真实纹理/文字保留、认可版本精修，先按[原生路线](references/native-adjustment-route.md)核查真实非生成与区域能力，可满足目标就直接采用；确需生成且保护允许再走生成路线并读取 imagegen、引用原片。当次为“按所上传的原片美化、同一场景高度相似”的任务时，先明确木架、杯子、可读品牌字样、建筑、人物等实际重要内容的保护目标并提交可执行的 fidelity 计划；自然与高度相似不要求所有像素相同，但不能将没有核验同源关系的全幅生成拼图、另一个布景或替代主体冒充原片精修。当前 image_gen.text2im 等整图生成工具属于生成路线，不得在 native_preserved/local_excluded 或 exact_content 保护任务中替代原生照片编辑；若保护无法真实实现则 STOP 或保留原片，不静默降级。局部修订首次和后续调用前均须真实区域能力与有效 mask，不以全幅生成或加强提示词替代。确认选区、边缘与非目标内容；源或几何变化重查蒙版/坐标。当前支持的局部适配器与 maskURI 等精确规则以原生路线为准。全局调整不必强制加局部步骤。
