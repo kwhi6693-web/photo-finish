@@ -131,6 +131,48 @@ def _readback_entries(value):
             yield record
 
 
+def _verified_readback_image(data, image, library_file_id):
+    """Verify either host workspace placement or an actual signed-URL transfer.
+
+    Signed-URL transfers have no host workspace path/digest. Bind the official
+    materializer's local identity/version xattrs and transfer length, then let
+    register/restore enforce the previously accepted, pinned full PNG identity.
+    Never rewrite the host response or synthesize a host digest/path.
+    """
+    path=Path(image).resolve()
+    matches=[]
+    for entry in _readback_entries(data):
+        if entry.get('library_file_id')!=library_file_id:
+            continue
+        if entry.get('workspace_path')==str(path):
+            matches.append((entry,'workspace'))
+        elif (entry.get('workspace_path') is None and
+              isinstance(entry.get('download_url'),str) and
+              entry['download_url'].startswith('https://')):
+            version=entry.get('current_version_number')
+            size=entry.get('size_bytes')
+            if type(version) is not int or version<0 or type(size) is not int or size<0:
+                continue
+            try:
+                local_id=os.getxattr(path,'user.library-file-id').decode('utf-8')
+                local_version=os.getxattr(path,'user.library-file-version').decode('ascii')
+            except (AttributeError,OSError,UnicodeError):
+                continue
+            if local_id==library_file_id and local_version==str(version):
+                matches.append((entry,'signed_url'))
+    if len(matches)!=1:
+        raise ValueError('retrieved Library identity mismatch')
+    entry,kind=matches[0]
+    record=inspect(image,png=True)
+    expected=entry.get('workspace_sha256',entry.get('sha256'))
+    if kind=='workspace' or expected is not None:
+        if expected!=record['sha256']:
+            raise ValueError('readback SHA-256 mismatch')
+    if kind=='signed_url' and entry['size_bytes']!=record['bytes']:
+        raise ValueError('signed-URL materialization length mismatch')
+    return record
+
+
 def saved_identity(save_json, readback_json, image, library_file_id):
     """Require actual successful save plus materialized readback of same ID/bytes."""
     if not isinstance(library_file_id,str) or not library_file_id.startswith('libfile_'):
@@ -141,15 +183,7 @@ def saved_identity(save_json, readback_json, image, library_file_id):
                 x.get('file_id')) and x.get('status') not in ('failed','error','pending')
                and not x.get('isError') for x in saved):
         raise ValueError('successful host save receipt missing')
-    entries=list(_readback_entries(load(readback_json)))
-    matches=[x for x in entries if x.get('library_file_id')==library_file_id and
-             x.get('workspace_path')==str(Path(image).resolve())]
-    if len(matches)!=1:raise ValueError('independent materialization identity missing or ambiguous')
-    record=inspect(image,png=True)
-    expected=matches[0].get('workspace_sha256',matches[0].get('sha256'))
-    if expected!=record['sha256']:
-        raise ValueError('readback SHA-256 mismatch')
-    return record
+    return _verified_readback_image(load(readback_json),image,library_file_id)
 
 
 def register(accepted_json, save_json, readback_json, readback_image,
@@ -182,13 +216,8 @@ def restore(version_json, expected_version_sha256, readback_json, readback_image
     if (version.get('schema')!='photo-finish-v2-version/1' or
             version.get('formal_V1_registered') is not True or version.get('label')!='V1'):
         raise ValueError('formal V1 required')
-    records=list(_readback_entries(load(readback_json)))
-    matches=[x for x in records if x.get('library_file_id')==version['library_file_id'] and
-             x.get('workspace_path')==str(Path(readback_image).resolve())]
-    if len(matches)!=1:raise ValueError('retrieved Library identity mismatch')
-    output=inspect(readback_image,png=True)
-    if (output!=version['output'] or
-            matches[0].get('workspace_sha256',matches[0].get('sha256'))!=output['sha256']):
+    output=_verified_readback_image(load(readback_json),readback_image,version['library_file_id'])
+    if output!=version['output']:
         raise ValueError('retrieved output bytes mismatch')
     if hash_file(version_json)!=expected_version_sha256:
         raise ValueError('version record changed during retrieval')

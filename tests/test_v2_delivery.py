@@ -69,3 +69,53 @@ class DeliveryTests(unittest.TestCase):
         self.write('save.json',{'results':[{'status':'succeeded','file_id':'file_synthetic','library_file_id':lib}]})
         self.write('read.json',{'transfers':[{'transfer_id':'t1','library_file_id':lib,'workspace_path':str(self.photo)}],'partial_bindings':{'selected_refs':{'t1':{'library_file_id':'libfile_wrong','workspace_sha256':d.hash_file(self.photo)}}}})
         with self.assertRaises(ValueError):d.register(self.root/'accepted.json',save,read,self.photo,lib,self.root/'v1.json')
+
+class SignedMaterializationTests(unittest.TestCase):
+    setUp=DeliveryTests.setUp
+    write=DeliveryTests.write
+    accept=DeliveryTests.accept
+    fixture=DeliveryTests.fixture
+    def signed(self):
+        self.fixture()
+        return {'transfers':[{'library_file_id':'libfile_synthetic','workspace_path':None,
+            'download_url':'https://example.invalid/signed-test-only','current_version_number':7,
+            'size_bytes':self.photo.stat().st_size}]}
+    def attrs(self, path, key):
+        return {'user.library-file-id':b'libfile_synthetic','user.library-file-version':b'7'}[key]
+    def check(self, data):
+        read=self.write('signed.json',data)
+        return d.restore(self.root/'v1.json',d.hash_file(self.root/'v1.json'),read,self.photo)
+    def test_signed_url_restores_without_invented_workspace_digest(self):
+        from unittest.mock import patch
+        data=self.signed();before=self.photo.read_bytes()
+        with patch.object(d.os,'getxattr',self.attrs,create=True):r=self.check(data)
+        self.assertEqual(r['render_calls'],0);self.assertEqual(self.photo.read_bytes(),before)
+        self.assertIsNone(data['transfers'][0]['workspace_path'])
+        self.assertNotIn('workspace_sha256',data['transfers'][0])
+    def test_signed_url_wrong_or_missing_identity_and_version_refused(self):
+        from unittest.mock import patch
+        data=self.signed()
+        for attrs in [lambda *a:b'wrong',lambda *a:(_ for _ in ()).throw(OSError('no attributes'))]:
+            with patch.object(d.os,'getxattr',attrs,create=True):
+                with self.assertRaises(ValueError):self.check(data)
+        with patch.object(d.os,'getxattr',lambda p,k:b'libfile_synthetic' if k.endswith('-id') else b'8',create=True):
+            with self.assertRaises(ValueError):self.check(data)
+    def test_signed_url_tampered_length_or_digest_refused(self):
+        from unittest.mock import patch
+        original=self.signed()
+        for changes in [{'size_bytes':0},{'sha256':'0'*64},{'current_version_number':None},{'current_version_number':True}]:
+            data=json.loads(json.dumps(original));data['transfers'][0].update(changes)
+            with patch.object(d.os,'getxattr',self.attrs,create=True):
+                with self.assertRaises(ValueError):self.check(data)
+    def test_signed_url_valid_metadata_cannot_bypass_pinned_v1_bytes(self):
+        from unittest.mock import patch
+        data=self.signed()
+        Image.new('RGB',(12,16),(230,20,40)).save(self.photo,icc_profile=ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes())
+        data['transfers'][0]['size_bytes']=self.photo.stat().st_size
+        with patch.object(d.os,'getxattr',self.attrs,create=True):
+            with self.assertRaises(ValueError):self.check(data)
+    def test_signed_url_duplicate_identity_refused(self):
+        from unittest.mock import patch
+        data=self.signed();data['transfers']*=2
+        with patch.object(d.os,'getxattr',self.attrs,create=True):
+            with self.assertRaises(ValueError):self.check(data)
