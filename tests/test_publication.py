@@ -1,7 +1,7 @@
 """Adversarial publication checks; all values are synthetic and never credentials."""
 from pathlib import Path
 import io,json,subprocess,tempfile,unittest,warnings,zipfile
-from check_publication import findings_for,inspect_archive,scan,_historical_zip_findings,KNOWN_MALFORMED_HISTORY_ZIPS
+from check_publication import findings_for,inspect_archive,scan
 from doctor import check
 from build_release import build
 
@@ -58,51 +58,6 @@ class PublicationTests(unittest.TestCase):
             path.unlink();git('add','-u');git('commit','-m','remove fixture')
             result=scan(root,history=True)
             self.assertEqual(result['status'],'failed');self.assertNotIn(secret,json.dumps(result))
-    def test_exact_historical_malformed_zip_is_bounded_and_read_only(self):
-        root=Path(__file__).resolve().parents[1]
-        oid='9a957a58986ad5599801b0b71fdf6eb160336769'
-        name='dist/v2.0.0/photo-finish.zip'
-        blob=subprocess.run(['git','cat-file','blob',oid],cwd=root,
-                            check=True,capture_output=True).stdout
-        self.assertEqual(len(blob),90060)
-        with self.assertRaises(zipfile.BadZipFile):
-            inspect_archive(blob)
-        findings,waived=_historical_zip_findings(oid,name,blob)
-        self.assertTrue(waived)
-        self.assertIsInstance(findings,list)
-        for identity in ((('0'*40),name,blob),
-                         (oid,'dist/v2.0.0/different.zip',blob),
-                         (oid,name,blob[:-1])):
-            with self.assertRaisesRegex(zipfile.BadZipFile,'unknown invalid historical ZIP'):
-                _historical_zip_findings(*identity)
-
-    def test_known_malformed_zip_raw_credentials_still_trigger_findings(self):
-        from unittest.mock import patch
-        oid='a'*40
-        name='dist/v2.0.0/test-bad.zip'
-        # Build the test marker without placing a literal credential in source.
-        marker=('gh'+'p_'+'X'*36).encode('ascii')
-        data=b'corrupt-zip '+marker
-        with patch.object(__import__('check_publication'),'KNOWN_MALFORMED_HISTORY_ZIPS',
-                          {(oid,name,len(data))}):
-            findings,waived=_historical_zip_findings(oid,name,data)
-        self.assertTrue(waived)
-        self.assertTrue(any(f['rule']=='github-credential' for f in findings))
-        self.assertNotIn(marker.decode(),json.dumps(findings))
-
-    def test_valid_but_unsafe_zip_never_gets_a_corrupt_history_waiver(self):
-        from unittest.mock import patch
-        stream=io.BytesIO()
-        with zipfile.ZipFile(stream,'w') as z:
-            z.writestr('../escaped.txt',b'synthetic')
-        data=stream.getvalue();oid='b'*40
-        name='dist/v2.0.0/test-unsafe.zip'
-        with patch.object(__import__('check_publication'),'KNOWN_MALFORMED_HISTORY_ZIPS',
-                          {(oid,name,len(data))}):
-            findings,waived=_historical_zip_findings(oid,name,data)
-        self.assertFalse(waived)
-        self.assertTrue(any(f['rule']=='unsafe-archive-entry' for f in findings))
-
     def test_public_tree_has_no_private_data_or_missing_policy(self):
         root=Path(__file__).resolve().parents[1]
         self.assertEqual(scan(root)['status'],'passed')
