@@ -485,7 +485,21 @@ def main(argv=None):
     r=sub.add_parser('render')
     for name in ('original','lineage_json','plan_json','zones_json','output','receipt_json'):
         r.add_argument(name)
+    import v2_delivery
+    for command, names in {
+        'accept-photo': ('original','candidate','provenance_json','review_json','destination'),
+        'register-v1': ('accepted_json','save_json','readback_json','readback_image','library_file_id','destination'),
+        'restore-v1': ('version_json','expected_version_sha256','readback_json','readback_image'),
+    }.items():
+        entry=sub.add_parser(command)
+        for name in names:entry.add_argument(name)
     args=parser.parse_args(argv)
+    delivery={'accept-photo':v2_delivery.accept,'register-v1':v2_delivery.register,
+              'restore-v1':v2_delivery.restore}
+    if args.stage in delivery:
+        values=vars(args).copy();values.pop('stage')
+        print(json.dumps(delivery[args.stage](**values),ensure_ascii=False,sort_keys=True))
+        return 0
     if args.stage=='prepare':
         result=prepare(args.original,args.working,args.manifest)
     elif args.stage=='decide':
