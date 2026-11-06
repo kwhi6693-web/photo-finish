@@ -7,7 +7,7 @@ import v2_delivery as d
 
 class DeliveryTests(unittest.TestCase):
     def setUp(self):
-        t=tempfile.TemporaryDirectory();self.addCleanup(t.cleanup);self.root=Path(t.name)
+        t=tempfile.TemporaryDirectory();self.addCleanup(t.cleanup);self.root=Path(t.name).resolve()
         self.source=self.root/'source.jpg';self.photo=self.root/'photo.png'
         icc=ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
         for p in (self.source,self.photo):Image.new('RGB',(12,16),(100,130,150)).save(p,icc_profile=icc)
