@@ -71,22 +71,6 @@ jobs:
           assert len(fingerprint) == 63 and set(fingerprint) <= {'0', '1'}
           print({name: importlib.metadata.version(name) for name in ('Pillow', 'numpy', 'scipy')})
       - run: python tools/doctor.py
-      - name: Temporary source-bound candidate byte handoff (remove after staging)
-        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12' && matrix.profile == 'core'
-        shell: python
-        run: |
-          import base64, hashlib, pathlib, subprocess, sys, tempfile
-          with tempfile.TemporaryDirectory(prefix='photo-finish-byte-handoff-') as tmp:
-              dest = pathlib.Path(tmp) / 'photo-finish.zip'
-              subprocess.run([sys.executable, 'tools/build_release.py', '--output', str(dest)], check=True)
-              data = dest.read_bytes()
-              print('PFTREE '+subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),flush=True)
-              encoded = base64.b64encode(data).decode('ascii')
-              size = 3072
-              print('PFZIPMETA %s %d %d' % (hashlib.sha256(data).hexdigest(),len(data),(len(encoded)+size-1)//size),flush=True)
-              for i in range(0,len(encoded),size):
-                  print('PFZIPCHUNK %04d %s' % (i//size,encoded[i:i+size]),flush=True)
-              print('PFZIPEND',flush=True)
       - name: Fail-closed Git history publication audit (exact legacy ZIP exception)
         run: python tools/ci_history_scan.py
       - name: Windows checkpoint durability regression
