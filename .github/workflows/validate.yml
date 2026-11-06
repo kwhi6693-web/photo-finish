@@ -80,6 +80,7 @@ jobs:
               dest = pathlib.Path(tmp) / 'photo-finish.zip'
               subprocess.run([sys.executable, 'tools/build_release.py', '--output', str(dest)], check=True)
               data = dest.read_bytes()
+              print('PFTREE '+subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),flush=True)
               encoded = base64.b64encode(data).decode('ascii')
               size = 3072
               print('PFZIPMETA %s %d %d' % (hashlib.sha256(data).hexdigest(),len(data),(len(encoded)+size-1)//size),flush=True)
