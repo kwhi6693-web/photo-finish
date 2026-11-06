@@ -2,6 +2,17 @@
 from PIL import Image, ImageChops, ImageStat
 
 
+def postrender_defect_report(source, candidate):
+    """Run conservative pixel-level advisory checks on an actual render.
+
+    This wrapper keeps the existing local QA seam as the controller-facing
+    entry point. The checks never certify photographic quality or override
+    existing STOP/protection gates.
+    """
+    from render_defect_qa import postrender_defect_report as _report
+    return _report(source, candidate)
+
+
 def tonal_distribution(image, region=None):
     """Encoded tonal placement; not RAW exposure, detail recovery or aesthetics."""
     luma=image.convert('L')

@@ -6,7 +6,7 @@ from PIL import Image,ImageCms
 import PIL
 from multizone_editor import _grade
 from source_lineage import SourceLineage,verify_source_lineage
-from local_edit_qa import tonal_distribution,measure_pixel_change
+from local_edit_qa import tonal_distribution,measure_pixel_change,postrender_defect_report
 import v2_delivery as delivery
 
 
@@ -52,6 +52,9 @@ def quality_report(original,lineage_json,candidate,receipt_json,destination):
         result={'source':source,'candidate':output,'working_source_sha256':lineage.working_sha256,
                 'source_distribution':tonal_distribution(a),'candidate_distribution':tonal_distribution(b),
                 'actual_changes':measure_pixel_change(a,b,Image.new('L',a.size,255)),
+                'postrender_defect_advisory':postrender_defect_report(a,b),
+                'user_decision_authority':'UNTOUCHED_SEPARATE_USER_RECORD',
+                'defect_scope':'uncalibrated source-relative strong-rim and dark-gradient warnings only',
                 'photographic_quality':'PENDING_USER_REVIEW','render_calls':0,'ledger_writes':0,
                 'scope':'same-source descriptive measurements; full frame and relevant 1:1 visual review still required'}
     if (not verify_source_lineage(original,lineage) or delivery.hash_file(candidate)!=output['sha256'] or
