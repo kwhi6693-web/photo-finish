@@ -26,7 +26,7 @@ class PackagedNativeEntryTests(unittest.TestCase):
     def setUp(self):
         t=tempfile.TemporaryDirectory()
         self.addCleanup(t.cleanup)
-        self.root=Path(t.name)
+        self.root=Path(t.name).resolve()  # macOS temporary roots can traverse a system alias.
         self.original=self.root/'source.jpg'
         self.working=self.root/'working.png'
         self.lineage=self.root/'lineage.json'

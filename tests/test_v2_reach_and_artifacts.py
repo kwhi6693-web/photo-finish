@@ -75,7 +75,7 @@ class ReachTests(unittest.TestCase):
         from execution_artifacts import ExecutionArtifacts
         import tempfile
         with tempfile.TemporaryDirectory() as folder:
-            root=Path(folder);target=root/'actual'
+            root=Path(folder).resolve();target=root/'actual'
             with self.assertRaisesRegex(OSError,'injected'),ExecutionArtifacts(target) as capture:
                 with patch.object(Image.Image,'save',side_effect=OSError('injected artifact write failure')):
                     capture.capture('zone',Image.new('L',(8,8)),Image.new('RGB',(8,8)))
