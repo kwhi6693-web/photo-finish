@@ -80,7 +80,17 @@ def scan(root=ROOT,history=False):
             kind=subprocess.run(['git','cat-file','-t',oid],cwd=root,check=True,capture_output=True,text=True, encoding='utf-8').stdout.strip()
             if kind!='blob':continue
             blobs+=1;data=subprocess.run(['git','cat-file','blob',oid],cwd=root,check=True,capture_output=True).stdout
-            for f in (inspect_archive(data) if name.endswith('.zip') else findings_for(name,data)):
+            if name.endswith('.zip'):
+                try:
+                    archive_findings=inspect_archive(data)
+                except zipfile.BadZipFile as error:
+                    # Preserve fail-closed behavior while exposing the exact public object identity.
+                    raise zipfile.BadZipFile(
+                        'invalid historical ZIP blob %s path %s size %d' % (oid,name,len(data))
+                    ) from error
+            else:
+                archive_findings=findings_for(name,data)
+            for f in archive_findings:
                 found.append(dict(f,file='git-blob:'+oid[:12]))
     return {'status':'passed' if not found else 'failed','files_scanned':count,'historical_blobs_scanned':blobs,'findings':found,
        'scope':'Known patterns, private media/work classes, paths and ZIP safety; no universal absence guarantee'}
