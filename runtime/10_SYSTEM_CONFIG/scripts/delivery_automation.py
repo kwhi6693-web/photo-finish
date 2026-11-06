@@ -159,6 +159,11 @@ def plan(path):
     """Read-only next step; it never generates reviews or replays external writes."""
     state=w._load(path)
     def result(action,reason):return {'action':action,'reason':reason,'workflow_revision':state['workflow_revision'],
+        'terminal_for_turn':action in ('STOP','RESTART_CONTEXT','AWAIT_PLATFORM_SAVE_CONFIRMATION',
+            'INVESTIGATE_RENDER','INVESTIGATE_PHOTO_SAVE','INVESTIGATE_RECORD_SAVE',
+            'WAIT_TRANSFER_RECOVERY','FIX_REVIEW','DELIVER'),
+        'resume_requires_new_evidence':action in ('AWAIT_PLATFORM_SAVE_CONFIRMATION',
+            'INVESTIGATE_RENDER','INVESTIGATE_PHOTO_SAVE','INVESTIGATE_RECORD_SAVE','WAIT_TRANSFER_RECOVERY'),
         'automatic_visual_acceptance':False,'new_user_approval_gate':False,
         'display_needed':not (state.get('platform_delivery',{}).get('no_extra_upload_or_display') is True or
                              state.get('platform_delivery',{}).get('display',{}).get('status')=='observed')}
@@ -208,6 +213,80 @@ def plan(path):
     if not review or review['output']!=acquired:return result('REVIEW_OUTPUT','Actual formal file/color inspection and whole/native-detail visual review required')
     if not review['visual_passed'] or not w.review_color_ready(state,review):return result('FIX_REVIEW','Unmet actual output review cannot be automatically passed')
     return result('VERIFY_AND_ACCEPT','Use existing accept/transact checks for every issue, protection, source and current context')
+
+
+def native_status(original,candidate,receipt_json,accepted_json=None,
+                  save_json=None,readback_json=None,readback_image=None,
+                  library_file_id=None,version_json=None):
+    """Read-only v2 next-action projection through the existing task orchestrator.
+
+    It owns no new ledger, cannot infer a user GO, never renders or writes,
+    and never converts a pending native receipt into a formal V1. Callers must
+    supply trusted host receipts to the existing v2_delivery commands.
+    """
+    import v2_delivery as native
+    source=native.inspect(original)
+    output=native.inspect(candidate,png=True)
+    pending=native.load(receipt_json)
+    if (pending.get('camera_original_sha256')!=source['sha256'] or
+            pending.get('candidate_sha256')!=output['sha256'] or
+            not str(pending.get('status','')).startswith('PENDING') or
+            pending.get('formal_V1_registered') is not False):
+        raise ValueError('pending native candidate identity or stage mismatch')
+
+    def result(action,reason,*,terminal,required=None,formal=False):
+        return {'action':action,'reason':reason,
+                'source_sha256':source['sha256'],
+                'candidate_sha256':output['sha256'],
+                'terminal_for_turn':terminal,
+                'new_render_allowed':False,
+                'user_photographic_GO':'NOT_INFERRED_FROM_TECHNICAL_QA',
+                'formal_V1_registered':formal,
+                'cross_conversation_restore_verified':False,
+                'iphone_save_confirmed':False,
+                'resume_requires':required or []}
+
+    hosted=[save_json,readback_json,readback_image,library_file_id]
+    if accepted_json is None:
+        if any(x is not None for x in hosted) or version_json is not None:
+            raise ValueError('official accepted evidence required before native save/version status')
+        return result('WAITING_ACCEPTANCE_RECORD',
+                      'Reuse an existing exact-PNG user GO if recorded; never re-request solely because a QA report is pending',
+                      terminal=True,required=['source-bound accepted record or new user decision'])
+    accepted=native.validate_accepted(native.load(accepted_json))
+    if accepted['source']!=source or accepted['output']!=output:
+        raise ValueError('accepted source/output differs from actual pending native bytes')
+    if (accepted['renderer_origin']=='pr47_native_controller' and
+            accepted['provenance'].get('controller_receipt_sha256')!=native.hash_file(receipt_json)):
+        raise ValueError('accepted native controller receipt differs from current candidate')
+    if not all(x is not None for x in hosted):
+        if version_json is not None:
+            raise ValueError('formal version status requires same-file host save/readback evidence')
+        return result('WAITING_EXTERNAL',
+                      'User GO recorded for exact PNG; only actual host save/readback evidence can advance to V1',
+                      terminal=True,required=['genuine save receipt','same-ID and same-byte Library readback'])
+    saved=native.saved_identity(save_json,readback_json,readback_image,library_file_id)
+    if saved!=output:
+        raise ValueError('host saved bytes differ from accepted PNG')
+    if version_json is None:
+        return result('REGISTER_V1',
+                      'Host save/readback verified; register the existing exact PNG once, never rerender or resave',
+                      terminal=False,required=['fresh official immutable V1 record'])
+    version=native.load(version_json)
+    if (version.get('schema')!='photo-finish-v2-version/1' or
+            version.get('formal_V1_registered') is not True or
+            version.get('label')!='V1' or
+            version.get('acceptance_sha256')!=native.hash_file(accepted_json) or
+            version.get('acceptance')!=accepted or
+            version.get('source')!=source or version.get('output')!=output or
+            version.get('library_file_id')!=library_file_id or
+            version.get('save_receipt_sha256')!=native.hash_file(save_json) or
+            version.get('readback_receipt_sha256')!=native.hash_file(readback_json)):
+        raise ValueError('formal version record does not bind exact accepted/save/readback evidence')
+    native.restore(version_json,native.hash_file(version_json),readback_json,readback_image)
+    return result('FORMAL_V1_VERIFIED',
+                  'Persisted V1 verified; actual host presentation and iPhone saving require separate observation',
+                  terminal=True,formal=True)
 
 
 def complete(path,result_path,record_destination,brief=None,recipe=None):
