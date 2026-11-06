@@ -1,5 +1,7 @@
 # Changelog
 
+Unreleased 2.0.0 Draft: strict local/global operation fields; graded Alpha and bounded Cb/Cr; separate pre-render and actual-output numerical QA, measured regional changes with uncalibrated advisory status. Legacy binary/soft behavior retained. No release, installation or photographic acceptance implied.
+
 ## 1.5.7 — maintenance release preparation (2026-11-03)
 
 - Add explicit trusted loopback transport for proxy-only hosts: verified HTTPS DNS, public numeric CONNECT, original-host TLS, bounded redirects/body and one shared deadline; ambient proxies stay disabled.

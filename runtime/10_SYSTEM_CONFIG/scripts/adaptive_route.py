@@ -83,8 +83,11 @@ def choose_adaptive_route(plan, *, observed_source_sha256,
     if not isinstance(geometry_id, str) or not geometry_id.strip():
         return stop('source mask geometry identity absent', resolved, complex_route)
     if not all(isinstance(z, dict) and z.get('reviewed') is True and
-               z.get('edge_mode', 'soft') in ('soft', 'pixel_locked') for z in zones):
+               z.get('edge_mode', 'soft') in ('soft', 'pixel_locked', 'graded') for z in zones):
         return stop('one or more zones have no independent review', resolved, complex_route)
+    if any(z.get('edge_mode', 'soft') == 'graded' and
+           z.get('boundary_visually_inspected') is not True for z in zones):
+        return stop('graded zone boundary/tail needs real visual inspection', resolved, complex_route)
     if complex_route and (evidence.get('edge_transition_verified') is not True or
                           any(z.get('boundary_visually_inspected') is not True for z in zones)):
         return stop('complex scene boundary inspection/transition evidence insufficient', resolved, True)

@@ -34,6 +34,8 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 组照按真实光线与表达分群，统一适用关系而非固定参数，逐张检查曝光、白平衡、裁切、降噪、配置与蒙版；筛选、发布顺序、[布局](references/grid-layout.md)与[文案](references/caption-writing.md)按需，不增加单张默认步骤。“发布”指策展与交付，未经明确授权不代发社交平台。
 
 ## 2. 编辑与验收
+
+V2 本地候选的 graded 连续 Alpha、区域 Cb/Cr 与全局色调曲线，按[能力契约](references/v2-local-capabilities.json)及[局部边缘规范](references/v2-graded-local-edge.md)执行。严格拒绝未知参数；以实际回执 stage 判断 STOP。渲染前蒙版预检与渲染后数值边缘检查分别核验，数值通过仍须实际全幅和 1:1 视觉检查；强度待多类别校准时不编造 UNDER_POWERED 阈值。用户未针对准确 PNG 明确 GO，不登记正式 V1。
 WP3 experimental pre-edit framing gate: after real visual inspection of the authorized non-portrait original, run native-entry plan-frame with original/lineage/private source-bound frame observation before any tone operation. It records KEEP_FRAME or CROP_PROPOSED and requires protected content anchors for any crop; see references/v2-preedit-composition.md. After an actually verified pending native tone PNG, use bind-frame to create the parent-bound framing plan and then the existing reframe gate. Never force crops or confuse these pending receipts with formal V1, independent photographic approval or actual autonomous visual perception.
 
 

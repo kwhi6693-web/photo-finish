@@ -49,6 +49,8 @@ def export_pending_png(trial, *, working_source_path, destination):
             or technical.get('photographic_quality_accepted') is not False
             or technical.get('protected_pixel_check') is not True
             or technical.get('new_clip_check') is not True
+            or technical.get('mask_boundary_preflight_verified') is not True
+            or technical.get('output_edge_qa_passed') is not True
             or technical.get('output_pixel_sha256') != trial.output_pixel_sha256):
         raise ValueError('technical mask and original-scene protection receipt missing')
     src_raw = Path(working_source_path)

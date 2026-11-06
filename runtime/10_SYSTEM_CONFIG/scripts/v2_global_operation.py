@@ -16,8 +16,16 @@ from editorial_pipeline import hash_file
 from source_lineage import SourceLineage, verify_source_lineage
 from multizone_editor import _sha_pixels
 
-SUPPORTED = {'gentle_shadow_lift', 'restrain_bright_regions', 'mild_tonal_contrast'}
+SUPPORTED = {'gentle_shadow_lift', 'restrain_bright_regions', 'mild_tonal_contrast',
+             'split_tone_warm_cool'}
 STRENGTHS = {'subtle', 'moderate'}
+_OPERATION_FIELDS = frozenset({
+    'camera_original_sha256', 'source_sha256', 'observation_sha256',
+    'source_visually_inspected', 'all_critical_content_visually_reviewed',
+    'pixel_exact_lock', 'protection_scope', 'geometry_reinterpretation',
+    'operation', 'strength', 'photographic_goal', 'expected_visual_change',
+    'reject_conditions', 'protected_content_observation',
+})
 
 
 @dataclass(frozen=True)
@@ -51,6 +59,8 @@ def compile_global_operation(plan, evidence, lineage, *, observation_sha256):
     controller_direction(plan)
     if not isinstance(lineage, SourceLineage) or not isinstance(evidence, dict):
         raise ValueError('actual source lineage and global operation evidence required')
+    if set(evidence)-_OPERATION_FIELDS:
+        raise ValueError('unknown global operation fields')
     if (plan.decision != 'edit' or plan.edit_route != 'native' or
             plan.requires_local_selection or plan.requests_geometry_change or
             plan.output_use != 'screen'):
@@ -104,6 +114,44 @@ def _lut(operation, strength):
     return values
 
 
+def _channel_luts(operation, strength):
+    """Per-channel (R, G, B) curves. Tonal operations use one curve for all.
+
+    split_tone_warm_cool pushes highlights warm (more red, less blue) and
+    shadows cool (less red, more blue/green). The weights vanish at pure black
+    and pure white, so black and white points are untouched, no new clipped
+    channel can appear and the curves stay monotonic. It is a tonal-range
+    color grade, not a spatial one: it cannot tell sky from cloud or boat
+    from water. Spatial color separation belongs in a reviewed local zone.
+    """
+    if operation != 'split_tone_warm_cool':
+        base = _lut(operation, strength)
+        return base, base, base
+    amount = 34.0 if strength == 'moderate' else 20.0
+    # (red, green, blue) offsets in levels at full weight.
+    highlight = (0.6 * amount, 0.15 * amount, -0.6 * amount)
+    shadow = (-0.5 * amount, 0.1 * amount, 0.6 * amount)
+
+    def curve(channel):
+        values = []
+        for i in range(256):
+            x = i / 255.0
+            w_shadow = 27.0 / 4.0 * x * (1 - x) ** 2     # peaks at x = 1/3
+            w_highlight = 27.0 / 4.0 * x * x * (1 - x)   # peaks at x = 2/3
+            offset = shadow[channel] * w_shadow + highlight[channel] * w_highlight
+            v = int(round(i + offset))
+            values.append(max(0, min(254 if i < 255 else 255, v)))
+        return values
+
+    luts = tuple(curve(c) for c in range(3))
+    for values in luts:
+        if any(a > b for a, b in zip(values, values[1:])):
+            raise AssertionError('split-tone curve is not monotonic')
+        if values[0] != 0 or values[255] != 255:
+            raise AssertionError('split-tone curve moved black or white point')
+    return luts
+
+
 def export_pending_global(original, lineage, plan, operation, output):
     """Actual Pillow render; derived checks are based on bytes, not flags."""
     if not isinstance(operation, GlobalOperation) or not isinstance(lineage, SourceLineage):
@@ -127,8 +175,8 @@ def export_pending_global(original, lineage, plan, operation, output):
         if im.mode!='RGB' or im.format!='PNG' or not profile or im.size != lineage.working_size:
             raise ValueError('verified ICC-managed RGB working PNG required')
         before=im.copy()
-    lut=_lut(operation.operation,operation.strength)
-    after=before.point(lut*3)
+    luts=_channel_luts(operation.operation,operation.strength)
+    after=before.point(luts[0]+luts[1]+luts[2])
     after.info['icc_profile']=profile
     if ImageChops.difference(after,before).getbbox() is None:
         raise ValueError('global engine generated no actual pixel change')

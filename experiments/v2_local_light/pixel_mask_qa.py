@@ -11,7 +11,7 @@ selection correctness, human visual realism, or magazine-grade aesthetics.
 """
 from dataclasses import dataclass
 from hashlib import sha256
-from math import isfinite
+from math import isfinite, ceil, sqrt, pi
 
 from PIL import Image, ImageChops, ImageFilter, ImageStat
 
@@ -38,6 +38,15 @@ class FeatherReceipt:
     radius_px: int
     source_mask_sha256: str
     protected_pixel_count: int
+
+
+@dataclass(frozen=True)
+class GradedAlphaReceipt(FeatherReceipt):
+    """Continuous large-scale alpha built only from an audited binary mask."""
+    sigma_px: int = 0
+    peak_alpha: int = 0
+    max_neighbor_step: int = 0
+    neighbor_step_budget: int = 0
 
 
 def _same_size(*images):
@@ -154,6 +163,117 @@ def feather_mask(raw, *, audit, allowed_zone, protected, radius_px=3,
     return FeatherReceipt(alpha=alpha, alpha_sha256=_digest(alpha),
                           radius_px=radius_px, source_mask_sha256=audit.mask_sha256,
                           protected_pixel_count=_count(fixed))
+
+
+MAX_GRADED_SIGMA_PX = 120
+_MIN_PEAK_BEFORE_NORMALIZATION = 64
+
+
+def _max_neighbor_step(alpha):
+    """Largest 8-bit jump between horizontally or vertically adjacent pixels."""
+    width, height = alpha.size
+    horizontal = vertical = 0
+    if width > 1:
+        horizontal = ImageChops.difference(alpha.crop((1, 0, width, height)),
+                                           alpha.crop((0, 0, width - 1, height))).getextrema()[1]
+    if height > 1:
+        vertical = ImageChops.difference(alpha.crop((0, 1, width, height)),
+                                         alpha.crop((0, 0, width, height - 1))).getextrema()[1]
+    return max(horizontal, vertical)
+
+
+def graded_alpha(raw, *, audit, target_core, allowed_zone, protected, sigma_px,
+                 protected_margin_px=3, max_neighbor_step=None,
+                 min_core_weight=0.6, peak_normalize=True):
+    """Continuous large-scale alpha from an audited binary selection.
+
+    ``feather_mask`` is capped at a 10 px radius, which gives a transition band
+    of roughly 50 px: right for crisp subject edges, too narrow for a soft
+    light falloff or a graduated darkening. This function accepts the same
+    audited selection, but blurs it with a larger sigma, then verifies the
+    *actual* result instead of trusting the parameters:
+
+    * the nonzero alpha support must lie inside the reviewed allowed zone
+      (STOP rather than clip into a visible hard boundary);
+    * protected pixels (plus margin) are exactly zero, approached through a
+      smooth fade rather than a step;
+    * no two adjacent pixels differ by more than ``max_neighbor_step`` levels,
+      so there is no 0/255 jump anywhere in the alpha;
+    * the reviewed target core keeps at least ``min_core_weight`` of full
+      strength, so protected content close to the selection cannot quietly
+      fade the intended edit away while the receipt still looks successful.
+
+    It does not judge whether the falloff looks good.
+    """
+    _same_size(raw, target_core, allowed_zone, protected)
+    if not isinstance(audit, PixelMaskAudit) or not audit.passed:
+        raise ValueError("a passing pixel mask audit is required")
+    binary = _binary(raw)
+    if _digest(binary) != audit.mask_sha256:
+        raise ValueError("source mask bytes changed since audit")
+    core = _binary(target_core)
+    if _digest(core) != audit.core_sha256:
+        raise ValueError("target core changed since mask audit")
+    if (isinstance(min_core_weight, bool) or not isinstance(min_core_weight, (int, float))
+            or not isfinite(min_core_weight) or not 0 < min_core_weight <= 1):
+        raise ValueError("min core weight must be a finite number in (0,1]")
+    if type(sigma_px) is not int or not (4 <= sigma_px <= MAX_GRADED_SIGMA_PX):
+        raise ValueError("graded sigma must be integer 4..%d pixels" % MAX_GRADED_SIGMA_PX)
+    if type(protected_margin_px) is not int or not (0 <= protected_margin_px <= 12):
+        raise ValueError("protected margin must be integer 0..12 pixels")
+    if max_neighbor_step is not None and (type(max_neighbor_step) is not int or not (1 <= max_neighbor_step <= 64)):
+        raise ValueError("max neighbor step must be integer 1..64 levels")
+    if type(peak_normalize) is not bool:
+        raise ValueError("peak_normalize must be a bool")
+    allowed = _binary(allowed_zone)
+    fixed = _binary(protected)
+    if _digest(allowed) != audit.allowed_sha256 or _digest(fixed) != audit.protected_sha256:
+        raise ValueError("allowed zone or protected content changed since mask audit")
+    alpha = binary.filter(ImageFilter.GaussianBlur(sigma_px))
+    peak = alpha.getextrema()[1]
+    if peak == 0:
+        raise ValueError("graded alpha vanished: selection is far too small for this sigma")
+    if peak_normalize:
+        if peak < _MIN_PEAK_BEFORE_NORMALIZATION:
+            raise ValueError("selection is too small relative to sigma to normalize; "
+                             "enlarge the reviewed selection or reduce sigma")
+        table = [min(255, round(i * 255 / peak)) for i in range(256)]
+        alpha = alpha.point(table)
+    # Gaussian step derivative (including peak normalization), plus quantization.
+    # This is a numerical continuity budget, not a calibrated photographic score.
+    normalization = 255 / peak if peak_normalize else 1.0
+    derived_budget = ceil(255 * normalization / (sigma_px * sqrt(2*pi))) + 2
+    guard = fixed.filter(ImageFilter.MaxFilter(protected_margin_px * 2 + 1)) if protected_margin_px else fixed
+    if _count(guard):
+        # Fade out toward protected content instead of cutting a step into alpha.
+        fade_sigma = max(3, sigma_px // 2)
+        derived_budget += ceil(255 / (fade_sigma * sqrt(2*pi))) + 2
+        outer = guard.filter(ImageFilter.GaussianBlur(fade_sigma)).point(lambda v: 255 if v >= 6 else 0)
+        factor = ImageChops.invert(outer.filter(ImageFilter.GaussianBlur(fade_sigma)))
+        alpha = ImageChops.multiply(alpha, factor)
+        alpha = ImageChops.subtract(alpha, guard)
+    if ImageChops.multiply(alpha, fixed).getbbox():
+        raise AssertionError("protected mask pixels were not excluded")
+    support = alpha.point(lambda v: 255 if v else 0)
+    if ImageChops.multiply(support, ImageChops.invert(allowed)).getbbox():
+        raise ValueError("graded alpha tail would escape allowed region; "
+                         "enlarge inspected ROI or reduce sigma")
+    core_count = _count(core)
+    core_weight = ImageStat.Stat(alpha, mask=core).mean[0] / 255 if core_count else 0.0
+    if core_weight < min_core_weight:
+        raise ValueError("protected content or sigma leaves the target core under-edited "
+                         "(core weight %.2f < %.2f)" % (core_weight, min_core_weight))
+    step = _max_neighbor_step(alpha)
+    if max_neighbor_step is None:
+        max_neighbor_step = min(64, derived_budget)
+    if step > max_neighbor_step:
+        raise ValueError("graded alpha is too steep: neighbor step %d exceeds %d"
+                         % (step, max_neighbor_step))
+    return GradedAlphaReceipt(
+        alpha=alpha, alpha_sha256=_digest(alpha), radius_px=sigma_px,
+        source_mask_sha256=audit.mask_sha256, protected_pixel_count=_count(guard),
+        sigma_px=sigma_px, peak_alpha=alpha.getextrema()[1], max_neighbor_step=step,
+        neighbor_step_budget=max_neighbor_step)
 
 
 def compose_only_tonal_output(source, processed_same_geometry, *, receipt):

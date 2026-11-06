@@ -34,7 +34,7 @@ from provider_mask_handoff import import_exact_provider_mask
 from v2_global_operation import compile_global_operation, export_pending_global
 from native_framing import reframe_pending_native
 from v2_spatial_preflight import CompositionDecision, compile_composition, bind_to_real_pending
-from multizone_editor import ToneZone
+from multizone_editor import ToneZone, validate_chroma_shift
 from native_workflow import run_native_photo_trial
 from editorial_pipeline import hash_file
 
@@ -146,12 +146,32 @@ def _load_mask(spec,name):
 
 
 
+_ZONE_FIELDS = frozenset({
+    'name', 'purpose', 'target_effect', 'gamma', 'saturation', 'reviewed',
+    'edge_mode', 'sigma_px', 'chroma_shift', 'boundary_visually_inspected',
+    *(component+suffix for component in ('mask','core','allowed','protected')
+      for suffix in ('_path','_sha256')),
+})
+_ZONE_PLAN_FIELDS = frozenset({
+    'schema_version', 'source_sha256', 'source_visually_inspected',
+    'masks_visually_inspected', 'reviewer_mode', 'review_observation',
+    'geometry_id', 'edge_transition_verified', 'scene_complexity', 'risk_flags', 'zones',
+})
+
+
 def _verify_zone_intents(record):
     """Literal operation intent. Does not infer photographic goals from prose.
 
     Every selected zone must explicitly request brighten/darken. A neutral area
     belongs outside the mask or in RETAIN_ORIGINAL, not a YCbCr round-trip.
     """
+    if not isinstance(record,dict) or set(record)-_ZONE_PLAN_FIELDS:
+        return 'unknown zone-plan fields or invalid plan object'
+    if type(record.get('schema_version',1)) is not int or record.get('schema_version',1)!=1:
+        return 'unsupported zone-plan schema version'
+    for flag in ('source_visually_inspected','masks_visually_inspected','edge_transition_verified'):
+        if flag in record and type(record[flag]) is not bool:
+            return 'review flag must be boolean: '+flag
     zones=record.get('zones')
     if not isinstance(zones,list) or not 2<=len(zones)<=4:
         return 'two to four zones with explicit target_effect required'
@@ -159,6 +179,11 @@ def _verify_zone_intents(record):
     for spec in zones:
         if not isinstance(spec,dict):
             return 'operation intent zone must be an object'
+        if set(spec)-_ZONE_FIELDS:
+            return 'unknown zone operation fields: '+', '.join(sorted(set(spec)-_ZONE_FIELDS))
+        for flag in ('reviewed','boundary_visually_inspected'):
+            if flag in spec and type(spec[flag]) is not bool:
+                return 'zone review flag must be boolean: '+flag
         name=spec.get('name')
         if not isinstance(name,str) or not name.strip() or name in names:
             return 'each operation intent zone needs a unique nonempty name'
@@ -176,6 +201,19 @@ def _verify_zone_intents(record):
         if ((effect=='brighten' and not gamma<1) or
                 (effect=='darken' and not gamma>1)):
             return 'target_effect and actual Gamma direction disagree for '+name
+        mode=spec.get('edge_mode','soft')
+        sigma=spec.get('sigma_px',0)
+        if mode not in ('soft','pixel_locked','graded'):
+            return 'unsupported edge_mode for '+name
+        if mode=='graded':
+            if type(sigma) is not int or not 4<=sigma<=120:
+                return 'graded zone needs integer sigma_px 4..120 for '+name
+        elif type(sigma) is not int or sigma!=0:
+            return 'sigma_px is only valid with graded edge_mode for '+name
+        try:
+            validate_chroma_shift(spec.get('chroma_shift',(0.0,0.0)))
+        except ValueError as error:
+            return str(error)+' for '+name
     return None
 
 def _zones(record):
@@ -194,7 +232,9 @@ def _zones(record):
             protected=_load_mask(spec,'protected'),gamma=spec['gamma'],
             saturation=spec.get('saturation',1.0),purpose=spec['purpose'],
             edge_mode=spec.get('edge_mode','soft'),
-            boundary_visually_inspected=spec.get('boundary_visually_inspected',False)))
+            boundary_visually_inspected=spec.get('boundary_visually_inspected',False),
+            sigma_px=spec.get('sigma_px',0) or 0,
+            chroma_shift=validate_chroma_shift(spec.get('chroma_shift',(0.0,0.0)))))
     return result
 
 
@@ -437,7 +477,10 @@ def render(original, lineage_json, plan_json, zones_json, output, receipt_json):
             'spatial_direction':pending.spatial_direction,
             'operation_intents_verified':True,
             'zone_intents':[{'name':z['name'],'target_effect':z['target_effect'],
-                             'gamma':z['gamma'],'saturation':z.get('saturation',1.0)}
+                             'gamma':z['gamma'],'saturation':z.get('saturation',1.0),
+                             'edge_mode':z.get('edge_mode','soft'),
+                             'sigma_px':z.get('sigma_px',0),
+                             'chroma_shift':list(z.get('chroma_shift',(0.0,0.0)))}
                             for z in mask_plan['zones']],
             'mask_plan_sha256':hash_file(zones_json),
             'technical_receipt':pending.technical_receipt,
