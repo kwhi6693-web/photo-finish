@@ -128,6 +128,7 @@ def main():
             'version-register':history.register,'versions':history.history,'restore':history.restore,
             'revise':history.revise,'compare':history.compare,'delivered':history.delivered,'hints':history.hints,'current-version':history.current,
             'prepare':prepare,'submit':submit,'returned':returned,'review':review,'status':_response,
+            'native-status':a.native_status,
             'style-add':styles.add,'style-list':styles.list_references,'style-update':styles.update,'style-remove':styles.remove,
             'profile-show':preferences.show,'profile-set':preferences.save,'profile-reset':preferences.reset,
             'profile-rule-add':preferences.add_rule,'profile-rule-set':preferences.update_rule,
