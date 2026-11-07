@@ -1,0 +1,15 @@
+# Photo Finish 2.0 | Source-bound bounded global tonal route (experimental)
+
+Before editing, the user must have granted actual authorization for this photo. A visual observer must genuinely inspect the original, source light, readable signage, incidental people and hard-protection requirements. This module does not itself recognize people/text or certify that an edit improved aesthetics.
+
+**Decision**: `prepare` original -> working + lineage; make a real, source-bound `OBSERVATION.json`; explicitly use `route_preference: global`, `global_appearance_authorized: true`, `pixel_exact_lock: false` and a scene-specific `global_scope_reason`; run `decide` and require `EDIT_PLAN_READY_GLOBAL_UNVERIFIED` (not an edit). Do not fake inspected flags in real tasks.
+
+**Execution**: create private `OPERATION.json`, bind actual camera `camera_original_sha256`, working `source_sha256`, and `observation_sha256` matching the recorded `decide` receipt; record `source_visually_inspected: true` only after actual inspection, `all_critical_content_visually_reviewed: true`, `pixel_exact_lock: false`, `protection_scope: semantic_geometry_only`, `geometry_reinterpretation: false`. Include concrete `photographic_goal`, `expected_visual_change`, `reject_conditions`, `protected_content_observation`. Choose only `operation`: `gentle_shadow_lift`, `restrain_bright_regions`, `mild_tonal_contrast`, `split_tone_warm_cool` (per-channel curves: highlights warmer, shadows cooler; pins pure black and white; a tonal-range grade that cannot tell sky from cloud or boat from water, so spatial colour separation belongs in a reviewed local zone), and `strength`: `subtle` or `moderate` (complex-scene `subtle` plans cannot request moderate).
+
+`python scripts/run_photo_finish.py v2_native_entry render-global ORIGINAL LINEAGE.json PLAN.json DECISION.json OPERATION.json OUTPUT.png RECEIPT.json`
+
+**Actual guarantees**: verify camera/working lineage, managed sRGB ICC, full-frame RGB dimensions; actual monotone LUT curve; reject new RGB=255 clipping; output no overwrite, exclusive PNG with independent decoded pixel/ICC check, actual SHA and receipt. Underlying original is never overwritten. No spatial geometry or text content is regenerated.
+
+**Limits**: Whole-image edits change pixels everywhere, including the pixel colors of signs or people; they cannot honor a requirement that those pixels remain EXACTLY unchanged. If such a pixel-exact lock is required, STOP and use a real reviewed local exclusion mask or retain original. Semantic correctness and natural facial/sign appearance require actual full-frame and 1:1 visual review after editing. All results are `PENDING_GLOBAL_PHOTOGRAPHIC_REVIEW` with `photographic_quality_accepted=false` and `formal_V1_registered=false`. No formal V1, iPhone save, production host ability or Adobe raw-mask acceptance is implied. Private originals and receipts remain outside public GitHub.
+
+**Split-tone amounts** (research calibration, not an aesthetic standard): `subtle` peaks at about 8 levels of net R/B shift, `moderate` about 14. They share the same fail-closed gates as every other global operation.

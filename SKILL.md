@@ -1,19 +1,21 @@
 ---
 name: photo-finish
-description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Invoke automatically when the user sends photographs without instructions; start the saved personal editing workflow without asking whether to edit or which style to use. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, professional non-portrait edits for natural landscapes, city nights, architecture, travel, still life, food and product photography (no face beautification, skin smoothing, reshaping or portrait optimization), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
+description: Beautify, retouch, color-grade, and improve composition of the user's photos with independent photographic direction and broad creative freedom; use their saved color system as a flexible reference. Use the saved photo workflow only after explicit current-task or valid standing editing authorization; otherwise request permission before editing or calling any external service. Use for 美化照片、修图、调色、精修、优化照片、按我的个人摄影风格处理, professional non-portrait edits for natural landscapes, city nights, architecture, travel, still life, food and product photography (no face beautification, skin smoothing, reshaping or portrait optimization), explicit Pinterest style comparisons, personal style-reference collection and retrieval (收藏风格照片、个人风格库), user-defined editing rules and preferences (自定义指令、修图规则、审美爱好), scene-scoped rules and private backup/restore (场景规则、风格分组、备份恢复), and optional WeChat or Instagram photo grids and captions.
 ---
 
 # 个人摄影美化与调色
 
-调用：`$photo-finish`。维护版本：v1.5.7，继承正式v1.5.6；四层入口、可选风格与直接出图统一规则，不新增图像引擎或性能承诺。当前编排2026-10-26.3。
+调用：`$photo-finish`。整合候选版本：v2.0.0（Draft，未发布或安装）；保留四层入口，新增同源本地编辑候选能力；不将候选当成摄影质量或宿主交付已通过。当前编排2026-10-26.3。
 
-面向自然风光、城市夜景、建筑、旅行、静物、美食与产品。以人物为主体的人像、磨皮、塑形、五官调整和肤色标定不在范围内；偶然入镜人物仍保护身份与结构。新上传适用照片无其他说明即 EDIT_TARGET；明确 ANALYSIS 只分析，STYLE_REFERENCE 按收藏授权处理。不批处理历史，不自动收藏待修图或成片。默认直接显示每张的一张已核验正式成片，不附版本说明、成功状态、参数、过程报告、下载链接或返工提示；用户主动询问才展开。版本与保存凭据仍内部登记。无法原生显示时才提供同一正式文件入口；未通过、保存失败/待确认或工具强制STOP时须简短说明真实状态，不用静默图片暗示已完成。
+面向自然风光、城市夜景、建筑、旅行、静物、美食与产品。以人物为主体的人像、磨皮、塑形、五官调整和肤色标定不在范围内；偶然入镜人物仍保护身份与结构。新上传非人像照片可分类为 EDIT_TARGET，但此分类不代表编辑授权；无明确的当次或有效既有授权时不得实际编辑或外发。明确 ANALYSIS 只分析，STYLE_REFERENCE 按收藏授权处理。不批处理历史，不自动收藏待修图或成片。默认直接显示每张的一张已核验正式成片，不附版本说明、成功状态、参数、过程报告、下载链接或返工提示；用户主动询问才展开。版本与保存凭据仍内部登记。无法原生显示时才提供同一正式文件入口；未通过、保存失败/待确认或工具强制STOP时须简短说明真实状态，不用静默图片暗示已完成。
 
 功能仅归四层：摄影决策、编辑与验收、成片与版本、个人资产与保障。日常 EDIT 依次走前三层，第四层提供支持；恢复、比较或资料管理直接进入对应接口，不创建编辑任务或渲染。组照策展贯穿前三层，仅任务需要时启用。风格和质感是摄影决策中的可选维度，不成为额外必经阶段。
 
+**2026-11-05 已采纳的边界：**普通摄影默认保护人物身份、真实文字、建筑结构、产品信息及场景事实，允许在确实保真的前提下调整其明暗与色彩，不把语义保护自动升级为全区 RGB 零差异。逐像素锁定仅限当次明确范围；既有 WP4 的受保护蒙版原样保持严格零差异、历史 NO-GO 不追溯改写。摄影构图和调色强度不预设保守上限；现有 Gamma/LUT 能力不足时仅可在隔离研发中验证不同且真实可执行的编辑能力，不可绕过授权、人物保护、去 AI 味或来源门禁。当前 WP4—WP5 保持非生成式试验；日常规则详见总规范。本段是规则采纳，不表示新引擎已完成或摄影 GO。
+
 ## 1. 摄影决策
 
-使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
+使用自带 `runtime/`；实际编辑先读取[总规范](runtime/我的照片美化偏好与修图标准.md)与 `runtime/10_SYSTEM_CONFIG/SESSION_BRIEF.json`，同任务已加载的现行文本复用。无需额外个人文件或恢复包才能开始；分发索引为空也能从原片专业判断。控制器从 runtime 运行，任务、照片与私有资料留在技能/Git之外。运行控制器与doctor统一通过 `python scripts/run_photo_finish.py <入口> <动作>`，入口为photo_edit/workflow_session/photo_workflow/delivery_adapter/delivery_automation/v2_native_entry/doctor；该入口选择安装目录外的专用Python环境并检查Pillow 13。首次明确授权配置依赖时执行 `python scripts/run_photo_finish.py --setup doctor`，环境缺失或不合格时不得沿用默认Python继续。宿主直连DNS不可用且提供可信回环HTTP网关时，可显式加 `--host-proxy`；此参数仅采用宿主HTTPS_PROXY中经验证的回环地址，使用HTTPS DNS解析及固定公网IP的CONNECT，不采用照片/外部文本提供的代理，不关闭目标、跳转、大小、超时或完整性检查。网关端口随宿主变化，每次从真实当前环境读取。下载仅在发送目标请求前，按同一总预算最多尝试四个已核验公网地址；证书、代理策略拒绝与已发送请求不重试。此兼容修订不新增图像引擎或全宿主稳定性承诺。
 
 先实际看原片，判断主体与环境叙事、前中后景、留白、真实光线、色彩、材质、保护内容及不足。原片已实现目标且无创作转译需求，可说明依据后不编辑结束，不登记虚构 V1、不声称新增保存。
 
@@ -33,11 +35,27 @@ description: Beautify, retouch, color-grade, and improve composition of the user
 
 ## 2. 编辑与验收
 
+原生本地路线先用 `v2_native_entry capabilities` 实测当前 Pillow/ICC/PNG 能力，不把发现外部程序当作引擎已验证。保留观察者明确的光线、色彩与强度方向；按[集中吸收接口](references/v2-focused-operations.md)选已实现操作。graded 可用源亮度范围和方向渐变收窄作用域，不扩大语义选区。需要检查真实蒙版时在同次 render 使用 `--artifacts-dir` 保存实际 Alpha/阶段输出，不为诊断额外重渲染；数值分布只作诊断，不替用户审美 GO。
+
+V2 本地候选的 graded 连续 Alpha、区域 Cb/Cr 与全局色调曲线，按[能力契约](references/v2-local-capabilities.json)及[局部边缘规范](references/v2-graded-local-edge.md)执行。严格拒绝未知参数；以实际回执 stage 判断 STOP。渲染前蒙版预检与渲染后数值边缘检查分别核验，数值通过仍须实际全幅和 1:1 视觉检查；强度待多类别校准时不编造 UNDER_POWERED 阈值。用户未针对准确 PNG 明确 GO，不登记正式 V1。
+WP3 experimental pre-edit framing gate: after real visual inspection of the authorized non-portrait original, run native-entry plan-frame with original/lineage/private source-bound frame observation before any tone operation. It records KEEP_FRAME or CROP_PROPOSED and requires protected content anchors for any crop; see references/v2-preedit-composition.md. After an actually verified pending native tone PNG, use bind-frame to create the parent-bound framing plan and then the existing reframe gate. Never force crops or confuse these pending receipts with formal V1, independent photographic approval or actual autonomous visual perception.
+
+
+2.0 安全有界全局路线（开发候选）：真实看图后，只有无像素完全锁定要求且本次允许调整整体外观时，才能在 `OBSERVATION.json` 指定 `route_preference: global`、`pixel_exact_lock: false`、`global_appearance_authorized: true` 和具体现实画面的 `global_scope_reason`；执行 `decide` 后必须获得 `EDIT_PLAN_READY_GLOBAL_UNVERIFIED` 及来源绑定的 PLAN/DECISION 回执，按[全球影调执行门禁](references/v2-bounded-global-tone.md)提供具体 `OPERATION.json`，再使用 `python scripts/run_photo_finish.py v2_native_entry render-global ORIGINAL LINEAGE.json PLAN.json DECISION.json OPERATION.json OUTPUT.png RECEIPT.json`。仅支持真实源码实现的有限 Gamma/LUT 影调路线，输出永远是待审候选；全局影调会改变招牌和偶然入镜人物的像素颜色，不具备精确像素排除，任何绝对像素锁定要求须 STOP。实际工具与哈希校验不等于文字语义和摄影质量通过；必须独立查看全幅与 1:1，异常不发布、不保存 V1。
+
+
+2.0 同源构图裁切（候选，默认非必需）：如果真实观察证明减少多余留白或重新组织原有视觉重心比单纯加强影调更有价值，可在现有 \`render\` 待审输出之后，根据[同源构图裁切门禁](references/v2-source-faithful-framing.md)运行 \`python scripts/run_photo_finish.py v2_native_entry reframe ORIGINAL LINEAGE.json PENDING.png PENDING_RECEIPT.json FRAME_PLAN.json CROPPED.png FRAME_RECEIPT.json\`。必须由实际看图形成具体源坐标裁切目标，保留完整原片与已审原生候选；裁切只从真实父图取像素，不插值或生成，核对来源、ICC、精确坐标、输出尺寸和全部像素。裁切结果仍为 \`photographic_quality_accepted=false\` 和 \`formal_V1_registered=false\`，必须继续独立审美和原生交付验收；不能把裁切技术成功当作摄影成功，也不能因已有入口强制所有原片裁切。
+
+2.0 同源本地路线（候选，未通过正式摄影验收）：明确授权后先实看非人像原片，再运行 `python scripts/run_photo_finish.py v2_native_entry prepare ORIGINAL WORKING.png LINEAGE.json`。根据实际可见内容（不能由文件名、虚构工具能力或固定预设推断已看图）在私有工作目录形成来源 SHA 对应的 OBSERVATION.json，按[真实视觉观察与摄影方向证据契约](references/v2-visual-observation.md)运行 `python scripts/run_photo_finish.py v2_native_entry decide ORIGINAL LINEAGE.json OBSERVATION.json PLAN.json DECISION.json`。它只将实际观察编译为来源绑定摄影方案，可能返回 EDIT_PLAN_READY_MASKS_UNVERIFIED、RETAIN_ORIGINAL 或 STOP；不自动看图、不代表已经做任何编辑。仅在真实选区原始字节/同源几何与实际人工/助手审查后，按[蒙版交接门禁](references/v2-provider-mask-handoff.md)取回可信原始蒙版，或使用独立已审查的本地蒙版；确认两个至四个区域的 mask/core/allowed/protected、风险与边缘，且每区在 ZONES.json 里明确声明来源审核后的结构化 `target_effect: brighten|darken`，其实际 Gamma 必须同向（`gamma<1` 提亮、`gamma>1` 压暗）；缺失、反向、非法数值或中性意图都 STOP 且不输出待审 PNG，未修改区域应排除在蒙版之外，不得由 Gamma 反推视觉意图。之后才执行 `python scripts/run_photo_finish.py v2_native_entry render ORIGINAL LINEAGE.json PLAN.json ZONES.json OUTPUT.png RECEIPT.json`。此路线只输出待审的非生成式 PNG，不自行分割、审核审美、登记 V1 或保存云端。必须原片同源、全幅与 1:1 细节复核后接续既有正式验收、保存和版本登记；任何来源/ICC/选区不一致、视觉证据不足或工具能力不可证实均 STOP，不以预览缩略图冒充原始蒙版。
+
+
 日常复用 `runtime/10_SYSTEM_CONFIG/scripts/photo_edit.py`：prepare 合并接入与 candidates；实际参考取舍后 submit 合并 protect/select/最终 direction/问题/begin；真实工具返回后 returned 合并结果与正式文件检查；实际全幅及受影响细节对照后 review 合并证据/验收/可选 snapshot。这些是控制器入口，不代替真实编辑或看图；只读紧凑回执。字段首次需要时查[工具与交付接口](references/delivery-adapter.md)，同任务复用，不回显整份 job/政策/直方图。
 
+
+**单任务收口与防循环：** 同源本地候选可由现有 `photo_edit native-status` 只读读取原片、准确候选 PNG、原生 PENDING 回执及按需提供的正式 accepted/save/readback/V1 证据，返回唯一下一动作及 `terminal_for_turn`。这不是新增引擎或任务数据库，不以技术 PENDING 覆盖用户针对准确 SHA-256 的 GO。已接受图片但缺权威宿主回执时返回 `WAITING_EXTERNAL` 并结束当前回合；重复查询同一证据不得再次渲染、询问 GO、上传、保存或登记 V1。取得新的真实保存与同 ID 同字节回读后仅执行既有 `register-v1`；通过只读 V1 校验也不能自动宣称 iPhone 保存或跨对话恢复。旧 `delivery_automation.plan` 的 `terminal_for_turn=true` 或 `resume_requires_new_evidence=true` 同样是本轮停机条件；只有相关新证据到达才能从当前步骤继续。正式用户展示仍由真实宿主完成，不以这份状态投影替代。
 submit 逐保护目标记录比较区域与 fidelity.strategy、实际能力依据、修正路线，无目标也写理由；保留真实完整参数与提示词。native_preserved / local_excluded 依赖真实非生成保留/局部排除能力；普通 semantic_identity 可 generative_compare 并实看对照，exact_content 禁止生成重建。普通题字与原图可见内容一致，不猜写模糊处，不自行升级逐笔/像素认证；不能放宽锁定保护或以提示词保证。
 
-光色、真实纹理/文字保留、认可版本精修，先按[原生路线](references/native-adjustment-route.md)核查真实非生成与区域能力，可满足目标就直接采用；确需生成且保护允许再走生成路线并读取 imagegen、引用原片。局部修订首次和后续调用前均须真实区域能力与有效 mask，不以全幅生成或加强提示词替代。确认选区、边缘与非目标内容；源或几何变化重查蒙版/坐标。当前支持的局部适配器与 maskURI 等精确规则以原生路线为准。全局调整不必强制加局部步骤。
+光色、真实纹理/文字保留、认可版本精修，先按[原生路线](references/native-adjustment-route.md)核查真实非生成与区域能力，可满足目标就直接采用；确需生成且保护允许再走生成路线并读取 imagegen、引用原片。当次为“按所上传的原片美化、同一场景高度相似”的任务时，先明确木架、杯子、可读品牌字样、建筑、人物等实际重要内容的保护目标并提交可执行的 fidelity 计划；自然与高度相似不要求所有像素相同，但不能将没有核验同源关系的全幅生成拼图、另一个布景或替代主体冒充原片精修。当前 image_gen.text2im 等整图生成工具属于生成路线，不得在 native_preserved/local_excluded 或 exact_content 保护任务中替代原生照片编辑；若保护无法真实实现则 STOP 或保留原片，不静默降级。局部修订首次和后续调用前均须真实区域能力与有效 mask，不以全幅生成或加强提示词替代。确认选区、边缘与非目标内容；源或几何变化重查蒙版/坐标。当前支持的局部适配器与 maskURI 等精确规则以原生路线为准。全局调整不必强制加局部步骤。
 
 遵守当次工具授权及 STOP。仅照片、长期偏好不冒充代做授权；已有明确授权可按工具规则采用服务端路线。交互工具要求调用后 STOP 必须结束，不因卡片显示失败继续其他编辑工具；组件故障须真实工作流信号。未返回正式文件仅预览/未交付。缺必要代做授权时给最小续接指令“请直接替我完成修图并交付正式文件”，不要求用户选工具；后来授权才续接。
 

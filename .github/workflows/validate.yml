@@ -71,7 +71,8 @@ jobs:
           assert len(fingerprint) == 63 and set(fingerprint) <= {'0', '1'}
           print({name: importlib.metadata.version(name) for name in ('Pillow', 'numpy', 'scipy')})
       - run: python tools/doctor.py
-      - run: python tools/check_publication.py --history
+      - name: Fail-closed Git history publication audit (exact legacy ZIP exception)
+        run: python tools/ci_history_scan.py
       - name: Windows checkpoint durability regression
         if: runner.os == 'Windows'
         shell: python

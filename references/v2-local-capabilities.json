@@ -1,0 +1,78 @@
+{
+  "version": "2.0.0",
+  "candidate_revision": "2026-11-06.absorb.1",
+  "schema_version": 1,
+  "status": "DRAFT_NOT_RELEASED_NOT_INSTALLED",
+  "local_operations": {
+    "gamma": [
+      0.65,
+      1.6
+    ],
+    "saturation": [
+      0.65,
+      1.35
+    ],
+    "chroma_shift_cb_cr": [
+      -12,
+      12
+    ],
+    "edge_mode": [
+      "soft",
+      "pixel_locked",
+      "graded"
+    ],
+    "graded_sigma_px": [
+      4,
+      120
+    ]
+  },
+  "reject_unknown_fields": true,
+  "preserve_provider_continuous_alpha": false,
+  "graded_input": "audited thresholded binary geometry",
+  "soft_behavior": "legacy bounded feather unchanged",
+  "local_temperature_kelvin": false,
+  "sky_segmentation": false,
+  "global_operations": [
+    "bounded_color_curve",
+    "gentle_shadow_lift",
+    "mild_tonal_contrast",
+    "restrain_bright_regions",
+    "split_tone_warm_cool"
+  ],
+  "global_strength": [
+    "subtle",
+    "moderate"
+  ],
+  "global_pixel_exact_lock_supported": false,
+  "overlap": "ordered on current pixels; protected union",
+  "pre_render_gate": "mask_boundary_preflight_verified",
+  "post_render_numerical_gate": "output_edge_qa_passed",
+  "post_render_visual_gate": "separate actual full-frame and 1:1 inspection",
+  "under_powered": {
+    "advisory_only": true,
+    "threshold": null,
+    "calibration": "PENDING_REAL_MULTI_CATEGORY_CALIBRATION"
+  },
+  "formal_v1": "explicit user GO on exact PNG plus existing technical/save gates required",
+  "graded_refinements": [
+    "encoded_luma_range",
+    "normalized_linear_gradient"
+  ],
+  "actual_artifact_capture": "optional single render --artifacts-dir",
+  "capability_discovery": "actual local self-test; external detection never verification",
+  "quality_diagnostics": "read-only same-source distributions, no aesthetic score",
+  "history_bridge": "existing task_history index; explicit accepted/save/readback required; no old-ledger migration",
+  "global_curve_safety": {
+    "mode": "same-native-render-global-controller",
+    "smooth_detection": "source-derived low-gradient tiles, conservative full-frame percentile fallback; not semantic segmentation",
+    "smooth_slope_limit": 2.5,
+    "other_slope_limit": 3.25,
+    "automatic_backoff": "bounded deterministic blend toward identity with STRENGTH_LIMITED receipt; not user GO",
+    "tpdf_amplitude": 0.7,
+    "strength_tiers": [
+      "subtle",
+      "moderate"
+    ],
+    "integration_status": "DRAFT_NOT_USER_PHOTOGRAPHIC_GO"
+  }
+}

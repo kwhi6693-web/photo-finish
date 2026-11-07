@@ -50,6 +50,21 @@ def _contract(state):
 
 
 def _verify(item):
+    if item.get('record_kind')=='v2_evidence_bridge':
+        import v2_delivery as native
+        if (native.hash_file(item['job'])!=item['acceptance_sha256'] or
+                native.hash_file(item['v2_version_record'])!=item['v2_version_sha256']):
+            raise ValueError('Native version or acceptance evidence changed')
+        accepted=native.validate_accepted(native.load(item['job']))
+        formal=native.load(item['v2_version_record'])
+        if (formal.get('formal_V1_registered') is not True or formal.get('acceptance')!=accepted or
+                formal.get('acceptance_sha256')!=item['acceptance_sha256'] or formal.get('output')!=accepted['output']):
+            raise ValueError('Native formal version evidence conflicts with accepted output')
+        if native.inspect(item['source']['path'])!=accepted['source'] or native.inspect(item['output']['path'],png=True)!=accepted['output']:
+            raise ValueError('Native bridge file differs from accepted metadata')
+        for identity in (item['output'],item['source'],item['original_source']):
+            if w._file(identity['path'])!=identity:raise ValueError('Native history file changed or missing')
+        return accepted
     state=w._load(item['job'])
     if state['status']!='accepted' or state.get('output')!=item['output'] or state.get('source')!=item['source']:
         raise ValueError('Version no longer matches its accepted ledger')
@@ -84,6 +99,47 @@ def get(session_root, series, version):
     with _index(session_root) as db:
         item=_row(db.execute('SELECT data FROM versions WHERE series=? AND number=?',(series,_number(version))).fetchone())
     _verify(item);return item
+
+
+def register_v2(original,candidate,accepted_json,version_json,session_root,*,parent_series=None,parent_version=None):
+    """Bridge explicit accepted v2 evidence into the existing conversation index.
+
+    Never imports/reconstructs an old database. Native revisions must start from
+    the exact accepted parent output; normal legacy registration stays unchanged.
+    """
+    import v2_delivery as native
+    accepted=native.validate_accepted(native.load(accepted_json));formal=native.load(version_json)
+    acceptance_sha=native.hash_file(accepted_json)
+    if (formal.get('schema')!='photo-finish-v2-version/1' or formal.get('formal_V1_registered') is not True or
+            formal.get('acceptance')!=accepted or formal.get('acceptance_sha256')!=acceptance_sha or
+            formal.get('source')!=accepted['source'] or formal.get('output')!=accepted['output']):
+        raise ValueError('genuine v2 accepted/save/readback version record required')
+    if bool(parent_series)!=bool(parent_version):raise ValueError('both parent series and version required')
+    parent=get(session_root,parent_series,parent_version) if parent_series else None
+    source=w._file(original);output=w._file(candidate)
+    if parent is not None and source!=parent['output']:
+        raise ValueError('revision source must be the exact accepted parent output')
+    job=str(Path(accepted_json).resolve())
+    item={'record_kind':'v2_evidence_bridge','job':job,'source':source,'output':output,
+          'original_source':parent['original_source'] if parent else source,
+          'parent_version':parent_version,'parent_output':parent['output'] if parent else None,
+          'acceptance_sha256':acceptance_sha,'v2_version_record':str(Path(version_json).resolve()),
+          'v2_version_sha256':native.hash_file(version_json),'renderer_origin':accepted['renderer_origin'],
+          'revision_request':'explicit native evidence bridge' if parent else None,
+          'scope':'existing index/restore only; no legacy ledger migration or cross-conversation assertion'}
+    _verify(item)
+    with _index(session_root,True) as db:
+        old=db.execute('SELECT data FROM versions WHERE job=?',(job,)).fetchone()
+        if old:
+            previous=_row(old);_verify(previous)
+            if previous['acceptance_sha256']!=acceptance_sha:raise ValueError('historical bridge identity conflict')
+            return previous
+        series=parent_series or uuid.uuid4().hex
+        number=db.execute('SELECT COALESCE(MAX(number),0)+1 FROM versions WHERE series=?',(series,)).fetchone()[0]
+        item.update(series=series,label='V'+str(number))
+        db.execute('INSERT INTO versions(series,number,job,data) VALUES(?,?,?,?)',(series,number,job,json.dumps(item)))
+        db.execute('INSERT OR REPLACE INTO session VALUES(?,?)',('current',json.dumps([series,item['label']])))
+    return item
 
 
 def history(session_root, series):
@@ -174,7 +230,10 @@ def verify_revision(state):
 
 def revise(session_root, series, version, path, request, local=False, **prepare_options):
     import photo_edit
-    item=get(session_root,series,version);parent=_verify(item)
+    item=get(session_root,series,version)
+    if item.get('record_kind')=='v2_evidence_bridge':
+        raise ValueError('Use the native controller on this exact parent PNG; legacy job revision is not a native evidence adapter')
+    parent=_verify(item)
     request=w._text(request,'revision request')
     if type(local) is not bool:raise ValueError('local must be boolean')
     requirements=_requirements(parent);targets={x['target'] for x in requirements}

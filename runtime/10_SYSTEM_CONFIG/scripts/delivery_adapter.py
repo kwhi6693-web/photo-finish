@@ -21,6 +21,9 @@ def _edit_route(state, tool_name, arguments):
     tool_name = w._text(tool_name, 'tool_name')
     generator = tool_name.removeprefix('tools.') in (
         'image_gen.imagegen', 'image_gen__imagegen',
+        # Current native host name and legacy/function aliases (2026-11).
+        'image_gen.text2im', 'image_gen__text2im',
+        'mcp__Adobe__image_generate', 'mcp__Adobe__image_instruct_edit',
         'image_instruct_edit', 'adobe.image_instruct_edit',
         'mcp__codex_apps__adobe_image_instruct_edit',
         'image_generate', 'adobe.image_generate',
@@ -35,7 +38,10 @@ def _edit_route(state, tool_name, arguments):
         return
     names = {'image_apply_adjustments', 'adobe.image_apply_adjustments',
              'mcp__codex_apps__adobe_image_apply_adjustments',
-             'tools.mcp__codex_apps__adobe_image_apply_adjustments'}
+             'tools.mcp__codex_apps__adobe_image_apply_adjustments',
+             # The installed Adobe connector's current masked tonal editor.
+             'mcp__Adobe__image_apply_adjustments',
+             'tools.mcp__Adobe__image_apply_adjustments'}
     if tool_name not in names or not isinstance(arguments.get('maskURI'), str) or not arguments['maskURI'].strip():
         raise ValueError('Local-only revision requires a verified region-mask editor '
                          'and its actual top-level maskURI. Keep the accepted version.')
