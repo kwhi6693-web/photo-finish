@@ -9,6 +9,12 @@ from tests.test_v2_global_operation import SourceBoundGlobalTests, checksum
 
 
 class NativeBoundedCurveControllerTests(unittest.TestCase):
+    # Reuse fixture helpers without inheriting the legacy suite's test cases.
+    call=SourceBoundGlobalTests.call
+    render=SourceBoundGlobalTests.render
+    save_obs=SourceBoundGlobalTests.save_obs
+    save_op=SourceBoundGlobalTests.save_op
+
     def setUp(self):
         # Reuse the EXISTING real controller fixture and provenance model.
         SourceBoundGlobalTests.setUp(self)
