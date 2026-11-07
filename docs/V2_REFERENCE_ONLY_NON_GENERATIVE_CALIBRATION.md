@@ -27,18 +27,48 @@ The three newer stored reference files are classified as **suspected generative 
 4. The user may choose a style direction without accepting the reference image as an output. Reference-only membership **does not count** toward the eight independent, genuinely edited samples or historical photography GO. Source originals may later join the eight-photo corpus only through a separately authorized, source-bound, non-generative real task.
 5. Freeze source/actual-candidate source hashes, original-source ROI and user-protected text/geometry before editing. The reference can influence color/tonal priorities but never define the allowed content changes or masks.
 
-## Stage 1 — naturalness check (advisory only; **not** a GO decision or a new engineering gate)
+## Stage 1 — naturalness / source-fidelity observations (advisory-only design)
 
-**Applicability:** Run on a real source-matched, non-generative candidate `C` against its original `S`; the four non-registered `R` references supply **descriptive trends only**, not per-pixel causal evidence. Report a review prompt and the underlying measurement; no automatic accept/reject, automatic edit-strength control, or new hard threshold. Existing source-content fidelity and STOP obligations remain unchanged.
+**Saturation statistic is descriptive only, NOT a naturalness check item.** Continue reporting ICC-managed whole-frame mean HSV S and separate BT.601 mean-chroma-radius ratios as `DESCRIPTIVE_SATURATION_STATISTIC`, without `REVIEW_SATURATION`, a naturalness score, edit-strength target, threshold, or GO/NO-GO implication. The positive sky style reference has HSV-S ratio 1.353761, while the negative sign-alley and night references have ratios 1.355347 and 1.355122; this single statistic does not discriminate the user-judged naturalness categories. User-judged positive n=1, negative overprocessing references n=3; no universal threshold.
 
-1. **Saturation amplification:** report ICC-managed, encoded-sRGB **whole-frame mean HSV-S ratio** `mean(S_C)/mean(S_S)` alongside **BT.601 mean-chroma-radius ratio**. These are different metrics, not an editor saturation parameter. Highlight potentially exaggerated chroma only as `REVIEW_SATURATION`, with source type and measurement scope.
-2. **Shadows pushed deeper:** compare source-registered dark-region `L` P05 (encoded RGB proxy) and `L≤5` / `L<30` percentages. `REVIEW_SHADOWS` invites source-context inspection; intentional deep shadow is not automatically a failure.
-3. **Texture markedly weakened or exaggerated:** inspect only same-source, same-scale 1:1 ROI using agreed local edge/gradient or local-contrast statistics plus visual inspection. Never interpret unmatched R/S output-size differences as texture loss or strengthening. `REVIEW_TEXTURE` is an advisory.
-4. **Content not present in the original:** visually and, where feasible, with source-aligned protected-region checks, inspect for invented structures, altered real clouds and sign lettering, etc. `REVIEW_SOURCE_CONTENT` is an advisory signal; **an actual C-source fidelity failure is still governed by the pre-existing hard preservation/STOP contract**, not newly introduced here.
+**Night calculation sensitivity, not inferred rendering intent:** ICC-managed full-frame mean HSV S ratio R/S = **1.355122**. Resampling the reference to the source dimensions gives **1.357739**, and the source to the reference dimensions gives **1.360296**—too small a change to explain ~1.42. Restricting each image independently to pixels with `max(R,G,B) > 60` yields **1.421763**; omitting the embedded source ICC would instead give **1.533780**. Thus a bright-pixel subset is *one reproducible plausible calculation difference*, but the user's exact formula, ROI and weighting are unknown. No claim about reference-image rendering intent or provenance follows from these numbers. Read-only reproduction script, source/reference hashes, and detailed table remain private.
 
-**Threshold policy:** No universal numeric trigger or GO threshold established. The sample for user-judged natural positive style is **n=1**; the three counterexamples are **n=3 negative**, not three additional successful edits. Any later proposed threshold must state both counts, the same measurement definition and independent validation. A numeric warning is not an aesthetic verdict.
+**Retained naturalness prompts (review hints only):**
+1. **Deeper shadows:** compare source-registered dark ROI encoded-sRGB `L` P05 and `L≤5` / `L<30` proportions; intentional deep shadow is not automatically overprocessed.
+2. **Texture exaggerated or suppressed:** inspect the same-source, same-scale 1:1 ROI (local gradients and contrast plus visual examination); no exact correspondence is inferred from unregistered R.
+3. **Content absent from the source:** compare camera original S against actual non-generative controller output C, especially letters, buildings, clouds and meaningful reflection structure. Newly observed content is a human-review signal; existing preservation/STOP obligations remain intact.
 
-**Independent measurement disclosure:** Four raw input/reference files pairs were re-read from private Library and hashed; a read-only Python/Pillow/NumPy script, full SHA-256 inventory, CSV and JSON results are stored **privately**. Whole-frame mean-HSV-S reference/source ratios: sky 1.353761; street 2.057705; sign alley 1.355347; waterfront night 1.355122. BT.601 mean-chroma-radius ratios: sky 1.890598; street 1.717236; sign alley 1.666534; night 1.274622. **These are cross-image global statistics, not true same-pixel editing gains.** Private source identities and hashes must not enter the public repository.
+### Draft: structural-fidelity check of S versus C (advisory only; no GO, no new engineering gate)
+
+- Use a source-bound, geometrically registered **camera original S and actual controller result C**. Verify source/output hashes, ICC, orientation, dimensions and any declared crop transform; only compare genuinely overlapping 1:1 ROI. **Generated/reference image R is excluded from this check.**
+- Convert each embedded ICC to sRGB and compute the same encoded 8-bit luminance proxy `L=.299R+.587G+.114B`. Compare 3×3 Sobel gradient direction and magnitude and the locations of bright/dark intensity edges. Report candidate strong-gradient locations unsupported near source gradients as **areas to inspect**, not automatically invented content.
+- For a fixed *descriptive sampling slice*, take the top 5% gradients in each image independently and allow a ±2 px spatial tolerance. Report C→S/S→C edge position overlap, unmatched strong-gradient fraction, P95 gradient magnitude ratio, and gradient-direction cosine for exact same-position strong edges. **The 5% percentile slice and ±2 px matching radius are measurement definitions, not thresholds for GO/NO-GO.** A real contrast curve may strengthen source edges without changing any physical structure.
+- If S and C were legitimately reframed, establish a verified coordinate transform before computation; if not, report no comparable structural result. This procedure cannot prove content hallucination or authenticity, and it does not run as a new native-controller quality gate.
+
+**Read-only feasibility data from three existing S/candidate pairs (NOT current HEAD native-controller end-to-end acceptance):**
+
+| Existing source/candidate pair | C strong-edge positions matched to S (±2 px) | C unmatched strong edges | P95 gradient amplitude C/S | Direction cosine on coincident strong edges |
+|---|---:|---:|---:|---:|
+| Sky **isolated experimental pending** | 97.884% | 2.116% | 2.538× | 0.999729 |
+| River **historical candidate** | 99.936% | 0.064% | 1.0005× | 0.999993 |
+| Church **historical candidate** | 99.964% | 0.036% | 0.9971× | 0.999995 |
+
+The sky experimental candidate steepens source-supported gradients considerably; neither that ratio nor the 2.116% unmatched fraction alone means added clouds or new structures. Samples n=3 are **feasibility pairs**, not three new accepted edits. The positive natural style reference remains n=1 and is not used for structural comparisons. Private reproducible files: `measure_structure_readonly.py`, `structure_advisory_metrics.json`, `structure_advisory_metrics.csv`, `recheck_night_saturation.py`, `night_saturation_sensitivity.json`.
+
+## Stage 0 — exact code references for current capability boundaries (PENDING_USER_CONFIRMATION)
+
+Source line references are pinned to **`bfb3055f2e7ad39b935457b9f92617362dd52237`** (before this documentation-only addendum); runtime files are unchanged:
+
+| Capability boundary | Code path and exact line range |
+|---|---|
+| **Local gamma 0.65–1.6** | [`runtime/10_SYSTEM_CONFIG/scripts/multizone_editor.py` L55–59](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/multizone_editor.py#L55-L59); [`runtime/10_SYSTEM_CONFIG/scripts/v2_native_entry.py` L193–200](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/v2_native_entry.py#L193-L200) |
+| **Local saturation 0.65–1.35** | [`multizone_editor.py` L55–59](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/multizone_editor.py#L55-L59); [`v2_native_entry.py` L193–200](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/v2_native_entry.py#L193-L200) |
+| **2–4 reviewed spatial zones** | [`multizone_editor.py` L104–108](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/multizone_editor.py#L104-L108); [`v2_native_entry.py` L177–180](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/v2_native_entry.py#L177-L180) |
+| **Exactly five supported global operations** | [`runtime/10_SYSTEM_CONFIG/scripts/v2_global_operation.py` L20–23](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/v2_global_operation.py#L20-L23): `gentle_shadow_lift`, `restrain_bright_regions`, `mild_tonal_contrast`, `bounded_color_curve`, `split_tone_warm_cool`. |
+| **Only `subtle` / `moderate` global strengths** | [`v2_global_operation.py` L23 and L85–90](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/runtime/10_SYSTEM_CONFIG/scripts/v2_global_operation.py#L20-L23) |
+| **Capability-contract cross-check** | [`references/v2-local-capabilities.json` L6–14 and L34–46](https://github.com/kwhi6693-web/photo-finish/blob/bfb3055f2e7ad39b935457b9f92617362dd52237/references/v2-local-capabilities.json#L34-L46) |
+
+Older reports saying there are four global operations are **superseded on this HEAD**; `bounded_color_curve` is part of the current supported set. The table documents existing source constraints rather than proposing a runtime change. **Stage 0 remains PENDING_USER_CONFIRMATION. Stage 1 remains PENDING_USER_CONFIRMATION.**
 
 ## Stage 5 — acceptance comparison and content-change exclusions
 
