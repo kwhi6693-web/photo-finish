@@ -33,9 +33,10 @@
   "local_temperature_kelvin": false,
   "sky_segmentation": false,
   "global_operations": [
+    "bounded_color_curve",
     "gentle_shadow_lift",
-    "restrain_bright_regions",
     "mild_tonal_contrast",
+    "restrain_bright_regions",
     "split_tone_warm_cool"
   ],
   "global_strength": [
@@ -60,5 +61,18 @@
   "actual_artifact_capture": "optional single render --artifacts-dir",
   "capability_discovery": "actual local self-test; external detection never verification",
   "quality_diagnostics": "read-only same-source distributions, no aesthetic score",
-  "history_bridge": "existing task_history index; explicit accepted/save/readback required; no old-ledger migration"
+  "history_bridge": "existing task_history index; explicit accepted/save/readback required; no old-ledger migration",
+  "global_curve_safety": {
+    "mode": "same-native-render-global-controller",
+    "smooth_detection": "source-derived low-gradient tiles, conservative full-frame percentile fallback; not semantic segmentation",
+    "smooth_slope_limit": 2.5,
+    "other_slope_limit": 3.25,
+    "automatic_backoff": "bounded deterministic blend toward identity with STRENGTH_LIMITED receipt; not user GO",
+    "tpdf_amplitude": 0.7,
+    "strength_tiers": [
+      "subtle",
+      "moderate"
+    ],
+    "integration_status": "DRAFT_NOT_USER_PHOTOGRAPHIC_GO"
+  }
 }
