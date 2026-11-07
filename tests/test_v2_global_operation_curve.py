@@ -34,7 +34,7 @@ class NativeBoundedCurveControllerTests(unittest.TestCase):
         self.observation_record['fixed_content_to_preserve']='Sky shape and each existing gradation must not be redrawn or generated'
         self.observation_record['visible_improvement_goal']='Create a naturally wider scene tonal range without content fabrication'
         self.observation_record['edit_reason']='Original sky has compressed tones needing a bounded global improvement'
-        self.observation_record['risk_flags']=[]
+        self.observation_record['risk_flags']=['none']
         self.observation_record['scene_complexity']='simple'
         self.save_obs()
         decision=self.call('decide',self.source,self.lineage,self.observation,self.plan,self.decision)
