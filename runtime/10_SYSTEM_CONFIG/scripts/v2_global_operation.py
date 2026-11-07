@@ -15,8 +15,10 @@ from editorial_contract import EditorialPlan, controller_direction
 from editorial_pipeline import hash_file
 from source_lineage import SourceLineage, verify_source_lineage
 from multizone_editor import _sha_pixels
+from v2_bounded_curve import bound_curve_strength_by_actual_source, apply_curve, frame_stats
 
 SUPPORTED = {'gentle_shadow_lift', 'restrain_bright_regions', 'mild_tonal_contrast',
+             'bounded_color_curve',
              'split_tone_warm_cool'}
 STRENGTHS = {'subtle', 'moderate'}
 _OPERATION_FIELDS = frozenset({
@@ -175,8 +177,22 @@ def export_pending_global(original, lineage, plan, operation, output):
         if im.mode!='RGB' or im.format!='PNG' or not profile or im.size != lineage.working_size:
             raise ValueError('verified ICC-managed RGB working PNG required')
         before=im.copy()
-    luts=_channel_luts(operation.operation,operation.strength)
-    after=before.point(luts[0]+luts[1]+luts[2])
+    curve_safety=None
+    if operation.operation=='bounded_color_curve':
+        # No new controller: source-bound global route, same pending output and receipt.
+        # Automatically derive a conservative smooth-tone guard from source pixels;
+        # if over ceiling, blend toward identity to produce a safe candidate.
+        params,curve_safety=bound_curve_strength_by_actual_source(
+            before,strength=operation.strength)
+        after,curve_metrics=apply_curve(before,params)
+        curve_safety=dict(curve_safety)
+        curve_safety.update(curve_metrics)
+        curve_safety['working_source_brightness']=frame_stats(before)
+        curve_safety['candidate_brightness']=frame_stats(after)
+        curve_safety['photographic_goal_met']='NOT_AUTOMATICALLY_DECIDED'
+    else:
+        luts=_channel_luts(operation.operation,operation.strength)
+        after=before.point(luts[0]+luts[1]+luts[2])
     after.info['icc_profile']=profile
     if ImageChops.difference(after,before).getbbox() is None:
         raise ValueError('global engine generated no actual pixel change')
@@ -215,7 +231,8 @@ def export_pending_global(original, lineage, plan, operation, output):
                 'pixel_change_verified':True,'no_new_clip_verified':True,
                 'semantic_content_preserved':'PENDING_REAL_VISUAL_REVIEW',
                 'photographic_quality_accepted':False,
-                'formal_V1_registered':False}
+                'formal_V1_registered':False,
+                **({'curve_safety':curve_safety} if curve_safety is not None else {})}
     except BaseException:
         if published and temp is not None and os.path.lexists(target):
             try:
