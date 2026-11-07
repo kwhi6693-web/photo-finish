@@ -6,7 +6,8 @@ from PIL import Image
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'experiments'/'v2_global_curve'))
 from bounded_global_curve_pillow_only import (
-    pchip_dense, plan_from_stats, apply_curve, CurveParameters, frame_stats, rgb_gap_report)
+    pchip_dense, plan_from_stats, apply_curve, CurveParameters, frame_stats, rgb_gap_report,
+    smooth_luma_range_from_reviewed_roi)
 
 
 class ExperimentalCurveTests(unittest.TestCase):
@@ -106,6 +107,49 @@ class ExperimentalCurveTests(unittest.TestCase):
             self.assertLess(y['channels'][channel]['candidate']['interior_gap_fraction'],
                             x['channels'][channel]['candidate']['interior_gap_fraction'])
         self.assertLess(y['max_new_gap_fraction'],x['max_new_gap_fraction'])
+
+
+    def test_reviewed_smooth_sky_slope_at_most_2_5(self):
+        # Values independently measured from the locked real-sky source ROI;
+        # synthetic image keeps the CI test free of private photographs.
+        params=plan_from_stats(76.82,102.065,140.552,
+                               smooth_luma_range=(77.51,96.457))
+        self.assertEqual(params.dither_strength,.7)
+        _,audit=apply_curve(self.src,params)
+        self.assertLessEqual(audit['smooth_interval_max_curve_derivative'],2.5+1e-8)
+        self.assertEqual(audit['smooth_interval_slope_limit'],2.5)
+        self.assertGreater(audit['max_curve_derivative'],2.5)
+        self.assertLessEqual(audit['max_curve_derivative'],3.25)
+
+    def test_oversteep_smooth_sky_interval_refused(self):
+        params=plan_from_stats(76.82,102.065,140.552,
+                               smooth_luma_range=(100,130))
+        with self.assertRaisesRegex(ValueError,'smooth-region curve slope exceeds 2.5'):
+            apply_curve(self.src,params)
+
+    def test_sky_plan_missing_reviewed_roi_is_refused(self):
+        with self.assertRaisesRegex(ValueError,'reviewed smooth input-luminance'):
+            plan_from_stats(76.82,102.065,140.552)
+
+    def test_invalid_reviewed_range_refused(self):
+        for bounds in ((100,100),(115,95),(-1,120),(45,256),
+                       (float('nan'),120),('80',110)):
+            params=CurveParameters((0,75,140,255),(0,70,210,255),
+                                   1.3,.7,bounds)
+            with self.subTest(bounds=bounds), self.assertRaises(ValueError):
+                apply_curve(self.src,params)
+
+    def test_reviewed_roi_requires_actual_varied_source_pixels(self):
+        sample=Image.new('RGB',(128,80))
+        sample.putdata([(x,x,x) for y in range(80) for x in range(128)])
+        lo,hi=smooth_luma_range_from_reviewed_roi(sample,(15,10,90,70))
+        self.assertLess(lo,hi)
+        for roi in ((0,0,1000,20),(0,0,4,4),(20,10,10,20)):
+            with self.subTest(roi=roi),self.assertRaises(ValueError):
+                smooth_luma_range_from_reviewed_roi(sample,roi)
+        with self.assertRaisesRegex(ValueError,'no measurable luminance'):
+            smooth_luma_range_from_reviewed_roi(Image.new('RGB',(128,80),(45,45,45)),
+                                                  (10,10,90,65))
 
     def test_rgb_gap_invalid_roi_fails_closed(self):
         with self.assertRaises(ValueError):
