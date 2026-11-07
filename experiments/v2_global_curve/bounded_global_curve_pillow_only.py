@@ -29,6 +29,27 @@ def frame_stats(source):
     return {'p01': p(1), 'p50': p(50), 'p99': p(99)}
 
 
+def smooth_luma_range_from_reviewed_roi(source, roi):
+    """Return sRGB encoded-luma P01..P99 for a pre-reviewed smooth scene ROI.
+
+    This helper only measures pixels. It cannot establish that the selected
+    rectangle is truly smooth sky; the scene/ROI must be reviewed externally.
+    """
+    if source.mode != 'RGB':
+        raise ValueError('color-managed RGB source required')
+    if (not isinstance(roi,(tuple,list)) or len(roi)!=4 or
+            any(type(v)!=int for v in roi)):
+        raise ValueError('four integer ROI coordinates required')
+    x0,y0,x1,y1=roi
+    w,h=source.size
+    if not 0<=x0<x1<=w or not 0<=y0<y1<=h or (x1-x0)*(y1-y0)<64:
+        raise ValueError('invalid reviewed smooth ROI')
+    stats=frame_stats(source.crop(tuple(roi)))
+    if stats['p01']>=stats['p99']:
+        raise ValueError('smooth ROI has no measurable luminance variation')
+    return (stats['p01'],stats['p99'])
+
+
 def pchip_dense(xs, ys, point_count=2551):
     if (len(xs) != len(ys) or len(xs) < 3 or xs[0] != 0 or xs[-1] != 255 or
             ys[0] != 0 or ys[-1] != 255):
@@ -76,9 +97,12 @@ class CurveParameters:
     output_knots: tuple
     chroma_multiplier: float = 1.6
     dither_strength: float = .7
+    # Required for sky plans; measured from a reviewed smooth source ROI.
+    # Other scene types may omit this optional experimental constraint.
+    smooth_luma_range: tuple | None = None
 
 
-def plan_from_stats(p01,p50,p99):
+def plan_from_stats(p01,p50,p99, *, smooth_luma_range=None):
     """One strictly bounded sky-like experiment, not a universal auto decision."""
     if not (50<p01<100 and 85<p50<130 and 110<p99<175 and p99-p01<85):
         raise ValueError('source outside experimental domain')
@@ -90,7 +114,9 @@ def plan_from_stats(p01,p50,p99):
           min(252,p99o+26),255.)
     if any(b<=a for a,b in zip(xs,xs[1:])) or any(b<=a for a,b in zip(ys,ys[1:])):
         raise ValueError('invalid curve for scene')
-    return CurveParameters(xs,ys)
+    if smooth_luma_range is None:
+        raise ValueError('reviewed smooth input-luminance interval required for sky plan')
+    return CurveParameters(xs,ys,smooth_luma_range=smooth_luma_range)
 
 
 def apply_curve(source,params):
@@ -101,6 +127,22 @@ def apply_curve(source,params):
     curve,max_slope = pchip_dense(params.input_knots,params.output_knots)
     if max_slope>3.25:
         raise ValueError('over-steep curve')
+    smooth_peak=None
+    if params.smooth_luma_range is not None:
+        interval=params.smooth_luma_range
+        if (not isinstance(interval,(tuple,list)) or len(interval)!=2 or
+                any(type(v) not in (int,float) or not isfinite(v) for v in interval)):
+            raise ValueError('invalid reviewed smooth input-luminance interval')
+        lo,hi=interval
+        if not 0<=lo<hi<=255:
+            raise ValueError('invalid reviewed smooth input-luminance interval')
+        dx=255/(len(curve)-1)
+        # Include every LUT segment intersecting the measured smooth range.
+        smooth_peak=max((curve[i+1]-curve[i])/dx
+                        for i in range(len(curve)-1)
+                        if i*dx<hi and (i+1)*dx>lo)
+        if smooth_peak>2.5+1e-8:
+            raise ValueError('smooth-region curve slope exceeds 2.5')
     def sample(v):
         pos = max(0,min(255,v))*10
         ix = min(2549,int(pos))
@@ -141,6 +183,9 @@ def apply_curve(source,params):
             out[3*j+ix]=max(0,min(254,round(target+weight*d+dither)))
     return (Image.frombytes('RGB',(w,h),bytes(out)),
             {'max_curve_derivative':max_slope,
+             'smooth_interval_max_curve_derivative':smooth_peak,
+             'smooth_interval_slope_limit':2.5 if smooth_peak is not None else None,
+             'smooth_luma_range':list(params.smooth_luma_range) if smooth_peak is not None else None,
              'chroma_limited_pct':100*limited/(w*h),
              'pixel_count':w*h})
 
