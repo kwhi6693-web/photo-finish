@@ -109,17 +109,24 @@ def apply_curve(source,params):
     w,h = source.size
     out = bytearray(w*h*3)
     limited = 0
+    # One zero-mean triangular (TPDF) value per pixel, reused across RGB
+    # so neutral skies do not acquire artificial chromatic speckles.
+    # Curve/chroma calculations stay floating point until final rounding.
+    def unit_hash(seed):
+        value=(seed ^ (seed >> 16))*0x7FEB352D & 0xffffffff
+        value=(value ^ (value >> 15))*0x846CA68B & 0xffffffff
+        return (value ^ (value >> 16))/4294967296.
     for j,(r,g,b) in enumerate(source.get_flattened_data()):
         y = encoded_luma((r,g,b))
         target = sample(y)
+        # TPDF = difference of two deterministic uniforms, applied only
+        # immediately before final 8-bit rounding (not before chroma limiting).
+        dither=0.
         if params.dither_strength:
             x=j%w
             row=j//w
-            hv=(x*2654435761+row*2246822519+0x54F4A11)&0xffffffff
-            hv ^=hv>>13
-            hv=(hv*1274126177)&0xffffffff
-            hv ^=hv>>16
-            target=max(0.,min(254.8,target+(hv/4294967296.-.5)*params.dither_strength))
+            seed=(x*0x9E3779B1+row*0x85EBCA6B+0x54F4A11)&0xffffffff
+            dither=(unit_hash(seed)-unit_hash(seed ^ 0xC2B2AE35))*params.dither_strength
         dif=(r-y,g-y,b-y)
         weight=params.chroma_multiplier
         for d in dif:
@@ -131,8 +138,60 @@ def apply_curve(source,params):
         if weight+1e-5<params.chroma_multiplier:
             limited+=1
         for ix,d in enumerate(dif):
-            out[3*j+ix]=max(0,min(254,round(target+weight*d)))
+            out[3*j+ix]=max(0,min(254,round(target+weight*d+dither)))
     return (Image.frombytes('RGB',(w,h),bytes(out)),
             {'max_curve_derivative':max_slope,
              'chroma_limited_pct':100*limited/(w*h),
              'pixel_count':w*h})
+
+def rgb_gap_report(source, candidate, roi=None):
+    """Advisory source-relative 8-bit code gaps for each RGB channel.
+
+    Histogram gaps are not proof of perceptible banding: JPEG quantization,
+    small areas and different image ranges can also create missing codes.
+    Always review aligned original/candidate 1:1 sky crops.
+    """
+    if source.mode!='RGB' or candidate.mode!='RGB' or source.size!=candidate.size:
+        raise ValueError('same-geometry color-managed RGB required')
+    w,h=source.size
+    if roi is None:
+        roi=(0,0,w,h)
+    x0,y0,x1,y1=roi
+    if (not all(type(v)==int for v in roi) or not 0<=x0<x1<=w or
+            not 0<=y0<y1<=h):
+        raise ValueError('invalid same-geometry ROI')
+    before=source.crop(roi)
+    after=candidate.crop(roi)
+    n=(x1-x0)*(y1-y0)
+    if n<64:
+        raise ValueError('ROI too small for histogram gaps')
+    def channel_stats(band):
+        counts=band.histogram()
+        levels=[]
+        for code,count in enumerate(counts):
+            levels.extend([code]*count)
+        lo=levels[int((n-1)*.01)]
+        hi=levels[int((n-1)*.99)]
+        interior=max(0,hi-lo-1)
+        gap_count=longest=run=0
+        for code in range(lo+1,hi):
+            if counts[code]==0:
+                gap_count+=1
+                run+=1
+                longest=max(run,longest)
+            else:
+                run=0
+        return {'p01_code':lo,'p99_code':hi,
+                'interior_codes':interior,'missing_codes':gap_count,
+                'interior_gap_fraction':round(gap_count/interior,6) if interior else 0.,
+                'longest_missing_run':longest}
+    channels={}
+    for name,b,a in zip(('R','G','B'),before.split(),after.split()):
+        sb=channel_stats(b)
+        sa=channel_stats(a)
+        channels[name]={'source':sb,'candidate':sa,
+                        'new_gap_fraction':round(sa['interior_gap_fraction']-
+                                                 sb['interior_gap_fraction'],6)}
+    return {'roi':list(roi),'pixel_count':n,'channels':channels,
+            'max_new_gap_fraction':max(v['new_gap_fraction'] for v in channels.values()),
+            'interpretation':'advisory only; check aligned 1:1 sky gradients and RGB channel steps'}
