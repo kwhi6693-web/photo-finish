@@ -139,28 +139,24 @@ jobs:
       - run: git diff --exit-code -- dist
 
   pr47_staging_receipt:
-    name: PR47 temporary source-only staging bytes
+    name: PR47 temporary deterministic Draft stage (no release)
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Print verified deterministic source package bytes (Draft only)
+      - name: Build source-exact Draft stage and push without force
         shell: bash
         run: |
-          python - <<'PY'
-          import base64,hashlib,sys,tempfile
-          from pathlib import Path
-          sys.path.insert(0,str(Path('tools').resolve()))
-          from build_release import build
-          with tempfile.TemporaryDirectory(prefix='pr47-stage-') as d:
-              target=Path(d)/'photo-finish.zip'
-              result=build(target,Path.cwd(),candidate=False)
-              data=target.read_bytes()
-              print('PFZIP_SHA256='+hashlib.sha256(data).hexdigest())
-              print('PFZIP_SIZE='+str(len(data)))
-              print('PFZIP_BEGIN')
-              encoded=base64.b64encode(data).decode('ascii')
-              for index in range(0,len(encoded),4000):
-                  print('PFZIP:'+encoded[index:index+4000])
-              print('PFZIP_END')
-          PY
+          set -euo pipefail
+          temporary="$(mktemp -d)"
+          python tools/build_release.py --output "$temporary/photo-finish.zip"
+          cp "$temporary/photo-finish.zip" dist/v2.0.0/photo-finish.zip
+          cp "$temporary/photo-finish.zip.sha256" dist/v2.0.0/photo-finish.zip.sha256
+          git config user.name "photo-finish-ci"
+          git config user.email "ci@users.noreply.github.com"
+          git add -- dist/v2.0.0/photo-finish.zip dist/v2.0.0/photo-finish.zip.sha256
+          git diff --cached --quiet && { echo "staged bytes already match"; exit 0; }
+          git commit -m "build(draft): refresh exact v2.0.0 staged package for native curve"
+          git push origin HEAD:integration/photo-finish-v2-20261104
