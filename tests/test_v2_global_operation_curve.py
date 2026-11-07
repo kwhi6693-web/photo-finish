@@ -62,7 +62,11 @@ class NativeBoundedCurveControllerTests(unittest.TestCase):
         self.assertEqual(receipt['camera_original_sha256'],raw)
         self.assertEqual(receipt['curve_safety']['dither_strength'],.7)
         self.assertLessEqual(receipt['curve_safety']['smooth_max_slope'],2.500001)
-        self.assertIn(receipt['curve_safety']['status'],('STRENGTH_LIMITED','WITHIN_LIMITS'))
+        self.assertEqual(receipt['curve_safety']['status'],'STRENGTH_LIMITED')
+        self.assertLess(receipt['curve_safety']['applied_curve_fraction'],
+                        receipt['curve_safety']['requested_curve_fraction'])
+        self.assertEqual(receipt['curve_safety']['smooth_detection']['method'],
+                         'automatic_low_gradient_proxy')
         self.assertEqual(receipt['curve_safety']['photographic_goal_met'],'NOT_AUTOMATICALLY_DECIDED')
         self.assertFalse(receipt['photographic_quality_accepted'])
         self.assertFalse(receipt['formal_V1_registered'])
