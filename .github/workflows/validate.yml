@@ -137,26 +137,3 @@ jobs:
               finally:
                   subprocess.run(['git', 'worktree', 'remove', '--force', str(checkout)], check=True)
       - run: git diff --exit-code -- dist
-
-  pr47_staging_receipt:
-    name: PR47 temporary deterministic Draft stage (no release)
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Build source-exact Draft stage and push without force
-        shell: bash
-        run: |
-          set -euo pipefail
-          temporary="$(mktemp -d)"
-          python tools/build_release.py --output "$temporary/photo-finish.zip"
-          cp "$temporary/photo-finish.zip" dist/v2.0.0/photo-finish.zip
-          cp "$temporary/photo-finish.zip.sha256" dist/v2.0.0/photo-finish.zip.sha256
-          git config user.name "photo-finish-ci"
-          git config user.email "ci@users.noreply.github.com"
-          git add -- dist/v2.0.0/photo-finish.zip dist/v2.0.0/photo-finish.zip.sha256
-          git diff --cached --quiet && { echo "staged bytes already match"; exit 0; }
-          git commit -m "build(draft): refresh exact v2.0.0 staged package for native curve"
-          git push origin HEAD:integration/photo-finish-v2-20261104
