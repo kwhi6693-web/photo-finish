@@ -137,3 +137,30 @@ jobs:
               finally:
                   subprocess.run(['git', 'worktree', 'remove', '--force', str(checkout)], check=True)
       - run: git diff --exit-code -- dist
+
+  pr47_staging_receipt:
+    name: PR47 temporary source-only staging bytes
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Print verified deterministic source package bytes (Draft only)
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64,hashlib,sys,tempfile
+          from pathlib import Path
+          sys.path.insert(0,str(Path('tools').resolve()))
+          from build_release import build
+          with tempfile.TemporaryDirectory(prefix='pr47-stage-') as d:
+              target=Path(d)/'photo-finish.zip'
+              result=build(target,Path.cwd(),candidate=False)
+              data=target.read_bytes()
+              print('PFZIP_SHA256='+hashlib.sha256(data).hexdigest())
+              print('PFZIP_SIZE='+str(len(data)))
+              print('PFZIP_BEGIN')
+              encoded=base64.b64encode(data).decode('ascii')
+              for index in range(0,len(encoded),4000):
+                  print('PFZIP:'+encoded[index:index+4000])
+              print('PFZIP_END')
+          PY
