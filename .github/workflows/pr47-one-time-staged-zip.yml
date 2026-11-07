@@ -1,0 +1,34 @@
+name: PR47 one-time deterministic staged bytes (Draft only)
+on:
+  push:
+    branches:
+      - integration/photo-finish-v2-20261104
+    paths:
+      - .github/workflows/pr47-one-time-staged-zip.yml
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Emit deterministic source-only bytes for Draft staging
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64,hashlib,sys,tempfile
+          from pathlib import Path
+          sys.path.insert(0,str(Path('tools').resolve()))
+          from build_release import build
+          with tempfile.TemporaryDirectory(prefix='pr47-staging-') as d:
+              target=Path(d)/'photo-finish.zip'
+              result=build(target,Path.cwd(),candidate=False)
+              data=target.read_bytes()
+              print('PFZIP_SHA256='+hashlib.sha256(data).hexdigest())
+              print('PFZIP_SIZE='+str(len(data)))
+              print('PFZIP_BEGIN')
+              encoded=base64.b64encode(data).decode('ascii')
+              for index in range(0,len(encoded),4000):
+                  print('PFZIP:'+encoded[index:index+4000])
+              print('PFZIP_END')
+          PY
